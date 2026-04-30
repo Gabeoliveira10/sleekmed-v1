@@ -1,0 +1,24 @@
+:root {
+    --emerald: #059669;
+    --slate-bg: #F8FAFC;
+    --text-dark: #0F172A;
+    --text-gray: #64748B;
+    --border: #E2E8F0;
+}
+
+body { background: var(--slate-bg); color: var(--text-dark); font-family: -apple-system, system-ui, sans-serif; margin: 0; -webkit-font-smoothing: antialiased; }
+
+header { background: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+
+.logo { font-weight: 800; font-size: 1.2rem; }
+.logo span { color: var(--emerald); }
+
+.hero { background: #fff; padding: 40px 24px; border-bottom: 1px solid var(--border); }
+.hero h1 { font-size: 2.2rem; font-weight: 800; margin: 0 0 10px; letter-spacing: -1px; }
+
+.search-input { width: 100%; padding: 18px; border-radius: 12px; border: 2px solid var(--border); font-size: 1rem; outline: none; box-sizing: border-box; }
+
+.med-card { background: #fff; border-radius: 16px; padding: 20px; margin: 15px 20px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+
+.sidebar { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; background: #fff; z-index: 200; transition: 0.3s; padding: 40px 24px; }
+.sidebar.active { left: 0; }

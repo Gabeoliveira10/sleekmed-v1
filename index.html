@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SleekMed | Healthcare Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="overlay" onclick="toggleMenu()"></div>
+    <nav class="sidebar" id="sidebar">
+        <div style="font-weight: 800; font-size: 1.5rem; margin-bottom: 40px; color: #059669;">SleekMed Menu</div>
+        <div class="sidebar-item">👤 Patient Profile</div>
+        <div class="sidebar-item">⚙️ Partner Settings</div>
+        <div class="sidebar-item">🛡️ Security & HIPAA</div>
+        <div class="sidebar-item" style="color: #ef4444; margin-top: 40px;">Log Out</div>
+    </nav>
+
+    <header>
+        <div class="menu-trigger" onclick="toggleMenu()">☰</div>
+        <div class="logo">SLEEK<span>MED</span></div>
+        <div style="width: 24px;"></div>
+    </header>
+
+    <main id="view-market">
+        <section class="hero">
+            <div style="background: #FEE2E2; color: #991B1B; padding: 8px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; display: inline-block; margin-bottom: 20px;">NOT INSURANCE</div>
+            <h1>Intelligence for Every Script.</h1>
+            <input type="text" id="medSearch" class="search-input" placeholder="Search drug name (e.g. Lipitor)..." oninput="filterMeds()">
+        </section>
+        <div id="med-feed"></div>
+    </main>
+
+    <nav style="position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-around; padding: 15px 0 35px;">
+        <div style="font-size: 0.7rem; font-weight: 700; color: #059669;">INTELLIGENCE</div>
+        <div style="font-size: 0.7rem; font-weight: 700; color: #64748B;">ACCESS</div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
