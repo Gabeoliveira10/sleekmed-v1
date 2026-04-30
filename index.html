@@ -3,132 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SleekMed | Apex Enterprise</title>
+    <title>SleekMed | Healthcare Intelligence</title>
     <style>
         :root {
-            --gold: #D4AF37;
-            --gold-bright: #F5E1A4;
-            --bg: #050505;
-            --surface: #0F0F0F;
-            --border: #1A1A1A;
-            --text-main: #FFFFFF;
-            --text-muted: #666666;
+            --emerald: #059669;
+            --emerald-light: #ECFDF5;
+            --slate-bg: #F1F5F9;
+            --text-dark: #0F172A;
+            --text-gray: #64748B;
+            --border: #E2E8F0;
         }
         
-        body { background: var(--bg); color: var(--text-main); font-family: -apple-system, "SF Pro Display", sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
-        .app-container { max-width: 500px; margin: 0 auto; padding: 20px 24px; }
+        body { background: var(--slate-bg); color: var(--text-dark); font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        .app-container { max-width: 600px; margin: 0 auto; padding-bottom: 120px; }
+
+        /* --- NAVIGATION & SIDEBAR --- */
+        header { background: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+        .menu-trigger { cursor: pointer; padding: 4px; }
+        .logo { font-weight: 800; letter-spacing: -0.5px; font-size: 1.3rem; }
+        .logo span { color: var(--emerald); }
+
+        .sidebar { position: fixed; top: 0; left: -100%; width: 85%; height: 100%; background: #fff; z-index: 200; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px 24px; box-shadow: 25px 0 50px rgba(0,0,0,0.15); }
+        .sidebar.active { left: 0; }
+        .sidebar-header { border-bottom: 2px solid var(--slate-bg); padding-bottom: 20px; margin-bottom: 20px; }
+        .sidebar-item { padding: 18px 0; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 12px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; display: none; backdrop-filter: blur(4px); }
+        .overlay.active { display: block; }
+
+        /* --- HERO & TRUST --- */
+        .hero { background: #fff; padding: 40px 24px; border-bottom: 1px solid var(--border); }
+        .badge-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .trust-badge { background: #FEE2E2; color: #991B1B; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .network-badge { background: var(--emerald-light); color: var(--emerald); padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
         
-        /* Global Header */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0 30px; }
-        .logo { font-weight: 300; letter-spacing: 6px; text-transform: uppercase; font-size: 1rem; color: var(--gold); }
-        .settings-icon { opacity: 0.5; cursor: pointer; }
+        .hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.1; margin: 0 0 12px; letter-spacing: -1px; }
+        .hero p { font-size: 1.1rem; color: var(--text-gray); margin-bottom: 30px; }
 
-        /* Search Interface */
-        .search-area { position: relative; margin-bottom: 40px; }
-        .search-input { width: 100%; padding: 22px; font-size: 1.1rem; background: var(--surface); color: #fff; border: 1px solid var(--border); border-radius: 12px; outline: none; transition: 0.3s; }
-        .search-input:focus { border-color: var(--gold); background: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        /* --- SEARCH --- */
+        .search-wrap { position: relative; margin-bottom: 20px; }
+        .search-input { width: 100%; padding: 20px 24px; border-radius: 14px; border: 2px solid var(--border); font-size: 1.1rem; outline: none; transition: 0.2s; box-sizing: border-box; }
+        .search-input:focus { border-color: var(--emerald); box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
 
-        /* Live Dashboard */
-        .section-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .live-dot { color: var(--gold); animation: pulse 2s infinite; }
-
-        .data-card { background: linear-gradient(180deg, #111 0%, #080808 100%); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; }
-        .drug-name { font-size: 1.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .drug-meta { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        /* --- DASHBOARD SECTIONS --- */
+        .section-header { padding: 30px 24px 10px; font-size: 0.8rem; font-weight: 800; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1.5px; }
+        .feed { padding: 10px 20px; }
+        .med-card { background: #fff; border-radius: 20px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .med-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .med-name { font-size: 1.3rem; font-weight: 700; }
+        .savings-tag { font-size: 0.75rem; background: var(--emerald); color: #fff; padding: 4px 10px; border-radius: 20px; font-weight: 700; }
         
-        .price-grid { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px; }
-        .price-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 0.95rem; }
-        .p-val { color: var(--gold); font-weight: 600; }
+        .price-row { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--slate-bg); font-size: 1rem; }
+        .vendor { color: var(--text-gray); font-weight: 500; }
+        .price { font-weight: 800; color: var(--text-dark); }
+        .price.best { color: var(--emerald); }
 
-        /* Compliance Footer */
-        .disclaimer { font-size: 0.65rem; color: #444; line-height: 1.6; text-align: center; padding: 40px 10px; border-top: 1px solid #111; margin-top: 40px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* --- CREDENTIALS CARD --- */
+        .access-card { background: #0F172A; color: #fff; border-radius: 24px; padding: 32px; margin: 24px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .card-header-small { font-size: 0.65rem; color: var(--emerald); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .member-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 30px; letter-spacing: 1px; }
+        .cred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .cred-lbl { font-size: 0.6rem; color: #64748B; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+        .cred-val { font-family: monospace; font-size: 1.1rem; font-weight: 600; }
 
-        /* Nav */
-        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 20px 0 40px; }
-        .nav-item { color: var(--text-muted); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
-        .nav-item.active { color: var(--gold); }
+        /* --- FOOTER TABS --- */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 14px 0 38px; z-index: 100; }
+        .nav-tab { text-align: center; font-size: 0.65rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+        .nav-tab.active { color: var(--emerald); }
 
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">SLEEK<span>MED</span></div>
+            <div style="font-size: 0.8rem; color: var(--text-gray); margin-top: 5px;">Enterprise Portal v1.0</div>
+        </div>
+        <div class="sidebar-item">👤 Patient Profile</div>
+        <div class="sidebar-item">⚙️ Settings & Network</div>
+        <div class="sidebar-item">🛡️ Security & HIPAA</div>
+        <div class="sidebar-item">📄 Newsletter Signup</div>
+        <div class="sidebar-item">💬 Customer Support</div>
+        <div class="sidebar-item" style="color: #EF4444; margin-top: 30px; border: none;">Log Out</div>
+    </div>
+
+    <header>
+        <div class="menu-trigger" onclick="toggleMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </div>
+        <div class="logo">SLEEK<span>MED</span></div>
+        <div style="width: 24px;"></div>
+    </header>
+
     <div class="app-container">
-        <div class="header">
-            <div class="logo">SleekMed</div>
-            <div class="settings-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </div>
-        </div>
-
-        <div id="view-market">
-            <div class="search-area">
-                <input type="text" id="searchInput" class="search-input" placeholder="Query 2026 Drug Directory..." oninput="handleSearch()">
-            </div>
-
-            <div id="dashboard">
-                <div class="section-header">
-                    <span>Live Market Analytics</span>
-                    <span class="live-dot">● Real-Time</span>
+        
+        <div id="view-intel">
+            <div class="hero">
+                <div class="badge-row">
+                    <div class="trust-badge">Not Insurance</div>
+                    <div class="network-badge">80,000+ Pharmacies</div>
                 </div>
-                <div id="live-index">
-                    </div>
+                <h1>Prescription Intel. Guaranteed.</h1>
+                <p>Save up to 80% on medications using our proprietary market-comparison engine.</p>
+                
+                <div class="search-wrap">
+                    <input type="text" id="mainSearch" class="search-input" placeholder="Enter drug name (Atorvastatin, Sildenafil...)" oninput="handleSearch()">
+                </div>
             </div>
 
-            <div class="disclaimer">
-                SleekMed is a pricing intelligence platform. We are not a medical provider, pharmacy, or insurance entity. Content is for informational purposes only. Consult a healthcare professional for medical advice.
+            <div class="section-header">🔥 Trending Savings Assets</div>
+            <div class="feed" id="intel-feed"></div>
+            
+            <div style="padding: 40px 24px; text-align: center; font-size: 0.7rem; color: var(--text-gray); line-height: 1.6;">
+                © 2026 SleekMed Inc. Content for informational purposes. Not medical advice.
             </div>
         </div>
 
-        <div id="view-card" class="hidden">
+        <div id="view-access" class="hidden">
+            <div style="padding: 40px 24px 10px;">
+                <h1 style="font-size: 2.2rem; margin: 0; letter-spacing: -1px;">Digital ID</h1>
+                <p style="color: var(--text-gray);">Show this card to your pharmacist to route your discount.</p>
             </div>
+            
+            <div class="access-card">
+                <div class="card-header-small">Active Savings Network</div>
+                <div class="member-name">GABRIEL OLIVEIRA</div>
+                
+                <div class="cred-grid">
+                    <div><div class="cred-lbl">BIN</div><div class="cred-val">015995</div></div>
+                    <div><div class="cred-lbl">PCN</div><div class="cred-val">GDC</div></div>
+                    <div><div class="cred-lbl">GROUP</div><div class="cred-val">SLEEK2026</div></div>
+                    <div><div class="cred-lbl">MEMBER</div><div class="cred-val">S004412</div></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="nav">
-        <div class="nav-item active" onclick="switchTab('market')">Intelligence</div>
-        <div class="nav-item" onclick="switchTab('card')">Credentials</div>
-    </div>
+    <nav class="nav-bar">
+        <div class="nav-tab active" onclick="switchTab('intel', this)">Intelligence</div>
+        <div class="nav-tab" onclick="switchTab('access', this)">Access</div>
+        <div class="nav-tab" onclick="toggleMenu()">Settings</div>
+    </nav>
 
     <script>
-        const medData = {
-            "lipitor": { cat: "Cholesterol", GoodRx: 4.12, SingleCare: 5.50, CostPlus: 8.20 },
-            "ozempic": { cat: "Weight Loss", GoodRx: 924.00, SingleCare: 938.00, CostPlus: 960.00 },
-            "amoxicillin": { cat: "Antibiotic", GoodRx: 2.50, SingleCare: 3.10, CostPlus: 6.00 }
-        };
+        const database = [
+            { name: "Ozempic", cat: "Diabetes/Weight", GoodRx: 924.10, SingleCare: 938.00, save: "15% Off" },
+            { name: "Atorvastatin", cat: "Generic Lipitor", GoodRx: 4.12, SingleCare: 5.25, save: "85% Off" },
+            { name: "Sildenafil", cat: "Generic Revatio", GoodRx: 18.01, SingleCare: 24.50, save: "82% Off" },
+            { name: "Amlodipine", cat: "Blood Pressure", GoodRx: 3.50, SingleCare: 4.10, save: "90% Off" },
+            { name: "Escitalopram", cat: "Mental Health", GoodRx: 6.20, SingleCare: 7.15, save: "78% Off" }
+        ];
 
-        function renderCard(name, d) {
-            return `
-                <div class="data-card">
-                    <div class="drug-name">${name}</div>
-                    <div class="drug-meta">${d.cat} | 30-Day Supply</div>
-                    <div class="price-grid">
-                        <div class="price-row"><span>GoodRx Network</span><span class="p-val">$${d.GoodRx.toFixed(2)}</span></div>
-                        <div class="price-row"><span>SingleCare</span><span class="p-val">$${d.SingleCare.toFixed(2)}</span></div>
-                        <div class="price-row"><span>Cost Plus</span><span class="p-val">$${d.CostPlus.toFixed(2)}</span></div>
-                    </div>
-                </div>`;
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('active');
         }
 
-        function init() {
-            let html = '';
-            for (let [name, data] of Object.entries(medData)) {
-                html += renderCard(name, data);
-            }
-            document.getElementById('live-index').innerHTML = html;
+        function switchTab(viewId, element) {
+            document.getElementById('view-intel').classList.add('hidden');
+            document.getElementById('view-access').classList.add('hidden');
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         function handleSearch() {
-            const val = document.getElementById('searchInput').value.toLowerCase().trim();
-            const container = document.getElementById('live-index');
-            if (!val) { init(); return; }
-            if (medData[val]) {
-                container.innerHTML = renderCard(val, medData[val]);
-            } else {
-                container.innerHTML = '<div style="text-align:center; padding:50px; color:#444;">Asset not found in current directory.</div>';
-            }
+            const val = document.getElementById('mainSearch').value.toLowerCase();
+            const filtered = database.filter(m => m.name.toLowerCase().includes(val));
+            render(filtered);
         }
 
-        init();
+        function render(data) {
+            const feed = document.getElementById('intel-feed');
+            feed.innerHTML = data.map(m => `
+                <div class="med-card">
+                    <div class="med-header">
+                        <div>
+                            <div class="med-name">${m.name}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-gray);">${m.cat}</div>
+                        </div>
+                        <div class="savings-tag">${m.save}</div>
+                    </div>
+                    <div class="price-row"><span class="vendor">GoodRx Gold</span><span class="price best">$${m.GoodRx.toFixed(2)}</span></div>
+                    <div class="price-row"><span class="vendor">SingleCare Price</span><span class="price">$${m.SingleCare.toFixed(2)}</span></div>
+                </div>
+            `).join('');
+        }
+
+        render(database);
     </script>
 </body>
 </html>
