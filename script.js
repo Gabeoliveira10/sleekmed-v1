@@ -2,19 +2,71 @@
 
 /* DRUG DATA */
 const DRUGS = [
-  { name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular', dosage: '40mg · 30 tabs', hospital: 312, insurance: 48, sleekmed: 8.40 },
-  { name: 'Lisinopril', generic: 'Generic Zestril', category: 'Cardiovascular', dosage: '10mg · 30 tabs', hospital: 198, insurance: 35, sleekmed: 4.20 },
-  { name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular', dosage: '5mg · 30 tabs', hospital: 224, insurance: 38, sleekmed: 5.80 },
-  { name: 'Metformin', generic: 'Generic Glucophage', category: 'Metabolic', dosage: '500mg · 60 tabs', hospital: 186, insurance: 32, sleekmed: 4.60 },
-  { name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine', dosage: '0.5mg · 4 pens', hospital: 1142, insurance: 280, sleekmed: 189.00 },
-  { name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health', dosage: '10mg · 30 tabs', hospital: 228, insurance: 40, sleekmed: 6.20 },
-  { name: 'Sertraline', generic: 'Generic Zoloft', category: 'Mental Health', dosage: '50mg · 30 tabs', hospital: 214, insurance: 36, sleekmed: 5.40 },
-  { name: 'Omeprazole', generic: 'Generic Prilosec', category: 'Gastrointestinal', dosage: '20mg · 30 tabs', hospital: 142, insurance: 28, sleekmed: 3.80 },
-  { name: 'Montelukast', generic: 'Generic Singulair', category: 'Respiratory', dosage: '10mg · 30 tabs', hospital: 198, insurance: 35, sleekmed: 7.20 },
-  { name: 'Gabapentin', generic: 'Generic Neurontin', category: 'Pain & Inflammation', dosage: '300mg · 90 caps', hospital: 226, insurance: 38, sleekmed: 9.40 },
-  { name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic', dosage: '500mg · 30 caps', hospital: 148, insurance: 24, sleekmed: 4.00 },
-  { name: 'Levothyroxine', generic: 'Generic Synthroid', category: 'Endocrine', dosage: '50mcg · 30 tabs', hospital: 152, insurance: 28, sleekmed: 3.40 }
+  {
+    name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant',
+    variants: [
+      { dosage: '250mg', qty: '90 tablets', hospital: 99.38, insurance: 30.00, sleekmed: 12.41 },
+      { dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, sleekmed: 6.18 },
+      { dosage: '750mg', qty: '60 tablets', hospital: 115.74, insurance: 35.00, sleekmed: 11.02 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 134.24, insurance: 40.00, sleekmed: 15.48 }
+    ]
+  },
+  {
+    name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular',
+    variants: [
+      { dosage: '2.5mg', qty: '30 tablets', hospital: 180, insurance: 25, sleekmed: 4.10 },
+      { dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, sleekmed: 5.80 },
+      { dosage: '5mg', qty: '90 tablets', hospital: 600, insurance: 90, sleekmed: 12.40 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 250, insurance: 45, sleekmed: 6.20 }
+    ]
+  },
+  {
+    name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular',
+    variants: [
+      { dosage: '10mg', qty: '30 tablets', hospital: 190, insurance: 30, sleekmed: 5.20 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 240, insurance: 38, sleekmed: 6.80 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 312, insurance: 48, sleekmed: 8.40 },
+      { dosage: '80mg', qty: '90 tablets', hospital: 900, insurance: 110, sleekmed: 19.50 }
+    ]
+  },
+  {
+    name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health',
+    variants: [
+      { dosage: '5mg', qty: '30 tablets', hospital: 150, insurance: 25, sleekmed: 4.80 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, sleekmed: 6.20 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 290, insurance: 50, sleekmed: 8.10 },
+      { dosage: '20mg', qty: '90 tablets', hospital: 800, insurance: 100, sleekmed: 18.40 }
+    ]
+  },
+  {
+    name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine',
+    variants: [
+      { dosage: '0.25mg', qty: '1 pen', hospital: 1050, insurance: 250, sleekmed: 175.00 },
+      { dosage: '0.5mg', qty: '1 pen', hospital: 1142, insurance: 280, sleekmed: 189.00 },
+      { dosage: '1mg', qty: '1 pen', hospital: 1200, insurance: 300, sleekmed: 195.00 },
+      { dosage: '2mg', qty: '1 pen', hospital: 1350, insurance: 350, sleekmed: 215.00 }
+    ]
+  },
+  {
+    name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic',
+    variants: [
+      { dosage: '250mg', qty: '30 capsules', hospital: 110, insurance: 15, sleekmed: 3.20 },
+      { dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, sleekmed: 4.00 },
+      { dosage: '875mg', qty: '20 tablets', hospital: 160, insurance: 28, sleekmed: 4.50 }
+    ]
+  },
+  {
+    name: 'Metformin', generic: 'Generic Glucophage', category: 'Metabolic',
+    variants: [
+      { dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, sleekmed: 4.60 },
+      { dosage: '850mg', qty: '60 tablets', hospital: 210, insurance: 38, sleekmed: 5.40 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 240, insurance: 45, sleekmed: 6.80 },
+      { dosage: '1000mg ER', qty: '60 tablets', hospital: 300, insurance: 55, sleekmed: 9.20 }
+    ]
+  }
 ];
+
+let currentDrugInfo = null;
 
 /* UTILS */
 const $ = id => document.getElementById(id);
@@ -23,8 +75,9 @@ const fmt = n => n < 10 ? '$' + n.toFixed(2) : '$' + Math.round(n).toLocaleStrin
 
 function initials(name) {
   const cleanName = name.trim().replace(/\s+/g, ' ');
+  if (!cleanName) return 'SM';
   const parts = cleanName.split(' ');
-  if (parts.length === 1) return parts.slice(0, 2).toUpperCase();
+  if (parts.length === 1) return parts.substring(0, 2).toUpperCase();
   return (parts + parts[parts.length - 1]).toUpperCase();
 }
 
@@ -46,10 +99,10 @@ let state = {
   activeTab: 'search',
 };
 
-/* BOOT & RENDER */
+/* BOOT AND RENDER */
 function bootApp() {
   updateUIForAuth();
-  renderDrugGrid(DRUGS.slice(0, 6)); 
+  renderPopularGrid(); 
   renderContractTable();
   switchTab(state.activeTab || 'search');
 }
@@ -60,12 +113,10 @@ function updateUIForAuth() {
   
   if (state.loggedIn) {
     $('topbar-profile-text').textContent = 'Profile';
-    $('sidebar-member-section').style.display = 'flex';
     reqEls.forEach(el => el.style.display = '');
     injectUserData();
   } else {
     $('topbar-profile-text').textContent = 'Sign In';
-    $('sidebar-member-section').style.display = 'none';
     reqEls.forEach(el => el.style.display = 'none');
   }
 
@@ -78,91 +129,175 @@ function updateUIForAuth() {
 
 function injectUserData() {
   const { name, email, memberId } = state.user;
-  const ini = initials(name || 'Member');
+  const ini = initials(name);
   
-  $('sidebar-avatar').textContent = ini;
-  $('sidebar-member-name').textContent = name;
-  $('sidebar-member-email').textContent = email;
-
-  $('card-member-name').textContent = name.toUpperCase();
+  $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
   $('card-member-email').textContent = email;
   $('card-member-id').textContent = memberId;
 
   $('profile-avatar').textContent = ini;
-  $('profile-name-display').textContent = name;
+  $('profile-name-display').textContent = name || 'Member';
   $('pf-name').value = name;
   $('pf-email').value = email;
 }
 
-/* DRUG GRID & DETAIL PAGE */
-function renderDrugGrid(drugs) {
+/* PROFILE DYNAMICS */
+$('pf-name').addEventListener('input', function() {
+  const val = this.value;
+  $('profile-avatar').textContent = initials(val);
+  $('profile-name-display').textContent = val || 'Member';
+});
+
+$('clear-name-btn').addEventListener('click', function() {
+  $('pf-name').value = '';
+  $('profile-avatar').textContent = 'SM';
+  $('profile-name-display').textContent = 'Member';
+  $('pf-name').focus();
+});
+
+
+/* SEARCH AND LIST VIEW */
+function renderPopularGrid() {
   const grid = $('drug-grid');
   grid.innerHTML = '';
-
-  if (!drugs.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">No medications found.</div>`;
-    return;
-  }
-
-  drugs.forEach((d) => {
+  
+  DRUGS.forEach((d) => {
+    const lowest = Math.min(...d.variants.map(v => v.sleekmed));
     const card = document.createElement('div');
     card.className = 'drug-card';
     card.innerHTML = `
       <div class="drug-name">${d.name}</div>
       <div class="drug-generic">${d.generic}</div>
       <div class="drug-footer">
-        <div class="savings-badge">As low as ${fmt(d.sleekmed)}</div>
-        <div class="drug-dosage">${d.dosage}</div>
+        <div class="savings-badge">From ${fmt(lowest)}</div>
       </div>
     `;
-    card.addEventListener('click', () => showDrugPage(d));
+    card.addEventListener('click', () => {
+      $('search-results-list').classList.add('hidden');
+      $('drug-search').value = '';
+      showDrugPage(d);
+    });
     grid.appendChild(card);
   });
 }
 
 function filterDrugs() {
   const q = $('drug-search').value.trim().toLowerCase();
-  $('grid-heading').textContent = q ? 'Search Results' : 'Popular Medications';
+  const list = $('search-results-list');
+  
+  if (!q) {
+    list.classList.add('hidden');
+    return;
+  }
+  
+  list.innerHTML = '';
   const filtered = DRUGS.filter(d => d.name.toLowerCase().includes(q) || d.generic.toLowerCase().includes(q));
-  renderDrugGrid(q ? filtered : DRUGS.slice(0, 6));
+  
+  if (filtered.length === 0) {
+    list.innerHTML = `<li style="color: var(--text-muted); justify-content: center;">No matches found.</li>`;
+  } else {
+    filtered.forEach(d => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div>
+          <div class="search-item-name">${d.name}</div>
+          <div class="search-item-gen">${d.generic}</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      `;
+      li.addEventListener('click', () => {
+        list.classList.add('hidden');
+        $('drug-search').value = '';
+        showDrugPage(d);
+      });
+      list.appendChild(li);
+    });
+  }
+  list.classList.remove('hidden');
 }
 
-function showDrugPage(d) {
-  const goodRx = d.sleekmed * 1.4;
-  const costPlus = d.sleekmed * 1.25;
+/* DRUG DETAIL PAGE DYNAMICS */
+function showDrugPage(drug) {
+  currentDrugInfo = drug;
+  
+  const uniqueDosages = [...new Set(drug.variants.map(v => v.dosage))];
   
   $('drug-detail-content').innerHTML = `
-    <div class="panel-title" style="margin-bottom: 4px;">${d.name}</div>
-    <div class="panel-sub" style="margin-bottom: 32px; font-size: 16px;">${d.generic} · ${d.dosage}</div>
+    <div class="panel-title" style="margin-bottom: 4px;">${drug.name}</div>
+    <div class="panel-sub" style="margin-bottom: 24px; font-size: 16px;">${drug.generic}</div>
     
-    <div style="font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">Estimated Prices</div>
-    <div class="price-comparison-list">
-      <div class="price-row best-price">
-        <span class="price-source">SleekMed Direct <span class="star-icon">★ Best Price</span></span>
-        <span class="price-value">${fmt(d.sleekmed)}</span>
+    <div class="variant-selectors">
+      <div class="variant-col">
+        <span class="variant-label">Form and Dosage</span>
+        <select id="sel-dosage" class="variant-select">
+          ${uniqueDosages.map(d => `<option value="${d}">${d}</option>`).join('')}
+        </select>
       </div>
-      <div class="price-row">
-        <span class="price-source">Cost Plus Drugs</span>
-        <span class="price-value">${fmt(costPlus)}</span>
-      </div>
-      <div class="price-row">
-        <span class="price-source">GoodRx (Avg)</span>
-        <span class="price-value">${fmt(goodRx)}</span>
-      </div>
-      <div class="price-row">
-        <span class="price-source">Insurance Copay (Avg)</span>
-        <span class="price-value">${fmt(d.insurance)}</span>
-      </div>
-      <div class="price-row" style="opacity: 0.5;">
-        <span class="price-source">Hospital Cash Pay</span>
-        <span class="price-value" style="text-decoration: line-through;">${fmt(d.hospital)}</span>
+      <div class="variant-col">
+        <span class="variant-label">Quantity</span>
+        <select id="sel-qty" class="variant-select">
+        </select>
       </div>
     </div>
-    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 32px;" onclick="switchTab('search'); openAuth();">Get Savings Card</button>` : ''}
+    
+    <div style="font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">Estimated Prices</div>
+    <div id="price-board" class="price-comparison-list">
+    </div>
+    
+    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 32px;" onclick="openAuth();">Get Savings Card</button>` : ''}
   `;
+
+  $('sel-dosage').addEventListener('change', updateQuantities);
+  $('sel-qty').addEventListener('change', updatePriceBoard);
+
+  updateQuantities();
   
   switchTab('drug-detail');
   window.scrollTo(0, 0);
+}
+
+function updateQuantities() {
+  const selectedDosage = $('sel-dosage').value;
+  const qtySelect = $('sel-qty');
+  
+  const matchingVariants = currentDrugInfo.variants.filter(v => v.dosage === selectedDosage);
+  
+  qtySelect.innerHTML = matchingVariants.map(v => `<option value="${v.qty}">${v.qty}</option>`).join('');
+  updatePriceBoard();
+}
+
+function updatePriceBoard() {
+  const selectedDosage = $('sel-dosage').value;
+  const selectedQty = $('sel-qty').value;
+  
+  const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
+  if (!v) return;
+
+  const goodRx = v.sleekmed * 1.4;
+  const costPlus = v.sleekmed * 1.25;
+
+  $('price-board').innerHTML = `
+    <div class="price-row best-price">
+      <span class="price-source">SleekMed Direct <span class="star-icon">★ Best Price</span></span>
+      <span class="price-value">${fmt(v.sleekmed)}</span>
+    </div>
+    <div class="price-row">
+      <span class="price-source">Cost Plus Drugs</span>
+      <span class="price-value">${fmt(costPlus)}</span>
+    </div>
+    <div class="price-row">
+      <span class="price-source">GoodRx (Avg)</span>
+      <span class="price-value">${fmt(goodRx)}</span>
+    </div>
+    <div class="price-row">
+      <span class="price-source">Insurance Copay (Avg)</span>
+      <span class="price-value">${fmt(v.insurance)}</span>
+    </div>
+    <div class="price-row" style="opacity: 0.5;">
+      <span class="price-source">Hospital Cash Pay</span>
+      <span class="price-value" style="text-decoration: line-through;">${fmt(v.hospital)}</span>
+    </div>
+  `;
 }
 
 /* AUTHENTICATION */
@@ -183,7 +318,7 @@ function handleLogin() {
 
   if (!email) { $('login-email').focus(); return; }
 
-  if (email === 'admin@sleekmed.com' && code === 'SM2026#') {
+  if (email === 'admin@sleekmed.com' && code === 'ADMIN888') {
     state.isAdmin = true;
   } else {
     state.isAdmin = false;
@@ -191,7 +326,7 @@ function handleLogin() {
 
   state.loggedIn = true;
   state.user = {
-    name: name || 'Valued Member',
+    name: name || 'Member',
     email: email,
     memberId: 'SM-' + Math.floor(100000 + Math.random() * 900000)
   };
@@ -213,7 +348,6 @@ function handleLogout() {
   state.isAdmin = false;
   state.user = { name: '', email: '', memberId: '' };
   
-  $('sidebar-close').click(); 
   updateUIForAuth();
   switchTab('search');
   showToast('Successfully signed out.');
@@ -237,7 +371,6 @@ function switchTab(tab) {
   if (panel) panel.classList.add('active');
 
   $$('.bnav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  $$('.sidebar-link[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
 }
 
 /* EVENT LISTENERS */
@@ -254,7 +387,17 @@ document.addEventListener('DOMContentLoaded', () => {
   $('auth-overlay').addEventListener('click', closeAuth);
 
   $('drug-search').addEventListener('input', filterDrugs);
-  $('back-to-search').addEventListener('click', () => switchTab('search'));
+  
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrap')) {
+      $('search-results-list').classList.add('hidden');
+    }
+  });
+
+  $('back-to-search').addEventListener('click', () => {
+    $('drug-search').value = '';
+    switchTab('search');
+  });
 
   $('menu-btn').addEventListener('click', () => {
     $('sidebar').classList.add('open');
@@ -269,17 +412,18 @@ document.addEventListener('DOMContentLoaded', () => {
   $('sidebar-close').addEventListener('click', closeSidebar);
   $('sidebar-overlay').addEventListener('click', closeSidebar);
 
-  $$('.sidebar-link[data-tab], .bnav-item').forEach(btn => {
+  $$('.bnav-item, .sidebar-link').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const tab = e.currentTarget.dataset.tab;
-      switchTab(tab);
-      closeSidebar();
+      if (tab) {
+        switchTab(tab);
+        closeSidebar();
+      }
     });
   });
 
   $('save-profile-btn').addEventListener('click', () => {
     state.user.name = $('pf-name').value;
-    state.user.email = $('pf-email').value;
     injectUserData();
     showToast('Profile and Access Card updated.');
   });
