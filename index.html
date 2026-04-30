@@ -5,32 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SleekMed | Consumer Pricing</title>
     <style>
-        body { background: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
+        body { background: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; overflow-x: hidden; }
         .header { text-align: center; margin: 40px 0 30px; }
         h1 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 1.8rem; margin: 0; color: #fff; }
-        .search-box { width: 100%; padding: 20px; font-size: 1.2rem; border: 1px solid #333; border-radius: 12px; background: #111; color: #fff; margin-bottom: 25px; box-sizing: border-box; border: 1px solid #0f0; }
+        .search-box { width: 100%; padding: 20px; font-size: 1.2rem; border-radius: 12px; background: #111; color: #fff; margin-bottom: 25px; box-sizing: border-box; border: 1px solid #0f0; outline: none; transition: 0.3s; }
+        .search-box:focus { box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
         .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #0f0; margin: 25px 0 10px; }
-        select { width: 100%; padding: 18px; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; font-size: 1rem; margin-bottom: 20px; }
-        .card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .card.best { border: 1px solid #0f0; }
+        .card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.5s ease; }
+        .card.best { border: 1px solid #0f0; background: rgba(0, 255, 0, 0.05); }
+        .info h3 { margin: 0; font-size: 1.1rem; }
+        .info span { font-size: 0.8rem; color: #888; }
         .price { font-size: 1.5rem; font-weight: 700; color: #0f0; }
-        .btn { width: 100%; background: #fff; color: #000; padding: 18px; border-radius: 30px; font-weight: 700; text-transform: uppercase; border: none; margin-top: 20px; }
+        .btn { width: 100%; background: #fff; color: #000; padding: 18px; border-radius: 30px; font-weight: 700; text-transform: uppercase; border: none; margin-top: 20px; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #results-container { min-height: 200px; }
     </style>
 </head>
 <body>
     <div class="header"><h1>SleekMed</h1></div>
-    <input type="text" class="search-box" placeholder="Search Medication...">
-    <div class="label">Insurance Network</div>
-    <select>
-        <option>UnitedHealthcare</option>
-        <option>Aetna</option>
-        <option>Cigna</option>
-        <option>Blue Cross Blue Shield</option>
-    </select>
-    <div class="label">Top Savings</div>
-    <div class="card best"><div class="info"><h3>GoodRx</h3><span>Lowest Local</span></div><div class="price">$4.12</div></div>
-    <div class="card"><div class="info"><h3>BuzzRx</h3><span>Best Generic</span></div><div class="price">$5.25</div></div>
-    <div class="card"><div class="info"><h3>Cost Plus</h3><span>Mark Cuban</span></div><div class="price">$8.20</div></div>
-    <button class="btn">Upload Receipt</button>
+    <input type="text" id="medSearch" class="search-box" placeholder="Search Medication (e.g. Lipitor)" onkeyup="searchMeds()">
+    
+    <div class="label">Top Savings Results</div>
+    <div id="results-container">
+        <div class="card"><div class="info"><h3>Ready</h3><span>Enter a medication to see 2026 pricing</span></div></div>
+    </div>
+
+    <button class="btn">Upload Insurance Card</button>
+
+    <script>
+        const medData = {
+            "lipitor": { "GoodRx": 4.12, "BuzzRx": 5.25, "CostPlus": 8.20 },
+            "amoxicillin": { "GoodRx": 2.50, "BuzzRx": 3.10, "CostPlus": 6.00 },
+            "lisinopril": { "GoodRx": 3.75, "BuzzRx": 4.50, "CostPlus": 7.15 },
+            "metformin": { "GoodRx": 4.00, "BuzzRx": 4.80, "CostPlus": 9.00 },
+            "albuterol": { "GoodRx": 12.30, "BuzzRx": 15.00, "CostPlus": 18.50 },
+            "gabapentin": { "GoodRx": 6.20, "BuzzRx": 7.45, "CostPlus": 10.00 },
+            "levothyroxine": { "GoodRx": 5.10, "BuzzRx": 6.00, "CostPlus": 9.50 },
+            "losartan": { "GoodRx": 4.90, "BuzzRx": 5.80, "CostPlus": 8.90 },
+            "omeprazole": { "GoodRx": 7.15, "BuzzRx": 8.00, "CostPlus": 12.00 },
+            "atorvastatin": { "GoodRx": 4.12, "BuzzRx": 5.25, "CostPlus": 8.20 }
+        };
+
+        function searchMeds() {
+            const query = document.getElementById('medSearch').value.toLowerCase();
+            const container = document.getElementById('results-container');
+            
+            if (medData[query]) {
+                const data = medData[query];
+                container.innerHTML = `
+                    <div class="card best"><div class="info"><h3>GoodRx</h3><span>Lowest Local</span></div><div class="price">$${data.GoodRx.toFixed(2)}</div></div>
+                    <div class="card"><div class="info"><h3>BuzzRx</h3><span>Direct Savings</span></div><div class="price">$${data.BuzzRx.toFixed(2)}</div></div>
+                    <div class="card"><div class="info"><h3>Cost Plus</h3><span>Mark Cuban</span></div><div class="price">$${data.CostPlus.toFixed(2)}</div></div>
+                `;
+            } else if (query === "") {
+                container.innerHTML = `<div class="card"><div class="info"><h3>Ready</h3><span>Enter a medication to see 2026 pricing</span></div></div>`;
+            }
+        }
+    </script>
 </body>
 </html>
