@@ -33,7 +33,7 @@
     <div class="sidebar-avatar" id="sidebar-avatar">--</div>
     <div>
       <div class="sidebar-member-name" id="sidebar-member-name">Member</div>
-      <div class="sidebar-member-email" id="sidebar-member-email">—</div>
+      <div class="sidebar-member-email" id="sidebar-member-email"></div>
     </div>
   </div>
 
@@ -79,7 +79,7 @@
 </nav>
 
 <div id="auth-overlay" class="gate-overlay hidden"></div>
-<div id="auth-panel" class="auth-slide-panel">
+<div id="auth-panel" class="auth-slide-panel hidden">
   <button id="close-auth" class="close-modal-btn">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
   </button>
@@ -108,15 +108,6 @@
   <button id="login-btn" class="gate-btn">
     SECURE ACCESS
   </button>
-</div>
-
-<div id="modal-overlay" class="gate-overlay hidden"></div>
-<div id="drug-modal" class="drug-modal hidden">
-  <button id="close-modal" class="close-modal-btn">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
-  <div id="modal-content">
-    </div>
 </div>
 
 <div id="app" class="app">
@@ -159,12 +150,23 @@
       <div class="search-row">
         <div class="search-wrap">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="drug-search" type="text" class="search-input" placeholder="Search medications (e.g. Lipitor, Amoxicillin)…" />
+          <input id="drug-search" type="text" class="search-input" placeholder="Search medications (e.g. Lipitor, Amoxicillin)" />
         </div>
       </div>
 
       <div class="section-heading" id="grid-heading">Popular Medications</div>
       <div id="drug-grid" class="drug-grid"></div>
+    </section>
+
+    <section id="tab-drug-detail" class="tab-panel">
+      <div class="panel-header">
+        <button id="back-to-search" class="btn-secondary" style="margin-bottom: 12px; display: inline-flex; align-items: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Search
+        </button>
+      </div>
+      <div id="drug-detail-content" style="max-width: 600px;">
+        </div>
     </section>
 
     <section id="tab-access" class="tab-panel">
@@ -191,7 +193,7 @@
 
           <div class="card-member-row">
             <div class="card-member-name" id="card-member-name">MEMBER NAME</div>
-            <div class="card-member-email" id="card-member-email">member@email.com</div>
+            <div class="card-member-email" id="card-member-email"></div>
           </div>
 
           <div class="card-data-grid">
@@ -205,7 +207,7 @@
             </div>
             <div class="card-data-item">
               <div class="card-data-label">GROUP</div>
-              <div class="card-data-val">SLEEK2026</div>
+              <div class="card-data-val">SLKRX</div>
             </div>
             <div class="card-data-item">
               <div class="card-data-label">MEMBER ID</div>
@@ -258,7 +260,7 @@
           <div class="profile-name-display" id="profile-name-display">Member Name</div>
           <div class="profile-status-badge">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#10b981"><circle cx="12" cy="12" r="10"/></svg>
-            Active Member · SLEEK2026
+            Active Member · SLKRX
           </div>
         </div>
       </div>
@@ -280,8 +282,8 @@
         <div class="profile-cred-row">
           <div class="cred-item"><span class="cred-label">BIN</span><span class="cred-val">015995</span></div>
           <div class="cred-item"><span class="cred-label">PCN</span><span class="cred-val">GDC</span></div>
-          <div class="cred-item"><span class="cred-label">GROUP</span><span class="cred-val">SLEEK2026</span></div>
-          <div class="cred-item"><span class="cred-label">STATUS</span><span class="cred-val status-active">ACTIVE</span></div>
+          <div class="cred-item"><span class="cred-label">GROUP</span><span class="cred-val">SLKRX</span></div>
+          <div class="cred-item"><span class="cred-label">STATUS</span><span class="cred-val status-active" style="color:var(--emerald-dim);font-size:14px;">ACTIVE</span></div>
         </div>
       </div>
     </section>
@@ -309,7 +311,7 @@
         </div>
       </div>
 
-      <div class="partner-section-label">CONTRACT STATUS MATRIX</div>
+      <div class="partner-section-label" style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px;">CONTRACT STATUS MATRIX</div>
       <div class="contract-table-wrap">
         <table class="contract-table">
           <thead>
@@ -333,9 +335,9 @@
           <div class="panel-sub">Aggregate intelligence</div>
         </div>
       </div>
-      <div class="analytics-card">
-        <div class="analytics-card-title">TOP SAVINGS MEDICATIONS</div>
-        <div class="top-drugs-list" id="top-drugs-list">
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-card);">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px;">TOP SAVINGS MEDICATIONS</div>
+        <div id="top-drugs-list">
           </div>
       </div>
     </section>
@@ -355,7 +357,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <span>Profile</span>
     </button>
-    </nav>
+  </nav>
 
 </div>
 
