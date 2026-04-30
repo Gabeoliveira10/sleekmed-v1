@@ -2,39 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SleekMed | Healthcare Intelligence</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div class="overlay" onclick="toggleMenu()"></div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
     <nav class="sidebar" id="sidebar">
-        <div style="font-weight: 800; font-size: 1.5rem; margin-bottom: 40px; color: #059669;">SleekMed Menu</div>
-        <div class="sidebar-item">👤 Patient Profile</div>
-        <div class="sidebar-item">⚙️ Partner Settings</div>
-        <div class="sidebar-item">🛡️ Security & HIPAA</div>
-        <div class="sidebar-item" style="color: #ef4444; margin-top: 40px;">Log Out</div>
+        <div class="sidebar-header">SLEEK<span>MED</span></div>
+        <div class="sidebar-item" onclick="toggleMenu()">Executive Dashboard</div>
+        <div class="sidebar-item">Pharmacy Network Portal</div>
+        <div class="sidebar-item">Regulatory Compliance</div>
+        <div class="sidebar-item">Security & Privacy</div>
+        <div class="sidebar-item" style="color: #EF4444; margin-top: 50px; font-weight: 700;">Logout</div>
     </nav>
 
     <header>
-        <div class="menu-trigger" onclick="toggleMenu()">☰</div>
+        <div class="menu-trigger" onclick="toggleMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </div>
         <div class="logo">SLEEK<span>MED</span></div>
-        <div style="width: 24px;"></div>
+        <div class="header-right">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
     </header>
 
     <main id="view-market">
         <section class="hero">
-            <div style="background: #FEE2E2; color: #991B1B; padding: 8px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; display: inline-block; margin-bottom: 20px;">NOT INSURANCE</div>
-            <h1>Intelligence for Every Script.</h1>
-            <input type="text" id="medSearch" class="search-input" placeholder="Search drug name (e.g. Lipitor)..." oninput="filterMeds()">
+            <div class="trust-pill">SLEEKMED IS NOT INSURANCE</div>
+            <h1 class="headline">Save up to 80% on prescriptions.</h1>
+            <p class="subline">Direct access to the lowest pharmacy prices in the industry.</p>
+            
+            <div class="search-container">
+                <input type="text" id="medSearch" class="main-search" placeholder="Enter drug name (e.g. Atorvastatin)..." oninput="filterMeds()">
+                <button class="search-btn">Search</button>
+            </div>
         </section>
-        <div id="med-feed"></div>
+
+        <section class="trust-bar">
+            <span>Free to use</span>
+            <span class="dot">·</span>
+            <span>Accepted at 80,000+ locations</span>
+        </section>
+
+        <div class="content-body">
+            <div class="section-label">Featured Savings Analytics</div>
+            <div id="med-feed"></div>
+            
+            <div class="how-it-works">
+                <div class="section-label">How SleekMed Works</div>
+                <div class="step"><span class="step-num">1</span> <strong>Compare Prices</strong>: We query every major pharmacy network instantly.</div>
+                <div class="step"><span class="step-num">2</span> <strong>Secure Savings</strong>: Our engine identifies the lowest negotiated rate.</div>
+                <div class="step"><span class="step-num">3</span> <strong>Show Pharmacist</strong>: Present your digital ID card at pickup.</div>
+            </div>
+        </div>
+
+        <footer class="compliance-footer">
+            SleekMed is an independent health pricing platform. Not an insurance provider. Copyright © 2026.
+        </footer>
     </main>
 
-    <nav style="position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-around; padding: 15px 0 35px;">
-        <div style="font-size: 0.7rem; font-weight: 700; color: #059669;">INTELLIGENCE</div>
-        <div style="font-size: 0.7rem; font-weight: 700; color: #64748B;">ACCESS</div>
+    <div id="view-access" class="hidden">
+        <div class="access-hero">
+            <h2>Authorized Credentials</h2>
+            <p>Direct routing codes for pharmacy processing.</p>
+        </div>
+        <div class="digital-id">
+            <div class="id-header">SAVINGS NETWORK ID</div>
+            <div class="id-name">GABRIEL OLIVEIRA</div>
+            <div class="id-grid">
+                <div><div class="id-lbl">BIN</div><div class="id-val">015995</div></div>
+                <div><div class="id-lbl">PCN</div><div class="id-val">GDC</div></div>
+                <div><div class="id-lbl">GROUP</div><div class="id-val">SLEEK2026</div></div>
+            </div>
+            <div class="id-footer">NOT INSURANCE</div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-tab active" onclick="switchTab('market', this)">Dashboard</div>
+        <div class="nav-tab" onclick="switchTab('access', this)">Access Card</div>
     </nav>
 
     <script src="script.js"></script>
