@@ -3,80 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>SleekMed</title>
+    <title>SleekMed | Consumer Pricing</title>
     <style>
         body { background: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
         .header { text-align: center; margin: 40px 0 30px; }
         h1 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 1.8rem; margin: 0; color: #fff; }
-        .search-box { width: 100%; padding: 20px; font-size: 1.2rem; border: 1px solid #333; border-radius: 12px; background: #111; color: #fff; margin-bottom: 25px; box-sizing: border-box; }
-        .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #0f0; margin: 25px 0 10px; opacity: 0.8; }
-        select { width: 100%; padding: 18px; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; font-size: 1rem; margin-bottom: 20px; -webkit-appearance: none; }
+        .search-box { width: 100%; padding: 20px; font-size: 1.2rem; border: 1px solid #333; border-radius: 12px; background: #111; color: #fff; margin-bottom: 25px; box-sizing: border-box; border: 1px solid #0f0; }
+        .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #0f0; margin: 25px 0 10px; }
+        select { width: 100%; padding: 18px; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; font-size: 1rem; margin-bottom: 20px; }
         .card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .card.best { border: 1px solid #0f0; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
-        .info h3 { margin: 0; font-size: 1.1rem; font-weight: 400; }
-        .info span { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-        .price { font-size: 1.5rem; font-weight: 700; color: #fff; }
-        .best .price { color: #0f0; }
-        .add-btn { width: 100%; background: #fff; color: #000; padding: 18px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; border: none; margin-top: 10px; cursor: pointer; }
+        .card.best { border: 1px solid #0f0; }
+        .price { font-size: 1.5rem; font-weight: 700; color: #0f0; }
+        .btn { width: 100%; background: #fff; color: #000; padding: 18px; border-radius: 30px; font-weight: 700; text-transform: uppercase; border: none; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="header"><h1>SleekMed</h1></div>
-    
-    <input type="text" class="search-box" placeholder="Enter Medication Name...">
-
-    <div class="label">Select Health Network</div>
+    <input type="text" class="search-box" placeholder="Search Medication...">
+    <div class="label">Insurance Network</div>
     <select>
-        <option>UnitedHealthcare (UHC)</option>
-        <option>Elevance Health (Anthem)</option>
-        <option>CVS Health (Aetna)</option>
-        <option>Centene Corporation</option>
-        <option>Humana (Senior Plans)</option>
-        <option>Cigna Healthcare</option>
-        <option>Kaiser Permanente</option>
-        <option>Blue Cross Blue Shield (BCBS)</option>
-        <option>Medicare / Medicaid</option>
-        <option>No Insurance (Cash)</option>
+        <option>UnitedHealthcare</option>
+        <option>Aetna</option>
+        <option>Cigna</option>
+        <option>Blue Cross Blue Shield</option>
     </select>
-
-    <div class="card">
-        <div class="info"><h3>Insurance Price</h3><span>Estimated Copay</span></div>
-        <div class="price">$15.00</div>
-    </div>
-
-    <div class="label">Third-Party Discounts</div>
-    
-    <div class="card best">
-        <div class="info"><h3>GoodRx</h3><span>Best Local Pharmacy</span></div>
-        <div class="price">$4.12</div>
-    </div>
-
-    <div class="card">
-        <div class="info"><h3>BuzzRx</h3><span>Best Brand/Generic Mix</span></div>
-        <div class="price">$5.25</div>
-    </div>
-
-    <div class="card">
-        <div class="info"><h3>SingleCare</h3><span>Digital Coupon</span></div>
-        <div class="price">$6.10</div>
-    </div>
-
-    <div class="card">
-        <div class="info"><h3>Optum Perks</h3><span>Nationwide Access</span></div>
-        <div class="price">$7.45</div>
-    </div>
-
-    <div class="card">
-        <div class="info"><h3>Cost Plus Drugs</h3><span>Mark Cuban Direct</span></div>
-        <div class="price">$8.20</div>
-    </div>
-
-    <div class="card">
-        <div class="info"><h3>WellRx</h3><span>ScriptSave WellRx</span></div>
-        <div class="price">$6.80</div>
-    </div>
-
-    <button class="add-btn">Upload Receipt for Reimbursement</button>
+    <div class="label">Top Savings</div>
+    <div class="card best"><div class="info"><h3>GoodRx</h3><span>Lowest Local</span></div><div class="price">$4.12</div></div>
+    <div class="card"><div class="info"><h3>BuzzRx</h3><span>Best Generic</span></div><div class="price">$5.25</div></div>
+    <div class="card"><div class="info"><h3>Cost Plus</h3><span>Mark Cuban</span></div><div class="price">$8.20</div></div>
+    <button class="btn">Upload Receipt</button>
 </body>
 </html>
