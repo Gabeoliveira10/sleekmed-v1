@@ -3,182 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SleekMed | Apex</title>
+    <title>SleekMed | Apex Enterprise</title>
     <style>
         :root {
-            --base: #000000;
-            --surface: #0a0a0a;
-            --elevated: #151515;
             --gold: #D4AF37;
-            --gold-dim: rgba(212, 175, 55, 0.15);
+            --gold-bright: #F5E1A4;
+            --bg: #050505;
+            --surface: #0F0F0F;
+            --border: #1A1A1A;
             --text-main: #FFFFFF;
-            --text-dim: #777777;
-            --border: #222222;
+            --text-muted: #666666;
         }
         
-        body { background: var(--base); color: var(--text-main); font-family: "SF Pro Display", -apple-system, sans-serif; margin: 0; padding: 0; padding-bottom: 100px; -webkit-font-smoothing: antialiased; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text-main); font-family: -apple-system, "SF Pro Display", sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
+        .app-container { max-width: 500px; margin: 0 auto; padding: 20px 24px; }
         
-        .container { max-width: 500px; margin: 0 auto; padding: 20px 24px; }
+        /* Global Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0 30px; }
+        .logo { font-weight: 300; letter-spacing: 6px; text-transform: uppercase; font-size: 1rem; color: var(--gold); }
+        .settings-icon { opacity: 0.5; cursor: pointer; }
+
+        /* Search Interface */
+        .search-area { position: relative; margin-bottom: 40px; }
+        .search-input { width: 100%; padding: 22px; font-size: 1.1rem; background: var(--surface); color: #fff; border: 1px solid var(--border); border-radius: 12px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: var(--gold); background: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+
+        /* Live Dashboard */
+        .section-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .live-dot { color: var(--gold); animation: pulse 2s infinite; }
+
+        .data-card { background: linear-gradient(180deg, #111 0%, #080808 100%); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+        .drug-name { font-size: 1.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .drug-meta { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 10px; }
-        .logo { font-weight: 300; letter-spacing: 6px; text-transform: uppercase; font-size: 1.1rem; color: var(--gold); }
-        .status { font-size: 0.65rem; padding: 4px 10px; border: 1px solid var(--gold-dim); border-radius: 20px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+        .price-grid { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px; }
+        .price-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 0.95rem; }
+        .p-val { color: var(--gold); font-weight: 600; }
 
-        .search-box { width: 100%; padding: 22px; font-size: 1.1rem; background: var(--surface); color: var(--text-main); border: 1px solid var(--border); border-radius: 12px; outline: none; transition: 0.3s; margin-bottom: 30px; font-weight: 300; }
-        .search-box:focus { border-color: var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        /* Compliance Footer */
+        .disclaimer { font-size: 0.65rem; color: #444; line-height: 1.6; text-align: center; padding: 40px 10px; border-top: 1px solid #111; margin-top: 40px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 15px; }
-
-        .card { background: var(--elevated); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); animation: fadeUp 0.5s ease forwards; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .drug-name { font-size: 1.4rem; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
-        
-        .price-row { display: flex; justify-content: space-between; padding: 12px 0; }
-        .vendor { color: var(--text-dim); font-size: 1rem; font-weight: 300; }
-        .price { font-size: 1.1rem; font-weight: 400; }
-        .best .vendor, .best .price { color: var(--gold); }
-
-        .black-card { background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); border-radius: 20px; padding: 30px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,1); position: relative; margin-bottom: 30px; }
-        .chip { width: 45px; height: 32px; border: 1px solid var(--gold); border-radius: 6px; margin-bottom: 30px; opacity: 0.8; }
-        .card-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 4px; }
-        .card-val { font-family: monospace; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
-        
-        .barcode { width: 100%; height: 60px; background: repeating-linear-gradient(90deg, #fff 0, #fff 2px, transparent 2px, transparent 4px, #fff 4px, #fff 5px, transparent 5px, transparent 8px, #fff 8px, #fff 12px, transparent 12px, transparent 14px); opacity: 0.9; margin-top: 20px; }
-
-        .btn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.2s; }
-        .btn:active { transform: scale(0.98); }
-
-        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,5,0.9); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 20px 30px; justify-content: space-around; z-index: 100; }
-        .nav-item { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; transition: 0.3s; padding: 10px; }
+        /* Nav */
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 20px 0 40px; }
+        .nav-item { color: var(--text-muted); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
         .nav-item.active { color: var(--gold); }
 
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         .hidden { display: none !important; }
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <div class="header">
             <div class="logo">SleekMed</div>
-            <div class="status">System Online</div>
+            <div class="settings-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
         </div>
 
         <div id="view-market">
-            <input type="text" id="searchInput" class="search-box" placeholder="Query Medication Database..." oninput="handleSearch()">
-            
-            <div id="default-state">
-                <div class="section-title">Live Market Index</div>
-                <div id="index-container"></div>
+            <div class="search-area">
+                <input type="text" id="searchInput" class="search-input" placeholder="Query 2026 Drug Directory..." oninput="handleSearch()">
             </div>
 
-            <div id="search-state" class="hidden">
-                <div class="section-title">Query Results</div>
-                <div id="results-container"></div>
+            <div id="dashboard">
+                <div class="section-header">
+                    <span>Live Market Analytics</span>
+                    <span class="live-dot">● Real-Time</span>
+                </div>
+                <div id="live-index">
+                    </div>
+            </div>
+
+            <div class="disclaimer">
+                SleekMed is a pricing intelligence platform. We are not a medical provider, pharmacy, or insurance entity. Content is for informational purposes only. Consult a healthcare professional for medical advice.
             </div>
         </div>
 
         <div id="view-card" class="hidden">
-            <div class="section-title">Authorized Credentials</div>
-            
-            <div class="black-card">
-                <div class="chip"></div>
-                <div class="card-label">Member Identity</div>
-                <div class="card-val" style="font-family: inherit; font-size: 1.1rem;">GABRIEL OLIVEIRA</div>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <div><div class="card-label">BIN</div><div class="card-val">015995</div></div>
-                    <div><div class="card-label">PCN</div><div class="card-val">GDC</div></div>
-                    <div><div class="card-label">GROUP</div><div class="card-val">SLK26</div></div>
-                </div>
-                
-                <div class="barcode"></div>
-                <div style="text-align: center; font-family: monospace; font-size: 0.7rem; color: #888; margin-top: 5px;">*SCAN FOR ROUTING*</div>
             </div>
-            
-            <button class="btn" onclick="copyCodes(this)">Copy Digital Identifiers</button>
-        </div>
     </div>
 
     <div class="nav">
-        <div class="nav-item active" onclick="switchView('market', this)">Market</div>
-        <div class="nav-item" onclick="switchView('card', this)">Access Card</div>
+        <div class="nav-item active" onclick="switchTab('market')">Intelligence</div>
+        <div class="nav-item" onclick="switchTab('card')">Credentials</div>
     </div>
 
     <script>
-        const db = {
-            "lipitor": { px: [4.12, 5.25, 8.20], tr: true },
-            "amoxicillin": { px: [2.50, 3.10, 6.00], tr: true },
-            "ozempic": { px: [924.00, 940.50, 960.00], tr: true },
-            "lisinopril": { px: [3.75, 4.50, 7.15], tr: false },
-            "metformin": { px: [4.00, 4.80, 9.00], tr: false }
+        const medData = {
+            "lipitor": { cat: "Cholesterol", GoodRx: 4.12, SingleCare: 5.50, CostPlus: 8.20 },
+            "ozempic": { cat: "Weight Loss", GoodRx: 924.00, SingleCare: 938.00, CostPlus: 960.00 },
+            "amoxicillin": { cat: "Antibiotic", GoodRx: 2.50, SingleCare: 3.10, CostPlus: 6.00 }
         };
 
-        function renderCard(name, data) {
+        function renderCard(name, d) {
             return `
-                <div class="card">
-                    <div class="card-header">
-                        <div class="drug-name">${name}</div>
-                    </div>
-                    <div class="price-row best">
-                        <span class="vendor">GoodRx Network</span>
-                        <span class="price">$${data.px.toFixed(2)}</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="vendor">SingleCare</span>
-                        <span class="price">$${data.px.toFixed(2)}</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="vendor">Cost Plus</span>
-                        <span class="price">$${data.px.toFixed(2)}</span>
+                <div class="data-card">
+                    <div class="drug-name">${name}</div>
+                    <div class="drug-meta">${d.cat} | 30-Day Supply</div>
+                    <div class="price-grid">
+                        <div class="price-row"><span>GoodRx Network</span><span class="p-val">$${d.GoodRx.toFixed(2)}</span></div>
+                        <div class="price-row"><span>SingleCare</span><span class="p-val">$${d.SingleCare.toFixed(2)}</span></div>
+                        <div class="price-row"><span>Cost Plus</span><span class="p-val">$${d.CostPlus.toFixed(2)}</span></div>
                     </div>
                 </div>`;
         }
 
         function init() {
             let html = '';
-            for (let [name, data] of Object.entries(db)) {
-                if (data.tr) html += renderCard(name, data);
+            for (let [name, data] of Object.entries(medData)) {
+                html += renderCard(name, data);
             }
-            document.getElementById('index-container').innerHTML = html;
+            document.getElementById('live-index').innerHTML = html;
         }
 
         function handleSearch() {
             const val = document.getElementById('searchInput').value.toLowerCase().trim();
-            const def = document.getElementById('default-state');
-            const search = document.getElementById('search-state');
-            const res = document.getElementById('results-container');
-
-            if (!val) {
-                def.classList.remove('hidden');
-                search.classList.add('hidden');
-                return;
-            }
-
-            def.classList.add('hidden');
-            search.classList.remove('hidden');
-
-            if (db[val]) {
-                res.innerHTML = renderCard(val, db[val]);
+            const container = document.getElementById('live-index');
+            if (!val) { init(); return; }
+            if (medData[val]) {
+                container.innerHTML = renderCard(val, medData[val]);
             } else {
-                res.innerHTML = '<div style="color: #666; text-align: center; padding: 40px 0; font-size: 0.9rem;">Awaiting database connection for this asset.</div>';
+                container.innerHTML = '<div style="text-align:center; padding:50px; color:#444;">Asset not found in current directory.</div>';
             }
-        }
-
-        function switchView(view, el) {
-            document.getElementById('view-market').classList.add('hidden');
-            document.getElementById('view-card').classList.add('hidden');
-            document.getElementById('view-' + view).classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        function copyCodes(btn) {
-            navigator.clipboard.writeText("BIN: 015995 | PCN: GDC | GROUP: SLK26");
-            btn.innerText = "Identifiers Copied";
-            setTimeout(() => btn.innerText = "Copy Digital Identifiers", 2000);
         }
 
         init();
