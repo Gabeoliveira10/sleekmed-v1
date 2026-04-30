@@ -1,74 +1,69 @@
 'use strict';
 
-/* DRUG DATA */
 const DRUGS = [
   {
     name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant',
     variants: [
-      { dosage: '250mg', qty: '90 tablets', hospital: 99.38, insurance: 30.00, sleekmed: 12.41 },
-      { dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, sleekmed: 6.18 },
-      { dosage: '750mg', qty: '60 tablets', hospital: 115.74, insurance: 35.00, sleekmed: 11.02 },
-      { dosage: '1000mg', qty: '60 tablets', hospital: 134.24, insurance: 40.00, sleekmed: 15.48 }
-    ]
-  },
-  {
-    name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular',
-    variants: [
-      { dosage: '2.5mg', qty: '30 tablets', hospital: 180, insurance: 25, sleekmed: 4.10 },
-      { dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, sleekmed: 5.80 },
-      { dosage: '5mg', qty: '90 tablets', hospital: 600, insurance: 90, sleekmed: 12.40 },
-      { dosage: '10mg', qty: '30 tablets', hospital: 250, insurance: 45, sleekmed: 6.20 }
+      { dosage: '250mg', qty: '90 tablets', hospital: 65.00, insurance: 30.00, costplus: 14.50, goodrx: 19.24, sleekmed: 12.00 },
+      { dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, costplus: 12.80, goodrx: 9.00, sleekmed: 8.50 },
+      { dosage: '750mg', qty: '60 tablets', hospital: 115.74, insurance: 35.00, costplus: 18.50, goodrx: 14.92, sleekmed: 13.00 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 134.24, insurance: 40.00, costplus: 22.00, goodrx: 23.86, sleekmed: 19.00 }
     ]
   },
   {
     name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular',
     variants: [
-      { dosage: '10mg', qty: '30 tablets', hospital: 190, insurance: 30, sleekmed: 5.20 },
-      { dosage: '20mg', qty: '30 tablets', hospital: 240, insurance: 38, sleekmed: 6.80 },
-      { dosage: '40mg', qty: '30 tablets', hospital: 312, insurance: 48, sleekmed: 8.40 },
-      { dosage: '80mg', qty: '90 tablets', hospital: 900, insurance: 110, sleekmed: 19.50 }
+      { dosage: '20mg', qty: '30 tablets', hospital: 68.70, insurance: 20.00, costplus: 5.46, goodrx: 9.50, sleekmed: 4.20 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 66.60, insurance: 20.00, costplus: 5.74, goodrx: 11.20, sleekmed: 4.80 },
+      { dosage: '80mg', qty: '30 tablets', hospital: 70.20, insurance: 20.00, costplus: 5.92, goodrx: 14.50, sleekmed: 5.10 }
+    ]
+  },
+  {
+    name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular',
+    variants: [
+      { dosage: '2.5mg', qty: '30 tablets', hospital: 180, insurance: 25, costplus: 6.00, goodrx: 8.00, sleekmed: 4.10 },
+      { dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, costplus: 8.00, goodrx: 10.00, sleekmed: 5.80 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 250, insurance: 45, costplus: 9.50, goodrx: 12.00, sleekmed: 6.20 }
     ]
   },
   {
     name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health',
     variants: [
-      { dosage: '5mg', qty: '30 tablets', hospital: 150, insurance: 25, sleekmed: 4.80 },
-      { dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, sleekmed: 6.20 },
-      { dosage: '20mg', qty: '30 tablets', hospital: 290, insurance: 50, sleekmed: 8.10 },
-      { dosage: '20mg', qty: '90 tablets', hospital: 800, insurance: 100, sleekmed: 18.40 }
+      { dosage: '5mg', qty: '30 tablets', hospital: 150, insurance: 25, costplus: 7.00, goodrx: 9.00, sleekmed: 4.80 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, costplus: 8.50, goodrx: 11.00, sleekmed: 6.20 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 290, insurance: 50, costplus: 11.00, goodrx: 15.00, sleekmed: 8.10 }
     ]
   },
   {
     name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine',
     variants: [
-      { dosage: '0.25mg', qty: '1 pen', hospital: 1050, insurance: 250, sleekmed: 175.00 },
-      { dosage: '0.5mg', qty: '1 pen', hospital: 1142, insurance: 280, sleekmed: 189.00 },
-      { dosage: '1mg', qty: '1 pen', hospital: 1200, insurance: 300, sleekmed: 195.00 },
-      { dosage: '2mg', qty: '1 pen', hospital: 1350, insurance: 350, sleekmed: 215.00 }
+      { dosage: '0.25mg', qty: '1 pen', hospital: 1200.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
+      { dosage: '0.5mg', qty: '1 pen', hospital: 1232.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
+      { dosage: '1mg', qty: '1 pen', hospital: 1350.00, insurance: 300.00, costplus: 995.00, goodrx: 349.00, sleekmed: 320.00 },
+      { dosage: '2mg', qty: '1 pen', hospital: 1475.12, insurance: 300.00, costplus: 995.00, goodrx: 499.00, sleekmed: 450.00 }
     ]
   },
   {
     name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic',
     variants: [
-      { dosage: '250mg', qty: '30 capsules', hospital: 110, insurance: 15, sleekmed: 3.20 },
-      { dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, sleekmed: 4.00 },
-      { dosage: '875mg', qty: '20 tablets', hospital: 160, insurance: 28, sleekmed: 4.50 }
+      { dosage: '250mg', qty: '30 capsules', hospital: 110, insurance: 15, costplus: 5.00, goodrx: 6.00, sleekmed: 3.20 },
+      { dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, costplus: 6.50, goodrx: 8.00, sleekmed: 4.00 },
+      { dosage: '875mg', qty: '20 tablets', hospital: 160, insurance: 28, costplus: 7.00, goodrx: 9.00, sleekmed: 4.50 }
     ]
   },
   {
     name: 'Metformin', generic: 'Generic Glucophage', category: 'Metabolic',
     variants: [
-      { dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, sleekmed: 4.60 },
-      { dosage: '850mg', qty: '60 tablets', hospital: 210, insurance: 38, sleekmed: 5.40 },
-      { dosage: '1000mg', qty: '60 tablets', hospital: 240, insurance: 45, sleekmed: 6.80 },
-      { dosage: '1000mg ER', qty: '60 tablets', hospital: 300, insurance: 55, sleekmed: 9.20 }
+      { dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, costplus: 6.00, goodrx: 8.00, sleekmed: 4.60 },
+      { dosage: '850mg', qty: '60 tablets', hospital: 210, insurance: 38, costplus: 7.50, goodrx: 10.00, sleekmed: 5.40 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 240, insurance: 45, costplus: 9.00, goodrx: 12.00, sleekmed: 6.80 },
+      { dosage: '1000mg ER', qty: '60 tablets', hospital: 300, insurance: 55, costplus: 12.00, goodrx: 15.00, sleekmed: 9.20 }
     ]
   }
 ];
 
 let currentDrugInfo = null;
 
-/* UTILS */
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 const fmt = n => n < 10 ? '$' + n.toFixed(2) : '$' + Math.round(n).toLocaleString();
@@ -83,7 +78,6 @@ function showToast(msg) {
   setTimeout(() => el.remove(), 3000);
 }
 
-/* DATABASE & STATE */
 let db = JSON.parse(localStorage.getItem('sleekmed_db')) || {};
 
 let state = {
@@ -100,7 +94,6 @@ function saveDatabase() {
   }
 }
 
-/* BOOT AND RENDER */
 function bootApp() {
   updateUIForAuth();
   renderPopularGrid(); 
@@ -114,10 +107,9 @@ function updateUIForAuth() {
     $('topbar-profile-text').textContent = 'Profile';
     navContainer.classList.remove('hidden');
     
-    // Inject Bottom Nav for Logged In User
     navContainer.innerHTML = `
       <button class="bnav-item active" data-tab="search" onclick="switchTab('search', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21 4.35 4.35"/></svg>
         <span>Prices</span>
       </button>
       <button class="bnav-item" data-tab="access" onclick="switchTab('access', 'fade')">
@@ -125,12 +117,12 @@ function updateUIForAuth() {
         <span>Card</span>
       </button>
       <button class="bnav-item" data-tab="profile" onclick="switchTab('profile', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0 4 3.6 7 8 7s8 3 8 7"/></svg>
         <span>Dashboard</span>
       </button>
       ${state.isAdmin ? `
       <button class="bnav-item" data-tab="partner" onclick="switchTab('partner', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v 2a4 4 0 0 0 4 4H5a4 4 0 0 0 4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v 2a4 4 0 0 0 3 3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span>Partner</span>
       </button>
       ` : ''}
@@ -140,7 +132,6 @@ function updateUIForAuth() {
     renderMedicineCabinet();
   } else {
     $('topbar-profile-text').textContent = 'Sign In';
-    // Hide bottom nav completely when logged out
     navContainer.innerHTML = '';
     navContainer.classList.add('hidden');
   }
@@ -164,7 +155,6 @@ function injectUserData() {
   $('pref-digest').checked = prefs ? prefs.digest : false;
 }
 
-/* MEDICINE CABINET */
 function renderMedicineCabinet() {
   const container = $('medicine-cabinet-list');
   if (!state.user.cabinet || state.user.cabinet.length === 0) {
@@ -216,7 +206,6 @@ function removeFromCabinet(index) {
   showToast(`Prescription removed.`);
 }
 
-/* SEARCH AND LIST VIEW */
 function renderPopularGrid() {
   const grid = $('drug-grid');
   grid.innerHTML = '';
@@ -263,7 +252,7 @@ function filterDrugs() {
           <div class="search-item-name">${d.name}</div>
           <div class="search-item-gen">${d.generic}</div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6 6 6 6"/></svg>
       `;
       li.addEventListener('click', () => {
         list.classList.add('hidden');
@@ -276,7 +265,6 @@ function filterDrugs() {
   list.classList.remove('hidden');
 }
 
-/* DRUG DETAIL PAGE DYNAMICS */
 function showDrugPage(drug) {
   currentDrugInfo = drug;
   const uniqueDosages = [...new Set(drug.variants.map(v => v.dosage))];
@@ -339,12 +327,9 @@ function updatePriceBoard() {
   const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
   if (!v) return;
 
-  const goodRx = v.sleekmed * 1.4;
-  const costPlus = v.sleekmed * 1.25;
-  
   const insName = (state.loggedIn && state.user.insurance) 
-    ? `${state.user.insurance} Co-Pay (Avg)` 
-    : 'Insurance Co-Pay (Avg)';
+    ? `${state.user.insurance} Co Pay (Avg)` 
+    : 'Insurance Co Pay (Avg)';
 
   $('price-board').innerHTML = `
     <div class="price-row best-price">
@@ -353,11 +338,11 @@ function updatePriceBoard() {
     </div>
     <div class="price-row">
       <span class="price-source">Cost Plus Drugs</span>
-      <span class="price-value">${fmt(costPlus)}</span>
+      <span class="price-value">${fmt(v.costplus)}</span>
     </div>
     <div class="price-row">
       <span class="price-source">GoodRx (Avg)</span>
-      <span class="price-value">${fmt(goodRx)}</span>
+      <span class="price-value">${fmt(v.goodrx)}</span>
     </div>
     <div class="price-row">
       <span class="price-source">${insName}</span>
@@ -370,7 +355,6 @@ function updatePriceBoard() {
   `;
 }
 
-/* AUTHENTICATION & MODALS */
 function openAuth() {
   $('auth-overlay').classList.remove('hidden');
   $('auth-panel').classList.remove('hidden');
@@ -383,7 +367,6 @@ function closeAuth() {
 
 function openDeleteModal() {
   $('delete-modal-overlay').classList.remove('hidden');
-  // slight delay for animation
   setTimeout(() => $('delete-modal-overlay').classList.add('modal-show'), 10);
 }
 
@@ -412,19 +395,17 @@ function handleLogin() {
     return; 
   }
 
-  // Admin Check
   if (email === 'admin@sleekmed.com' && code === 'ADMIN888') {
     state.isAdmin = true;
   } else {
     state.isAdmin = false;
   }
 
-  // Database creation/retrieval
   if (!db[email]) {
     db[email] = {
       name: name || 'Member',
       email: email,
-      memberId: 'SM-' + Math.floor(100000 + Math.random() * 900000),
+      memberId: 'SM ' + Math.floor(100000 + Math.random() * 900000),
       dob: '',
       insurance: '',
       cabinet: [],
@@ -468,33 +449,28 @@ function confirmDeleteAccount() {
   }
 }
 
-/* NAVIGATION WITH ANIMATION */
 function switchTab(tab, direction = 'fade') {
   state.activeTab = tab;
   
-  // Clean classes
   $$('.tab-panel').forEach(p => {
     p.classList.remove('active', 'slide-fwd', 'slide-bwd', 'bounce-in');
   });
   
   const panel = $('tab-' + tab);
   if (panel) {
-    void panel.offsetWidth; // Trigger reflow for animation
+    void panel.offsetWidth; 
     panel.classList.add('active');
     
-    // Apply Directional Animation
     if (direction === 'forward') panel.classList.add('slide-fwd');
     else if (direction === 'backward') panel.classList.add('slide-bwd');
     else if (direction === 'bounce') panel.classList.add('bounce-in');
   }
 
-  // Update navs
   $$('.bnav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tab);
   });
 }
 
-/* EVENT LISTENERS */
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
 
@@ -530,6 +506,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('save-profile-btn').addEventListener('click', () => {
     if (state.user) {
+      const newEmail = $('pf-email').value.trim();
+      const oldEmail = state.user.email;
+
+      if (!newEmail || !newEmail.includes('@')) {
+         highlightField('pf-email');
+         showToast('Please enter a valid email.');
+         return;
+      }
+
       state.user.name = $('pf-name').value;
       state.user.dob = $('pf-dob').value;
       state.user.insurance = $('pf-insurance').value;
@@ -537,7 +522,16 @@ document.addEventListener('DOMContentLoaded', () => {
         alerts: $('pref-alerts').checked,
         digest: $('pref-digest').checked
       };
-      saveDatabase();
+
+      if (newEmail !== oldEmail) {
+         state.user.email = newEmail;
+         db[newEmail] = state.user;
+         delete db[oldEmail];
+         localStorage.setItem('sleekmed_db', JSON.stringify(db));
+      } else {
+         saveDatabase();
+      }
+
       injectUserData();
       showToast('Profile and Preferences updated.');
     }
