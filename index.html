@@ -4,63 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="SleekMed" />
-  <meta name="theme-color" content="#0a0f1a" />
-  <title>SleekMed — Healthcare Price Intelligence</title>
+  <meta name="theme-color" content="#ffffff" />
+  <title>SleekMed Medication Savings</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════ LOGIN GATE ═══ -->
-<div id="login-gate" class="gate-overlay">
-  <div class="gate-panel">
-    <div class="gate-logo">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-        <rect width="36" height="36" rx="8" fill="#10b981"/>
-        <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#0a0f1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="gate-brand">SleekMed</span>
-    </div>
-    <div class="gate-tagline">Healthcare Price Intelligence Platform</div>
-    <div class="gate-divider"></div>
-    <div class="gate-subtitle">MEMBER ACCESS PORTAL</div>
-
-    <div class="field-group">
-      <label class="field-label">FULL NAME</label>
-      <input id="login-name" type="text" class="gate-input" placeholder="Dr. Jane Smith" autocomplete="name" />
-    </div>
-    <div class="field-group">
-      <label class="field-label">PROFESSIONAL EMAIL</label>
-      <input id="login-email" type="email" class="gate-input" placeholder="jane.smith@hospital.org" autocomplete="email" />
-    </div>
-    <div class="field-group">
-      <label class="field-label">ACCESS CODE</label>
-      <input id="login-code" type="password" class="gate-input" placeholder="••••••••" />
-    </div>
-
-    <button id="login-btn" class="gate-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v18h-6M10 17l5-5-5-5M15 12H3"/></svg>
-      AUTHENTICATE & ENTER
-    </button>
-
-    <div class="gate-legal">
-      NOT INSURANCE · NOT A PRESCRIPTION DRUG PLAN · USE IS SUBJECT TO ELIGIBILITY
-    </div>
-    <div class="gate-note">Any access code accepted for demo purposes</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════ SIDEBAR ═══ -->
 <div id="sidebar-overlay" class="sidebar-overlay"></div>
 <nav id="sidebar" class="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-logo">
       <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
         <rect width="36" height="36" rx="8" fill="#10b981"/>
-        <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#0a0f1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       SleekMed
     </div>
@@ -69,8 +29,8 @@
     </button>
   </div>
 
-  <div class="sidebar-member">
-    <div class="sidebar-avatar" id="sidebar-avatar">JS</div>
+  <div class="sidebar-member" id="sidebar-member-section" style="display: none;">
+    <div class="sidebar-avatar" id="sidebar-avatar">--</div>
     <div>
       <div class="sidebar-member-name" id="sidebar-member-name">Member</div>
       <div class="sidebar-member-email" id="sidebar-member-email">—</div>
@@ -81,28 +41,29 @@
   <ul class="sidebar-nav">
     <li><button class="sidebar-link active" data-tab="search">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Price Engine
+      Savings Finder
     </button></li>
-    <li><button class="sidebar-link" data-tab="access">
+    <li class="auth-required" style="display: none;"><button class="sidebar-link" data-tab="access">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
       Access Card
     </button></li>
-    <li><button class="sidebar-link" data-tab="profile">
+    <li class="auth-required" style="display: none;"><button class="sidebar-link" data-tab="profile">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Member Profile
     </button></li>
-    <li><button class="sidebar-link" data-tab="partner">
+    
+    <li class="admin-only" style="display: none;"><button class="sidebar-link" data-tab="partner">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Partner Portal
     </button></li>
-    <li><button class="sidebar-link" data-tab="analytics">
+    <li class="admin-only" style="display: none;"><button class="sidebar-link" data-tab="analytics">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
       Analytics
     </button></li>
   </ul>
 
-  <div class="sidebar-section-label">SYSTEM</div>
-  <ul class="sidebar-nav">
+  <div class="sidebar-section-label auth-required" style="display: none;">SYSTEM</div>
+  <ul class="sidebar-nav auth-required" style="display: none;">
     <li><button class="sidebar-link" id="logout-btn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Sign Out
@@ -117,87 +78,95 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════ APP SHELL ═══ -->
-<div id="app" class="app hidden">
+<div id="auth-overlay" class="gate-overlay hidden"></div>
+<div id="auth-panel" class="auth-slide-panel">
+  <button id="close-auth" class="close-modal-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="gate-logo" style="margin-top: 20px;">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <rect width="36" height="36" rx="8" fill="#10b981"/>
+      <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="gate-brand">SleekMed</span>
+  </div>
+  <div class="gate-tagline" style="margin-bottom: 30px;">Create an account to save your prescriptions and unlock your digital access card.</div>
+  
+  <div class="field-group">
+    <label class="field-label">FULL NAME</label>
+    <input id="login-name" type="text" class="gate-input" placeholder="Jane Smith" />
+  </div>
+  <div class="field-group">
+    <label class="field-label">EMAIL ADDRESS</label>
+    <input id="login-email" type="email" class="gate-input" placeholder="jane@example.com" />
+  </div>
+  <div class="field-group">
+    <label class="field-label">ACCESS CODE (OR PIN)</label>
+    <input id="login-code" type="password" class="gate-input" placeholder="Check your email" />
+  </div>
 
-  <!-- TOP BAR -->
+  <button id="login-btn" class="gate-btn">
+    SECURE ACCESS
+  </button>
+</div>
+
+<div id="modal-overlay" class="gate-overlay hidden"></div>
+<div id="drug-modal" class="drug-modal hidden">
+  <button id="close-modal" class="close-modal-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div id="modal-content">
+    </div>
+</div>
+
+<div id="app" class="app">
+
   <header class="topbar">
     <button id="menu-btn" class="topbar-menu" aria-label="Open menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
     <div class="topbar-brand">
-      <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+      <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
         <rect width="36" height="36" rx="8" fill="#10b981"/>
-        <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#0a0f1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       SleekMed
     </div>
-    <div class="topbar-status">
-      <span class="live-dot"></span>
-      <span class="live-label">LIVE</span>
-    </div>
+    
+    <button id="topbar-profile-btn" class="topbar-profile">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span id="topbar-profile-text">Sign In</span>
+    </button>
   </header>
 
-  <!-- VERIFY BAR -->
   <div class="verify-bar">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    Proprietary Network · Verified at 75,000+ Providers · Updated Daily
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Proprietary Network · Verified at 75,000+ Providers
     <span class="verify-sep">|</span>
     <span class="not-ins">NOT INSURANCE</span>
   </div>
 
-  <!-- TAB BODY -->
   <main class="tab-body">
 
-    <!-- ─── TAB: PRICE ENGINE ─── -->
     <section id="tab-search" class="tab-panel active">
       <div class="panel-header">
         <div>
-          <div class="panel-title">Price Arbitrage Engine</div>
-          <div class="panel-sub">Real-time spread analysis · 30 high-utilization drugs</div>
-        </div>
-        <div class="panel-stats">
-          <div class="stat-chip">
-            <div class="stat-val">$847</div>
-            <div class="stat-key">AVG SAVINGS</div>
-          </div>
-          <div class="stat-chip">
-            <div class="stat-val">91%</div>
-            <div class="stat-key">AVG DISCOUNT</div>
-          </div>
+          <div class="panel-title">Medication Savings Finder</div>
+          <div class="panel-sub">Compare prices and find the lowest cost for your prescriptions</div>
         </div>
       </div>
 
       <div class="search-row">
         <div class="search-wrap">
-          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="drug-search" type="text" class="search-input" placeholder="Search medications…" />
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="drug-search" type="text" class="search-input" placeholder="Search medications (e.g. Lipitor, Amoxicillin)…" />
         </div>
-        <select id="filter-cat" class="filter-select">
-          <option value="">All Categories</option>
-          <option value="Cardiovascular">Cardiovascular</option>
-          <option value="Metabolic">Metabolic</option>
-          <option value="Mental Health">Mental Health</option>
-          <option value="Pain & Inflammation">Pain & Inflammation</option>
-          <option value="Respiratory">Respiratory</option>
-          <option value="Gastrointestinal">Gastrointestinal</option>
-          <option value="Endocrine">Endocrine</option>
-          <option value="Antibiotic">Antibiotic</option>
-          <option value="Anticoagulant">Anticoagulant</option>
-          <option value="Dermatology">Dermatology</option>
-        </select>
       </div>
 
-      <div class="matrix-legend">
-        <div class="legend-item"><span class="legend-dot hospital"></span>Hospital Cash Pay</div>
-        <div class="legend-item"><span class="legend-dot insurance"></span>Ins. Co-Pay Avg</div>
-        <div class="legend-item"><span class="legend-dot sleekmed"></span>SleekMed Direct</div>
-      </div>
-
+      <div class="section-heading" id="grid-heading">Popular Medications</div>
       <div id="drug-grid" class="drug-grid"></div>
     </section>
 
-    <!-- ─── TAB: ACCESS CARD ─── -->
     <section id="tab-access" class="tab-panel">
       <div class="panel-header">
         <div>
@@ -213,11 +182,11 @@
             <div class="card-logo-row">
               <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
                 <rect width="36" height="36" rx="6" fill="#10b981"/>
-                <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#0a0f1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 18h4l3-8 4 16 3-10 3 5 3-3h4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="card-brand-text">SleekMed</span>
             </div>
-            <div class="card-type-badge">HEALTHCARE SAVINGS NETWORK</div>
+            <div class="card-type-badge">HEALTHCARE SAVINGS</div>
           </div>
 
           <div class="card-member-row">
@@ -246,7 +215,6 @@
 
           <div class="card-footer">
             <div class="card-not-ins">NOT INSURANCE · NOT A PRESCRIPTION DRUG PLAN</div>
-            <div class="card-network">Rx Network · GDC</div>
           </div>
         </div>
       </div>
@@ -266,21 +234,13 @@
             <div class="instruction-desc">Works at CVS, Walgreens, Walmart, Kroger, Costco, and 70,000+ independent pharmacies.</div>
           </div>
         </div>
-        <div class="instruction-item">
-          <div class="instruction-num">03</div>
-          <div>
-            <div class="instruction-title">No Enrollment Required</div>
-            <div class="instruction-desc">Use immediately. No waiting period. No claim forms. Savings applied at point of sale.</div>
-          </div>
-        </div>
       </div>
 
       <div class="legal-block">
-        <strong>IMPORTANT DISCLOSURE:</strong> SleekMed is NOT insurance and NOT a prescription drug plan. This program does not replace insurance. Discounts are only available at participating pharmacies. The discount is not insurance and cannot be used in combination with any federal or state government-funded benefit program, including Medicare or Medicaid. Pricing may vary.
+        <strong>IMPORTANT DISCLOSURE:</strong> SleekMed is NOT insurance and NOT a prescription drug plan. This program does not replace insurance. Discounts are only available at participating pharmacies. The discount is not insurance and cannot be used in combination with any federal or state government funded benefit program. Pricing may vary.
       </div>
     </section>
 
-    <!-- ─── TAB: PROFILE ─── -->
     <section id="tab-profile" class="tab-panel">
       <div class="panel-header">
         <div>
@@ -288,7 +248,6 @@
           <div class="panel-sub">Manage your healthcare identity and preferences</div>
         </div>
         <button class="btn-secondary" id="save-profile-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
           Save
         </button>
       </div>
@@ -298,7 +257,7 @@
         <div>
           <div class="profile-name-display" id="profile-name-display">Member Name</div>
           <div class="profile-status-badge">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="#10b981"><circle cx="12" cy="12" r="10"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#10b981"><circle cx="12" cy="12" r="10"/></svg>
             Active Member · SLEEK2026
           </div>
         </div>
@@ -312,24 +271,8 @@
             <input type="text" class="profile-input" id="pf-name" placeholder="Full name" />
           </div>
           <div class="profile-field">
-            <label class="field-label">PROFESSIONAL EMAIL</label>
+            <label class="field-label">EMAIL ADDRESS</label>
             <input type="email" class="profile-input" id="pf-email" placeholder="Email address" />
-          </div>
-          <div class="profile-field">
-            <label class="field-label">PHONE NUMBER</label>
-            <input type="tel" class="profile-input" id="pf-phone" placeholder="+1 (555) 000-0000" />
-          </div>
-          <div class="profile-field">
-            <label class="field-label">DATE OF BIRTH</label>
-            <input type="date" class="profile-input" id="pf-dob" />
-          </div>
-          <div class="profile-field">
-            <label class="field-label">SPECIALTY / ROLE</label>
-            <input type="text" class="profile-input" id="pf-specialty" placeholder="e.g. Internal Medicine, HR Director" />
-          </div>
-          <div class="profile-field">
-            <label class="field-label">ORGANIZATION</label>
-            <input type="text" class="profile-input" id="pf-org" placeholder="Hospital or company name" />
           </div>
         </div>
 
@@ -340,68 +283,29 @@
           <div class="cred-item"><span class="cred-label">GROUP</span><span class="cred-val">SLEEK2026</span></div>
           <div class="cred-item"><span class="cred-label">STATUS</span><span class="cred-val status-active">ACTIVE</span></div>
         </div>
-
-        <div class="profile-section-label">NOTIFICATION PREFERENCES</div>
-        <div class="toggle-list">
-          <div class="toggle-row">
-            <div>
-              <div class="toggle-title">Price Alerts</div>
-              <div class="toggle-desc">Notify when drug prices change significantly</div>
-            </div>
-            <label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-track"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div>
-              <div class="toggle-title">Network Updates</div>
-              <div class="toggle-desc">New provider additions and contract renewals</div>
-            </div>
-            <label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-track"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div>
-              <div class="toggle-title">Monthly Report</div>
-              <div class="toggle-desc">Aggregate savings summary via email</div>
-            </div>
-            <label class="toggle-switch"><input type="checkbox" /><span class="toggle-track"></span></label>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- ─── TAB: PARTNER PORTAL ─── -->
     <section id="tab-partner" class="tab-panel">
       <div class="panel-header">
         <div>
           <div class="panel-title">Partner Portal</div>
           <div class="panel-sub">B2B Network Management · Contract Intelligence</div>
         </div>
-        <div class="partner-tier-badge">ENTERPRISE TIER</div>
       </div>
 
       <div class="partner-kpi-row">
         <div class="kpi-card">
-          <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <div class="kpi-val">847,200</div>
           <div class="kpi-label">Active Members</div>
-          <div class="kpi-delta up">+12.4% MoM</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div>
           <div class="kpi-val">$42.1M</div>
           <div class="kpi-label">Total Savings Generated</div>
-          <div class="kpi-delta up">+8.7% MoM</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
           <div class="kpi-val">75,412</div>
           <div class="kpi-label">Active Locations</div>
-          <div class="kpi-delta up">+340 This Month</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-          <div class="kpi-val">91.2%</div>
-          <div class="kpi-label">Avg Discount Rate</div>
-          <div class="kpi-delta up">Best-in-Class</div>
         </div>
       </div>
 
@@ -413,108 +317,47 @@
               <th>PARTNER</th>
               <th>TYPE</th>
               <th>CONTRACT EXP.</th>
-              <th>LOCATIONS</th>
-              <th>CLAIM VOLUME</th>
               <th>STATUS</th>
-              <th>ACTION</th>
             </tr>
           </thead>
           <tbody id="contract-tbody">
-            <!-- injected by JS -->
-          </tbody>
+            </tbody>
         </table>
-      </div>
-
-      <div class="partner-section-label">INTEGRATION ENDPOINTS</div>
-      <div class="endpoint-grid">
-        <div class="endpoint-card">
-          <div class="endpoint-method get">GET</div>
-          <div class="endpoint-path">/api/v2/pricing/{ndc}</div>
-          <div class="endpoint-desc">Real-time price lookup by NDC code</div>
-          <div class="endpoint-status online">ONLINE</div>
-        </div>
-        <div class="endpoint-card">
-          <div class="endpoint-method post">POST</div>
-          <div class="endpoint-path">/api/v2/claims/submit</div>
-          <div class="endpoint-desc">Submit adjudication request</div>
-          <div class="endpoint-status online">ONLINE</div>
-        </div>
-        <div class="endpoint-card">
-          <div class="endpoint-method get">GET</div>
-          <div class="endpoint-path">/api/v2/members/{id}</div>
-          <div class="endpoint-desc">Member eligibility verification</div>
-          <div class="endpoint-status online">ONLINE</div>
-        </div>
-        <div class="endpoint-card">
-          <div class="endpoint-method get">GET</div>
-          <div class="endpoint-path">/api/v2/network/pharmacies</div>
-          <div class="endpoint-desc">Pharmacy network directory</div>
-          <div class="endpoint-status degraded">DEGRADED</div>
-        </div>
       </div>
     </section>
 
-    <!-- ─── TAB: ANALYTICS ─── -->
     <section id="tab-analytics" class="tab-panel">
       <div class="panel-header">
         <div>
           <div class="panel-title">Network Analytics</div>
-          <div class="panel-sub">Aggregate intelligence · Rolling 90-day window</div>
+          <div class="panel-sub">Aggregate intelligence</div>
         </div>
-        <div class="date-range-chip">Apr 2026</div>
       </div>
-
-      <div class="analytics-grid">
-        <div class="analytics-card full-width">
-          <div class="analytics-card-title">SAVINGS DISTRIBUTION BY CATEGORY</div>
-          <div class="bar-chart" id="savings-bar-chart">
-            <!-- injected by JS -->
+      <div class="analytics-card">
+        <div class="analytics-card-title">TOP SAVINGS MEDICATIONS</div>
+        <div class="top-drugs-list" id="top-drugs-list">
           </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="analytics-card-title">TOP SAVINGS MEDICATIONS</div>
-          <div class="top-drugs-list" id="top-drugs-list">
-            <!-- injected by JS -->
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="analytics-card-title">UTILIZATION HEATMAP</div>
-          <div class="heatmap-grid" id="heatmap-grid">
-            <!-- injected by JS -->
-          </div>
-        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="bnav-item active" data-tab="search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <span>Prices</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Search</span>
     </button>
-    <button class="bnav-item" data-tab="access">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    <button class="bnav-item auth-required" style="display: none;" data-tab="access">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
       <span>Card</span>
     </button>
-    <button class="bnav-item" data-tab="profile">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <button class="bnav-item auth-required" style="display: none;" data-tab="profile">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <span>Profile</span>
     </button>
-    <button class="bnav-item" data-tab="partner">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span>Partners</span>
-    </button>
-    <button class="bnav-item" data-tab="analytics">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
-      <span>Analytics</span>
-    </button>
-  </nav>
+    </nav>
 
-</div><!-- /app -->
+</div>
 
 <script src="script.js"></script>
 </body>
