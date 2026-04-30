@@ -73,14 +73,6 @@ const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 const fmt = n => n < 10 ? '$' + n.toFixed(2) : '$' + Math.round(n).toLocaleString();
 
-function initials(name) {
-  const cleanName = name.trim().replace(/\s+/g, ' ');
-  if (!cleanName) return 'SM';
-  const parts = cleanName.split(' ');
-  if (parts.length === 1) return parts.substring(0, 2).toUpperCase();
-  return (parts + parts[parts.length - 1]).toUpperCase();
-}
-
 function showToast(msg) {
   const existing = document.querySelector('.toast');
   if (existing) existing.remove();
@@ -129,14 +121,13 @@ function updateUIForAuth() {
 
 function injectUserData() {
   const { name, email, memberId } = state.user;
-  const ini = initials(name);
   
   $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
   $('card-member-email').textContent = email;
   $('card-member-id').textContent = memberId;
 
-  $('profile-avatar').textContent = ini;
-  $('profile-name-display').textContent = name || 'Member';
+  // No avatar logic needed anymore
+  $('profile-name-display').textContent = name || 'Member Name';
   $('pf-name').value = name;
   $('pf-email').value = email;
 }
@@ -144,14 +135,12 @@ function injectUserData() {
 /* PROFILE DYNAMICS */
 $('pf-name').addEventListener('input', function() {
   const val = this.value;
-  $('profile-avatar').textContent = initials(val);
-  $('profile-name-display').textContent = val || 'Member';
+  $('profile-name-display').textContent = val || 'Member Name';
 });
 
 $('clear-name-btn').addEventListener('click', function() {
   $('pf-name').value = '';
-  $('profile-avatar').textContent = 'SM';
-  $('profile-name-display').textContent = 'Member';
+  $('profile-name-display').textContent = 'Member Name';
   $('pf-name').focus();
 });
 
@@ -311,12 +300,28 @@ function closeAuth() {
   $('auth-panel').classList.add('hidden');
 }
 
+function highlightField(id) {
+  const el = $(id);
+  el.style.borderColor = 'var(--red)';
+  el.style.boxShadow   = '0 0 0 3px rgba(239,68,68,0.15)';
+  el.focus();
+  setTimeout(() => {
+    el.style.borderColor = '';
+    el.style.boxShadow   = '';
+  }, 2000);
+}
+
 function handleLogin() {
   const name = $('login-name').value.trim();
   const email = $('login-email').value.trim();
   const code = $('login-code').value.trim();
 
-  if (!email) { $('login-email').focus(); return; }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) { 
+    highlightField('login-email'); 
+    showToast('Please enter a valid email address.');
+    return; 
+  }
 
   if (email === 'admin@sleekmed.com' && code === 'ADMIN888') {
     state.isAdmin = true;
