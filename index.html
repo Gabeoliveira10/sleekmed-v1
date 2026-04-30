@@ -31,33 +31,17 @@
 
   <div class="sidebar-section-label">SERVICES</div>
   <ul class="sidebar-nav">
-    <li><button class="sidebar-link active" data-tab="search">
+    <li><button class="sidebar-link active" data-tab="search" onclick="switchTab('search', 'fade')">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       Savings Finder
     </button></li>
-    <li><button class="sidebar-link" data-tab="coming-soon">
+    <li><button class="sidebar-link" data-tab="faq" onclick="switchTab('faq', 'forward')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      How It Works (FAQ)
+    </button></li>
+    <li><button class="sidebar-link" onclick="switchTab('coming-soon', 'forward')">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Online Care <span style="background: var(--border); font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: auto; color: var(--text-primary);">New</span>
-    </button></li>
-    <li><button class="sidebar-link" data-tab="coming-soon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Health Info
-    </button></li>
-    <li><button class="sidebar-link" data-tab="coming-soon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Premium Membership
-    </button></li>
-  </ul>
-
-  <div class="sidebar-section-label">SUPPORT</div>
-  <ul class="sidebar-nav">
-    <li><button class="sidebar-link" data-tab="coming-soon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Help and FAQs
-    </button></li>
-    <li><button class="sidebar-link" data-tab="coming-soon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      support@sleekmed.com
     </button></li>
   </ul>
 </nav>
@@ -92,6 +76,18 @@
   <button id="login-btn" class="gate-btn">
     SECURE ACCESS
   </button>
+</div>
+
+<div id="delete-modal-overlay" class="gate-overlay hidden" style="z-index: 2000; align-items: center; justify-content: center; display: flex;">
+  <div id="delete-modal-panel" class="delete-modal-panel">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" style="margin-bottom: 16px;"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5v6m4-6v6"/></svg>
+    <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Delete Account?</div>
+    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">This action is permanent and will wipe your saved prescriptions and rewards.</div>
+    <div style="display: flex; gap: 12px; width: 100%;">
+      <button class="btn-secondary" style="flex: 1; justify-content: center;" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn-secondary" style="flex: 1; justify-content: center; color: var(--red); border-color: rgba(255, 51, 102, 0.3);" onclick="confirmDeleteAccount()">Delete</button>
+    </div>
+  </div>
 </div>
 
 <div id="app" class="app">
@@ -135,7 +131,6 @@
         <div class="search-wrap">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           <input id="drug-search" type="text" class="search-input" placeholder="Search medications (e.g. Keppra, Lipitor)" autocomplete="off" />
-          
           <ul id="search-results-list" class="search-dropdown hidden"></ul>
         </div>
       </div>
@@ -146,13 +141,41 @@
 
     <section id="tab-drug-detail" class="tab-panel">
       <div class="panel-header">
-        <button id="back-to-search" class="btn-secondary" style="margin-bottom: 12px; display: inline-flex; align-items: center; gap: 8px;">
+        <button id="back-to-search" class="btn-secondary" style="margin-bottom: 12px;" onclick="switchTab('search', 'backward')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to Search
+          Back
         </button>
       </div>
       <div id="drug-detail-content" style="max-width: 600px;">
         </div>
+    </section>
+
+    <section id="tab-faq" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">How SleekMed Works</div>
+          <div class="panel-sub">Everything you need to know about saving on your prescriptions.</div>
+        </div>
+      </div>
+      
+      <div class="faq-container">
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+          <div class="faq-question">What is SleekMed and is it free? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="faq-answer">SleekMed is a healthcare price intelligence platform. We negotiate directly with pharmacies to get you prices that are often lower than your insurance co-pay. Yes, the basic access card is 100% free to use.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+          <div class="faq-question">How do I use the Access Card at the pharmacy? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="faq-answer">Simply log in, tap on the "Card" tab, and show your digital screen to the pharmacist when dropping off or picking up your prescription. They will enter the BIN, PCN, and GROUP codes to apply your discount immediately.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+          <div class="faq-question">Where is SleekMed accepted? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="faq-answer">Our proprietary network is accepted at over 75,000 pharmacies nationwide, including major chains like CVS, Walgreens, Walmart, Kroger, and Costco, as well as thousands of independent local pharmacies.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+          <div class="faq-question">Can I use this with my insurance? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="faq-answer">SleekMed is not insurance. You cannot combine it with your insurance or government programs like Medicare/Medicaid. However, you can ask the pharmacist to run both and simply choose to pay whichever price is lower!</div>
+        </div>
+      </div>
     </section>
 
     <section id="tab-access" class="tab-panel">
@@ -205,22 +228,27 @@
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card-instructions">
-        <div class="instruction-item">
-          <div class="instruction-num">01</div>
-          <div>
-            <div class="instruction-title">Present at Pharmacy Counter</div>
-            <div class="instruction-desc">Show this card or provide BIN PCN GROUP numbers verbally to the pharmacist.</div>
-          </div>
+    <section id="tab-rewards" class="tab-panel">
+      <div class="panel-header">
+        <button class="btn-secondary" style="margin-bottom: 12px;" onclick="switchTab('profile', 'backward')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Dashboard
+        </button>
+        <div>
+          <div class="panel-title">Rewards Hub</div>
+          <div class="panel-sub">Earn points every time you use your SleekMed card.</div>
         </div>
-        <div class="instruction-item">
-          <div class="instruction-num">02</div>
-          <div>
-            <div class="instruction-title">Accepted Nationwide</div>
-            <div class="instruction-desc">Works at CVS Walgreens Walmart Kroger Costco and independent pharmacies.</div>
-          </div>
+      </div>
+      
+      <div style="background: rgba(255,204,0,0.05); border: 1px solid var(--amber); border-radius: var(--radius-lg); padding: 32px; text-align: center; margin-top: 24px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(255,204,0,0.1); display: flex; align-items: center; justify-content: center; border: 2px solid var(--amber); margin: 0 auto 16px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         </div>
+        <div style="font-size: 14px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Current Balance</div>
+        <div style="font-size: 48px; font-weight: 700; color: var(--amber); line-height: 1; margin: 8px 0;">0 pts</div>
+        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 16px; max-width: 300px; margin: 16px auto 0;">Use your digital card at the pharmacy to start earning automatically.</div>
       </div>
     </section>
 
@@ -230,7 +258,7 @@
           <div class="panel-title">My Dashboard</div>
           <div class="panel-sub">Manage your prescriptions, rewards, and plan details.</div>
         </div>
-        <button class="btn-secondary" id="save-profile-btn">Save Changes</button>
+        <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);">Save</button>
       </div>
 
       <div style="margin-bottom: 32px;">
@@ -241,7 +269,7 @@
         </div>
       </div>
 
-      <div class="dashboard-card" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="switchTab('coming-soon')">
+      <div class="dashboard-card" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: border-color 0.2s;" onclick="switchTab('rewards', 'forward')" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='var(--border)'">
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,204,0,0.1); display: flex; align-items: center; justify-content: center; border: 2px solid var(--amber);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -257,35 +285,13 @@
       <div class="dashboard-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
           <div style="font-size: 20px; font-weight: 700; letter-spacing: 1px;">Medicine Cabinet</div>
-          <button style="color: var(--blue); font-weight: 700; display: flex; align-items: center; gap: 4px; background: none; border: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;" onclick="switchTab('search')">
+          <button style="color: var(--blue); font-weight: 700; display: flex; align-items: center; gap: 4px; background: none; border: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="switchTab('search', 'backward')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Add
           </button>
         </div>
-        <div style="text-align: center; padding: 24px 0;">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--border-light)" stroke-width="1.5" style="margin-bottom: 12px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px; letter-spacing: 0.5px;">Stay on top of your prescriptions</div>
-          <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills, get reminders, and access exclusive member savings.</div>
-          <button class="btn-secondary" style="margin: 0 auto; width: 100%; justify-content: center; color: var(--blue); border-color: var(--border);" onclick="switchTab('search')">Add prescription</button>
-        </div>
-      </div>
-
-      <div class="dashboard-card">
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px; letter-spacing: 1px;">Plan Information</div>
-        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Manage your plan type and members.</div>
-        
-        <div style="background: var(--emerald-glow); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; border: 1px solid var(--emerald-dim);">
-          <div style="font-size: 18px; font-weight: 700; color: var(--emerald); margin-bottom: 4px;">Save 90% on your prescriptions</div>
-          <div style="font-size: 14px; color: var(--text-primary);">Get a free month of SleekMed Premium.</div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-weight: 700; font-size: 16px; letter-spacing: 1px;">Free Plan</div>
-            <div style="font-size: 14px; color: var(--text-muted);">$0.00/month</div>
-          </div>
-          <button style="color: var(--blue); font-weight: 700; background: none; border: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;" onclick="switchTab('coming-soon')">Upgrade</button>
-        </div>
+        <div id="medicine-cabinet-list">
+           </div>
       </div>
 
       <div class="profile-form" style="margin-top: 32px;">
@@ -293,30 +299,45 @@
         <div class="profile-grid">
           <div class="profile-field">
             <label class="field-label">FULL NAME</label>
-            <div style="position: relative;">
-              <input type="text" class="profile-input" id="pf-name" placeholder="Full name" style="width: 100%; padding-right: 40px;" />
-              <button id="clear-name-btn" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-weight: bold; font-size: 14px;">X</button>
-            </div>
+            <input type="text" class="profile-input" id="pf-name" placeholder="Full name" />
           </div>
           <div class="profile-field">
             <label class="field-label">EMAIL ADDRESS</label>
-            <input type="email" class="profile-input" id="pf-email" placeholder="Email address" disabled style="opacity: 0.6; cursor: not-allowed;" />
+            <input type="email" class="profile-input" id="pf-email" disabled style="opacity: 0.5; cursor: not-allowed;" />
+          </div>
+          <div class="profile-field">
+            <label class="field-label">DATE OF BIRTH</label>
+            <input type="date" class="profile-input" id="pf-dob" style="color: var(--text-primary); color-scheme: dark;"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">INSURANCE PROVIDER (OPTIONAL)</label>
+            <input type="text" class="profile-input" id="pf-insurance" placeholder="e.g. United Healthcare" />
           </div>
         </div>
 
-        <div class="profile-section-label">NETWORK CREDENTIALS</div>
-        <div class="profile-cred-row">
-          <div class="cred-item"><span class="cred-label">BIN</span><span class="cred-val">015995</span></div>
-          <div class="cred-item"><span class="cred-label">PCN</span><span class="cred-val">GDC</span></div>
-          <div class="cred-item"><span class="cred-label">GROUP</span><span class="cred-val">SLKRX</span></div>
-          <div class="cred-item"><span class="cred-label">STATUS</span><span class="cred-val status-active" style="color:var(--emerald);font-size:14px;">ACTIVE</span></div>
+        <div class="profile-section-label">NOTIFICATION PREFERENCES</div>
+        <div class="toggle-list">
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-title">Price Alerts</div>
+              <div class="toggle-desc">Notify when saved drug prices change</div>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" id="pref-alerts" /><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-title">Monthly Digest</div>
+              <div class="toggle-desc">Receive a summary of potential savings</div>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" id="pref-digest" /><span class="toggle-track"></span></label>
+          </div>
         </div>
 
         <div style="display: flex; gap: 12px; margin-top: 32px;">
           <button class="btn-secondary" id="logout-btn" style="flex: 1; justify-content: center;">
             Sign Out
           </button>
-          <button class="btn-secondary" style="flex: 1; justify-content: center; color: var(--red); border-color: rgba(255, 51, 102, 0.3);" onclick="showToast('Account deletion requires email confirmation.')">
+          <button class="btn-secondary" style="flex: 1; justify-content: center; color: var(--red); border-color: rgba(255, 51, 102, 0.3);" onclick="openDeleteModal()">
             Delete Account
           </button>
         </div>
@@ -328,9 +349,9 @@
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="1.5" style="margin-bottom: 20px;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: 1px;">Feature in Development</div>
         <div style="font-size: 15px; color: var(--text-muted); max-width: 400px; line-height: 1.6;">
-          This module requires secure backend routing and is currently being developed for our v2.0 application release.
+          This module requires secure backend cloud routing and is currently being developed for our v2.0 application release.
         </div>
-        <button class="gate-btn" style="max-width: 200px; margin-top: 32px;" onclick="switchTab('search')">Back to Savings</button>
+        <button class="gate-btn" style="max-width: 200px; margin-top: 32px;" onclick="switchTab('search', 'backward')">Back to App</button>
       </div>
     </section>
 
@@ -391,28 +412,8 @@
 
   </main>
 
-  <nav class="bottom-nav">
-    <button class="bnav-item active" data-tab="search">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <span>Search</span>
-    </button>
-    <button class="bnav-item auth-required" style="display: none;" data-tab="access">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-      <span>Card</span>
-    </button>
-    <button class="bnav-item auth-required" style="display: none;" data-tab="profile">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      <span>Dashboard</span>
-    </button>
-    <button class="bnav-item admin-only" style="display: none;" data-tab="partner">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span>Partner</span>
-    </button>
-    <button class="bnav-item admin-only" style="display: none;" data-tab="analytics">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
-      <span>Analytics</span>
-    </button>
-  </nav>
+  <nav class="bottom-nav hidden" id="bottom-nav">
+    </nav>
 
 </div>
 
