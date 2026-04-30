@@ -242,4 +242,181 @@
         </div>
       </div>
       
-      <div style="background: rgba(255,204,0,0.05);
+      <div style="background: rgba(255,204,0,0.05); border: 1px solid var(--amber); border-radius: var(--radius-lg); padding: 32px; text-align: center; margin-top: 24px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(255,204,0,0.1); display: flex; align-items: center; justify-content: center; border: 2px solid var(--amber); margin: 0 auto 16px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </div>
+        <div style="font-size: 14px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Current Balance</div>
+        <div style="font-size: 48px; font-weight: 700; color: var(--amber); line-height: 1; margin: 8px 0;">0 pts</div>
+        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 16px; max-width: 300px; margin: 16px auto 0;">Use your digital card at the pharmacy to start earning automatically.</div>
+      </div>
+    </section>
+
+    <section id="tab-profile" class="tab-panel">
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+        <div>
+          <div class="panel-title">My Dashboard</div>
+          <div class="panel-sub">Manage your prescriptions and plan details.</div>
+        </div>
+        <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);">Save</button>
+      </div>
+
+      <div style="margin-bottom: 32px;">
+        <div class="profile-name-display" id="profile-name-display">Member Name</div>
+        <div class="profile-status-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--emerald)"><circle cx="12" cy="12" r="10"/></svg>
+          Active Member SLKRX
+        </div>
+      </div>
+
+      <div class="dashboard-card" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: border-color 0.2s;" onclick="switchTab('rewards', 'forward')" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,204,0,0.1); display: flex; align-items: center; justify-content: center; border: 2px solid var(--amber);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div>
+            <div style="font-size: 13px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Rewards Balance</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">0 points</div>
+          </div>
+        </div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M5 12h14M12 5l7 7 7 7"/></svg>
+      </div>
+
+      <div class="dashboard-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+          <div style="font-size: 20px; font-weight: 700; letter-spacing: 1px;">Medicine Cabinet</div>
+          <button style="color: var(--blue); font-weight: 700; display: flex; align-items: center; gap: 4px; background: none; border: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="switchTab('search', 'backward')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Add
+          </button>
+        </div>
+        <div id="medicine-cabinet-list">
+        </div>
+      </div>
+
+      <div class="profile-form" style="margin-top: 32px;">
+        <div class="profile-section-label">PERSONAL INFORMATION</div>
+        <div class="profile-grid">
+          <div class="profile-field">
+            <label class="field-label">FULL NAME</label>
+            <input type="text" class="profile-input" id="pf-name" placeholder="Full name" />
+          </div>
+          <div class="profile-field">
+            <label class="field-label">EMAIL ADDRESS</label>
+            <input type="email" class="profile-input" id="pf-email" placeholder="Update your email" />
+          </div>
+          <div class="profile-field">
+            <label class="field-label">DATE OF BIRTH</label>
+            <input type="date" class="profile-input" id="pf-dob" style="color: var(--text-primary); color-scheme: dark;"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">INSURANCE PROVIDER</label>
+            <input type="text" class="profile-input" id="pf-insurance" placeholder="e.g. United Healthcare" />
+          </div>
+        </div>
+
+        <div class="profile-section-label">NOTIFICATION PREFERENCES</div>
+        <div class="toggle-list">
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-title">Price Alerts</div>
+              <div class="toggle-desc">Notify when saved drug prices change</div>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" id="pref-alerts" /><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-title">Monthly Digest</div>
+              <div class="toggle-desc">Receive a summary of potential savings</div>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" id="pref-digest" /><span class="toggle-track"></span></label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 32px;">
+          <button class="btn-secondary" id="logout-btn" style="flex: 1; justify-content: center;">
+            Sign Out
+          </button>
+          <button class="btn-secondary" style="flex: 1; justify-content: center; color: var(--red); border-color: rgba(255, 51, 102, 0.3);" onclick="openDeleteModal()">
+            Delete Account
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-coming-soon" class="tab-panel">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; margin-top: 40px; background: var(--bg-elevated); border: 1px dashed var(--border-light); border-radius: var(--radius-lg);">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="1.5" style="margin-bottom: 20px;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83 2.83M16.24 7.76l2.83 2.83"/></svg>
+        <div style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: 1px;">Feature in Development</div>
+        <div style="font-size: 15px; color: var(--text-muted); max-width: 400px; line-height: 1.6;">
+          This module requires secure backend cloud routing and is currently being developed for our next release.
+        </div>
+        <button class="gate-btn" style="max-width: 200px; margin-top: 32px;" onclick="switchTab('search', 'backward')">Back to App</button>
+      </div>
+    </section>
+
+    <section id="tab-partner" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Partner Portal</div>
+          <div class="panel-sub">Network Management and Contract Intelligence</div>
+        </div>
+      </div>
+
+      <div class="partner-kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-val">847,200</div>
+          <div class="kpi-label">Active Members</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">$42.1M</div>
+          <div class="kpi-label">Total Savings Generated</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">75,412</div>
+          <div class="kpi-label">Active Locations</div>
+        </div>
+      </div>
+
+      <div class="partner-section-label" style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 1px;">CONTRACT STATUS MATRIX</div>
+      <div class="contract-table-wrap">
+        <table class="contract-table">
+          <thead>
+            <tr>
+              <th>PARTNER</th>
+              <th>TYPE</th>
+              <th>CONTRACT EXP.</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="contract-tbody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-analytics" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Network Analytics</div>
+          <div class="panel-sub">Aggregate network intelligence</div>
+        </div>
+      </div>
+      <div style="background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 1px;">TOP SAVINGS MEDICATIONS</div>
+        <div id="top-drugs-list">
+          <div style="color: var(--text-muted);">Analytics population requires data stream.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav hidden" id="bottom-nav">
+  </nav>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
