@@ -2,65 +2,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SleekMed | Consumer Pricing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SleekMed | Apex</title>
     <style>
-        body { background: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; overflow-x: hidden; }
-        .header { text-align: center; margin: 40px 0 30px; }
-        h1 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 1.8rem; margin: 0; color: #fff; }
-        .search-box { width: 100%; padding: 20px; font-size: 1.2rem; border-radius: 12px; background: #111; color: #fff; margin-bottom: 25px; box-sizing: border-box; border: 1px solid #0f0; outline: none; transition: 0.3s; }
-        .search-box:focus { box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
-        .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #0f0; margin: 25px 0 10px; }
-        .card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.5s ease; }
-        .card.best { border: 1px solid #0f0; background: rgba(0, 255, 0, 0.05); }
-        .info h3 { margin: 0; font-size: 1.1rem; }
-        .info span { font-size: 0.8rem; color: #888; }
-        .price { font-size: 1.5rem; font-weight: 700; color: #0f0; }
-        .btn { width: 100%; background: #fff; color: #000; padding: 18px; border-radius: 30px; font-weight: 700; text-transform: uppercase; border: none; margin-top: 20px; cursor: pointer; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        #results-container { min-height: 200px; }
+        :root {
+            --base: #000000;
+            --surface: #0a0a0a;
+            --elevated: #151515;
+            --gold: #D4AF37;
+            --gold-dim: rgba(212, 175, 55, 0.15);
+            --text-main: #FFFFFF;
+            --text-dim: #777777;
+            --border: #222222;
+        }
+        
+        body { background: var(--base); color: var(--text-main); font-family: "SF Pro Display", -apple-system, sans-serif; margin: 0; padding: 0; padding-bottom: 100px; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        .container { max-width: 500px; margin: 0 auto; padding: 20px 24px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 10px; }
+        .logo { font-weight: 300; letter-spacing: 6px; text-transform: uppercase; font-size: 1.1rem; color: var(--gold); }
+        .status { font-size: 0.65rem; padding: 4px 10px; border: 1px solid var(--gold-dim); border-radius: 20px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+
+        .search-box { width: 100%; padding: 22px; font-size: 1.1rem; background: var(--surface); color: var(--text-main); border: 1px solid var(--border); border-radius: 12px; outline: none; transition: 0.3s; margin-bottom: 30px; font-weight: 300; }
+        .search-box:focus { border-color: var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+
+        .section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 15px; }
+
+        .card { background: var(--elevated); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); animation: fadeUp 0.5s ease forwards; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .drug-name { font-size: 1.4rem; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .price-row { display: flex; justify-content: space-between; padding: 12px 0; }
+        .vendor { color: var(--text-dim); font-size: 1rem; font-weight: 300; }
+        .price { font-size: 1.1rem; font-weight: 400; }
+        .best .vendor, .best .price { color: var(--gold); }
+
+        .black-card { background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); border-radius: 20px; padding: 30px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,1); position: relative; margin-bottom: 30px; }
+        .chip { width: 45px; height: 32px; border: 1px solid var(--gold); border-radius: 6px; margin-bottom: 30px; opacity: 0.8; }
+        .card-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 4px; }
+        .card-val { font-family: monospace; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
+        
+        .barcode { width: 100%; height: 60px; background: repeating-linear-gradient(90deg, #fff 0, #fff 2px, transparent 2px, transparent 4px, #fff 4px, #fff 5px, transparent 5px, transparent 8px, #fff 8px, #fff 12px, transparent 12px, transparent 14px); opacity: 0.9; margin-top: 20px; }
+
+        .btn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.2s; }
+        .btn:active { transform: scale(0.98); }
+
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,5,0.9); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 20px 30px; justify-content: space-around; z-index: 100; }
+        .nav-item { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; transition: 0.3s; padding: 10px; }
+        .nav-item.active { color: var(--gold); }
+
+        .hidden { display: none !important; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="header"><h1>SleekMed</h1></div>
-    <input type="text" id="medSearch" class="search-box" placeholder="Search Medication (e.g. Lipitor)" onkeyup="searchMeds()">
-    
-    <div class="label">Top Savings Results</div>
-    <div id="results-container">
-        <div class="card"><div class="info"><h3>Ready</h3><span>Enter a medication to see 2026 pricing</span></div></div>
+    <div class="container">
+        <div class="header">
+            <div class="logo">SleekMed</div>
+            <div class="status">System Online</div>
+        </div>
+
+        <div id="view-market">
+            <input type="text" id="searchInput" class="search-box" placeholder="Query Medication Database..." oninput="handleSearch()">
+            
+            <div id="default-state">
+                <div class="section-title">Live Market Index</div>
+                <div id="index-container"></div>
+            </div>
+
+            <div id="search-state" class="hidden">
+                <div class="section-title">Query Results</div>
+                <div id="results-container"></div>
+            </div>
+        </div>
+
+        <div id="view-card" class="hidden">
+            <div class="section-title">Authorized Credentials</div>
+            
+            <div class="black-card">
+                <div class="chip"></div>
+                <div class="card-label">Member Identity</div>
+                <div class="card-val" style="font-family: inherit; font-size: 1.1rem;">GABRIEL OLIVEIRA</div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <div><div class="card-label">BIN</div><div class="card-val">015995</div></div>
+                    <div><div class="card-label">PCN</div><div class="card-val">GDC</div></div>
+                    <div><div class="card-label">GROUP</div><div class="card-val">SLK26</div></div>
+                </div>
+                
+                <div class="barcode"></div>
+                <div style="text-align: center; font-family: monospace; font-size: 0.7rem; color: #888; margin-top: 5px;">*SCAN FOR ROUTING*</div>
+            </div>
+            
+            <button class="btn" onclick="copyCodes(this)">Copy Digital Identifiers</button>
+        </div>
     </div>
 
-    <button class="btn">Upload Insurance Card</button>
+    <div class="nav">
+        <div class="nav-item active" onclick="switchView('market', this)">Market</div>
+        <div class="nav-item" onclick="switchView('card', this)">Access Card</div>
+    </div>
 
     <script>
-        const medData = {
-            "lipitor": { "GoodRx": 4.12, "BuzzRx": 5.25, "CostPlus": 8.20 },
-            "amoxicillin": { "GoodRx": 2.50, "BuzzRx": 3.10, "CostPlus": 6.00 },
-            "lisinopril": { "GoodRx": 3.75, "BuzzRx": 4.50, "CostPlus": 7.15 },
-            "metformin": { "GoodRx": 4.00, "BuzzRx": 4.80, "CostPlus": 9.00 },
-            "albuterol": { "GoodRx": 12.30, "BuzzRx": 15.00, "CostPlus": 18.50 },
-            "gabapentin": { "GoodRx": 6.20, "BuzzRx": 7.45, "CostPlus": 10.00 },
-            "levothyroxine": { "GoodRx": 5.10, "BuzzRx": 6.00, "CostPlus": 9.50 },
-            "losartan": { "GoodRx": 4.90, "BuzzRx": 5.80, "CostPlus": 8.90 },
-            "omeprazole": { "GoodRx": 7.15, "BuzzRx": 8.00, "CostPlus": 12.00 },
-            "atorvastatin": { "GoodRx": 4.12, "BuzzRx": 5.25, "CostPlus": 8.20 }
+        const db = {
+            "lipitor": { px: [4.12, 5.25, 8.20], tr: true },
+            "amoxicillin": { px: [2.50, 3.10, 6.00], tr: true },
+            "ozempic": { px: [924.00, 940.50, 960.00], tr: true },
+            "lisinopril": { px: [3.75, 4.50, 7.15], tr: false },
+            "metformin": { px: [4.00, 4.80, 9.00], tr: false }
         };
 
-        function searchMeds() {
-            const query = document.getElementById('medSearch').value.toLowerCase();
-            const container = document.getElementById('results-container');
-            
-            if (medData[query]) {
-                const data = medData[query];
-                container.innerHTML = `
-                    <div class="card best"><div class="info"><h3>GoodRx</h3><span>Lowest Local</span></div><div class="price">$${data.GoodRx.toFixed(2)}</div></div>
-                    <div class="card"><div class="info"><h3>BuzzRx</h3><span>Direct Savings</span></div><div class="price">$${data.BuzzRx.toFixed(2)}</div></div>
-                    <div class="card"><div class="info"><h3>Cost Plus</h3><span>Mark Cuban</span></div><div class="price">$${data.CostPlus.toFixed(2)}</div></div>
-                `;
-            } else if (query === "") {
-                container.innerHTML = `<div class="card"><div class="info"><h3>Ready</h3><span>Enter a medication to see 2026 pricing</span></div></div>`;
+        function renderCard(name, data) {
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="drug-name">${name}</div>
+                    </div>
+                    <div class="price-row best">
+                        <span class="vendor">GoodRx Network</span>
+                        <span class="price">$${data.px.toFixed(2)}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="vendor">SingleCare</span>
+                        <span class="price">$${data.px.toFixed(2)}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="vendor">Cost Plus</span>
+                        <span class="price">$${data.px.toFixed(2)}</span>
+                    </div>
+                </div>`;
+        }
+
+        function init() {
+            let html = '';
+            for (let [name, data] of Object.entries(db)) {
+                if (data.tr) html += renderCard(name, data);
+            }
+            document.getElementById('index-container').innerHTML = html;
+        }
+
+        function handleSearch() {
+            const val = document.getElementById('searchInput').value.toLowerCase().trim();
+            const def = document.getElementById('default-state');
+            const search = document.getElementById('search-state');
+            const res = document.getElementById('results-container');
+
+            if (!val) {
+                def.classList.remove('hidden');
+                search.classList.add('hidden');
+                return;
+            }
+
+            def.classList.add('hidden');
+            search.classList.remove('hidden');
+
+            if (db[val]) {
+                res.innerHTML = renderCard(val, db[val]);
+            } else {
+                res.innerHTML = '<div style="color: #666; text-align: center; padding: 40px 0; font-size: 0.9rem;">Awaiting database connection for this asset.</div>';
             }
         }
+
+        function switchView(view, el) {
+            document.getElementById('view-market').classList.add('hidden');
+            document.getElementById('view-card').classList.add('hidden');
+            document.getElementById('view-' + view).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function copyCodes(btn) {
+            navigator.clipboard.writeText("BIN: 015995 | PCN: GDC | GROUP: SLK26");
+            btn.innerText = "Identifiers Copied";
+            setTimeout(() => btn.innerText = "Copy Digital Identifiers", 2000);
+        }
+
+        init();
     </script>
 </body>
 </html>
