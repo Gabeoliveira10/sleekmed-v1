@@ -126,7 +126,6 @@ function injectUserData() {
   $('card-member-email').textContent = email;
   $('card-member-id').textContent = memberId;
 
-  // No avatar logic needed anymore
   $('profile-name-display').textContent = name || 'Member Name';
   $('pf-name').value = name;
   $('pf-email').value = email;
@@ -303,7 +302,7 @@ function closeAuth() {
 function highlightField(id) {
   const el = $(id);
   el.style.borderColor = 'var(--red)';
-  el.style.boxShadow   = '0 0 0 3px rgba(239,68,68,0.15)';
+  el.style.boxShadow   = '0 0 0 3px rgba(255,51,102,0.15)';
   el.focus();
   setTimeout(() => {
     el.style.borderColor = '';
@@ -316,6 +315,7 @@ function handleLogin() {
   const email = $('login-email').value.trim();
   const code = $('login-code').value.trim();
 
+  // Strict email regex added here
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) { 
     highlightField('login-email'); 
@@ -362,8 +362,8 @@ function handleLogout() {
 function renderContractTable() {
   const tbody = $('contract-tbody');
   tbody.innerHTML = `
-    <tr><td>CVS Health Network</td><td>Retail Chain</td><td>2027-03-31</td><td style="color:var(--emerald-dim);font-weight:700;">ACTIVE</td></tr>
-    <tr><td>Walgreens Rx Group</td><td>Retail Chain</td><td>2026-12-15</td><td style="color:var(--emerald-dim);font-weight:700;">ACTIVE</td></tr>
+    <tr><td>CVS Health Network</td><td>Retail Chain</td><td>2027-03-31</td><td style="color:var(--emerald-text);font-weight:700;">ACTIVE</td></tr>
+    <tr><td>Walgreens Rx Group</td><td>Retail Chain</td><td>2026-12-15</td><td style="color:var(--emerald-text);font-weight:700;">ACTIVE</td></tr>
     <tr><td>Costco Pharmacy</td><td>Warehouse</td><td>2027-06-30</td><td style="color:var(--amber);font-weight:700;">PENDING</td></tr>
   `;
 }
@@ -372,8 +372,13 @@ function renderContractTable() {
 function switchTab(tab) {
   state.activeTab = tab;
   $$('.tab-panel').forEach(p => p.classList.remove('active'));
+  
   const panel = $('tab-' + tab);
-  if (panel) panel.classList.add('active');
+  if (panel) {
+    // This trick forces the slide animation to restart on every click
+    void panel.offsetWidth; 
+    panel.classList.add('active');
+  }
 
   $$('.bnav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
 }
