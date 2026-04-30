@@ -22,7 +22,8 @@ const $$ = sel => document.querySelectorAll(sel);
 const fmt = n => n < 10 ? '$' + n.toFixed(2) : '$' + Math.round(n).toLocaleString();
 
 function initials(name) {
-  const parts = name.trim().split(' ');
+  const cleanName = name.trim().replace(/\s+/g, ' ');
+  const parts = cleanName.split(' ');
   if (parts.length === 1) return parts.slice(0, 2).toUpperCase();
   return (parts + parts[parts.length - 1]).toUpperCase();
 }
@@ -48,7 +49,7 @@ let state = {
 /* BOOT & RENDER */
 function bootApp() {
   updateUIForAuth();
-  renderDrugGrid(DRUGS.slice(0, 6)); // Show only top 6 initially
+  renderDrugGrid(DRUGS.slice(0, 6)); 
   renderContractTable();
   switchTab(state.activeTab || 'search');
 }
@@ -93,7 +94,7 @@ function injectUserData() {
   $('pf-email').value = email;
 }
 
-/* DRUG GRID & MODAL */
+/* DRUG GRID & DETAIL PAGE */
 function renderDrugGrid(drugs) {
   const grid = $('drug-grid');
   grid.innerHTML = '';
@@ -114,7 +115,7 @@ function renderDrugGrid(drugs) {
         <div class="drug-dosage">${d.dosage}</div>
       </div>
     `;
-    card.addEventListener('click', () => openDrugModal(d));
+    card.addEventListener('click', () => showDrugPage(d));
     grid.appendChild(card);
   });
 }
@@ -122,28 +123,22 @@ function renderDrugGrid(drugs) {
 function filterDrugs() {
   const q = $('drug-search').value.trim().toLowerCase();
   $('grid-heading').textContent = q ? 'Search Results' : 'Popular Medications';
-  
-  const filtered = DRUGS.filter(d => 
-    d.name.toLowerCase().includes(q) || d.generic.toLowerCase().includes(q)
-  );
-  
-  // If searching, show all matches. If empty, show top 6.
+  const filtered = DRUGS.filter(d => d.name.toLowerCase().includes(q) || d.generic.toLowerCase().includes(q));
   renderDrugGrid(q ? filtered : DRUGS.slice(0, 6));
 }
 
-function openDrugModal(d) {
-  // Generate comparison prices
+function showDrugPage(d) {
   const goodRx = d.sleekmed * 1.4;
   const costPlus = d.sleekmed * 1.25;
   
-  $('modal-content').innerHTML = `
-    <div class="modal-drug-title">${d.name}</div>
-    <div class="modal-drug-sub">${d.generic} · ${d.dosage}</div>
+  $('drug-detail-content').innerHTML = `
+    <div class="panel-title" style="margin-bottom: 4px;">${d.name}</div>
+    <div class="panel-sub" style="margin-bottom: 32px; font-size: 16px;">${d.generic} · ${d.dosage}</div>
     
-    <div style="font-weight: 600; margin-bottom: 12px; color: var(--text-secondary);">Estimated Prices</div>
+    <div style="font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">Estimated Prices</div>
     <div class="price-comparison-list">
       <div class="price-row best-price">
-        <span class="price-source">SleekMed Direct</span>
+        <span class="price-source">SleekMed Direct <span class="star-icon">★ Best Price</span></span>
         <span class="price-value">${fmt(d.sleekmed)}</span>
       </div>
       <div class="price-row">
@@ -155,24 +150,19 @@ function openDrugModal(d) {
         <span class="price-value">${fmt(goodRx)}</span>
       </div>
       <div class="price-row">
-        <span class="price-source">Insurance Co-Pay (Avg)</span>
+        <span class="price-source">Insurance Copay (Avg)</span>
         <span class="price-value">${fmt(d.insurance)}</span>
       </div>
-      <div class="price-row" style="opacity: 0.6;">
+      <div class="price-row" style="opacity: 0.5;">
         <span class="price-source">Hospital Cash Pay</span>
         <span class="price-value" style="text-decoration: line-through;">${fmt(d.hospital)}</span>
       </div>
     </div>
-    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 24px;" onclick="closeModal(); openAuth();">Get Savings Card</button>` : ''}
+    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 32px;" onclick="switchTab('search'); openAuth();">Get Savings Card</button>` : ''}
   `;
   
-  $('modal-overlay').classList.remove('hidden');
-  $('drug-modal').classList.remove('hidden');
-}
-
-function closeModal() {
-  $('modal-overlay').classList.add('hidden');
-  $('drug-modal').classList.add('hidden');
+  switchTab('drug-detail');
+  window.scrollTo(0, 0);
 }
 
 /* AUTHENTICATION */
@@ -193,10 +183,8 @@ function handleLogin() {
 
   if (!email) { $('login-email').focus(); return; }
 
-  // Secret Admin check
   if (email === 'admin@sleekmed.com' && code === 'SM2026#') {
     state.isAdmin = true;
-    showToast('Admin Portal Unlocked');
   } else {
     state.isAdmin = false;
   }
@@ -210,8 +198,14 @@ function handleLogin() {
   
   closeAuth();
   updateUIForAuth();
-  switchTab(state.isAdmin ? 'partner' : 'access');
-  showToast('Account verified. Access card ready.');
+  
+  if (state.isAdmin) {
+    switchTab('partner');
+    showToast('Admin Portal Unlocked');
+  } else {
+    switchTab('access');
+    showToast('Account verified. Access card ready.');
+  }
 }
 
 function handleLogout() {
@@ -219,7 +213,7 @@ function handleLogout() {
   state.isAdmin = false;
   state.user = { name: '', email: '', memberId: '' };
   
-  $('sidebar-close').click(); // close sidebar
+  $('sidebar-close').click(); 
   updateUIForAuth();
   switchTab('search');
   showToast('Successfully signed out.');
@@ -250,37 +244,31 @@ function switchTab(tab) {
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
 
-  // Topbar Profile Button
   $('topbar-profile-btn').addEventListener('click', () => {
     if (state.loggedIn) switchTab('profile');
     else openAuth();
   });
 
-  // Auth Panel
   $('login-btn').addEventListener('click', handleLogin);
   $('close-auth').addEventListener('click', closeAuth);
   $('auth-overlay').addEventListener('click', closeAuth);
 
-  // Modal
-  $('close-modal').addEventListener('click', closeModal);
-  $('modal-overlay').addEventListener('click', closeModal);
-
-  // Search
   $('drug-search').addEventListener('input', filterDrugs);
+  $('back-to-search').addEventListener('click', () => switchTab('search'));
 
-  // Sidebar
   $('menu-btn').addEventListener('click', () => {
     $('sidebar').classList.add('open');
     $('sidebar-overlay').classList.add('open');
   });
+  
   const closeSidebar = () => {
     $('sidebar').classList.remove('open');
     $('sidebar-overlay').classList.remove('open');
   };
+  
   $('sidebar-close').addEventListener('click', closeSidebar);
   $('sidebar-overlay').addEventListener('click', closeSidebar);
 
-  // Nav Links
   $$('.sidebar-link[data-tab], .bnav-item').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const tab = e.currentTarget.dataset.tab;
@@ -289,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Profile Save
   $('save-profile-btn').addEventListener('click', () => {
     state.user.name = $('pf-name').value;
     state.user.email = $('pf-email').value;
