@@ -66,9 +66,13 @@ input, select, textarea { font-family: inherit; }
 .panel-sub { font-size: 14px; color: var(--text-muted); margin-top: 6px; }
 .section-heading { font-size: 18px; font-weight: 600; margin: 24px 0 16px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
+/* HERO & LANDING PAGE */
 .hero-section { text-align: center; padding: 60px 20px 40px; background: linear-gradient(180deg, rgba(0,245,160,0.08) 0%, transparent 100%); margin: -20px -20px 32px -20px; border-bottom: 1px solid var(--border); }
 .hero-title { font-size: 36px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; letter-spacing: -1px; line-height: 1.2;}
 .hero-subtitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;}
+
+.overpay-section { background: var(--bg-elevated); padding: 32px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 40px; }
+.cta-section { text-align: center; margin-top: 40px; margin-bottom: 40px; padding: 40px 20px; background: linear-gradient(180deg, transparent 0%, rgba(0,245,160,0.05) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-left: -20px; margin-right: -20px; }
 
 .founder-message { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 40px; }
 .founder-content h2 { font-size: 24px; margin-bottom: 12px; }
