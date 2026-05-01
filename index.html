@@ -2,1352 +2,187 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="SleekMed" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="SleekMed is an unbiased healthcare price aggregator. Compare prescription prices across cash networks, GoodRx, Cost Plus, and your insurance." />
-    <meta name="keywords" content="pharmacy, prescription savings, healthcare transparency, goodrx alternative, cost plus drugs" />
-    <meta name="author" content="Gabriel Oliveira, SleekMed Networks LLC" />
-    
-    <title>SleekMed | Radical Transparency in Healthcare</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SleekMed | Clear Healthcare Pricing</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="theme-dark antialiased">
+<body class="theme-dark">
 
-    <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
-    <nav id="sidebar" class="sidebar" role="navigation" aria-label="Main Menu">
-        
-        <div class="sidebar-header">
-            <div class="sidebar-logo" onclick="window.switchTab('search', 'fade'); window.closeSidebar();" style="cursor:pointer;" tabindex="0" role="button">
-                <div class="logo-box">
-                    <i class="fa-solid fa-notes-medical" aria-hidden="true"></i>
-                </div> 
-                <span class="brand-text-primary">SleekMed</span>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="window.switchTab('search')">
+                <div class="brand-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <span class="brand-name">SleekMed</span>
             </div>
-            <button id="sidebar-close" class="sidebar-close" aria-label="Close Navigation Menu">
-                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-            </button>
-        </div>
+            
+            <div class="nav-links">
+                <button class="nav-btn active" data-tab="search" onclick="window.switchTab('search')">Price Search</button>
+                <button class="nav-btn" data-tab="directory" onclick="window.switchTab('directory')">Medications</button>
+                <button class="nav-btn" data-tab="providers" onclick="window.switchTab('providers')">For Providers</button>
+            </div>
 
-        <div class="sidebar-scroll-area">
-            <div class="sidebar-section-label" id="nav-label-services">PATIENT SERVICES</div>
-            <ul class="sidebar-nav" aria-labelledby="nav-label-services">
-                <li>
-                    <button class="sidebar-link active" data-tab="search" onclick="window.switchTab('search', 'fade'); window.closeSidebar();" aria-current="page">
-                        <i class="fa-solid fa-magnifying-glass sidebar-icon"></i> 
-                        <span class="link-text">Price Engine</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="sidebar-link" data-tab="directory" onclick="window.switchTab('directory', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-book-medical sidebar-icon"></i> 
-                        <span class="link-text">Drug Formulary</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="sidebar-link" data-tab="faq" onclick="window.switchTab('faq', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-circle-question sidebar-icon"></i> 
-                        <span class="link-text">Knowledge Base</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-stethoscope sidebar-icon"></i> 
-                        <span class="link-text">Telehealth</span> 
-                        <span class="new-badge">Beta</span>
-                    </button>
-                </li>
-            </ul>
-            
-            <div class="sidebar-section-label" id="nav-label-company">THE COMPANY</div>
-            <ul class="sidebar-nav" aria-labelledby="nav-label-company">
-                <li>
-                    <button class="sidebar-link" data-tab="about" onclick="window.switchTab('about', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-building sidebar-icon"></i> 
-                        <span class="link-text">Our Manifesto</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="sidebar-link" data-tab="providers" onclick="window.switchTab('providers', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-user-doctor sidebar-icon"></i> 
-                        <span class="link-text">Clinical Partners</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
-                        <i class="fa-solid fa-headset sidebar-icon"></i> 
-                        <span class="link-text">24/7 Support</span>
-                    </button>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="sidebar-footer">
-            <div class="footer-copyright">© 2026 SleekMed Networks LLC.</div>
-            <div class="footer-compliance">
-                <i class="fa-solid fa-lock" aria-hidden="true"></i> HIPAA Compliant System
+            <div class="nav-actions">
+                <button class="btn-outline" onclick="window.openAuthModal()">Sign In</button>
             </div>
-            <div class="footer-founder">Founder: Gabriel Oliveira</div>
         </div>
-    </nav>
+    </header>
 
-    <div id="auth-overlay" class="gate-overlay hidden" aria-hidden="true"></div>
-    <div id="auth-panel" class="auth-slide-panel hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-        
-        <button id="close-auth" class="close-modal-btn" aria-label="Close Login Panel">
-            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-        </button>
-        
-        <div class="gate-logo-container">
-            <div class="gate-logo">
-                <div class="logo-box">
-                    <i class="fa-solid fa-notes-medical" aria-hidden="true"></i>
-                </div>
-                <span class="gate-brand" id="auth-title">SleekMed</span>
-            </div>
-            <div class="gate-tagline">Secure encrypted terminal for digital prescriptions, health data, and market savings.</div>
-        </div>
-        
-        <div id="auth-step-1" class="auth-step-container">
-            <div class="field-group">
-                <label class="field-label" for="login-name">LEGAL FULL NAME</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-user input-icon"></i>
-                    <input id="login-name" type="text" class="gate-input with-icon" placeholder="e.g. Gabriel Oliveira" required aria-required="true" />
-                </div>
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close" onclick="window.closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <div class="brand-icon mx-auto mb-4"><i class="fa-solid fa-notes-medical"></i></div>
+                <h2 class="modal-title">Access SleekMed</h2>
+                <p class="modal-subtitle">Secure terminal for your prescriptions.</p>
             </div>
             
-            <div class="field-group">
-                <label class="field-label" for="login-email">SECURE EMAIL ADDRESS</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope input-icon"></i>
-                    <input id="login-email" type="email" class="gate-input with-icon" placeholder="name@example.com" required aria-required="true" />
+            <div id="auth-step-1">
+                <div class="input-group">
+                    <label>Full Legal Name</label>
+                    <input type="text" id="login-name" placeholder="First Last" />
                 </div>
-            </div>
-            
-            <div class="remember-row">
-                <div class="custom-checkbox">
-                    <input type="checkbox" id="login-remember" checked />
-                    <label for="login-remember" class="checkbox-label">Keep this device authenticated for 30 days</label>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="login-email" placeholder="name@example.com" />
                 </div>
+                <button class="btn-primary w-full mt-4" onclick="window.showAuthStep2()">Continue to Verification</button>
             </div>
-            
-            <button id="continue-btn" class="gate-btn primary-action">
-                Initiate Secure Session <i class="fa-solid fa-arrow-right btn-icon-right"></i>
-            </button>
-            
-            <div class="auth-disclaimer">
-                By continuing, you agree to our <a href="#" class="text-link">Terms of Service</a> and <a href="#" class="text-link">Privacy Policy</a>.
-            </div>
-        </div>
 
-        <div id="auth-step-2" class="auth-step-container hidden">
-            <button class="btn-text-small back-btn" onclick="window.showAuthStep1()" aria-label="Go back to previous step">
-                <i class="fa-solid fa-arrow-left btn-icon-left"></i> Change Email
-            </button>
-            
-            <div class="field-group auth-pin-group">
-                <label class="field-label" id="code-label" for="login-code">2-FACTOR VERIFICATION PIN</label>
-                <div id="code-subtext" class="field-subtext">
-                    To protect your health data, we sent a 6-digit cryptographic code to your email.
+            <div id="auth-step-2" class="hidden">
+                <button class="btn-text mb-4" onclick="window.showAuthStep1()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <div class="input-group">
+                    <label>Secure PIN</label>
+                    <input type="password" id="login-pin" placeholder="Enter 6-digit PIN" />
                 </div>
-                <input id="login-code" type="password" class="gate-input pin-input" placeholder="••••••" maxlength="6" inputmode="numeric" pattern="[0-9]*" required aria-required="true" />
-            </div>
-            
-            <button id="login-btn" class="gate-btn primary-action">
-                <i class="fa-solid fa-lock btn-icon-left"></i> Authenticate & Enter
-            </button>
-            
-            <div class="auth-resend-prompt">
-                Didn't receive the code? <button class="text-link-btn">Resend secure PIN</button>
+                <button class="btn-primary w-full mt-4" onclick="window.handleLogin()">Secure Login</button>
             </div>
         </div>
     </div>
 
-    <div id="onboard-overlay" class="gate-overlay hidden modal-center" style="z-index: 2000;" aria-hidden="true">
-        <div id="onboard-panel" class="onboard-card shadow-elevation-high" role="dialog" aria-modal="true" aria-labelledby="onboard-title">
-            
-            <div id="onboard-step-1" class="onboard-step-wrapper">
-                <div class="modal-header-block">
-                    <div class="step-indicator">Step 1 of 3</div>
-                    <h2 class="modal-title" id="onboard-title">
-                        <i class="fa-solid fa-fingerprint emerald-text icon-large"></i> Regulatory Identity
-                    </h2>
-                    <p class="modal-desc">As a healthcare platform, federal regulations require us to verify your age and identity before unlocking controlled substance pricing and specific pharmacy networks.</p>
-                </div>
-                
-                <div class="form-body-block">
-                    <div class="field-group">
-                        <label class="field-label" for="ob-dob">DATE OF BIRTH (MM/DD/YYYY)</label>
-                        <input type="date" id="ob-dob" class="gate-input date-picker-dark" required />
-                    </div>
-                    
-                    <div class="field-group">
-                        <label class="field-label" for="ob-idnum">GOVERNMENT ID / DRIVER LICENSE #</label>
-                        <input type="text" id="ob-idnum" class="gate-input" placeholder="Enter strictly as shown on ID" required />
-                    </div>
-                    
-                    <div class="encryption-badge highlight-box">
-                        <i class="fa-solid fa-lock text-emerald"></i> Data is AES-256 Encrypted in Transit and at Rest
-                    </div>
-                </div>
-                
-                <div class="modal-footer-block">
-                    <button class="gate-btn primary-action full-width" onclick="window.nextOnboard(2)">
-                        Continue to Insurance Setup <i class="fa-solid fa-arrow-right btn-icon-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div id="onboard-step-2" class="onboard-step-wrapper hidden">
-                <div class="modal-header-block">
-                    <div class="step-indicator">Step 2 of 3</div>
-                    <h2 class="modal-title">
-                        <i class="fa-solid fa-shield-heart emerald-text icon-large"></i> Insurance Routing
-                    </h2>
-                    <p class="modal-desc">This is the secret weapon. Add your insurance details so our engine can automatically calculate your specific co-pays and compare them against cash prices in real-time.</p>
-                </div>
-                
-                <div class="form-body-block">
-                    <div class="field-group">
-                        <label class="field-label" for="ob-ins-name">PRIMARY INSURANCE CARRIER</label>
-                        <input type="text" id="ob-ins-name" class="gate-input" placeholder="e.g. United Healthcare, Aetna, Cigna" />
-                    </div>
-                    
-                    <div class="form-row-2col">
-                        <div class="field-group">
-                            <label class="field-label" for="ob-ins-id">MEMBER ID</label>
-                            <input type="text" id="ob-ins-id" class="gate-input" placeholder="ID Number" />
-                        </div>
-                        <div class="field-group">
-                            <label class="field-label" for="ob-ins-group">GROUP #</label>
-                            <input type="text" id="ob-ins-group" class="gate-input" placeholder="Group Code" />
-                        </div>
-                    </div>
-                    
-                    <div class="skip-prompt text-center">
-                        <span class="text-muted text-small">Don't have insurance?</span> 
-                        <button class="text-link-btn text-small" onclick="window.nextOnboard(3)">Skip this step</button>
-                    </div>
-                </div>
-                
-                <div class="modal-footer-block flex-row-gap">
-                    <button class="btn-secondary flex-1 center-text" onclick="window.nextOnboard(1)">Back</button>
-                    <button class="gate-btn flex-2 primary-action m-0" onclick="window.nextOnboard(3)">Next: Provider Sync</button>
-                </div>
-            </div>
-
-            <div id="onboard-step-3" class="onboard-step-wrapper hidden">
-                <div class="modal-header-block">
-                    <div class="step-indicator">Step 3 of 3</div>
-                    <h2 class="modal-title">
-                        <i class="fa-solid fa-user-doctor emerald-text icon-large"></i> Clinical Network Sync
-                    </h2>
-                    <p class="modal-desc">Connect your primary care provider. This enables our backend to request seamless prescription transfers, auto-authorize refills, and update your doctor on your compliance.</p>
-                </div>
-                
-                <div class="form-body-block">
-                    <div class="field-group">
-                        <label class="field-label" for="ob-doc-name">PRESCRIBING DOCTOR OR CLINIC</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-hospital input-icon"></i>
-                            <input type="text" id="ob-doc-name" class="gate-input with-icon" placeholder="Dr. First Last or Clinic Name" />
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
-                        <label class="field-label" for="ob-doc-zip">CLINIC ZIP CODE OR NPI NUMBER</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-location-dot input-icon"></i>
-                            <input type="text" id="ob-doc-zip" class="gate-input with-icon" placeholder="e.g. 32259" />
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-footer-block flex-row-gap">
-                    <button class="btn-secondary flex-1 center-text" onclick="window.nextOnboard(2)">Back</button>
-                    <button class="gate-btn flex-2 primary-action m-0" onclick="window.finishOnboard()">
-                        <i class="fa-solid fa-rocket btn-icon-left"></i> Initialize Profile
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="app" class="app-container">
+    <main class="main-content">
         
-        <header class="topbar sticky-header" role="banner">
-            <button id="menu-btn" class="topbar-menu icon-button" aria-label="Open global navigation menu" aria-expanded="false">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            
-            <div class="topbar-brand cursor-pointer flex-center-y" onclick="window.switchTab('search', 'fade')" role="button" tabindex="0">
-                <div class="logo-box small-logo shadow-sm">
-                    <i class="fa-solid fa-notes-medical brand-icon-dark"></i>
+        <section id="tab-search" class="tab-section active">
+            <div class="hero-header text-center">
+                <h1 class="display-title">Clarity in Healthcare Pricing.</h1>
+                <p class="lead-text">Compare cash prices, network discounts, and your specific insurance co-pay to find the most cost-effective path for your prescriptions.</p>
+                
+                <div class="search-box mx-auto">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="drug-search" placeholder="Search for a medication (e.g., Lisinopril, Ozempic)..." autocomplete="off" />
+                    <ul id="search-results" class="search-dropdown hidden"></ul>
                 </div>
-                <span class="brand-text-header">SleekMed</span>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3>Comprehensive Comparison</h3>
+                    <p>We display pricing from major discount networks and direct-to-consumer pharmacies side-by-side.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3>Insurance Integration</h3>
+                    <p>Add your plan details to see if your co-pay is actually the most cost-effective option available.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3>Broad Acceptance</h3>
+                    <p>Our digital processing codes are accepted at over 75,000 pharmacies nationwide.</p>
+                </div>
+            </div>
+
+            <div class="educational-block">
+                <h2 class="section-title text-center">Navigating Pharmacy Costs</h2>
+                <div class="content-wrapper text-center max-w-3xl mx-auto">
+                    <p class="text-lg text-muted">Because pharmacy pricing is rarely standardized, the cost of a single medication can vary significantly based on your insurance tier, the pharmacy's distributor, and available network discounts. SleekMed aggregates these variables to provide you with clear, actionable data before you reach the counter.</p>
+                    <button class="btn-primary mt-6" onclick="document.getElementById('drug-search').focus()">Compare a Medication</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-directory" class="tab-section hidden">
+            <div class="section-header">
+                <h1 class="section-title">Clinical Formulary</h1>
+                <p class="text-muted">Browse commonly searched medications and therapeutic classes.</p>
             </div>
             
-            <button id="topbar-profile-btn" class="topbar-profile interactive-pill" aria-label="Access User Profile">
-                <i class="fa-solid fa-user-shield"></i>
-                <span id="topbar-profile-text" class="font-bold hidden-on-mobile">Sign In</span>
-            </button>
-        </header>
-
-        <div class="verify-bar banner-alert" role="alert">
-            <div class="verify-content flex-center-all full-width">
-                <i class="fa-solid fa-shield-halved text-emerald"></i> 
-                <span class="banner-text uppercase-tracked">PROPRIETARY NETWORK VERIFIED AT 75,000+ PHARMACIES</span>
-                <span class="verify-sep divider-pipe">|</span> 
-                <span class="not-ins banner-warning uppercase-tracked">THIS IS NOT INSURANCE</span>
+            <div class="filter-bar flex gap-4 mb-6">
+                <input type="text" id="dir-search" class="input-standard flex-1" placeholder="Filter by name..." onkeyup="window.filterDirectory()" />
+                <select id="dir-category" class="input-standard flex-1" onchange="window.filterDirectory()">
+                    <option value="All">All Therapeutic Classes</option>
+                    <option value="Cardiovascular">Cardiovascular</option>
+                    <option value="Endocrine">Endocrine / Diabetes</option>
+                    <option value="Mental Health">Mental Health</option>
+                </select>
             </div>
-        </div>
 
-        <main class="tab-body container-max-width" role="main">
-            
-            <section id="tab-search" class="tab-panel active" aria-label="Search and Savings Engine">
-                
-                <div class="hero-section hero-jumbo border-bottom-none">
-                    <div class="hero-badge pill-badge-emerald animate-fade-in-up">
-                        The Future of Pharmacy Transparency
-                    </div>
-                    <h1 class="hero-title display-heading max-w-800 auto-margin">
-                        The pharmacy industry is broken. <br><span class="text-emerald">We built the fix.</span>
-                    </h1>
-                    <p class="hero-subtitle lead-paragraph text-secondary max-w-650 auto-margin">
-                        Stop letting middlemen dictate your health. Search any medication to see the true mathematical cost across cash networks, coupons, and your own insurance formulary.
-                    </p>
-                    
-                    <div class="search-container master-search shadow-elevation-xl">
-                        <div class="search-wrap relative-container">
-                            <i class="fa-solid fa-magnifying-glass search-icon large-icon absolute-vcenter left-24"></i>
-                            <label for="drug-search" class="sr-only">Search for a medication</label>
-                            <input id="drug-search" type="text" class="search-input input-jumbo" placeholder="Type a brand or generic drug (e.g. Ozempic, Lisinopril)..." autocomplete="off" aria-autocomplete="list" aria-controls="search-results-list" />
-                            
-                            <ul id="search-results-list" class="search-dropdown dropdown-menu hidden shadow-elevation-lg" role="listbox"></ul>
-                        </div>
-                        <div class="search-helper-text text-small text-muted mt-12 text-center">
-                            Powered by real-time data from 75,000+ retail endpoints.
-                        </div>
-                    </div>
+            <div id="directory-list" class="grid-list">
                 </div>
+        </section>
 
-                <div class="content-container mt-60">
-                    <h2 class="section-heading text-center display-subheading">Why 80% of Americans Overpay</h2>
-                    
-                    <div class="comparison-grid grid-2col gap-24 mb-60">
-                        <div class="comparison-card old-way card-outlined border-red p-32 radius-12 bg-card-dark">
-                            <h3 class="card-title text-red flex-center-y gap-8 text-lg mb-16">
-                                <i class="fa-solid fa-skull-crossbones"></i> The Traditional System
-                            </h3>
-                            <p class="card-desc text-secondary line-height-relaxed mb-20 text-md">
-                                Pharmacy Benefit Managers (PBMs) negotiate secret rebates with manufacturers behind closed doors. When you go to the counter, you have absolute zero visibility into what the drug actually costs to produce.
-                            </p>
-                            <ul class="feature-list list-unstyled line-height-loose text-muted">
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-xmark text-red mt-4"></i> Insurance co-pays are artificially inflated to pad corporate margins.</li>
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-xmark text-red mt-4"></i> Pharmacies are legally gagged by contracts from telling you cash is cheaper.</li>
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-xmark text-red mt-4"></i> Prices vary by $100+ between pharmacies located on the exact same street.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="comparison-card sleek-way card-outlined border-emerald p-32 radius-12 bg-emerald-tint relative-container overflow-hidden">
-                            <div class="corner-ribbon bg-emerald text-dark font-bold text-xs px-12 py-4 absolute-top-right radius-bl-8">THE FIX</div>
-                            <h3 class="card-title text-emerald flex-center-y gap-8 text-lg mb-16">
-                                <i class="fa-solid fa-shield-check"></i> The SleekMed Engine
-                            </h3>
-                            <p class="card-desc text-primary line-height-relaxed mb-20 text-md">
-                                We bypass the entire opaque supply chain. Our algorithm instantly aggregates pricing from direct-to-consumer pipelines, discount networks, and standard insurers to find the truth.
-                            </p>
-                            <ul class="feature-list list-unstyled line-height-loose text-secondary">
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-check text-emerald mt-4"></i> We show you the absolute lowest mathematical price. Period.</li>
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-check text-emerald mt-4"></i> No secret markups. No subscription fees. No hidden agendas.</li>
-                                <li class="flex-start-y gap-12"><i class="fa-solid fa-check text-emerald mt-4"></i> Compare Cost Plus, GoodRx, and your Insurance instantly on one screen.</li>
-                            </ul>
-                        </div>
-                    </div>
+        <section id="tab-drug-detail" class="tab-section hidden">
+            <button class="btn-text mb-6" onclick="window.switchTab('search')"><i class="fa-solid fa-arrow-left"></i> Back to Search</button>
+            <div id="drug-detail-content" class="detail-container">
                 </div>
+        </section>
 
-                <div class="content-container mb-60">
-                    <div class="founder-message-block flex-row-gap-32 align-center bg-elevated p-40 radius-16 border-subtle shadow-sm">
-                        <div class="founder-image-wrapper flex-shrink-0">
-                            <div class="founder-avatar circle-120 bg-surface border-light flex-center-all text-4xl text-muted">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </div>
-                        </div>
-                        <div class="founder-content flex-1">
-                            <h2 class="founder-headline text-emerald text-3xl mb-16 tracking-tight">Welcome to radical transparency.</h2>
-                            <blockquote class="founder-quote text-secondary text-lg line-height-relaxed mb-16 italic-text border-left-emerald pl-16">
-                                "I built SleekMed because the current healthcare system is predatory by design. Hardworking people are rationing life-saving insulin and cutting pills in half because they are told their insurance co-pay is the 'best price'. It's usually a lie."
-                            </blockquote>
-                            <p class="founder-mission text-secondary text-lg line-height-relaxed mb-24">
-                                "SleekMed isn't a pharmacy. We are an unbiased transparency engine. We aggregate the real-time data from every major network so you can see the truth before you reach the register. We provide the data; you make the decision."
-                            </p>
-                            <div class="founder-signature flex-col">
-                                <span class="founder-name text-xl font-bold text-primary">Gabriel Oliveira</span>
-                                <span class="founder-title text-xs text-emerald font-mono uppercase-tracked mt-4">Founder & CEO, SleekMed Networks</span>
-                            </div>
-                        </div>
-                    </div>
+        <section id="tab-providers" class="tab-section hidden">
+            <div class="hero-header text-center">
+                <h1 class="display-title">Empower Your Clinical Practice</h1>
+                <p class="lead-text">Provide your patients with immediate cost-clarity to improve prescription adherence and clinical outcomes.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Point-of-Care Pricing</h3>
+                    <p>Review real-time cash and insurance estimates before finalizing an e-prescription.</p>
                 </div>
-
-                <div class="content-container mb-60 text-center">
-                    <h2 class="section-heading display-subheading mb-32">The SleekMed Architecture</h2>
-                    <div class="value-props-grid grid-3col gap-24 text-left">
-                        <article class="prop-card bg-elevated p-32 radius-12 border-subtle hover-lift transition-all">
-                            <div class="prop-icon-wrapper mb-20 text-3xl text-emerald">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                            </div>
-                            <h3 class="prop-title text-xl mb-12">Universal Aggregation</h3>
-                            <p class="prop-desc text-md text-secondary line-height-relaxed">
-                                Our engine doesn't play favorites. We scrape APIs from Cost Plus Drugs, GoodRx, SingleCare, and your specific PBM insurance formulary to display them side-by-side in real-time.
-                            </p>
-                        </article>
-                        
-                        <article class="prop-card bg-elevated p-32 radius-12 border-subtle hover-lift transition-all">
-                            <div class="prop-icon-wrapper mb-20 text-3xl text-emerald">
-                                <i class="fa-solid fa-store"></i>
-                            </div>
-                            <h3 class="prop-title text-xl mb-12">75,000+ Pharmacies</h3>
-                            <p class="prop-desc text-md text-secondary line-height-relaxed">
-                                Our digital routing numbers (BIN/PCN) are contracted to work seamlessly at every major retail chain in America (CVS, Walgreens, Walmart), plus thousands of local independents.
-                            </p>
-                        </article>
-                        
-                        <article class="prop-card bg-elevated p-32 radius-12 border-subtle hover-lift transition-all">
-                            <div class="prop-icon-wrapper mb-20 text-3xl text-emerald">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </div>
-                            <h3 class="prop-title text-xl mb-12">Zero Data Mining</h3>
-                            <p class="prop-desc text-md text-secondary line-height-relaxed">
-                                Your medical history is your business, not a product. We use end-to-end AES-256 encryption. We pledge to never sell your search history to third-party health advertisers or brokers.
-                            </p>
-                        </article>
-                    </div>
+                <div class="feature-card">
+                    <h3>EHR API Integration</h3>
+                    <p>Connect SleekMed directly into your existing electronic health record workflows.</p>
                 </div>
+            </div>
+        </section>
 
-                <div class="content-container mb-80">
-                    <h2 class="section-heading display-subheading text-center mb-32">Verified Member Outcomes</h2>
-                    <div class="testimonial-grid grid-2col gap-24">
-                        <aside class="testimonial-card bg-card-dark p-40 radius-16 border-subtle relative-container">
-                            <i class="fa-solid fa-quote-left absolute-top-left text-4xl text-border opacity-20 mt-20 ml-20"></i>
-                            <div class="star-rating text-emerald text-lg mb-16 flex-gap-4">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            </div>
-                            <blockquote class="quote text-lg line-height-loose text-secondary italic-text mb-24 relative-z-10">
-                                "I was paying $145 a month for my generic Lexapro using my 'great' corporate insurance. I searched it on SleekMed while standing in line, showed the pharmacist the digital card, and paid $8.10. It feels illegal."
-                            </blockquote>
-                            <footer class="author-info border-top-subtle pt-20">
-                                <div class="author-name font-bold text-primary">Sarah Jenkins</div>
-                                <div class="author-stat text-sm text-emerald mt-4"><i class="fa-solid fa-arrow-trend-down"></i> Saved $1,642 this year</div>
-                            </footer>
-                        </aside>
-                        
-                        <aside class="testimonial-card bg-card-dark p-40 radius-16 border-subtle relative-container">
-                            <i class="fa-solid fa-quote-left absolute-top-left text-4xl text-border opacity-20 mt-20 ml-20"></i>
-                            <div class="star-rating text-emerald text-lg mb-16 flex-gap-4">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            </div>
-                            <blockquote class="quote text-lg line-height-loose text-secondary italic-text mb-24 relative-z-10">
-                                "What I love is that they don't hide the competitor prices. They literally show you what Cost Plus charges right next to their own price. Finally a healthcare company that treats patients like adults capable of making choices."
-                            </blockquote>
-                            <footer class="author-info border-top-subtle pt-20">
-                                <div class="author-name font-bold text-primary">David R.</div>
-                                <div class="author-stat text-sm text-emerald mt-4"><i class="fa-solid fa-arrow-trend-down"></i> Saved $410 this year</div>
-                            </footer>
-                        </aside>
-                    </div>
+        <section id="tab-profile" class="tab-section hidden">
+            <div class="section-header flex justify-between items-center">
+                <h1 class="section-title">Patient Dashboard</h1>
+                <button class="btn-primary" onclick="window.saveProfile()"><i class="fa-solid fa-save"></i> Save</button>
+            </div>
+
+            <div class="kpi-grid mb-8">
+                <div class="kpi-card">
+                    <div class="kpi-label">Rewards Points</div>
+                    <div class="kpi-value text-amber" id="dash-pts">0</div>
                 </div>
-
-                <div class="content-container">
-                    <div class="cta-banner text-center bg-elevated p-80 radius-16 border-subtle shadow-lg gradient-subtle-bottom">
-                        <h2 class="display-heading text-primary mb-16">Stop funding the middlemen.</h2>
-                        <p class="lead-paragraph text-secondary max-w-600 auto-margin mb-40 line-height-relaxed">
-                            Search your medication right now. It takes 10 seconds to see the truth about what you should be paying compared to your current plan.
-                        </p>
-                        <button class="gate-btn btn-jumbo max-w-300 auto-margin font-bold text-lg p-20 shadow-glow" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); document.getElementById('drug-search').focus();">
-                            <i class="fa-solid fa-bolt btn-icon-left"></i> Access The Data Engine
-                        </button>
-                    </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Estimated Savings</div>
+                    <div class="kpi-value text-emerald" id="dash-savings">$0.00</div>
                 </div>
-            </section>
+            </div>
 
-            <section id="tab-directory" class="tab-panel hidden" aria-label="Medication Formulary Directory">
-                
-                <header class="panel-header mb-32">
-                    <div class="header-content">
-                        <h1 class="panel-title display-heading-sm">Clinical Directory</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Browse all supported formularies by health condition or therapeutic class. Data is updated hourly.</p>
-                    </div>
-                </header>
-                
-                <div class="directory-filters flex-wrap-gap-16 align-center bg-elevated p-24 radius-12 border-subtle mb-40 shadow-sm">
-                    <div class="filter-group flex-2 min-w-250 relative-container">
-                        <label for="dir-search" class="field-label-sm uppercase-tracked text-muted mb-8 display-block">SEARCH BY GENERIC OR BRAND NAME</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-magnifying-glass input-icon absolute-vcenter left-16 text-muted"></i>
-                            <input id="dir-search" type="text" class="gate-input pl-48" placeholder="e.g. Lipitor, Metformin, Zoloft..." onkeyup="window.filterDirectory()" />
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group flex-1 min-w-200">
-                        <label for="dir-category" class="field-label-sm uppercase-tracked text-muted mb-8 display-block">FILTER BY THERAPEUTIC CLASS</label>
-                        <div class="select-wrapper relative-container">
-                            <select id="dir-category" class="gate-input cursor-pointer appearance-none" onchange="window.filterDirectory()">
-                                <option value="All">View All Categories</option>
-                                <option value="Antibiotic">Antibiotics & Anti-infectives</option>
-                                <option value="Anticonvulsant">Anticonvulsants (Seizure)</option>
-                                <option value="Cardiovascular">Cardiovascular / Blood Pressure</option>
-                                <option value="Endocrine">Endocrine / Diabetes</option>
-                                <option value="Gastrointestinal">Gastrointestinal (GI)</option>
-                                <option value="Mental Health">Mental Health / SSRI</option>
-                                <option value="Respiratory">Respiratory / Asthma</option>
-                            </select>
-                            <i class="fa-solid fa-chevron-down absolute-vcenter right-16 text-muted pointer-events-none"></i>
-                        </div>
-                    </div>
+            <div class="card-panel mb-8">
+                <h2 class="panel-title">Medicine Cabinet</h2>
+                <div id="cabinet-list" class="cabinet-container">
+                    <p class="text-muted text-center py-6">No medications currently saved.</p>
                 </div>
-                
-                <div id="directory-list" class="directory-grid" role="list">
-                    
-                    <div class="dir-group mb-32" data-letter="A">
-                        <h2 class="dir-letter text-2xl font-bold text-emerald border-bottom-subtle pb-8 mb-16">A</h2>
-                        <div class="dir-grid grid-auto-fill-280 gap-16">
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Albuterol')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Albuterol</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic ProAir / Ventolin</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Respiratory</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
+            </div>
 
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Amlodipine')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Amlodipine</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Norvasc</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Cardiovascular</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Amoxicillin')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Amoxicillin</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Amoxil</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Antibiotic</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Atorvastatin')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Atorvastatin</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Lipitor</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Cardiovascular</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                        </div>
-                    </div>
-
-                    <div class="dir-group mb-32" data-letter="B">
-                        <h2 class="dir-letter text-2xl font-bold text-emerald border-bottom-subtle pb-8 mb-16">B - C</h2>
-                        <div class="dir-grid grid-auto-fill-280 gap-16">
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Bupropion')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Bupropion</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Wellbutrin XL</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Mental Health</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Citalopram')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Citalopram</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Celexa</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Mental Health</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                        </div>
-                    </div>
-
-                    <div class="dir-group mb-32" data-letter="D">
-                        <h2 class="dir-letter text-2xl font-bold text-emerald border-bottom-subtle pb-8 mb-16">D - E</h2>
-                        <div class="dir-grid grid-auto-fill-280 gap-16">
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Duloxetine')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Duloxetine</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Cymbalta</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Mental Health</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Escitalopram')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Escitalopram</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Lexapro</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Mental Health</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                        </div>
-                    </div>
-                    
-                    <div class="dir-group mb-32" data-letter="L">
-                        <h2 class="dir-letter text-2xl font-bold text-emerald border-bottom-subtle pb-8 mb-16">L - M</h2>
-                        <div class="dir-grid grid-auto-fill-280 gap-16">
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Levothyroxine')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Levothyroxine</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Synthroid</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Endocrine</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Lisinopril')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Lisinopril</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Prinivil / Zestril</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Cardiovascular</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Metformin')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Metformin</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Glucophage</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Endocrine</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                        </div>
-                    </div>
-                    
-                    <div class="dir-group mb-32" data-letter="O">
-                        <h2 class="dir-letter text-2xl font-bold text-emerald border-bottom-subtle pb-8 mb-16">O</h2>
-                        <div class="dir-grid grid-auto-fill-280 gap-16">
-                            
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Omeprazole')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Omeprazole</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Generic Prilosec</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Gastrointestinal</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                            <article class="dir-item card-interactive bg-elevated p-20 radius-8 border-subtle flex-between-center hover-border-emerald transition-all cursor-pointer" onclick="window.showDrugPage('Ozempic')" role="listitem">
-                                <div class="item-info">
-                                    <h3 class="item-name text-lg font-bold text-primary mb-4">Ozempic</h3>
-                                    <p class="item-generic text-sm text-muted mb-6">Semaglutide Injection</p>
-                                    <span class="item-badge badge-subtle uppercase-tracked text-xs text-muted">Endocrine</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-emerald"></i>
-                            </article>
-
-                        </div>
-                    </div>
-
-                    </div>
-            </section>
-            <section id="tab-drug-detail" class="tab-panel hidden" aria-label="Medication Pricing Details">
-                <header class="panel-header mb-32 border-bottom-subtle pb-20">
-                    <button id="back-to-search" class="btn-secondary" onclick="window.switchTab('search', 'backward')" aria-label="Go back to search results">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Search
-                    </button>
-                </header>
-                
-                <div id="drug-detail-content" class="max-w-800 auto-margin">
-                    <div style="text-align:center; padding: 80px 20px; color: var(--text-muted);">
-                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 40px; margin-bottom: 20px; color: var(--emerald);"></i><br>
-                        Querying real-time pharmacy network...
-                    </div>
+            <div class="card-panel">
+                <h2 class="panel-title mb-4">Secure Profile & Insurance</h2>
+                <div class="grid-2col gap-4">
+                    <div class="input-group"><label>Full Name</label><input type="text" id="pf-name" /></div>
+                    <div class="input-group"><label>Email</label><input type="email" id="pf-email" /></div>
+                    <div class="input-group"><label>Primary Insurance</label><input type="text" id="pf-ins" placeholder="e.g., Aetna" /></div>
+                    <div class="input-group"><label>Member ID</label><input type="text" id="pf-member" /></div>
                 </div>
-            </section>
+                <button class="btn-danger w-full mt-6" onclick="window.handleLogout()">Sign Out</button>
+            </div>
+        </section>
 
-            <section id="tab-faq" class="tab-panel hidden" aria-labelledby="faq-heading">
-                <header class="panel-header mb-40">
-                    <div class="header-content">
-                        <h1 id="faq-heading" class="panel-title display-heading-sm">Knowledge Hub</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Find answers and learn how to maximize your healthcare savings.</p>
-                    </div>
-                </header>
-                
-                <div class="faq-search-wrap relative-container mb-40 max-w-600">
-                    <i class="fa-solid fa-magnifying-glass search-icon absolute-vcenter left-16 text-muted"></i>
-                    <label for="faq-search-input" class="sr-only">Search frequently asked questions</label>
-                    <input type="text" id="faq-search-input" class="gate-input pl-48 py-16 text-md radius-8" placeholder="Search our help center..." onkeyup="window.filterFAQ()" />
-                </div>
-                
-                <div id="faq-list" class="faq-container flex-col-gap-16 max-w-800" role="list">
-                    
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            What exactly is SleekMed? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">We are an unbiased healthcare price aggregator. We collect data from various discount networks, direct-to-consumer pharmacies, and standard insurers to show you all your options on one screen. We do not own pharmacies or sell drugs ourselves; we just provide the mathematical truth.</p>
-                        </div>
-                    </article>
-
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            How much does it cost to use? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">The SleekMed platform and the digital access card are 100% free to use. You simply pay the discounted price of the medication directly to the pharmacist at the counter. There are absolutely no hidden subscription fees, premium tiers, or forced upgrades.</p>
-                        </div>
-                    </article>
-
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            How do I use the digital access card? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">Create a free account and navigate to the 'Card' tab on the bottom menu. Show that specific screen to your pharmacist when dropping off or paying for your medication. They will enter the cryptographic routing numbers (BIN, PCN, Group) into their terminal to apply your discount instantly.</p>
-                        </div>
-                    </article>
-
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            Do I need insurance to use this platform? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">No insurance is required. In fact, many of our users find that our negotiated cash prices are actually significantly lower than their standard insurance co-pays, especially if they are on a high-deductible health plan (HDHP).</p>
-                        </div>
-                    </article>
-
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            Can I combine this with my insurance or Medicare? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">Our discounts cannot be legally stacked or combined simultaneously with insurance or Medicare on a single transaction. However, you can ask your pharmacist to "split-test" or compare our price against your insurance price, and you simply select whichever is cheaper for that specific transaction.</p>
-                        </div>
-                    </article>
-
-                    <article class="faq-item bg-elevated border-subtle radius-8 overflow-hidden transition-all cursor-pointer hover-border-emerald" onclick="this.classList.toggle('active')" role="listitem" aria-expanded="false">
-                        <h2 class="faq-question p-24 text-lg font-bold flex-between-center text-primary m-0">
-                            Is my medical data secure? 
-                            <i class="fa-solid fa-chevron-down text-emerald transition-transform"></i>
-                        </h2>
-                        <div class="faq-answer px-24 pb-0 max-h-0 opacity-0 overflow-hidden transition-all text-secondary line-height-relaxed">
-                            <p class="pb-24 m-0">Absolutely. We utilize advanced enterprise-grade AES-256 encryption protocols. Your identity, insurance routing information, and medication history stored in your Personal Vault are secure. We make a strict pledge to never sell your data to third-party advertisers or data brokers.</p>
-                        </div>
-                    </article>
-
-                </div>
-            </section>
-
-            <section id="tab-about" class="tab-panel hidden" aria-labelledby="about-heading">
-                <header class="panel-header mb-40 border-bottom-subtle pb-20">
-                    <div class="header-content">
-                        <h1 id="about-heading" class="panel-title display-heading-sm">About SleekMed</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Our mission to revolutionize healthcare pricing.</p>
-                    </div>
-                </header>
-                
-                <div class="content-block max-w-800 auto-margin">
-                    <h2 class="text-2xl text-primary mb-16 font-bold tracking-tight">The Problem We Are Solving</h2>
-                    <p class="text-lg text-secondary line-height-relaxed mb-24">
-                        For decades, the pharmaceutical supply chain has operated entirely in the shadows. Manufacturers sell to massive wholesalers, who sell to pharmacies, all while Pharmacy Benefit Managers (PBMs) negotiate secret rebates behind closed doors. The end result is that the patient at the counter has zero visibility into what a medication actually costs to produce and dispense.
-                    </p>
-                    <p class="text-lg text-secondary line-height-relaxed mb-40">
-                        This severe lack of transparency leads to absurd situations where paying cash out-of-pocket is often cheaper than using a high-premium insurance plan. But because of corporate gag clauses and confusing adjudication systems, patients are rarely told this at the register.
-                    </p>
-                    
-                    <h2 class="text-2xl text-primary mb-16 font-bold tracking-tight border-top-subtle pt-40">The SleekMed Solution</h2>
-                    <p class="text-lg text-secondary line-height-relaxed mb-24">
-                        SleekMed was born in Jacksonville, Florida with a simple premise: Healthcare data should be open, transparent, and accessible to everyone.
-                    </p>
-                    <p class="text-lg text-secondary line-height-relaxed mb-24">
-                        We built a technology engine that aggregates pricing data from thousands of endpoints across the United States. We do not manufacture drugs and we do not own pharmacies. Our sole product is truth.
-                    </p>
-                    <p class="text-lg text-secondary line-height-relaxed mb-40">
-                        By empowering patients with clear, comparative data before they reach the counter, we are forcing the industry to compete on price and efficiency rather than hidden, anti-competitive contracts.
-                    </p>
-
-                    <div class="headquarters-section bg-elevated border-subtle radius-16 p-60 text-center shadow-sm">
-                        <div class="icon-wrapper circle-80 bg-surface border-light flex-center-all text-3xl text-emerald auto-margin mb-24">
-                            <i class="fa-solid fa-building-shield"></i>
-                        </div>
-                        <h3 class="text-2xl text-primary font-bold mb-8">Corporate Headquarters</h3>
-                        <p class="text-lg text-secondary mb-16">Jacksonville, Florida</p>
-                        <p class="text-sm text-muted font-mono uppercase-tracked">Operating nationwide across all 50 states.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-providers" class="tab-panel hidden" aria-labelledby="providers-heading">
-                <header class="panel-header mb-40 border-bottom-subtle pb-20">
-                    <div class="header-content">
-                        <h1 id="providers-heading" class="panel-title display-heading-sm">For Clinical Partners</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Empower your patients with affordable treatment options.</p>
-                    </div>
-                </header>
-                
-                <div class="content-block max-w-800 auto-margin">
-                    <h2 class="text-2xl text-primary mb-16 font-bold tracking-tight">Prescribe with Absolute Confidence</h2>
-                    <p class="text-lg text-secondary line-height-relaxed mb-24">
-                        Medical non-compliance due to cost is a hidden epidemic in the United States. When patients can't afford their medication, they simply don't fill the prescription. This leads to emergency room readmissions, deteriorating health outcomes, and increased systemic strain.
-                    </p>
-                    <p class="text-lg text-secondary line-height-relaxed mb-40">
-                        SleekMed provides doctors and clinics with a real-time "Cash Price vs. Insurance" dashboard. This allows providers to help patients find the most affordable path to recovery before they even leave the examination room.
-                    </p>
-                    
-                    <div class="value-props grid-1col gap-24 mt-40">
-                        
-                        <article class="prop-card bg-elevated border-subtle p-32 radius-12 flex-row-gap-24 align-start">
-                            <div class="prop-icon-wrapper circle-60 bg-surface text-emerald text-2xl flex-center-all flex-shrink-0">
-                                <i class="fa-solid fa-chart-pie"></i>
-                            </div>
-                            <div class="prop-content">
-                                <h3 class="text-xl font-bold text-primary mb-12">Formulary Data Engine</h3>
-                                <p class="text-md text-secondary line-height-relaxed m-0">Access our secure provider dashboard to see real-time local cash prices and formulary alternatives before you send the e-script to the pharmacy.</p>
-                            </div>
-                        </article>
-
-                        <article class="prop-card bg-elevated border-subtle p-32 radius-12 flex-row-gap-24 align-start">
-                            <div class="prop-icon-wrapper circle-60 bg-surface text-emerald text-2xl flex-center-all flex-shrink-0">
-                                <i class="fa-solid fa-file-prescription"></i>
-                            </div>
-                            <div class="prop-content">
-                                <h3 class="text-xl font-bold text-primary mb-12">EHR Integration API</h3>
-                                <p class="text-md text-secondary line-height-relaxed m-0">SleekMed pricing intelligence can be routed directly into standard Electronic Health Record (EHR) systems via our HL7-compliant REST API.</p>
-                            </div>
-                        </article>
-
-                        <article class="prop-card bg-elevated border-subtle p-32 radius-12 flex-row-gap-24 align-start">
-                            <div class="prop-icon-wrapper circle-60 bg-surface text-emerald text-2xl flex-center-all flex-shrink-0">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div class="prop-content">
-                                <h3 class="text-xl font-bold text-primary mb-12">Abandonment Analytics</h3>
-                                <p class="text-md text-secondary line-height-relaxed m-0">Track prescription fill rates to ensure your vulnerable patients are remaining compliant with your specific treatment plans.</p>
-                            </div>
-                        </article>
-
-                    </div>
-
-                    <div class="provider-cta border-top-subtle mt-60 pt-40 text-center">
-                        <h3 class="text-2xl font-bold text-primary mb-24">Ready to integrate SleekMed into your clinic?</h3>
-                        <button class="gate-btn btn-jumbo max-w-300 auto-margin shadow-glow" onclick="window.switchTab('coming-soon', 'forward')">
-                            <i class="fa-solid fa-code btn-icon-left"></i> Request Demo API Keys
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-access" class="tab-panel hidden" aria-label="Digital Savings Card">
-                <header class="panel-header mb-40 text-center">
-                    <h1 class="panel-title display-heading-sm">Digital Access Card</h1>
-                    <p class="panel-sub lead-paragraph-sm text-muted">Present this screen at any verified pharmacy location.</p>
-                </header>
-                
-                <div class="card-viewport flex-center-all py-24">
-                    <div class="access-card bg-card-dark border-subtle shadow-elevation-xl radius-16 w-full max-w-400 p-32 relative-container overflow-hidden" style="aspect-ratio: 1.586 / 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        
-                        <i class="fa-solid fa-notes-medical absolute-center text-9xl opacity-5 pointer-events-none"></i>
-
-                        <div class="card-top flex-between-center relative-z-10">
-                            <div class="card-logo-row flex-center-y gap-12">
-                                <div class="logo-box small-logo shadow-sm bg-emerald text-dark">
-                                    <i class="fa-solid fa-notes-medical"></i>
-                                </div>
-                                <span class="card-brand-text font-display font-bold text-xl tracking-tight">SleekMed</span>
-                            </div>
-                            <div class="card-type-badge text-xs font-bold text-emerald tracking-widest uppercase">MEMBER SAVINGS</div>
-                        </div>
-
-                        <div class="card-member-row relative-z-10 mt-auto mb-20">
-                            <div class="card-member-name text-2xl font-bold text-primary uppercase-tracked truncate-text" id="card-member-name">MEMBER NAME</div>
-                            <div class="card-member-email text-sm text-muted mt-4 truncate-text" id="card-member-email">member@example.com</div>
-                        </div>
-
-                        <div class="card-data-grid grid-4col gap-8 relative-z-10 bg-surface p-12 radius-8 border-subtle">
-                            <div class="card-data-item">
-                                <div class="card-data-label text-xxs font-bold text-muted uppercase-tracked mb-4">BIN</div>
-                                <div class="card-data-val font-mono font-bold text-md text-primary">015995</div>
-                            </div>
-                            <div class="card-data-item">
-                                <div class="card-data-label text-xxs font-bold text-muted uppercase-tracked mb-4">PCN</div>
-                                <div class="card-data-val font-mono font-bold text-md text-primary">GDC</div>
-                            </div>
-                            <div class="card-data-item">
-                                <div class="card-data-label text-xxs font-bold text-muted uppercase-tracked mb-4">GROUP</div>
-                                <div class="card-data-val font-mono font-bold text-md text-primary">SLKRX</div>
-                            </div>
-                            <div class="card-data-item">
-                                <div class="card-data-label text-xxs font-bold text-muted uppercase-tracked mb-4">MEMBER ID</div>
-                                <div class="card-data-val font-mono font-bold text-md text-emerald" id="card-member-id">SM-000000</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card-instructions text-center mt-40">
-                    <p class="text-secondary text-md line-height-relaxed max-w-400 auto-margin">
-                        Hand your phone to the pharmacist or read them the <strong>BIN</strong>, <strong>PCN</strong>, and <strong>GROUP</strong> numbers to apply your discount.
-                    </p>
-                    <div class="legal-disclaimer text-xs text-muted mt-24 uppercase-tracked font-bold">
-                        NOT INSURANCE · AUTHORIZED BY SLEEKMED NETWORKS LLC
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-rewards" class="tab-panel hidden" aria-label="Member Rewards">
-                <header class="panel-header flex-between-center mb-40 border-bottom-subtle pb-20">
-                    <button class="btn-secondary" onclick="window.switchTab('profile', 'backward')">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-                    </button>
-                    <div class="header-text-right text-right">
-                        <h1 class="panel-title text-2xl font-bold">Rewards Hub</h1>
-                        <p class="panel-sub text-sm text-muted m-0 mt-4">Earn points every time you save.</p>
-                    </div>
-                </header>
-                
-                <div class="rewards-hero bg-card-dark border-amber p-40 radius-16 text-center mb-40 relative-container overflow-hidden shadow-elevation-lg">
-                    <div class="absolute-center circle-200 bg-amber opacity-5 blur-xl pointer-events-none"></div>
-                    
-                    <div class="rewards-icon circle-80 bg-surface border-amber text-amber text-3xl flex-center-all auto-margin mb-20 relative-z-10 shadow-glow-amber">
-                        <i class="fa-solid fa-coins"></i>
-                    </div>
-                    <div class="rewards-label text-sm font-bold text-muted uppercase-tracked mb-8 relative-z-10">Current Balance</div>
-                    <div class="rewards-pts text-6xl font-bold text-amber font-mono mb-32 relative-z-10 tracking-tight" id="reward-points-display">0</div>
-                    
-                    <div class="progress-container max-w-400 auto-margin text-left relative-z-10">
-                        <div class="progress-labels flex-between-center text-xs font-bold text-secondary uppercase-tracked mb-8">
-                            <span>Level 1</span>
-                            <span>500 pts</span>
-                        </div>
-                        <div class="progress-bar-bg bg-input h-12 radius-full border-subtle overflow-hidden mb-12">
-                            <div class="progress-bar-fill bg-amber h-full transition-width duration-1000 ease-out" id="reward-progress-fill" style="width: 0%;"></div>
-                        </div>
-                        <div class="progress-desc text-xs text-muted text-center">Complete your profile to reach the first tier.</div>
-                    </div>
-                </div>
-
-                <div class="content-container">
-                    <h2 class="section-heading display-subheading mb-24">How to earn points</h2>
-                    <div class="rewards-steps-grid grid-3col gap-20">
-                        <article class="reward-step-card bg-elevated border-subtle p-32 radius-12 hover-lift transition-all">
-                            <h3 class="reward-step-title text-lg font-bold text-primary mb-8">Complete your profile</h3>
-                            <div class="reward-step-pts font-mono font-bold text-amber text-md mb-16">+ 500 points</div>
-                            <p class="text-sm text-secondary line-height-relaxed m-0">Add your personal information, DOB, and ID to unlock full features.</p>
-                        </article>
-                        
-                        <article class="reward-step-card bg-elevated border-subtle p-32 radius-12 hover-lift transition-all">
-                            <h3 class="reward-step-title text-lg font-bold text-primary mb-8">Add a prescription</h3>
-                            <div class="reward-step-pts font-mono font-bold text-amber text-md mb-16">+ 250 points</div>
-                            <p class="text-sm text-secondary line-height-relaxed m-0">Save your first active medication to the Medicine Cabinet.</p>
-                        </article>
-                        
-                        <article class="reward-step-card bg-elevated border-subtle p-32 radius-12 hover-lift transition-all">
-                            <h3 class="reward-step-title text-lg font-bold text-primary mb-8">Use your card</h3>
-                            <div class="reward-step-pts font-mono font-bold text-amber text-md mb-16">+ 1000 points</div>
-                            <p class="text-sm text-secondary line-height-relaxed m-0">Present your digital access card at any verified pharmacy to claim a discount.</p>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-profile" class="tab-panel hidden" aria-label="User Dashboard">
-                
-                <header class="panel-header flex-between-center mb-40 border-bottom-subtle pb-20">
-                    <div>
-                        <h1 class="panel-title display-heading-sm">My Dashboard</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Manage your prescriptions, identity, and plan details.</p>
-                    </div>
-                    <button class="btn-secondary border-emerald text-emerald hover-bg-emerald-tint transition-colors px-24 py-12 font-bold uppercase-tracked text-sm" onclick="window.autoSaveProfile()">
-                        <i class="fa-solid fa-floppy-disk mr-8"></i> Save Changes
-                    </button>
-                </header>
-
-                <div class="profile-header-area flex-start-y gap-24 mb-40">
-                    <div class="profile-avatar circle-80 bg-emerald text-dark flex-center-all text-3xl font-bold font-display shadow-glow">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div>
-                        <h2 class="profile-name-display text-3xl font-bold tracking-tight text-primary m-0" id="profile-name-display">Member Name</h2>
-                        <div class="profile-status-badge flex-center-y gap-8 text-sm font-bold text-emerald uppercase-tracked mt-8 bg-emerald-tint px-12 py-4 radius-full inline-flex">
-                            <i class="fa-solid fa-shield-check"></i> Verified Member
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-kpi-grid grid-2col gap-20 mb-32">
-                    <button class="dashboard-card card-interactive bg-elevated border-subtle p-24 radius-12 flex-between-center w-full text-left transition-all hover-border-amber" onclick="window.switchTab('rewards', 'forward')">
-                        <div class="card-left flex-center-y gap-16">
-                            <div class="icon-circle circle-56 bg-surface border-amber text-amber text-xl flex-center-all shadow-sm">
-                                <i class="fa-solid fa-coins"></i>
-                            </div>
-                            <div>
-                                <div class="card-label text-xs font-bold text-muted uppercase-tracked mb-4">Rewards Balance</div>
-                                <div class="card-value text-2xl font-bold text-primary font-mono tracking-tight" id="dashboard-pts">0 pts</div>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-muted text-lg"></i>
-                    </button>
-                    
-                    <div class="dashboard-card bg-elevated border-subtle p-24 radius-12 flex-between-center">
-                        <div class="card-left flex-center-y gap-16">
-                            <div class="icon-circle circle-56 bg-emerald-tint border-emerald text-emerald text-xl flex-center-all shadow-sm">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div>
-                                <div class="card-label text-xs font-bold text-muted uppercase-tracked mb-4">Lifetime Savings</div>
-                                <div class="card-value text-2xl font-bold text-primary font-mono tracking-tight" id="dashboard-savings">$0.00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card bg-elevated border-subtle radius-12 overflow-hidden mb-32">
-                    <header class="card-header-row bg-surface px-24 py-16 border-bottom-subtle flex-between-center">
-                        <h3 class="card-title text-lg font-bold flex-center-y gap-12 m-0">
-                            <i class="fa-solid fa-pills text-emerald"></i> Medicine Cabinet
-                        </h3>
-                        <button class="btn-text-blue font-bold uppercase-tracked text-xs flex-center-y gap-8 hover-text-primary transition-colors" onclick="window.switchTab('search', 'backward')">
-                            <i class="fa-solid fa-plus"></i> Add Rx
-                        </button>
-                    </header>
-                    <div id="medicine-cabinet-list" class="p-24 min-h-120 flex-col-gap-12">
-                        </div>
-                </div>
-
-                <div class="dashboard-card bg-elevated border-subtle radius-12 overflow-hidden mb-40">
-                    <header class="card-header-row bg-surface px-24 py-16 border-bottom-subtle">
-                        <h3 class="card-title text-lg font-bold flex-center-y gap-12 m-0">
-                            <i class="fa-solid fa-clock-rotate-left text-blue"></i> Order History & Refills
-                        </h3>
-                    </header>
-                    <div id="order-history-list" class="p-24 min-h-120">
-                        </div>
-                </div>
-
-                <div class="profile-form-container max-w-800">
-                    
-                    <h3 class="profile-section-label text-xs font-bold text-muted uppercase-tracked border-bottom-subtle pb-12 mb-24">Basic Account Settings</h3>
-                    <div class="profile-grid grid-2col gap-20 mb-40">
-                        <div class="field-group mb-0">
-                            <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-name">FULL LEGAL NAME</label>
-                            <input type="text" class="profile-input gate-input" id="pf-name" placeholder="Full name" onblur="window.autoSaveProfile()" />
-                        </div>
-                        <div class="field-group mb-0">
-                            <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-email">ACCOUNT EMAIL</label>
-                            <input type="email" class="profile-input gate-input" id="pf-email" placeholder="Email Address" onblur="window.autoSaveProfile()" />
-                        </div>
-                    </div>
-                    
-                    <div class="secure-vault bg-card-dark border-emerald p-32 radius-16 mb-40 relative-container overflow-hidden shadow-sm">
-                        <i class="fa-solid fa-shield-halved absolute-center text-9xl opacity-5 pointer-events-none text-emerald"></i>
-                        
-                        <header class="vault-header flex-center-y gap-16 mb-32 border-bottom-emerald pb-20 relative-z-10">
-                            <div class="vault-icon-container circle-48 bg-emerald-tint text-emerald flex-center-all text-xl shadow-glow">
-                                <i class="fa-solid fa-lock vault-icon"></i> 
-                            </div>
-                            <div>
-                                <h3 class="vault-title text-lg font-bold text-emerald m-0 uppercase-tracked tracking-tight">Personal Security Vault</h3>
-                                <p class="vault-sub text-xs text-secondary m-0 mt-4">HIPAA compliant AES-256 encryption for sensitive identity data.</p>
-                            </div>
-                        </header>
-                        
-                        <div class="profile-grid grid-2col gap-20 mb-32 relative-z-10">
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-dob">DATE OF BIRTH</label>
-                                <input type="date" class="profile-input gate-input bg-surface" id="pf-dob" style="color-scheme:dark;" onblur="window.autoSaveProfile()" />
-                            </div>
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-idnum">GOV ID / DRIVER LICENSE</label>
-                                <input type="text" class="profile-input gate-input bg-surface" id="pf-idnum" placeholder="Driver License Number" onblur="window.autoSaveProfile()" />
-                            </div>
-                        </div>
-                        
-                        <h4 class="profile-section-label text-xs font-bold text-emerald uppercase-tracked border-bottom-emerald pb-12 mb-24 mt-20 relative-z-10">
-                            Primary Insurance Routing
-                        </h4>
-                        
-                        <div class="profile-grid grid-2col gap-20 mb-0 relative-z-10">
-                            <div class="field-group mb-0" style="grid-column: 1 / -1;">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-insurance">PROVIDER NAME</label>
-                                <input type="text" class="profile-input gate-input bg-surface" id="pf-insurance" placeholder="e.g. United Healthcare, Blue Cross" onblur="window.autoSaveProfile()" />
-                            </div>
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-ins-member">MEMBER ID</label>
-                                <input type="text" class="profile-input gate-input bg-surface font-mono" id="pf-ins-member" placeholder="Member ID" onblur="window.autoSaveProfile()" />
-                            </div>
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-ins-group">GROUP NUMBER</label>
-                                <input type="text" class="profile-input gate-input bg-surface font-mono" id="pf-ins-group" placeholder="Group #" onblur="window.autoSaveProfile()" />
-                            </div>
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-ins-bin">RX BIN</label>
-                                <input type="text" class="profile-input gate-input bg-surface font-mono" id="pf-ins-bin" placeholder="RX BIN" onblur="window.autoSaveProfile()" />
-                            </div>
-                            <div class="field-group mb-0">
-                                <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="pf-ins-pcn">RX PCN</label>
-                                <input type="text" class="profile-input gate-input bg-surface font-mono" id="pf-ins-pcn" placeholder="RX PCN" onblur="window.autoSaveProfile()" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 class="profile-section-label text-xs font-bold text-muted uppercase-tracked border-bottom-subtle pb-12 mb-24">Notification Preferences</h3>
-                    <div class="toggle-list bg-elevated border-subtle radius-12 overflow-hidden mb-40">
-                        <div class="toggle-row flex-between-center p-20 border-bottom-subtle hover-bg-surface transition-colors">
-                            <div class="toggle-info pr-20">
-                                <h4 class="toggle-title text-md font-bold text-primary m-0 mb-4">Live Price Alerts</h4>
-                                <p class="toggle-desc text-sm text-muted m-0">Receive push notifications when saved drug prices drop.</p>
-                            </div>
-                            <label class="toggle-switch relative-container cursor-pointer">
-                                <input type="checkbox" id="pref-alerts" class="sr-only" checked onchange="window.autoSaveProfile()"/>
-                                <span class="toggle-track block w-48 h-24 bg-input border-subtle radius-full transition-colors relative-container">
-                                    <span class="toggle-thumb block w-16 h-16 bg-muted radius-full absolute-vcenter left-4 transition-transform"></span>
-                                </span>
-                            </label>
-                        </div>
-                        <div class="toggle-row flex-between-center p-20 hover-bg-surface transition-colors">
-                            <div class="toggle-info pr-20">
-                                <h4 class="toggle-title text-md font-bold text-primary m-0 mb-4">Monthly Savings Digest</h4>
-                                <p class="toggle-desc text-sm text-muted m-0">Receive a monthly email summary of potential formulary savings.</p>
-                            </div>
-                            <label class="toggle-switch relative-container cursor-pointer">
-                                <input type="checkbox" id="pref-digest" class="sr-only" onchange="window.autoSaveProfile()"/>
-                                <span class="toggle-track block w-48 h-24 bg-input border-subtle radius-full transition-colors relative-container">
-                                    <span class="toggle-thumb block w-16 h-16 bg-muted radius-full absolute-vcenter left-4 transition-transform"></span>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="danger-zone grid-2col gap-16 mt-60 pt-40 border-top-subtle">
-                        <button class="btn-secondary w-full py-16 font-bold uppercase-tracked text-sm flex-center-all gap-12 transition-all hover-border-primary" id="logout-btn">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Terminate Session
-                        </button>
-                        <button class="btn-secondary w-full py-16 font-bold uppercase-tracked text-sm flex-center-all gap-12 text-red border-red-dim hover-bg-red-tint transition-all" onclick="window.openDeleteModal()">
-                            <i class="fa-solid fa-trash"></i> Delete Account
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-partner" class="tab-panel admin-only hidden" aria-label="Admin Dashboard">
-                <header class="panel-header mb-40 border-bottom-subtle pb-20">
-                    <div>
-                        <h1 class="panel-title display-heading-sm">Admin Controller</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Manage API Integrations, PBM Contracts, and Revenue Projections.</p>
-                    </div>
-                </header>
-
-                <div class="dashboard-card bg-elevated border-subtle radius-12 p-32 mb-32 border-left-blue relative-container overflow-hidden">
-                    <div class="corner-ribbon bg-blue text-dark font-bold text-xxs px-12 py-4 absolute-top-right radius-bl-8">DEV MODE</div>
-                    <h2 class="card-label text-sm font-bold text-blue uppercase-tracked mb-20 flex-center-y gap-8">
-                        <i class="fa-solid fa-network-wired"></i> API Sandbox Connectors
-                    </h2>
-                    <div class="api-buttons grid-2col gap-16">
-                        <button class="btn-secondary py-16 font-bold flex-center-all gap-12 hover-border-blue transition-colors" onclick="window.testAPI('Flexpa')">
-                            <i class="fa-solid fa-plug"></i> Initialize Flexpa API Test
-                        </button>
-                        <button class="btn-secondary py-16 font-bold flex-center-all gap-12 hover-border-blue transition-colors" onclick="window.testAPI('UHC')">
-                            <i class="fa-solid fa-plug"></i> Initialize UHC Data Test
-                        </button>
-                    </div>
-                    <p class="text-xs text-muted mt-16 m-0 italic-text"><i class="fa-solid fa-circle-info mr-4"></i> Sandbox keys must be populated in script.js GLOBAL_CONFIG to establish handshakes.</p>
-                </div>
-
-                <div class="dashboard-card bg-elevated border-subtle radius-12 p-32 mb-40">
-                    <h2 class="card-label text-sm font-bold text-muted uppercase-tracked mb-24 flex-center-y gap-8 border-bottom-subtle pb-12">
-                        <i class="fa-solid fa-calculator"></i> Pharmacy-Pays Revenue Calculator
-                    </h2>
-                    
-                    <div class="calc-inputs grid-2col gap-24 mb-32">
-                        <div class="field-group mb-0">
-                            <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="admin-members">EST. MONTHLY CLAIMS (FILLS)</label>
-                            <input type="number" id="admin-members" class="gate-input font-mono text-2xl font-bold py-20 px-24 bg-surface border-subtle radius-8" value="5000" min="0" oninput="window.calcAdminRev()" />
-                        </div>
-                        <div class="field-group mb-0">
-                            <label class="field-label text-xs font-bold text-muted uppercase-tracked mb-8 display-block" for="admin-fee">PBM AFFILIATE FEE PER CLAIM ($)</label>
-                            <div class="input-wrapper relative-container">
-                                <span class="absolute-vcenter left-24 text-2xl font-bold text-muted font-mono">$</span>
-                                <input type="number" id="admin-fee" class="gate-input font-mono text-2xl font-bold py-20 pr-24 pl-56 bg-surface border-subtle radius-8" value="4.50" step="0.50" min="0" oninput="window.calcAdminRev()" />
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="calc-result text-center p-40 bg-emerald-tint border-emerald radius-12 shadow-sm relative-container overflow-hidden">
-                        <div class="absolute-center circle-150 bg-emerald opacity-10 blur-xl pointer-events-none"></div>
-                        <h3 class="card-label text-sm font-bold text-emerald uppercase-tracked mb-12 relative-z-10">PROJECTED MONTHLY REVENUE</h3>
-                        <div class="card-value text-emerald display-heading font-mono tracking-tight m-0 relative-z-10" id="admin-rev-display">$22,500</div>
-                    </div>
-                </div>
-                
-                <div class="analytics-box bg-elevated border-subtle radius-12 p-32 mb-40">
-                    <h2 class="partner-section-label text-sm font-bold text-muted uppercase-tracked mb-24 border-bottom-subtle pb-12 flex-center-y gap-8">
-                        <i class="fa-solid fa-chart-column"></i> Q3-Q4 Growth Projection Model
-                    </h2>
-                    <div class="admin-chart-container h-200 flex-between-bottom border-bottom-subtle pb-8 mt-40 relative-container">
-                        <div class="absolute-top-left w-full h-full pointer-events-none" style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border);"></div>
-                        
-                        <div class="chart-bar w-12 bg-surface border-subtle radius-t-4 relative-container transition-height" style="height: 30%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-muted font-bold uppercase-tracked">Jul</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono text-muted">3k</span>
-                        </div>
-                        <div class="chart-bar w-12 bg-surface border-subtle radius-t-4 relative-container transition-height" style="height: 45%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-muted font-bold uppercase-tracked">Aug</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono text-muted">4.5k</span>
-                        </div>
-                        <div class="chart-bar w-12 bg-surface border-subtle radius-t-4 relative-container transition-height" style="height: 60%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-muted font-bold uppercase-tracked">Sep</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono text-muted">6k</span>
-                        </div>
-                        <div class="chart-bar w-12 bg-surface border-subtle radius-t-4 relative-container transition-height" style="height: 75%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-muted font-bold uppercase-tracked">Oct</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono text-muted">7.5k</span>
-                        </div>
-                        <div class="chart-bar w-12 bg-surface border-subtle radius-t-4 relative-container transition-height" style="height: 85%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-muted font-bold uppercase-tracked">Nov</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono text-muted">8.5k</span>
-                        </div>
-                        <div class="chart-bar w-12 bg-emerald border-emerald radius-t-4 relative-container transition-height shadow-glow" style="height: 100%;">
-                            <span class="bar-lbl absolute-bottom-center mb-n24 text-xs text-emerald font-bold uppercase-tracked">Dec</span>
-                            <span class="bar-val absolute-top-center mt-n24 text-xs font-mono font-bold text-emerald">10k</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contract-section mb-40">
-                    <h2 class="partner-section-label text-sm font-bold text-muted uppercase-tracked mb-16">PBM CONTRACT STATUS MATRIX</h2>
-                    <div class="contract-table-wrap bg-elevated border-subtle radius-12 overflow-x-auto">
-                        <table class="contract-table w-full text-left border-collapse">
-                            <thead class="bg-surface border-bottom-subtle">
-                                <tr>
-                                    <th class="p-16 text-xs font-bold text-muted uppercase-tracked">Enterprise Partner</th>
-                                    <th class="p-16 text-xs font-bold text-muted uppercase-tracked">Network Type</th>
-                                    <th class="p-16 text-xs font-bold text-muted uppercase-tracked">Contract Expiration</th>
-                                    <th class="p-16 text-xs font-bold text-muted uppercase-tracked">Current Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-bottom-subtle hover-bg-surface transition-colors">
-                                    <td class="p-16 font-bold text-primary">CVS Health Network</td>
-                                    <td class="p-16 text-secondary">National Retail Chain</td>
-                                    <td class="p-16 text-secondary font-mono">2027-03-31</td>
-                                    <td class="p-16"><span class="badge-status text-xs font-bold uppercase-tracked px-8 py-4 radius-4 bg-emerald-tint text-emerald"><i class="fa-solid fa-circle-check mr-4"></i> Active</span></td>
-                                </tr>
-                                <tr class="border-bottom-subtle hover-bg-surface transition-colors">
-                                    <td class="p-16 font-bold text-primary">Walgreens Rx Group</td>
-                                    <td class="p-16 text-secondary">National Retail Chain</td>
-                                    <td class="p-16 text-secondary font-mono">2026-12-15</td>
-                                    <td class="p-16"><span class="badge-status text-xs font-bold uppercase-tracked px-8 py-4 radius-4 bg-emerald-tint text-emerald"><i class="fa-solid fa-circle-check mr-4"></i> Active</span></td>
-                                </tr>
-                                <tr class="border-bottom-subtle hover-bg-surface transition-colors">
-                                    <td class="p-16 font-bold text-primary">Costco Pharmacy</td>
-                                    <td class="p-16 text-secondary">Warehouse / Big Box</td>
-                                    <td class="p-16 text-secondary font-mono">2027-06-30</td>
-                                    <td class="p-16"><span class="badge-status text-xs font-bold uppercase-tracked px-8 py-4 radius-4 bg-amber-tint text-amber"><i class="fa-solid fa-clock mr-4"></i> Pending Legal</span></td>
-                                </tr>
-                                <tr class="hover-bg-surface transition-colors">
-                                    <td class="p-16 font-bold text-primary">GoodRx Master Aggregator</td>
-                                    <td class="p-16 text-secondary">Digital Discount Network</td>
-                                    <td class="p-16 text-secondary font-mono">2028-01-01</td>
-                                    <td class="p-16"><span class="badge-status text-xs font-bold uppercase-tracked px-8 py-4 radius-4 bg-emerald-tint text-emerald"><i class="fa-solid fa-circle-check mr-4"></i> Active</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-analytics" class="tab-panel admin-only hidden" aria-label="Network Analytics">
-                <header class="panel-header mb-40 border-bottom-subtle pb-20">
-                    <div>
-                        <h1 class="panel-title display-heading-sm">Network Intelligence</h1>
-                        <p class="panel-sub lead-paragraph-sm text-muted">Aggregate search volume and demographic data.</p>
-                    </div>
-                </header>
-                
-                <div class="analytics-box bg-elevated border-subtle radius-12 p-32">
-                    <h2 class="partner-section-label text-sm font-bold text-muted uppercase-tracked mb-20 border-bottom-subtle pb-12 flex-center-y gap-8">
-                        <i class="fa-solid fa-magnifying-glass-chart"></i> TOP SEARCHED MEDICATIONS (30 DAYS)
-                    </h2>
-                    <div class="contract-table-wrap">
-                        <table class="contract-table w-full text-left border-collapse">
-                            <tbody>
-                                <tr class="border-bottom-subtle">
-                                    <td class="py-16 pr-16 font-bold text-primary text-lg">1. Semaglutide (Ozempic / Wegovy)</td>
-                                    <td class="py-16 pl-16 text-right text-emerald font-mono font-bold">24,512 queries</td>
-                                </tr>
-                                <tr class="border-bottom-subtle">
-                                    <td class="py-16 pr-16 font-bold text-primary text-lg">2. Lisinopril (Prinivil)</td>
-                                    <td class="py-16 pl-16 text-right text-emerald font-mono font-bold">18,401 queries</td>
-                                </tr>
-                                <tr class="border-bottom-subtle">
-                                    <td class="py-16 pr-16 font-bold text-primary text-lg">3. Atorvastatin (Lipitor)</td>
-                                    <td class="py-16 pl-16 text-right text-emerald font-mono font-bold">16,920 queries</td>
-                                </tr>
-                                <tr class="border-bottom-subtle">
-                                    <td class="py-16 pr-16 font-bold text-primary text-lg">4. Gabapentin (Neurontin)</td>
-                                    <td class="py-16 pl-16 text-right text-emerald font-mono font-bold">12,305 queries</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-16 pr-16 font-bold text-primary text-lg">5. Escitalopram (Lexapro)</td>
-                                    <td class="py-16 pl-16 text-right text-emerald font-mono font-bold">9,844 queries</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-coming-soon" class="tab-panel hidden" aria-label="Feature in Development">
-                <div class="coming-soon-wrapper bg-elevated border-dashed-light radius-16 p-80 text-center mt-40 max-w-800 auto-margin flex-col-center">
-                    <div class="hero-icon circle-100 bg-surface text-emerald text-5xl flex-center-all auto-margin mb-24 shadow-sm border-subtle">
-                        <i class="fa-solid fa-laptop-medical"></i>
-                    </div>
-                    <h2 class="hero-title-small display-heading-sm text-primary mb-12">SleekMed Telehealth is in Development</h2>
-                    <p class="hero-desc text-lg text-secondary line-height-relaxed max-w-500 auto-margin mb-40">
-                        This module requires secure backend cloud routing to connect with board-certified physicians. It is currently being built for our next major platform release.
-                    </p>
-                    <button class="gate-btn btn-jumbo max-w-250 font-bold shadow-glow" onclick="window.switchTab('search', 'backward')">
-                        <i class="fa-solid fa-arrow-left btn-icon-left"></i> Return to Engine
-                    </button>
-                </div>
-            </section>
-
-        </main>
-        
-        <nav class="bottom-nav hidden" id="bottom-nav" role="navigation" aria-label="Mobile Bottom Navigation">
-            </nav>
-
-    </div>
+    </main>
 
     <script src="script.js"></script>
-    
 </body>
 </html>
