@@ -1,65 +1,32 @@
 'use strict';
 
 const DRUGS = [
-  {
-    name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant',
-    variants: [
-      { dosage: '250mg', qty: '90 tablets', hospital: 65.00, insurance: 30.00, costplus: 14.50, goodrx: 19.24, sleekmed: 12.00 },
-      { dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, costplus: 12.80, goodrx: 9.00, sleekmed: 8.50 },
-      { dosage: '750mg', qty: '60 tablets', hospital: 115.74, insurance: 35.00, costplus: 18.50, goodrx: 14.92, sleekmed: 13.00 },
-      { dosage: '1000mg', qty: '60 tablets', hospital: 134.24, insurance: 40.00, costplus: 22.00, goodrx: 23.86, sleekmed: 19.00 }
-    ]
-  },
-  {
-    name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular',
-    variants: [
-      { dosage: '20mg', qty: '30 tablets', hospital: 68.70, insurance: 20.00, costplus: 5.46, goodrx: 9.50, sleekmed: 4.20 },
-      { dosage: '40mg', qty: '30 tablets', hospital: 66.60, insurance: 20.00, costplus: 5.74, goodrx: 11.20, sleekmed: 4.80 },
-      { dosage: '80mg', qty: '30 tablets', hospital: 70.20, insurance: 20.00, costplus: 5.92, goodrx: 14.50, sleekmed: 5.10 }
-    ]
-  },
-  {
-    name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular',
-    variants: [
-      { dosage: '2.5mg', qty: '30 tablets', hospital: 180, insurance: 25, costplus: 6.00, goodrx: 8.00, sleekmed: 4.10 },
-      { dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, costplus: 8.00, goodrx: 10.00, sleekmed: 5.80 },
-      { dosage: '10mg', qty: '30 tablets', hospital: 250, insurance: 45, costplus: 9.50, goodrx: 12.00, sleekmed: 6.20 }
-    ]
-  },
-  {
-    name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health',
-    variants: [
-      { dosage: '5mg', qty: '30 tablets', hospital: 150, insurance: 25, costplus: 7.00, goodrx: 9.00, sleekmed: 4.80 },
-      { dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, costplus: 8.50, goodrx: 11.00, sleekmed: 6.20 },
-      { dosage: '20mg', qty: '30 tablets', hospital: 290, insurance: 50, costplus: 11.00, goodrx: 15.00, sleekmed: 8.10 }
-    ]
-  },
-  {
-    name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine',
-    variants: [
-      { dosage: '0.25mg', qty: '1 pen', hospital: 1200.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
-      { dosage: '0.5mg', qty: '1 pen', hospital: 1232.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
-      { dosage: '1mg', qty: '1 pen', hospital: 1350.00, insurance: 300.00, costplus: 995.00, goodrx: 349.00, sleekmed: 320.00 },
-      { dosage: '2mg', qty: '1 pen', hospital: 1475.12, insurance: 300.00, costplus: 995.00, goodrx: 499.00, sleekmed: 450.00 }
-    ]
-  },
-  {
-    name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic',
-    variants: [
-      { dosage: '250mg', qty: '30 capsules', hospital: 110, insurance: 15, costplus: 5.00, goodrx: 6.00, sleekmed: 3.20 },
-      { dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, costplus: 6.50, goodrx: 8.00, sleekmed: 4.00 },
-      { dosage: '875mg', qty: '20 tablets', hospital: 160, insurance: 28, costplus: 7.00, goodrx: 9.00, sleekmed: 4.50 }
-    ]
-  },
-  {
-    name: 'Metformin', generic: 'Generic Glucophage', category: 'Metabolic',
-    variants: [
-      { dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, costplus: 6.00, goodrx: 8.00, sleekmed: 4.60 },
-      { dosage: '850mg', qty: '60 tablets', hospital: 210, insurance: 38, costplus: 7.50, goodrx: 10.00, sleekmed: 5.40 },
-      { dosage: '1000mg', qty: '60 tablets', hospital: 240, insurance: 45, costplus: 9.00, goodrx: 12.00, sleekmed: 6.80 },
-      { dosage: '1000mg ER', qty: '60 tablets', hospital: 300, insurance: 55, costplus: 12.00, goodrx: 15.00, sleekmed: 9.20 }
-    ]
-  }
+  { name: 'Albuterol', generic: 'Generic ProAir', category: 'Respiratory', variants: [{ dosage: '90mcg', qty: '1 inhaler', hospital: 60, insurance: 20, costplus: 15, goodrx: 18, sleekmed: 12 }] },
+  { name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular', variants: [{ dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, costplus: 8.00, goodrx: 10.00, sleekmed: 5.80 }] },
+  { name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic', variants: [{ dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, costplus: 6.50, goodrx: 8.00, sleekmed: 4.00 }] },
+  { name: 'Astelin', generic: 'Azelastine', category: 'Respiratory', variants: [{ dosage: '137mcg', qty: '1 bottle', hospital: 85, insurance: 30, costplus: 12, goodrx: 15, sleekmed: 9.50 }] },
+  { name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 66.60, insurance: 20.00, costplus: 5.74, goodrx: 11.20, sleekmed: 4.80 }] },
+  { name: 'Bupropion', generic: 'Generic Wellbutrin', category: 'Mental Health', variants: [{ dosage: '150mg XL', qty: '30 tablets', hospital: 110, insurance: 25, costplus: 9, goodrx: 12, sleekmed: 7.20 }] },
+  { name: 'Citalopram', generic: 'Generic Celexa', category: 'Mental Health', variants: [{ dosage: '20mg', qty: '30 tablets', hospital: 95, insurance: 20, costplus: 5.50, goodrx: 8, sleekmed: 4.50 }] },
+  { name: 'Duloxetine', generic: 'Generic Cymbalta', category: 'Mental Health', variants: [{ dosage: '60mg', qty: '30 capsules', hospital: 210, insurance: 35, costplus: 12, goodrx: 16, sleekmed: 9.80 }] },
+  { name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health', variants: [{ dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, costplus: 8.50, goodrx: 11.00, sleekmed: 6.20 }] },
+  { name: 'Fluticasone', generic: 'Generic Flonase', category: 'Respiratory', variants: [{ dosage: '50mcg', qty: '1 bottle', hospital: 55, insurance: 15, costplus: 10, goodrx: 13, sleekmed: 8.00 }] },
+  { name: 'Furosemide', generic: 'Generic Lasix', category: 'Cardiovascular', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 45, insurance: 10, costplus: 4, goodrx: 6, sleekmed: 3.50 }] },
+  { name: 'Gabapentin', generic: 'Generic Neurontin', category: 'Anticonvulsant', variants: [{ dosage: '300mg', qty: '90 capsules', hospital: 140, insurance: 25, costplus: 11, goodrx: 15, sleekmed: 8.50 }] },
+  { name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant', variants: [{ dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, costplus: 12.80, goodrx: 9.00, sleekmed: 8.50 }] },
+  { name: 'Levothyroxine', generic: 'Generic Synthroid', category: 'Endocrine', variants: [{ dosage: '50mcg', qty: '30 tablets', hospital: 40, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
+  { name: 'Lisinopril', generic: 'Generic Prinivil', category: 'Cardiovascular', variants: [{ dosage: '10mg', qty: '30 tablets', hospital: 55, insurance: 15, costplus: 4.50, goodrx: 7, sleekmed: 3.80 }] },
+  { name: 'Lorazepam', generic: 'Generic Ativan', category: 'Mental Health', variants: [{ dosage: '1mg', qty: '30 tablets', hospital: 65, insurance: 15, costplus: 6, goodrx: 9, sleekmed: 4.80 }] },
+  { name: 'Losartan', generic: 'Generic Cozaar', category: 'Cardiovascular', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 90, insurance: 20, costplus: 7, goodrx: 10, sleekmed: 5.50 }] },
+  { name: 'Metformin', generic: 'Generic Glucophage', category: 'Endocrine', variants: [{ dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, costplus: 6.00, goodrx: 8.00, sleekmed: 4.60 }] },
+  { name: 'Omeprazole', generic: 'Generic Prilosec', category: 'Gastrointestinal', variants: [{ dosage: '20mg', qty: '30 capsules', hospital: 75, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 5.00 }] },
+  { name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine', variants: [{ dosage: '1mg', qty: '1 pen', hospital: 1350.00, insurance: 300.00, costplus: 995.00, goodrx: 349.00, sleekmed: 320.00 }] },
+  { name: 'Pantoprazole', generic: 'Generic Protonix', category: 'Gastrointestinal', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 85, insurance: 20, costplus: 6.50, goodrx: 10, sleekmed: 5.20 }] },
+  { name: 'Promethazine', generic: 'Generic Phenergan', category: 'Gastrointestinal', variants: [{ dosage: '25mg', qty: '30 tablets', hospital: 60, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
+  { name: 'Rosuvastatin', generic: 'Generic Crestor', category: 'Cardiovascular', variants: [{ dosage: '20mg', qty: '30 tablets', hospital: 180, insurance: 30, costplus: 8, goodrx: 12, sleekmed: 6.50 }] },
+  { name: 'Sertraline', generic: 'Generic Zoloft', category: 'Mental Health', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 120, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 4.50 }] },
+  { name: 'Trazodone', generic: 'Generic Desyrel', category: 'Mental Health', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 50, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
+  { name: 'Venlafaxine', generic: 'Generic Effexor', category: 'Mental Health', variants: [{ dosage: '75mg ER', qty: '30 capsules', hospital: 160, insurance: 30, costplus: 11, goodrx: 15, sleekmed: 8.50 }] }
 ];
 
 let currentDrugInfo = null;
@@ -98,6 +65,7 @@ function saveDatabase() {
 function bootApp() {
   updateUIForAuth();
   switchTab('search', 'fade');
+  renderDirectory();
 }
 
 function updateUIForAuth() {
@@ -135,6 +103,7 @@ function updateUIForAuth() {
     injectUserData();
     renderMedicineCabinet();
     updateRewardsDisplay();
+    calcAdminRev();
   } else {
     $('topbar-profile-text').textContent = 'Sign In';
     navContainer.innerHTML = '';
@@ -144,7 +113,7 @@ function updateUIForAuth() {
 
 function injectUserData() {
   if(!state.user) return;
-  const { name, email, memberId, dob, insurance, prefs } = state.user;
+  const { name, email, memberId, dob, insurance, idNum, idState, prefs } = state.user;
   
   $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
   $('card-member-email').textContent = email;
@@ -154,11 +123,15 @@ function injectUserData() {
   $('pf-name').value = name;
   $('pf-email').value = email;
   $('pf-dob').value = dob || '';
+  $('pf-idnum').value = idNum || '';
+  $('pf-idstate').value = idState || '';
   
   if(insurance && typeof insurance === 'object') {
      $('pf-insurance').value = insurance.provider || '';
-  } else {
-     $('pf-insurance').value = insurance || '';
+     $('pf-ins-member').value = insurance.memberId || '';
+     $('pf-ins-group').value = insurance.group || '';
+     $('pf-ins-bin').value = insurance.bin || '';
+     $('pf-ins-pcn').value = insurance.pcn || '';
   }
   
   $('pref-alerts').checked = prefs ? prefs.alerts : true;
@@ -285,6 +258,58 @@ function filterDrugs() {
   list.classList.remove('hidden');
 }
 
+function renderDirectory() {
+  const container = $('directory-list');
+  const catFilter = $('dir-category').value;
+  const searchFilter = $('dir-search').value.trim().toLowerCase();
+  
+  let filtered = DRUGS.filter(d => {
+    const matchCat = catFilter === 'All' || d.category === catFilter;
+    const matchSearch = d.name.toLowerCase().includes(searchFilter) || d.generic.toLowerCase().includes(searchFilter);
+    return matchCat && matchSearch;
+  });
+  
+  filtered.sort((a, b) => a.name.localeCompare(b.name));
+  
+  container.innerHTML = '';
+  if(filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 40px;">No medications match your criteria.</div>`;
+    return;
+  }
+
+  let currentLetter = '';
+  let grid;
+
+  filtered.forEach(d => {
+    const firstLetter = d.name.charAt(0).toUpperCase();
+    if (firstLetter !== currentLetter) {
+      currentLetter = firstLetter;
+      const group = document.createElement('div');
+      group.className = 'dir-group';
+      group.innerHTML = `<div class="dir-letter">${currentLetter}</div><div class="dir-grid"></div>`;
+      container.appendChild(group);
+      grid = group.querySelector('.dir-grid');
+    }
+    
+    const item = document.createElement('div');
+    item.className = 'dir-item';
+    item.innerHTML = `
+      <div>
+        <div style="font-weight: 700; font-size: 16px;">${d.name}</div>
+        <div style="font-size: 13px; color: var(--text-muted);">${d.generic}</div>
+        <div class="dir-item-cat">${d.category}</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color: var(--emerald);"></i>
+    `;
+    item.addEventListener('click', () => showDrugPage(d));
+    grid.appendChild(item);
+  });
+}
+
+function filterDirectory() {
+  renderDirectory();
+}
+
 function filterFAQ() {
   const q = $('faq-search-input').value.toLowerCase();
   const items = $$('.faq-item');
@@ -327,9 +352,19 @@ function showDrugPage(drug) {
         <select id="sel-qty" class="variant-select">
         </select>
       </div>
+      <div class="variant-col">
+        <span class="variant-label">Location (Optional)</span>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="detail-zip" class="gate-input" placeholder="Zip Code" style="flex: 2; padding: 12px; font-size: 16px;">
+          <button class="gate-btn" style="flex: 1; margin: 0; padding: 12px;" onclick="window.simulateLocalPricing()"><i class="fa-solid fa-location-crosshairs"></i></button>
+        </div>
+      </div>
     </div>
     
-    <div style="font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">Estimated Prices</div>
+    <div class="flex-between" style="align-items: center; margin-bottom: 8px; margin-top: 16px;">
+      <div style="font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">Estimated Prices</div>
+      <div id="location-badge" style="font-size: 11px; color: var(--emerald); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">National Average</div>
+    </div>
     <div id="price-board" class="price-comparison-list">
     </div>
     
@@ -337,7 +372,7 @@ function showDrugPage(drug) {
   `;
 
   $('sel-dosage').addEventListener('change', updateQuantities);
-  $('sel-qty').addEventListener('change', updatePriceBoard);
+  $('sel-qty').addEventListener('change', () => updatePriceBoard(false));
 
   updateQuantities();
   switchTab('drug-detail', 'forward');
@@ -350,24 +385,35 @@ function updateQuantities() {
   const matchingVariants = currentDrugInfo.variants.filter(v => v.dosage === selectedDosage);
   
   qtySelect.innerHTML = matchingVariants.map(v => `<option value="${v.qty}">${v.qty}</option>`).join('');
-  updatePriceBoard();
+  updatePriceBoard(false);
 }
 
-function updatePriceBoard() {
+function updatePriceBoard(isLocal) {
   const selectedDosage = $('sel-dosage').value;
   const selectedQty = $('sel-qty').value;
   
   const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
   if (!v) return;
 
-  const insName = (state.loggedIn && state.user.insurance) 
-    ? `${state.user.insurance} Co Pay (Avg)` 
+  const insName = (state.loggedIn && state.user.insurance && state.user.insurance.provider) 
+    ? `${state.user.insurance.provider} Co Pay (Avg)` 
     : 'Insurance Co Pay (Avg)';
+    
+  let sPrice = v.sleekmed;
+  let gPrice = v.goodrx;
+  
+  if (isLocal) {
+    sPrice = sPrice * 0.95; // Simulate localized cheaper finding
+    gPrice = gPrice * 1.05; // Simulate standard fluctuation
+    $('location-badge').textContent = `Local Pricing (${$('detail-zip').value})`;
+  } else {
+    $('location-badge').textContent = `National Average`;
+  }
 
   $('price-board').innerHTML = `
     <div class="price-row best-price">
       <span class="price-source">SleekMed Direct <span class="star-icon"><i class="fa-solid fa-star"></i> Best Price</span></span>
-      <span class="price-value">${fmt(v.sleekmed)}</span>
+      <span class="price-value">${fmt(sPrice)}</span>
     </div>
     <div class="price-row">
       <span class="price-source">Cost Plus Drugs</span>
@@ -375,7 +421,7 @@ function updatePriceBoard() {
     </div>
     <div class="price-row">
       <span class="price-source">GoodRx (Avg)</span>
-      <span class="price-value">${fmt(v.goodrx)}</span>
+      <span class="price-value">${fmt(gPrice)}</span>
     </div>
     <div class="price-row">
       <span class="price-source">${insName}</span>
@@ -386,6 +432,21 @@ function updatePriceBoard() {
       <span class="price-value" style="text-decoration: line-through;">${fmt(v.hospital)}</span>
     </div>
   `;
+}
+
+function simulateLocalPricing() {
+  const zip = $('detail-zip').value.trim();
+  if(!zip || zip.length < 5) {
+    showToast("Enter a valid zip code.");
+    return;
+  }
+  
+  $('price-board').innerHTML = `<div style="text-align:center; padding: 40px; color: var(--emerald);"><i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; margin-bottom: 16px;"></i><br>Scanning local pharmacies...</div>`;
+  
+  setTimeout(() => {
+    updatePriceBoard(true);
+    showToast("Prices updated for " + zip);
+  }, 800);
 }
 
 function openAuth() {
@@ -472,9 +533,11 @@ function handleLogin() {
     db[email] = {
       name: name || 'Member',
       email: email,
-      memberId: 'SM ' + Math.floor(100000 + Math.random() * 900000),
+      memberId: 'SM-' + Math.floor(100000 + Math.random() * 900000),
       dob: '',
-      insurance: '',
+      idNum: '',
+      idState: '',
+      insurance: { provider: '', memberId: '', group: '', bin: '', pcn: '' },
       cabinet: [],
       prefs: { alerts: true, digest: false }
     };
@@ -516,6 +579,14 @@ function confirmDeleteAccount() {
   }
 }
 
+function calcAdminRev() {
+  if(!state.isAdmin) return;
+  const mem = parseFloat($('admin-members').value) || 0;
+  const fee = parseFloat($('admin-fee').value) || 0;
+  const rev = Math.round(mem * fee);
+  $('admin-rev-display').textContent = '$' + rev.toLocaleString();
+}
+
 function switchTab(tab, direction = 'fade') {
   state.activeTab = tab;
   
@@ -549,7 +620,16 @@ function autoSaveProfile() {
 
       state.user.name = $('pf-name').value;
       state.user.dob = $('pf-dob').value;
-      state.user.insurance = $('pf-insurance').value;
+      state.user.idNum = $('pf-idnum').value;
+      state.user.idState = $('pf-idstate').value;
+      
+      state.user.insurance = {
+         provider: $('pf-insurance').value,
+         memberId: $('pf-ins-member').value,
+         group: $('pf-ins-group').value,
+         bin: $('pf-ins-bin').value,
+         pcn: $('pf-ins-pcn').value
+      };
       
       state.user.prefs = {
         alerts: $('pref-alerts').checked,
@@ -578,7 +658,10 @@ window.showAuthStep1 = showAuthStep1;
 window.toggleCabinetSearch = toggleCabinetSearch;
 window.handleCabinetAdd = handleCabinetAdd;
 window.filterFAQ = filterFAQ;
+window.filterDirectory = filterDirectory;
 window.autoSaveProfile = autoSaveProfile;
+window.simulateLocalPricing = simulateLocalPricing;
+window.calcAdminRev = calcAdminRev;
 
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
