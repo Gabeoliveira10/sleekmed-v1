@@ -32,11 +32,24 @@
     <li><button class="sidebar-link active" data-tab="search" onclick="window.switchTab('search', 'fade'); window.closeSidebar();">
       <i class="fa-solid fa-magnifying-glass"></i> Savings Finder
     </button></li>
+    <li><button class="sidebar-link" data-tab="directory" onclick="window.switchTab('directory', 'forward'); window.closeSidebar();">
+      <i class="fa-solid fa-book-medical"></i> Medication List
+    </button></li>
     <li><button class="sidebar-link" data-tab="faq" onclick="window.switchTab('faq', 'forward'); window.closeSidebar();">
       <i class="fa-solid fa-circle-question"></i> How It Works
     </button></li>
     <li><button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
       <i class="fa-solid fa-stethoscope"></i> Online Care <span class="new-badge">New</span>
+    </button></li>
+  </ul>
+  
+  <div class="sidebar-section-label" style="margin-top: 20px;">COMPANY</div>
+  <ul class="sidebar-nav">
+    <li><button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
+      <i class="fa-solid fa-building"></i> About Us
+    </button></li>
+    <li><button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
+      <i class="fa-solid fa-headset"></i> Support
     </button></li>
   </ul>
 </nav>
@@ -55,7 +68,7 @@
   <div id="auth-step-1">
     <div class="field-group">
       <label class="field-label">FULL NAME</label>
-      <input id="login-name" type="text" class="gate-input" placeholder="Gabriel Oliveira" />
+      <input id="login-name" type="text" class="gate-input" placeholder="First Last" />
     </div>
     <div class="field-group">
       <label class="field-label">EMAIL ADDRESS</label>
@@ -72,7 +85,7 @@
     <button class="btn-text-small" onclick="window.showAuthStep1()"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <div class="field-group" style="margin-top: 16px;">
       <label class="field-label" id="code-label">ENTER VERIFICATION CODE</label>
-      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" id="code-subtext">A 6 digit code was sent to your email. (Any code works for demo).</div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" id="code-subtext">A 6 digit code was sent to your email.</div>
       <input id="login-code" type="password" class="gate-input" placeholder="••••••" />
     </div>
     <button id="login-btn" class="gate-btn">SECURE ACCESS</button>
@@ -114,21 +127,18 @@
   </div>
 
   <main class="tab-body">
+    
     <section id="tab-search" class="tab-panel active">
       <div class="hero-section">
         <h1 class="hero-title">The ultimate healthcare price comparison tool.</h1>
-        <p class="hero-subtitle">Stop overpaying at the pharmacy. Compare local prices and save instantly.</p>
+        <p class="hero-subtitle">Stop overpaying at the pharmacy. We show you every price option so you always win.</p>
         
         <div class="search-container">
           <div class="search-row">
-            <div class="search-wrap">
+            <div class="search-wrap" style="width: 100%;">
               <i class="fa-solid fa-magnifying-glass search-icon"></i>
               <input id="drug-search" type="text" class="search-input" placeholder="Search medications by name..." autocomplete="off" />
               <ul id="search-results-list" class="search-dropdown hidden"></ul>
-            </div>
-            <div class="zip-wrap">
-              <i class="fa-solid fa-location-dot search-icon"></i>
-              <input id="zip-search" type="text" class="search-input" placeholder="Zip code" value="32259" />
             </div>
           </div>
         </div>
@@ -137,8 +147,8 @@
       <div class="founder-message">
         <div class="founder-content">
           <h2 class="emerald-text">Welcome to radical transparency.</h2>
-          <p class="text-secondary">The healthcare industry thrives on confusion. Prices for the exact same medication can vary by hundreds of dollars depending on which pharmacy you visit and whether you use insurance or cash.</p>
-          <p class="text-secondary">SleekMed is an aggregator built to cut through the noise. We monitor pricing across major networks to ensure you have the data you need to make the smartest financial decision for your health.</p>
+          <p class="text-secondary">SleekMed is not a pharmacy. We are an unbiased aggregator built to cut through the noise of the healthcare industry. Prices for the exact same medication vary wildly between pharmacies, discount networks, and insurance co-pays.</p>
+          <p class="text-secondary">We pull real-time data across all these channels and present it to you on one screen. You decide where to fill, and you decide whether to use our free digital access card, a competitor's card, or your own insurance. We just provide the truth.</p>
           <div class="founder-name">Gabriel Oliveira</div>
           <div class="founder-title">FOUNDER AND CEO</div>
         </div>
@@ -149,36 +159,66 @@
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-scale-balanced"></i></div>
           <h3>Unbiased Comparisons</h3>
-          <p>We show you GoodRx pricing alongside Cost Plus and your insurance co pays so you always win.</p>
+          <p>We show you Cost Plus, GoodRx, and insurance pricing side-by-side.</p>
         </div>
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-store"></i></div>
           <h3>Universal Access</h3>
-          <p>Accepted at major retail chains and thousands of independent local pharmacies.</p>
+          <p>Accepted at major retail chains and independent local pharmacies.</p>
         </div>
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-bolt"></i></div>
           <h3>Instant Action</h3>
-          <p>No waiting periods. Create an account and present your digital card to the pharmacist immediately.</p>
+          <p>Create an account and present your digital card to the pharmacist immediately.</p>
         </div>
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-lock"></i></div>
           <h3>Privacy First</h3>
-          <p>Your search history and medication data are secured with enterprise grade encryption.</p>
+          <p>Your search history and medication data are secured with enterprise-grade encryption.</p>
         </div>
       </div>
 
       <div class="section-heading">Member Stories</div>
       <div class="testimonial-section">
         <div class="testimonial-card">
-          <p class="quote">I checked the app while standing in line at the pharmacy. Found out I could save forty dollars just by using the digital card instead of my high deductible plan.</p>
+          <p class="quote">I checked the app while standing in line. Found out I could save forty dollars just by using the digital card instead of my high deductible plan.</p>
           <div class="author">Sarah M.</div>
         </div>
         <div class="testimonial-card">
-          <p class="quote">Finally a tool that shows all the options in one place. I use it for my whole family now.</p>
+          <p class="quote">Finally a tool that shows all the options in one place without hiding the competitor prices. I use it for my whole family now.</p>
           <div class="author">David R.</div>
         </div>
       </div>
+    </section>
+
+    <section id="tab-directory" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Medication Directory</div>
+          <div class="panel-sub">Browse all available medications by category or name.</div>
+        </div>
+      </div>
+      
+      <div class="flex-between" style="align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div class="search-wrap" style="flex: 2; min-width: 200px;">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input id="dir-search" type="text" class="search-input" placeholder="Filter by name..." onkeyup="window.filterDirectory()" />
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <select id="dir-category" class="gate-input" onchange="window.filterDirectory()" style="cursor: pointer;">
+            <option value="All">All Conditions</option>
+            <option value="Antibiotic">Antibiotics</option>
+            <option value="Anticonvulsant">Anticonvulsants</option>
+            <option value="Cardiovascular">Cardiovascular / Heart</option>
+            <option value="Endocrine">Endocrine / Diabetes</option>
+            <option value="Gastrointestinal">Gastrointestinal</option>
+            <option value="Mental Health">Mental Health</option>
+            <option value="Respiratory">Respiratory</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="directory-list"></div>
     </section>
 
     <section id="tab-drug-detail" class="tab-panel">
@@ -207,7 +247,7 @@
       <div class="faq-container" id="faq-list">
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">What exactly is SleekMed? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">We are a healthcare price aggregator. We collect data from various discount networks and pharmacies to show you the absolute lowest price available for your prescription in your area.</div>
+          <div class="faq-answer">We are an unbiased healthcare price aggregator. We collect data from various discount networks, direct-to-consumer pharmacies, and standard insurers to show you all your options on one screen.</div>
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">How much does it cost to use? <i class="fa-solid fa-chevron-down"></i></div>
@@ -219,15 +259,11 @@
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">Do I need insurance to use this? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">No insurance is required. In fact many of our users find that our negotiated cash prices are actually lower than their insurance co pays.</div>
+          <div class="faq-answer">No insurance is required. In fact, many of our users find that our negotiated cash prices are actually lower than their insurance co-pays.</div>
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">Can I combine this with my insurance? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">Our discounts cannot be stacked or combined with insurance or Medicare. However you can ask your pharmacist to compare our price against your insurance price and simply select whichever is cheaper.</div>
-        </div>
-        <div class="faq-item" onclick="this.classList.toggle('active')">
-          <div class="faq-question">Is my medical data secure? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">Yes. We utilize advanced encryption protocols. Your identity and medication history are stored securely and are never sold to third party advertisers.</div>
+          <div class="faq-answer">Our discounts cannot be stacked or combined with insurance or Medicare. However, you can ask your pharmacist to compare our price against your insurance price and simply select whichever is cheaper.</div>
         </div>
       </div>
     </section>
@@ -270,7 +306,7 @@
             </div>
             <div class="card-data-item">
               <div class="card-data-label">MEMBER ID</div>
-              <div class="card-data-val" id="card-member-id">SM 000000</div>
+              <div class="card-data-val" id="card-member-id">SM-000000</div>
             </div>
           </div>
 
@@ -337,6 +373,7 @@
           <div class="panel-title">My Dashboard</div>
           <div class="panel-sub">Manage your prescriptions and identity details.</div>
         </div>
+        <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);">Save</button>
       </div>
 
       <div class="profile-header-area">
@@ -400,7 +437,11 @@
               <input type="date" class="profile-input" id="pf-dob" onblur="window.autoSaveProfile()"/>
             </div>
             <div class="profile-field">
-              <label class="field-label">INSURANCE PROVIDER</label>
+              <label class="field-label">GOVERNMENT ID NUMBER</label>
+              <input type="text" class="profile-input" id="pf-idnum" placeholder="Driver License Number" onblur="window.autoSaveProfile()"/>
+            </div>
+            <div class="profile-field" style="grid-column: 1 / -1;">
+              <label class="field-label">PRIMARY INSURANCE PROVIDER</label>
               <input type="text" class="profile-input" id="pf-insurance" placeholder="e.g. United Healthcare" onblur="window.autoSaveProfile()"/>
             </div>
           </div>
@@ -414,13 +455,6 @@
               <div class="toggle-desc">Notify when saved drug prices change</div>
             </div>
             <label class="toggle-switch"><input type="checkbox" id="pref-alerts" onchange="window.autoSaveProfile()"/><span class="toggle-track"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div>
-              <div class="toggle-title">Monthly Digest</div>
-              <div class="toggle-desc">Receive a summary of potential savings</div>
-            </div>
-            <label class="toggle-switch"><input type="checkbox" id="pref-digest" onchange="window.autoSaveProfile()"/><span class="toggle-track"></span></label>
           </div>
         </div>
 
@@ -447,27 +481,42 @@
     <section id="tab-partner" class="tab-panel admin-only">
       <div class="panel-header">
         <div>
-          <div class="panel-title">Partner Portal</div>
-          <div class="panel-sub">Network Management and Contract Intelligence</div>
+          <div class="panel-title">Admin Dashboard</div>
+          <div class="panel-sub">Live Business Forecasting & Analytics</div>
         </div>
       </div>
 
       <div class="partner-kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-val">847,200</div>
+        <div class="kpi-card" style="border-color: var(--emerald);">
           <div class="kpi-label">Active Members</div>
+          <input type="number" id="admin-members" class="admin-kpi-input text-emerald" value="84720" oninput="window.calcAdminRev()" />
         </div>
         <div class="kpi-card">
-          <div class="kpi-val">$42.1M</div>
-          <div class="kpi-label">Total Savings Generated</div>
+          <div class="kpi-label">Avg Transaction Fee</div>
+          <div style="position: relative;">
+            <span class="admin-kpi-prefix">$</span>
+            <input type="number" id="admin-fee" class="admin-kpi-input" value="1.50" step="0.10" oninput="window.calcAdminRev()" style="padding-left: 24px;" />
+          </div>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-val">75,412</div>
-          <div class="kpi-label">Active Locations</div>
+        <div class="kpi-card" style="background: rgba(0, 245, 160, 0.05);">
+          <div class="kpi-label" style="color: var(--emerald);">Projected MRR (Monthly Rev)</div>
+          <div class="kpi-val" id="admin-rev-display" style="color: #fff; margin-top: 8px;">$127,080</div>
         </div>
       </div>
 
-      <div class="partner-section-label">CONTRACT STATUS MATRIX</div>
+      <div class="analytics-box">
+        <div class="partner-section-label">MEMBER GROWTH PROJECTION (Q3 - Q4)</div>
+        <div class="admin-chart-container">
+          <div class="chart-bar" style="height: 40%;"><span class="bar-lbl">Jul</span></div>
+          <div class="chart-bar" style="height: 55%;"><span class="bar-lbl">Aug</span></div>
+          <div class="chart-bar" style="height: 65%;"><span class="bar-lbl">Sep</span></div>
+          <div class="chart-bar" style="height: 80%;"><span class="bar-lbl">Oct</span></div>
+          <div class="chart-bar" style="height: 90%;"><span class="bar-lbl">Nov</span></div>
+          <div class="chart-bar" style="height: 100%; background: var(--emerald);"><span class="bar-lbl">Dec</span></div>
+        </div>
+      </div>
+
+      <div class="partner-section-label" style="margin-top: 32px;">CONTRACT STATUS MATRIX</div>
       <div class="contract-table-wrap">
         <table class="contract-table">
           <thead>
@@ -478,7 +527,10 @@
               <th>STATUS</th>
             </tr>
           </thead>
-          <tbody id="contract-tbody">
+          <tbody>
+            <tr><td>CVS Health Network</td><td>Retail Chain</td><td>2027-03-31</td><td style="color:var(--emerald);">ACTIVE</td></tr>
+            <tr><td>Walgreens Rx Group</td><td>Retail Chain</td><td>2026-12-15</td><td style="color:var(--emerald);">ACTIVE</td></tr>
+            <tr><td>Costco Pharmacy</td><td>Warehouse</td><td>2027-06-30</td><td style="color:var(--amber);">PENDING</td></tr>
           </tbody>
         </table>
       </div>
@@ -492,9 +544,15 @@
         </div>
       </div>
       <div class="analytics-box">
-        <div class="partner-section-label">TOP SAVINGS MEDICATIONS</div>
-        <div id="top-drugs-list">
-          <div class="text-muted">Analytics population requires data stream.</div>
+        <div class="partner-section-label">TOP SEARCHED MEDICATIONS</div>
+        <div class="contract-table-wrap" style="border: none;">
+          <table class="contract-table">
+            <tbody>
+              <tr><td>1. Semaglutide (Ozempic)</td><td style="text-align: right; color: var(--text-muted);">24,512 searches</td></tr>
+              <tr><td>2. Lisinopril</td><td style="text-align: right; color: var(--text-muted);">18,401 searches</td></tr>
+              <tr><td>3. Atorvastatin</td><td style="text-align: right; color: var(--text-muted);">16,920 searches</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
