@@ -165,9 +165,10 @@ function bootApp() {
 
 function updateUIForAuth() {
   const navContainer = $('bottom-nav');
+  if (!navContainer) return;
   
   if (state.loggedIn) {
-    $('topbar-profile-text').textContent = 'Profile';
+    if ($('topbar-profile-text')) $('topbar-profile-text').textContent = 'Profile';
     navContainer.classList.remove('hidden');
     
     navContainer.innerHTML = `
@@ -205,7 +206,7 @@ function updateUIForAuth() {
     });
 
   } else {
-    $('topbar-profile-text').textContent = 'Sign In';
+    if ($('topbar-profile-text')) $('topbar-profile-text').textContent = 'Sign In';
     navContainer.innerHTML = '';
     navContainer.classList.add('hidden');
   }
@@ -215,26 +216,26 @@ function injectUserData() {
   if(!state.user) return;
   const { name, email, memberId, dob, insurance, idNum, idState, prefs } = state.user;
   
-  $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
-  $('card-member-email').textContent = email;
-  $('card-member-id').textContent = memberId;
+  if ($('card-member-name')) $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
+  if ($('card-member-email')) $('card-member-email').textContent = email;
+  if ($('card-member-id')) $('card-member-id').textContent = memberId;
 
-  $('profile-name-display').textContent = name || 'Member Name';
-  $('pf-name').value = name;
-  $('pf-email').value = email;
-  $('pf-dob').value = dob || '';
-  $('pf-idnum').value = idNum || '';
+  if ($('profile-name-display')) $('profile-name-display').textContent = name || 'Member Name';
+  if ($('pf-name')) $('pf-name').value = name || '';
+  if ($('pf-email')) $('pf-email').value = email || '';
+  if ($('pf-dob')) $('pf-dob').value = dob || '';
+  if ($('pf-idnum')) $('pf-idnum').value = idNum || '';
   
   if(insurance && typeof insurance === 'object') {
-     $('pf-insurance').value = insurance.provider || '';
-     $('pf-ins-member').value = insurance.memberId || '';
-     $('pf-ins-group').value = insurance.group || '';
-     $('pf-ins-bin').value = insurance.bin || '';
-     $('pf-ins-pcn').value = insurance.pcn || '';
+     if ($('pf-insurance')) $('pf-insurance').value = insurance.provider || '';
+     if ($('pf-ins-member')) $('pf-ins-member').value = insurance.memberId || '';
+     if ($('pf-ins-group')) $('pf-ins-group').value = insurance.group || '';
+     if ($('pf-ins-bin')) $('pf-ins-bin').value = insurance.bin || '';
+     if ($('pf-ins-pcn')) $('pf-ins-pcn').value = insurance.pcn || '';
   }
   
-  $('pref-alerts').checked = prefs ? prefs.alerts : true;
-  $('pref-digest').checked = prefs ? prefs.digest : false;
+  if ($('pref-alerts')) $('pref-alerts').checked = prefs ? prefs.alerts : true;
+  if ($('pref-digest')) $('pref-digest').checked = prefs ? prefs.digest : false;
 }
 
 function updateRewardsDisplay() {
@@ -244,16 +245,18 @@ function updateRewardsDisplay() {
   if(state.user.name && state.user.dob) points += 500;
   if(state.user.cabinet && state.user.cabinet.length > 0) points += 250;
   
-  $('dashboard-pts').textContent = `${points} points`;
-  $('reward-points-display').textContent = `${points}`;
+  if ($('dashboard-pts')) $('dashboard-pts').textContent = `${points} points`;
+  if ($('reward-points-display')) $('reward-points-display').textContent = `${points}`;
   
   const progress = Math.min((points / 500) * 100, 100);
-  $('reward-progress-fill').style.width = `${progress}%`;
+  if ($('reward-progress-fill')) $('reward-progress-fill').style.width = `${progress}%`;
 }
 
 function renderMedicineCabinet() {
   const container = $('medicine-cabinet-list');
   const orderList = $('order-history-list');
+
+  if (!container || !orderList) return;
 
   if (!state.user.cabinet || state.user.cabinet.length === 0) {
     container.innerHTML = `
@@ -277,7 +280,7 @@ function renderMedicineCabinet() {
         <div class="cabinet-item-name">${drug.name} <span style="color: var(--text-muted); font-size: 14px; font-weight: normal;">${drug.dosage}</span></div>
         <div class="cabinet-item-sub">Qty: ${drug.qty} | Refills: ${drug.refills}</div>
       </div>
-      <button style="color: var(--red); font-weight: bold; padding: 8px; font-size: 16px; background: none; border: none; cursor: pointer;" onclick="removeFromCabinet(${index})"><i class="fa-solid fa-xmark"></i></button>
+      <button style="color: var(--red); font-weight: bold; padding: 8px; font-size: 16px; background: none; border: none; cursor: pointer;" onclick="window.removeFromCabinet(${index})"><i class="fa-solid fa-xmark"></i></button>
     `;
     container.appendChild(item);
 
@@ -335,8 +338,11 @@ function removeFromCabinet(index) {
 }
 
 function filterDrugs() {
-  const q = $('drug-search').value.trim().toLowerCase();
+  const searchInput = $('drug-search');
   const list = $('search-results-list');
+  if (!searchInput || !list) return;
+
+  const q = searchInput.value.trim().toLowerCase();
   
   if (!q) {
     list.classList.add('hidden');
@@ -360,7 +366,7 @@ function filterDrugs() {
       `;
       li.addEventListener('click', () => {
         list.classList.add('hidden');
-        $('drug-search').value = '';
+        searchInput.value = '';
         showDrugPage(d);
       });
       list.appendChild(li);
@@ -371,8 +377,13 @@ function filterDrugs() {
 
 function renderDirectory() {
   const container = $('directory-list');
-  const catFilter = $('dir-category').value;
-  const searchFilter = $('dir-search').value.trim().toLowerCase();
+  const catInput = $('dir-category');
+  const searchInput = $('dir-search');
+
+  if (!container || !catInput || !searchInput) return;
+
+  const catFilter = catInput.value;
+  const searchFilter = searchInput.value.trim().toLowerCase();
   
   let filtered = DRUGS.filter(d => {
     const matchCat = catFilter === 'All' || d.category === catFilter;
@@ -422,7 +433,10 @@ function filterDirectory() {
 }
 
 function filterFAQ() {
-  const q = $('faq-search-input').value.toLowerCase();
+  const searchInput = $('faq-search-input');
+  if (!searchInput) return;
+
+  const q = searchInput.value.toLowerCase();
   const items = $$('.faq-item');
   items.forEach(item => {
     const text = item.textContent.toLowerCase();
@@ -438,7 +452,10 @@ function showDrugPage(drug) {
   currentDrugInfo = drug;
   const uniqueDosages = [...new Set(drug.variants.map(v => v.dosage))];
   
-  $('drug-detail-content').innerHTML = `
+  const detailContent = $('drug-detail-content');
+  if (!detailContent) return;
+
+  detailContent.innerHTML = `
     <div class="flex-between" style="margin-bottom: 24px;">
       <div>
         <div class="panel-title" style="margin-bottom: 4px;">${drug.name}</div>
@@ -479,11 +496,11 @@ function showDrugPage(drug) {
     <div id="price-board" class="price-comparison-list">
     </div>
     
-    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 32px;" onclick="openAuth();">Get Savings Card</button>` : ''}
+    ${!state.loggedIn ? `<button class="gate-btn" style="margin-top: 32px;" onclick="window.openAuth();">Get Savings Card</button>` : ''}
   `;
 
-  $('sel-dosage').addEventListener('change', updateQuantities);
-  $('sel-qty').addEventListener('change', () => updatePriceBoard(false));
+  if ($('sel-dosage')) $('sel-dosage').addEventListener('change', updateQuantities);
+  if ($('sel-qty')) $('sel-qty').addEventListener('change', () => updatePriceBoard(false));
 
   updateQuantities();
   switchTab('drug-detail', 'forward');
@@ -492,14 +509,17 @@ function showDrugPage(drug) {
 
 function saveCurrentDrugToCabinet() {
   const dName = currentDrugInfo.name;
-  const dos = $('sel-dosage').value;
-  const qty = $('sel-qty').value;
+  const dos = $('sel-dosage') ? $('sel-dosage').value : '';
+  const qty = $('sel-qty') ? $('sel-qty').value : '';
   addToCabinet(dName, dos, qty);
 }
 
 function updateQuantities() {
-  const selectedDosage = $('sel-dosage').value;
+  const dosageSelect = $('sel-dosage');
   const qtySelect = $('sel-qty');
+  if (!dosageSelect || !qtySelect) return;
+
+  const selectedDosage = dosageSelect.value;
   const matchingVariants = currentDrugInfo.variants.filter(v => v.dosage === selectedDosage);
   
   qtySelect.innerHTML = matchingVariants.map(v => `<option value="${v.qty}">${v.qty}</option>`).join('');
@@ -507,8 +527,12 @@ function updateQuantities() {
 }
 
 function updatePriceBoard(isLocal) {
-  const selectedDosage = $('sel-dosage').value;
-  const selectedQty = $('sel-qty').value;
+  const dosageSelect = $('sel-dosage');
+  const qtySelect = $('sel-qty');
+  if (!dosageSelect || !qtySelect || !$('price-board')) return;
+
+  const selectedDosage = dosageSelect.value;
+  const selectedQty = qtySelect.value;
   
   const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
   if (!v) return;
@@ -521,7 +545,7 @@ function updatePriceBoard(isLocal) {
   let gPrice = v.goodrx;
   
   if (isLocal) {
-    const zip = $('detail-zip').value.trim();
+    const zip = $('detail-zip') ? $('detail-zip').value.trim() : '';
     let hash = 0;
     for(let i=0; i<zip.length; i++) hash += zip.charCodeAt(i);
     
@@ -529,9 +553,9 @@ function updatePriceBoard(isLocal) {
     
     sPrice = sPrice * modifier;
     gPrice = gPrice * (modifier + 0.05); 
-    $('location-badge').textContent = `Local Pricing (${zip})`;
+    if ($('location-badge')) $('location-badge').textContent = `Local Pricing (${zip})`;
   } else {
-    $('location-badge').textContent = `National Average`;
+    if ($('location-badge')) $('location-badge').textContent = `National Average`;
   }
 
   $('price-board').innerHTML = `
@@ -559,13 +583,17 @@ function updatePriceBoard(isLocal) {
 }
 
 function simulateLocalPricing() {
-  const zip = $('detail-zip').value.trim();
+  const zipInput = $('detail-zip');
+  if (!zipInput) return;
+
+  const zip = zipInput.value.trim();
   if(!zip || zip.length < 5) {
     showToast("Enter a valid zip code.");
     return;
   }
   
-  $('price-board').innerHTML = `<div style="text-align:center; padding: 40px; color: var(--emerald);"><i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; margin-bottom: 16px;"></i><br>Scanning local pharmacies...</div>`;
+  const priceBoard = $('price-board');
+  if (priceBoard) priceBoard.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--emerald);"><i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; margin-bottom: 16px;"></i><br>Scanning local pharmacies...</div>`;
   
   setTimeout(() => {
     updatePriceBoard(true);
@@ -574,25 +602,28 @@ function simulateLocalPricing() {
 }
 
 function openAuth() {
-  $('auth-overlay').classList.remove('hidden');
-  $('auth-panel').classList.remove('hidden');
-  $('auth-step-1').classList.remove('hidden');
-  $('auth-step-2').classList.add('hidden');
+  if ($('auth-overlay')) $('auth-overlay').classList.remove('hidden');
+  if ($('auth-panel')) $('auth-panel').classList.remove('hidden');
+  if ($('auth-step-1')) $('auth-step-1').classList.remove('hidden');
+  if ($('auth-step-2')) $('auth-step-2').classList.add('hidden');
 }
 
 function closeAuth() {
-  $('auth-overlay').classList.add('hidden');
-  $('auth-panel').classList.add('hidden');
+  if ($('auth-overlay')) $('auth-overlay').classList.add('hidden');
+  if ($('auth-panel')) $('auth-panel').classList.add('hidden');
 }
 
 function showAuthStep1() {
-  $('auth-step-1').classList.remove('hidden');
-  $('auth-step-2').classList.add('hidden');
+  if ($('auth-step-1')) $('auth-step-1').classList.remove('hidden');
+  if ($('auth-step-2')) $('auth-step-2').classList.add('hidden');
 }
 
 function showAuthStep2() {
-  const email = $('login-email').value.trim();
-  const name = $('login-name').value.trim();
+  const emailInput = $('login-email');
+  if (!emailInput) return;
+
+  const email = emailInput.value.trim();
+  const name = $('login-name') ? $('login-name').value.trim() : '';
   
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) { 
@@ -604,29 +635,34 @@ function showAuthStep2() {
   state.tempLoginEmail = email;
   
   if (email === 'admin@sleekmed.com') {
-    $('code-label').textContent = 'ADMINISTRATOR PIN';
-    $('code-subtext').textContent = 'Enter secure access PIN to unlock partner portal.';
+    if ($('code-label')) $('code-label').textContent = 'ADMINISTRATOR PIN';
+    if ($('code-subtext')) $('code-subtext').textContent = 'Enter secure access PIN to unlock partner portal.';
   } else {
-    $('code-label').textContent = 'ENTER VERIFICATION CODE';
-    $('code-subtext').textContent = 'A 6 digit code was sent to your email. (Any code works for demo).';
+    if ($('code-label')) $('code-label').textContent = 'ENTER VERIFICATION CODE';
+    if ($('code-subtext')) $('code-subtext').textContent = 'A 6 digit code was sent to your email. (Any code works for demo).';
   }
   
-  $('auth-step-1').classList.add('hidden');
-  $('auth-step-2').classList.remove('hidden');
+  if ($('auth-step-1')) $('auth-step-1').classList.add('hidden');
+  if ($('auth-step-2')) $('auth-step-2').classList.remove('hidden');
 }
 
 function openDeleteModal() {
-  $('delete-modal-overlay').classList.remove('hidden');
-  setTimeout(() => $('delete-modal-overlay').classList.add('modal-show'), 10);
+  if ($('delete-modal-overlay')) {
+    $('delete-modal-overlay').classList.remove('hidden');
+    setTimeout(() => $('delete-modal-overlay').classList.add('modal-show'), 10);
+  }
 }
 
 function closeDeleteModal() {
-  $('delete-modal-overlay').classList.remove('modal-show');
-  setTimeout(() => $('delete-modal-overlay').classList.add('hidden'), 200);
+  if ($('delete-modal-overlay')) {
+    $('delete-modal-overlay').classList.remove('modal-show');
+    setTimeout(() => $('delete-modal-overlay').classList.add('hidden'), 200);
+  }
 }
 
 function highlightField(id) {
   const el = $(id);
+  if (!el) return;
   el.style.borderColor = 'var(--red)';
   el.style.boxShadow   = '0 0 0 3px rgba(255,51,102,0.15)';
   el.focus();
@@ -635,8 +671,11 @@ function highlightField(id) {
 
 function handleLogin() {
   const email = state.tempLoginEmail;
-  const name = $('login-name').value.trim();
-  const code = $('login-code').value.trim();
+  const name = $('login-name') ? $('login-name').value.trim() : '';
+  const codeInput = $('login-code');
+  if (!codeInput) return;
+
+  const code = codeInput.value.trim();
 
   if (!code) { 
     highlightField('login-code');
@@ -689,23 +728,25 @@ function handleLogin() {
 }
 
 function startOnboarding() {
-  $('onboard-overlay').classList.remove('hidden');
+  if ($('onboard-overlay')) $('onboard-overlay').classList.remove('hidden');
   nextOnboard(1);
 }
 
 function nextOnboard(step) {
-  $('onboard-step-1').classList.add('hidden');
-  $('onboard-step-2').classList.add('hidden');
-  $('onboard-step-3').classList.add('hidden');
-  $('onboard-step-' + step).classList.remove('hidden');
+  if ($('onboard-step-1')) $('onboard-step-1').classList.add('hidden');
+  if ($('onboard-step-2')) $('onboard-step-2').classList.add('hidden');
+  if ($('onboard-step-3')) $('onboard-step-3').classList.add('hidden');
+  if ($('onboard-step-' + step)) $('onboard-step-' + step).classList.remove('hidden');
 }
 
 function finishOnboard() {
-  state.user.dob = $('ob-dob').value;
-  state.user.onboardingComplete = true;
-  saveDatabase();
+  if (state.user) {
+    state.user.dob = $('ob-dob') ? $('ob-dob').value : '';
+    state.user.onboardingComplete = true;
+    saveDatabase();
+  }
   
-  $('onboard-overlay').classList.add('hidden');
+  if ($('onboard-overlay')) $('onboard-overlay').classList.add('hidden');
   injectUserData();
   updateRewardsDisplay();
   switchTab('profile', 'bounce');
@@ -734,10 +775,16 @@ function confirmDeleteAccount() {
 
 function calcAdminRev() {
   if(!state.isAdmin) return;
-  const mem = parseFloat($('admin-members').value) || 0;
-  const fee = parseFloat($('admin-fee').value) || 0;
+  const memInput = $('admin-members');
+  const feeInput = $('admin-fee');
+  const revDisplay = $('admin-rev-display');
+
+  if (!memInput || !feeInput || !revDisplay) return;
+
+  const mem = parseFloat(memInput.value) || 0;
+  const fee = parseFloat(feeInput.value) || 0;
   const rev = Math.round(mem * fee);
-  $('admin-rev-display').textContent = '$' + rev.toLocaleString();
+  revDisplay.textContent = '$' + rev.toLocaleString();
 }
 
 function switchTab(tab, direction = 'fade') {
@@ -765,28 +812,29 @@ function switchTab(tab, direction = 'fade') {
 
 function autoSaveProfile() {
   if (state.user) {
-      const newEmail = $('pf-email').value.trim();
+      const emailInput = $('pf-email');
+      if (!emailInput) return;
+
+      const newEmail = emailInput.value.trim();
       const oldEmail = state.user.email;
 
-      if (!newEmail || !newEmail.includes('@')) {
-         return;
-      }
+      if (!newEmail || !newEmail.includes('@')) return;
 
-      state.user.name = $('pf-name').value;
-      state.user.dob = $('pf-dob').value;
-      state.user.idNum = $('pf-idnum').value;
+      state.user.name = $('pf-name') ? $('pf-name').value : '';
+      state.user.dob = $('pf-dob') ? $('pf-dob').value : '';
+      state.user.idNum = $('pf-idnum') ? $('pf-idnum').value : '';
       
       state.user.insurance = {
-         provider: $('pf-insurance').value,
-         memberId: $('pf-ins-member').value,
-         group: $('pf-ins-group').value,
-         bin: $('pf-ins-bin').value,
-         pcn: $('pf-ins-pcn').value
+         provider: $('pf-insurance') ? $('pf-insurance').value : '',
+         memberId: $('pf-ins-member') ? $('pf-ins-member').value : '',
+         group: $('pf-ins-group') ? $('pf-ins-group').value : '',
+         bin: $('pf-ins-bin') ? $('pf-ins-bin').value : '',
+         pcn: $('pf-ins-pcn') ? $('pf-ins-pcn').value : ''
       };
       
       state.user.prefs = {
-        alerts: $('pref-alerts').checked,
-        digest: $('pref-digest').checked
+        alerts: $('pref-alerts') ? $('pref-alerts').checked : true,
+        digest: $('pref-digest') ? $('pref-digest').checked : false
       };
 
       if (newEmail !== oldEmail) {
@@ -801,6 +849,11 @@ function autoSaveProfile() {
       injectUserData();
       updateRewardsDisplay();
   }
+}
+
+function bindEvent(id, event, callback) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener(event, callback);
 }
 
 window.switchTab = switchTab;
@@ -818,42 +871,46 @@ window.calcAdminRev = calcAdminRev;
 window.saveCurrentDrugToCabinet = saveCurrentDrugToCabinet;
 window.nextOnboard = nextOnboard;
 window.finishOnboard = finishOnboard;
+window.openAuth = openAuth;
+window.removeFromCabinet = removeFromCabinet;
 
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
 
-  $('topbar-profile-btn').addEventListener('click', () => {
+  bindEvent('topbar-profile-btn', 'click', () => {
     if (state.loggedIn) switchTab('profile', 'bounce');
     else openAuth();
   });
 
-  $('continue-btn').addEventListener('click', showAuthStep2);
-  $('login-btn').addEventListener('click', handleLogin);
-  $('close-auth').addEventListener('click', closeAuth);
-  $('auth-overlay').addEventListener('click', closeAuth);
-
-  $('drug-search').addEventListener('input', filterDrugs);
+  bindEvent('continue-btn', 'click', showAuthStep2);
+  bindEvent('login-btn', 'click', handleLogin);
+  bindEvent('close-auth', 'click', closeAuth);
+  bindEvent('auth-overlay', 'click', closeAuth);
+  bindEvent('drug-search', 'input', filterDrugs);
+  bindEvent('logout-btn', 'click', handleLogout);
   
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.search-wrap')) {
-      $('search-results-list').classList.add('hidden');
+      const res = $('search-results-list');
+      if (res) res.classList.add('hidden');
     }
   });
 
-  $('menu-btn').addEventListener('click', () => {
-    $('sidebar').classList.add('open');
-    $('sidebar-overlay').classList.add('open');
+  bindEvent('menu-btn', 'click', () => {
+    const sb = $('sidebar');
+    const so = $('sidebar-overlay');
+    if (sb) sb.classList.add('open');
+    if (so) so.classList.add('open');
   });
   
   const closeSidebar = () => {
-    $('sidebar').classList.remove('open');
-    $('sidebar-overlay').classList.remove('open');
+    const sb = $('sidebar');
+    const so = $('sidebar-overlay');
+    if (sb) sb.classList.remove('open');
+    if (so) so.classList.remove('open');
   };
   
   window.closeSidebar = closeSidebar;
-  
-  $('sidebar-close').addEventListener('click', closeSidebar);
-  $('sidebar-overlay').addEventListener('click', closeSidebar);
-  
-  $('logout-btn').addEventListener('click', handleLogout);
+  bindEvent('sidebar-close', 'click', closeSidebar);
+  bindEvent('sidebar-overlay', 'click', closeSidebar);
 });
