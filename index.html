@@ -59,20 +59,241 @@
     </div>
   </header>
 
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-block">
+        <div class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lg2)" stroke-width="1.5"/>
+            <path d="M7 14h4l2-5 3 10 2-7 2 4h1" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="lg2" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="logo-text">Sleek<em>Med</em></span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Core</div>
+      <a href="#" class="sidebar-link active" data-page="home" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.4"/></svg>
+        Home
+      </a>
+      <a href="#" class="sidebar-link" data-page="search" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Savings Finder
+      </a>
+      <a href="#" class="sidebar-link auth-req" data-page="cabinet" data-sidebar-link style="display:none;">
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 5V4a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4M8 11h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Medication List
+      </a>
+      <a href="#" class="sidebar-link" data-page="howitworks" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 7v4l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        How It Works
+      </a>
+      <a href="#" class="sidebar-link" data-page="faq" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 7v4l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Q&amp;A
+      </a>
+
+      <div class="sidebar-section-label">Services</div>
+      <a href="#" class="sidebar-link auth-req" data-page="card" data-sidebar-link style="display:none;">
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 9h16" stroke="currentColor" stroke-width="1.4"/></svg>
+        Digital Card
+      </a>
+      <a href="#" class="sidebar-link coming-soon-link" data-page="telehealth" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.4"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Online Care
+        <span class="badge-soon">Soon</span>
+      </a>
+
+      <div class="sidebar-section-label">Account</div>
+      <a href="#" class="sidebar-link auth-req" data-page="vault" data-sidebar-link style="display:none;">
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="12.5" r="1" fill="currentColor"/></svg>
+        Security Vault
+      </a>
+
+      <div class="sidebar-section-label">Company</div>
+      <a href="#" class="sidebar-link" data-page="about" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        About Us
+      </a>
+      <a href="#" class="sidebar-link" data-page="providers" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        For Providers
+      </a>
+      <a href="#" class="sidebar-link coming-soon-link" data-page="support" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 10a2 2 0 110-4 2 2 0 010 4z" stroke="currentColor" stroke-width="1.4"/><path d="M10 14v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Support
+        <span class="badge-soon">Soon</span>
+      </a>
+
+      <div class="sidebar-section-label">Admin</div>
+      <a href="#" class="sidebar-link" data-page="admin" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M9 2L3 7v11h14V7L11 2H9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><rect x="8" y="13" width="4" height="4" stroke="currentColor" stroke-width="1.4"/></svg>
+        Partner Portal
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser" style="display:none">
+        <div class="sidebar-avatar" id="sidebarAvatar">G</div>
+        <div>
+          <div class="sidebar-username" id="sidebarUsername">Guest</div>
+          <div class="sidebar-email" id="sidebarEmail">—</div>
+        </div>
+        <button class="btn-signout-sm" id="sidebarSignOut">Sign Out</button>
+      </div>
+    </div>
+  </aside>
+
   <main class="main-content">
 
     <section class="page active" id="page-home">
+
       <div class="hero">
         <div class="hero-bg-fx"></div>
         <div class="hero-content">
-          <div class="hero-eyebrow">Prescription Intelligence Platform</div>
-          <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
+          <div class="hero-eyebrow">
+            <span class="eyebrow-dot"></span>
+            Prescription Intelligence Platform
+          </div>
+          <h1 class="hero-headline">
+            Pay the <em>Real</em> Price<br/>for Your Medication.
+          </h1>
+          <p class="hero-sub">SleekMed compares cash prices, insurance co-pays, and discount networks side-by-side — so you never overpay at the pharmacy again.</p>
+
+          <div class="hero-search-wrap">
+            <div class="search-box" id="heroSearchBox">
+              <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#34d399" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication..." autocomplete="off" />
+              <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
+            </div>
+            <div class="search-dropdown" id="heroSearchDropdown"></div>
+          </div>
+
+        </div>
+
+        <div class="hero-stat-strip">
+          <div class="stat-item">
+            <span class="stat-num">$0</span>
+            <span class="stat-label">Membership Fee</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">80%</span>
+            <span class="stat-label">Avg. Savings vs. List</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block" id="whyOverpay">
+        <div class="section-header">
+          <div class="section-eyebrow">Clinical Transparency</div>
+          <h2 class="section-title">Why Americans Overpay for Prescriptions</h2>
+          <p class="section-sub">The prescription drug pricing system has three systemic failures. SleekMed addresses all of them.</p>
+        </div>
+        <div class="overpay-grid">
+          <div class="overpay-card">
+            <div class="overpay-num">01</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><rect x="6" y="8" width="20" height="16" rx="2" stroke="#34d399" stroke-width="1.5"/><path d="M11 16h10M11 20h6" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Insurance Co-Pays Aren't Always Cheapest</h3>
+            <p>For generic medications, your insurance co-pay is often higher than the cash price available through discount networks. Pharmacies are forbidden by "gag clauses" from telling you this without being asked.</p>
+          </div>
+          <div class="overpay-card">
+            <div class="overpay-num">02</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9" stroke="#818cf8" stroke-width="1.5"/><path d="M16 12v4l3 3" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Price Opacity by Design</h3>
+            <p>Drug manufacturers set one "list price" but negotiate dozens of secret rebate tiers. The price you see at the counter is the price after your insurer's rebate was already collected — without passing savings to you.</p>
+          </div>
+          <div class="overpay-card">
+            <div class="overpay-num">03</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M10 22l6-12 6 12M13 18h6" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>No Single Source of Truth</h3>
+            <p>GoodRx, Cost Plus, and your insurance each have different price points for the same drug. Until now, comparing all three required visiting multiple platforms. SleekMed shows all prices in one place, instantly.</p>
+          </div>
+        </div>
+      </div>
+      Services</div>
+      <a href="#" class="sidebar-link auth-req" data-page="card" data-sidebar-link style="display:none;">
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 9h16" stroke="currentColor" stroke-width="1.4"/></svg>
+        Digital Card
+      </a>
+      <a href="#" class="sidebar-link coming-soon-link" data-page="telehealth" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.4"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Online Care
+        <span class="badge-soon">Soon</span>
+      </a>
+
+      <div class="sidebar-section-label">Account</div>
+      <a href="#" class="sidebar-link auth-req" data-page="vault" data-sidebar-link style="display:none;">
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="12.5" r="1" fill="currentColor"/></svg>
+        Security Vault
+      </a>
+
+      <div class="sidebar-section-label">Company</div>
+      <a href="#" class="sidebar-link" data-page="about" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        About Us
+      </a>
+      <a href="#" class="sidebar-link" data-page="providers" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        For Providers
+      </a>
+      <a href="#" class="sidebar-link coming-soon-link" data-page="support" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 10a2 2 0 110-4 2 2 0 010 4z" stroke="currentColor" stroke-width="1.4"/><path d="M10 14v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Support
+        <span class="badge-soon">Soon</span>
+      </a>
+
+      <div class="sidebar-section-label">Admin</div>
+      <a href="#" class="sidebar-link" data-page="admin" data-sidebar-link>
+        <svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M9 2L3 7v11h14V7L11 2H9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><rect x="8" y="13" width="4" height="4" stroke="currentColor" stroke-width="1.4"/></svg>
+        Partner Portal
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser" style="display:none">
+        <div class="sidebar-avatar" id="sidebarAvatar">G</div>
+        <div>
+          <div class="sidebar-username" id="sidebarUsername">Guest</div>
+          <div class="sidebar-email" id="sidebarEmail"></div>
+        </div>
+        <button class="btn-signout-sm" id="sidebarSignOut">Sign Out</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <section class="page active" id="page-home">
+
+      <div class="hero">
+        <div class="hero-bg-fx"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="eyebrow-dot"></span>
+            Prescription Intelligence Platform
+          </div>
+          <h1 class="hero-headline">
+            Pay the <em>Real</em> Price<br/>for Your Medication.
+          </h1>
           <p class="hero-sub">SleekMed compares cash prices, insurance co-pays, and discount networks side-by-side so you never overpay at the pharmacy again.</p>
 
           <div class="hero-search-wrap">
             <div class="search-box" id="heroSearchBox">
               <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#34d399" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
               <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication..." autocomplete="off" />
+              <button class="search-clear" id="heroSearchClear" style="display:none">X</button>
             </div>
             <div class="search-dropdown" id="heroSearchDropdown"></div>
           </div>
@@ -95,147 +316,885 @@
         <div class="section-header">
           <div class="section-eyebrow">Clinical Transparency</div>
           <h2 class="section-title">Why You Overpay for Prescriptions</h2>
+          <p class="section-sub">The prescription drug pricing system has four systemic failures. SleekMed addresses all of them.</p>
         </div>
         <div class="overpay-grid">
           <div class="overpay-card">
             <div class="overpay-num">01</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><rect x="6" y="8" width="20" height="16" rx="2" stroke="#34d399" stroke-width="1.5"/><path d="M11 16h10M11 20h6" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
             <h3>Insurance Co-Pays Aren't Always Cheapest</h3>
             <p>For generic medications, your insurance co-pay is often higher than the cash price available through discount networks. Pharmacies are forbidden by gag clauses from telling you this without being asked.</p>
           </div>
           <div class="overpay-card">
             <div class="overpay-num">02</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9" stroke="#818cf8" stroke-width="1.5"/><path d="M16 12v4l3 3" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
             <h3>Price Opacity by Design</h3>
-            <p>Drug manufacturers set one list price but negotiate dozens of secret rebate tiers. The price you see at the counter is the price after your insurer's rebate was already collected.</p>
+            <p>Drug manufacturers set one list price but negotiate dozens of secret rebate tiers. The price you see at the counter is the price after your insurer's rebate was already collected without passing savings to you.</p>
           </div>
           <div class="overpay-card">
             <div class="overpay-num">03</div>
+            <div class="overpay-icon-wrap">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M10 22l6-12 6 12M13 18h6" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
             <h3>No Single Source of Truth</h3>
-            <p>GoodRx, Cost Plus, and your insurance each have different price points for the same drug. SleekMed shows all prices in one place, instantly.</p>
+            <p>GoodRx, Cost Plus, and your insurance each have different price points for the same drug. Until now, comparing all three required visiting multiple platforms. SleekMed shows all four prices in one place, instantly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block alt-bg" id="howItWorksHome">
+        <div class="section-header">
+          <div class="section-eyebrow">Platform Logic</div>
+          <h2 class="section-title">How SleekMed Works</h2>
+        </div>
+        <div class="hiw-steps">
+          <div class="hiw-step">
+            <div class="hiw-step-num">1</div>
+            <div class="hiw-connector"></div>
+            <h3>Search Your Medication</h3>
+            <p>Enter your drug name and select the exact dosage and quantity prescribed. Our engine retrieves live pricing from our 75,000+ partner network.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-step-num">2</div>
+            <div class="hiw-connector"></div>
+            <h3>Compare All Prices</h3>
+            <p>View SleekMed Direct, GoodRx, Cost Plus, and your insurance co-pay estimate side by side, in one panel. No account required for cash prices.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-step-num">3</div>
+            <div class="hiw-connector"></div>
+            <h3>Get Your Digital Card</h3>
+            <p>Create a free account to generate your Satin Digital Access Card pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-step-num">4</div>
+            <h3>Save Immediately</h3>
+            <p>The pharmacist applies the SleekMed discount in real-time. Average savings: 80% below retail. No claims. No waiting. No insurance required.</p>
           </div>
         </div>
       </div>
 
       <div class="section-block" id="founderSection">
         <div class="founder-block">
-          <div class="founder-photo-wrap">
-        
-            <div class="founder-badge">Founder &amp; CEO</div>
-          </div>
-          <div class="founder-text">
+          <div class="founder-text" style="padding-bottom: 20px;">
             <div class="section-eyebrow">Message from the Founder</div>
-           
-            <blockquote class="founder-quote">
-              "I built SleekMed after watching my grandmother ration her diabetes medication because she couldn't afford the retail price... The problem isn't access. It's information asymmetry."
+            <blockquote class="founder-quote" style="line-height: 1.8; margin-top: 15px; margin-bottom: 15px;">
+              "I built SleekMed because I was tired of overpaying for my prescriptions. When I went to Walmart and found out it was more expensive to pay for it with insurance than it was with nothing, that's when I knew I needed to do something about it."
             </blockquote>
-            <p class="founder-sig">— Gabriel Oliveira, Founder, SleekMed</p>
           </div>
         </div>
       </div>
 
       <div class="section-block alt-bg">
         <div class="section-header">
+          <div class="section-eyebrow">Client Outcomes</div>
           <h2 class="section-title">What Our Members Say</h2>
         </div>
-        <div class="testimonial-grid">
+        <div class="testimonial-grid" style="padding-bottom: 30px;">
           <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"I was paying $180/month for Ozempic... SleekMed showed me a path at $89."</p>
-            <div class="testimonial-author"><strong>Maria R.</strong></div>
+            <div class="stars">5 Stars</div>
+            <p style="line-height: 1.6; margin-bottom: 15px;">"I was paying $180/month for Ozempic through my insurance. SleekMed showed me a Cost Plus path at $89. That's $1,092 back in my pocket every year. I showed my doctor and she was shocked."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">MR</div>
+              <div>
+                <strong>Maria R.</strong>
+                <br><span>Type 2 Diabetic, Austin TX</span>
+              </div>
+            </div>
           </div>
           <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"As someone uninsured, the transparency SleekMed provided was life-changing."</p>
-            <div class="testimonial-author"><strong>James K.</strong></div>
+            <div class="stars">5 Stars</div>
+            <p style="line-height: 1.6; margin-bottom: 15px;">"As someone uninsured for 18 months, the transparency SleekMed provided was genuinely life-changing. I didn't know I could get Lisinopril for $3.50 until I searched here. Verified it, paid it, done."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">JK</div>
+              <div>
+                <strong>James K.</strong>
+                <br><span>Self-Employed, Denver CO</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">5 Stars</div>
+            <p style="line-height: 1.6; margin-bottom: 15px;">"I manage prescriptions for four family members. The Medicine Cabinet feature keeps everything organized, and the refill tracker sends me alerts before we run out. This is what healthcare technology should look like."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">SL</div>
+              <div>
+                <strong>Sandra L.</strong>
+                <br><span>Family Caregiver, Portland OR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="page" id="page-search">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Savings Finder</div>
+          <h1 class="page-title">Search Your Medication</h1>
+          <p class="page-sub">Compare SleekMed Direct, GoodRx, Cost Plus, and your insurance co-pay all in one place.</p>
+
+          <div class="search-box search-box-lg" id="pageSearchBox">
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#34d399" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="text" class="search-input" id="pageSearchInput" placeholder="Drug name, brand or generic..." autocomplete="off" />
+            <button class="search-clear" id="pageSearchClear" style="display:none">X</button>
+          </div>
+          <div class="search-dropdown" id="pageSearchDropdown"></div>
+        </div>
+
+        <div class="search-results-panel" id="searchResultsPanel" style="display:none">
+          <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h2 id="resultsTitle">Results</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span style="font-size: 0.9rem; color: #94a3b8;">Zip Code:</span>
+              <input type="text" class="vault-input" placeholder="e.g. 32259" style="width: 120px; padding: 8px;" />
+            </div>
+          </div>
+
+          <div class="variant-selector" id="variantSelector"></div>
+
+          <div class="price-comparison-grid" id="priceComparisonGrid"></div>
+
+          <div class="pharmacy-finder">
+            <h3>Nearby Partner Pharmacies</h3>
+            <div class="pharmacy-list" id="pharmacyList">
+              <div class="pharmacy-item"><div class="pharm-name">CVS Pharmacy</div><div class="pharm-dist">0.3 mi</div><div class="pharm-status open">Open</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Walgreens</div><div class="pharm-dist">0.7 mi</div><div class="pharm-status open">Open</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Walmart Pharmacy</div><div class="pharm-dist">1.2 mi</div><div class="pharm-status open">Open</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Rite Aid</div><div class="pharm-dist">1.8 mi</div><div class="pharm-status closed">Closed</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-empty-state" id="searchEmptyState">
+          <div class="empty-icon"></div>
+          <h3>Search any medication to compare prices</h3>
+          <p>Our database covers 30+ drugs with live pricing from our verified partner network.</p>
+        </div>
+      </div>
+    </section>
+    <section class="page" id="page-cabinet">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Medicine Cabinet</div>
+          <h1 class="page-title">Your Medication List</h1>
+          <p class="page-sub">Save your prescriptions, track refills, and get alerted when it's time to reorder.</p>
+        </div>
+
+        <div class="auth-gate" id="cabinetAuthGate">
+          <div class="auth-gate-icon"></div>
+          <h3>Secure Account Required</h3>
+          <p>Your Medicine Cabinet is protected. Sign in or create a free account to manage your medications.</p>
+          <div class="auth-gate-actions">
+            <button class="btn-primary" id="cabinetSignInBtn">Sign In</button>
+            <button class="btn-ghost" id="cabinetCreateBtn">Create Account</button>
+          </div>
+        </div>
+
+        <div class="cabinet-content" id="cabinetContent" style="display:none">
+          <div class="cabinet-toolbar">
+            <button class="btn-primary btn-sm" id="addMedBtn">+ Add Medication</button>
+            <div class="cabinet-filters">
+              <button class="filter-btn active">All</button>
+              <button class="filter-btn">Active</button>
+              <button class="filter-btn">Refill Due</button>
+            </div>
+          </div>
+
+          <div class="med-list" id="medList">
+          </div>
+
+          <div class="refill-tracker-section">
+            <h3 class="tracker-title">Refill Tracker</h3>
+            <div class="tracker-grid" id="trackerGrid"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="page" id="page-search">
+    <section class="page" id="page-howitworks">
       <div class="page-inner">
-        <h1 class="page-title">Search Your Medication</h1>
-        <div class="search-box search-box-lg">
-          <input type="text" class="search-input" id="pageSearchInput" placeholder="Drug name..." />
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Platform Education</div>
+          <h1 class="page-title">How SleekMed Works</h1>
+          <p class="page-sub">A deep dive into the technology, network, and clinical logic behind our platform.</p>
         </div>
-        <div id="searchResultsPanel" style="display:none; margin-top: 30px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
-            <h2>Results</h2>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <span style="font-size: 0.9rem; color: var(--text-muted);">Pricing Near:</span>
-              <input type="text" class="vault-input" placeholder="Zip Code (e.g. 32259)" style="width: 150px; padding: 8px;" />
+
+        <div class="hiw-detailed">
+          <div class="hiw-detail-block">
+            <div class="hiw-detail-num">01</div>
+            <div class="hiw-detail-content">
+              <h2>Our Pricing Engine</h2>
+              <p>SleekMed's pricing engine aggregates data from four sources in real time: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and national insurance carrier formulary databases. Prices are updated continuously throughout the day.</p>
+              <div class="detail-callout">
+                <strong>Note:</strong> Insurance co-pay estimates are based on formulary tier data and may vary by plan and deductible status. Always confirm your final cost with the pharmacy before dispensing.
+              </div>
             </div>
           </div>
-          <div class="price-comparison-grid" id="priceComparisonGrid"></div>
+
+          <div class="hiw-detail-block">
+            <div class="hiw-detail-num">02</div>
+            <div class="hiw-detail-content">
+              <h2>The SleekMed Direct Price</h2>
+              <p>Our "SleekMed Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Access Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale, and the negotiated price is honored immediately no claims, no reimbursement delays, no prior authorizations.</p>
+              <div class="detail-callout amber">
+                <strong>Affiliate Disclosure:</strong> SleekMed earns a small affiliate fee per claim ($2.50 to $5.00) from our partner network. This fee is never passed to the consumer. It is how we sustain a free platform.
+              </div>
+            </div>
+          </div>
+
+          <div class="hiw-detail-block">
+            <div class="hiw-detail-num">03</div>
+            <div class="hiw-detail-content">
+              <h2>Insurance Routing Logic</h2>
+              <p>When you provide your insurance details in the Security Vault, SleekMed cross-references your carrier and Group ID against our formulary database to calculate an estimated co-pay for your specific plan tier. This estimate is displayed alongside cash prices in every search result. If your insurance co-pay is lower, use your insurance. If cash is lower, use SleekMed Direct. We tell you the truth always.</p>
+            </div>
+          </div>
+
+          <div class="hiw-detail-block">
+            <div class="hiw-detail-num">04</div>
+            <div class="hiw-detail-content">
+              <h2>HIPAA &amp; Data Security</h2>
+              <p>All personal and insurance data stored in your Security Vault is encrypted client-side before storage. SleekMed does not sell, share, or license your personal health information to any third party. You may permanently purge all data at any time from within the Vault.</p>
+              <div class="detail-callout purple">
+                <strong>HIPAA Commitment:</strong> SleekMed is designed to align with HIPAA data handling best practices for consumer health applications. We are a price aggregation tool, not a covered entity, but we hold ourselves to the same standard.
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-telehealth">
+      <div class="coming-soon-page">
+        <div class="cs-icon">
+          <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+            <circle cx="32" cy="32" r="30" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <path d="M20 32h24M32 20v24" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="section-eyebrow">Feature in Development</div>
+        <h1 class="cs-title">Online Care</h1>
+        <p class="cs-sub">SleekMed Online Care will connect you with board-certified physicians for same-day virtual consultations with prescriptions sent directly to your preferred SleekMed partner pharmacy.</p>
+        <div class="cs-features">
+          <div class="cs-feature"><span class="cs-dot"></span>Same-day physician appointments</div>
+          <div class="cs-feature"><span class="cs-dot"></span>Electronic prescriptions to your pharmacy</div>
+          <div class="cs-feature"><span class="cs-dot"></span>Integrated with your SleekMed profile</div>
+          <div class="cs-feature"><span class="cs-dot"></span>Transparent flat-fee pricing</div>
+        </div>
+        <div class="cs-eta">
+          <div class="cs-eta-label">Estimated Launch</div>
+          <div class="cs-eta-date">Q3 2025</div>
+        </div>
+        <button class="btn-primary" id="teleNotifyBtn">Notify Me When Live</button>
+      </div>
+    </section>
+
+    <section class="page" id="page-about">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Our Story</div>
+          <h1 class="page-title">About SleekMed</h1>
+        </div>
+
+        <div class="about-content">
+          <div class="about-mission">
+            <h2>Our Mission</h2>
+            <p>SleekMed is a prescription price intelligence platform built on a single belief: <em>every patient deserves to know what they're actually paying for, and why</em>. We aggregate pricing data from the four largest prescription discount channels our proprietary network, GoodRx, Cost Plus, and insurance formularies and present it without bias, without markup, and without agenda.</p>
+            <p>We are a data company. We are not a pharmacy. We are not an insurance company. We are not your doctor. We are the transparent middle layer that the pharmaceutical supply chain deliberately left out.</p>
+          </div>
+
+          <div class="about-values">
+            <div class="value-card">
+              <div class="value-icon"></div>
+              <h3>Clinical Integrity</h3>
+              <p>We never recommend treatments. We present data. Every price, every disclaimer, every data source is clearly attributed.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon"></div>
+              <h3>Radical Privacy</h3>
+              <p>Your health data is yours. We encrypt it locally, never sell it, and give you a one-click permanent purge at any time.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon"></div>
+              <h3>Fintech Precision</h3>
+              <p>We treat prescription pricing with the same rigor a Bloomberg terminal applies to bond yields. Real data. Real time. No rounding.</p>
+            </div>
+          </div>
+
+          <div class="about-legal">
+            <h3>Legal Disclaimer</h3>
+            <p>SleekMed is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates based on our network data and may vary at point of sale. Always consult a licensed physician before starting, changing, or stopping any medication. SleekMed does not provide medical advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-providers">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Provider Network</div>
+          <h1 class="page-title">For Healthcare Providers</h1>
+          <p class="page-sub">Join our verified network and give your patients real-time access to the best prescription prices at the point of care.</p>
+        </div>
+
+        <div class="providers-grid">
+          <div class="provider-card">
+            <div class="provider-card-icon"></div>
+            <h3>Clinic Integration</h3>
+            <p>Integrate SleekMed's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p>
+            <a href="#" class="provider-cta">Request API Access</a>
+          </div>
+          <div class="provider-card">
+            <div class="provider-card-icon"></div>
+            <h3>Pharmacy Partnership</h3>
+            <p>Join our 75,000+ pharmacy network. Accept SleekMed affiliate claims, earn guaranteed reimbursement, and expand your customer base to SleekMed members nationwide.</p>
+            <a href="#" class="provider-cta">Apply for Partnership</a>
+          </div>
+          <div class="provider-card">
+            <div class="provider-card-icon"></div>
+            <h3>Practice Analytics</h3>
+            <p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p>
+            <a href="#" class="provider-cta">View Sample Report</a>
+          </div>
+        </div>
+
+        <div class="provider-contact">
+          <h3>Partner Inquiries</h3>
+          <p>For clinical or pharmacy partnership inquiries, contact our Provider Relations team.</p>
+          <a href="mailto:partners@sleekmed.com" class="btn-primary">partners@sleekmed.com</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-support">
+      <div class="coming-soon-page">
+        <div class="cs-icon">
+          <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+            <circle cx="32" cy="32" r="30" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="32" cy="26" r="7" stroke="#34d399" stroke-width="1.5"/>
+            <path d="M16 52c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="section-eyebrow">Feature in Development</div>
+        <h1 class="cs-title">Live Support</h1>
+        <p class="cs-sub">Our Support center including live chat, a clinical FAQ database, and a dedicated insurance claim dispute team is currently in development. For urgent inquiries, please email us directly.</p>
+        <a href="mailto:support@sleekmed.com" class="btn-primary">support@sleekmed.com</a>
       </div>
     </section>
 
     <section class="page" id="page-vault">
       <div class="page-inner">
-        <h1 class="page-title">Personal Security Vault</h1>
-        <div class="vault-grid">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">HIPAA Grade Security</div>
+          <h1 class="page-title">Personal Security Vault</h1>
+          <p class="page-sub">Your identity and insurance data is encrypted and stored locally. Only you can access or delete it.</p>
+        </div>
+
+        <div class="auth-gate" id="vaultAuthGate">
+          <div class="auth-gate-icon"></div>
+          <h3>Secure Authentication Required</h3>
+          <p>Access to the Security Vault requires a verified SleekMed account.</p>
+          <div class="auth-gate-actions">
+            <button class="btn-primary" id="vaultSignInBtn">Sign In</button>
+            <button class="btn-ghost" id="vaultCreateBtn">Create Account</button>
+          </div>
+        </div>
+
+        <div class="vault-content" id="vaultContent" style="display:none">
           <div class="vault-panel">
-            <h3>Government ID &amp; Identity</h3>
-            <div class="modal-field">
-              <label>Full Legal Name</label>
-              <input type="text" class="vault-input" value="Gabriel Oliveira" />
+            <div class="vault-panel-header">
+              <div class="vault-panel-title">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="8" width="12" height="9" rx="1.5" stroke="#34d399" stroke-width="1.4"/><path d="M7 8V6a3 3 0 016 0v2" stroke="#34d399" stroke-width="1.4"/></svg>
+                Identity Record
+              </div>
+              <div class="vault-status" id="vaultStatus">
+                <span class="vault-status-dot locked"></span>
+                <span id="vaultStatusText">Vault Locked</span>
+              </div>
             </div>
-            <div class="modal-field">
-              <label>Driver's License #</label>
-              <input type="password" class="vault-input" placeholder="DL-XXXXXXX" />
-              <div class="encryption-notice" style="color: var(--emerald); font-size: 0.75rem; margin-top: 8px;">
-                AES-256 Client-Side Encryption Active
+            <div class="vault-toggle-bar">
+              <span>Secure Edit Mode</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="secureEditToggle" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="vault-form" id="vaultForm">
+              <div class="vault-field-group">
+                <h4 class="vault-field-label">Personal Identity</h4>
+                <div class="vault-field">
+                  <label>Full Legal Name</label>
+                  <input type="text" id="vf-name" class="vault-input" disabled placeholder="First Middle Last" />
+                </div>
+                <div class="vault-field-row">
+                  <div class="vault-field">
+                    <label>Date of Birth</label>
+                    <input type="date" id="vf-dob" class="vault-input" disabled />
+                  </div>
+                  <div class="vault-field">
+                    <label>Driver's License #</label>
+                    <input type="text" id="vf-dl" class="vault-input" disabled placeholder="State ID / DL Number" />
+                    <div style="color: #10b981; font-size: 0.8rem; margin-top: 8px;">AES-256 Client-Side Encryption Active</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vault-field-group">
+                <h4 class="vault-field-label">Insurance Card Details</h4>
+                <div class="vault-field-row">
+                  <div class="vault-field">
+                    <label>Insurance Carrier</label>
+                    <input type="text" id="vf-carrier" class="vault-input" disabled placeholder="e.g. BlueCross BlueShield" />
+                  </div>
+                  <div class="vault-field">
+                    <label>Member ID</label>
+                    <input type="text" id="vf-member" class="vault-input" disabled placeholder="Member ID" />
+                  </div>
+                </div>
+                <div class="vault-field-row">
+                  <div class="vault-field">
+                    <label>Group #</label>
+                    <input type="text" id="vf-group" class="vault-input" disabled placeholder="Group Number" />
+                  </div>
+                  <div class="vault-field">
+                    <label>RX BIN</label>
+                    <input type="text" id="vf-bin" class="vault-input" disabled placeholder="6-digit BIN" />
+                  </div>
+                </div>
+                <div class="vault-field-row">
+                  <div class="vault-field">
+                    <label>RX PCN</label>
+                    <input type="text" id="vf-pcn" class="vault-input" disabled placeholder="PCN Code" />
+                  </div>
+                  <div class="vault-field">
+                    <label>Plan Name</label>
+                    <input type="text" id="vf-plan" class="vault-input" disabled placeholder="e.g. Gold PPO" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="vault-field-group">
+                <h4 class="vault-field-label">Clinical Sync</h4>
+                <div class="vault-field-row">
+                  <div class="vault-field">
+                    <label>Primary Physician</label>
+                    <input type="text" id="vf-doctor" class="vault-input" disabled placeholder="Dr. Last Name" />
+                  </div>
+                  <div class="vault-field">
+                    <label>Clinic / Practice Zip</label>
+                    <input type="text" id="vf-zip" class="vault-input" disabled placeholder="5-digit ZIP" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="vault-actions" id="vaultActions" style="display:none">
+                <button class="btn-primary" id="saveVaultBtn">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h9l3 3v9H2V2z" stroke="currentColor" stroke-width="1.3"/><path d="M5 2v4h6V2M5 9h6v5H5V9z" stroke="currentColor" stroke-width="1.3"/></svg>
+                  Save &amp; Lock Vault
+                </button>
+                <button class="btn-ghost btn-sm" id="cancelVaultBtn">Cancel</button>
               </div>
             </div>
           </div>
-          <div class="vault-panel">
-            <h3>Insurance Details</h3>
-            <div class="modal-field">
-              <label>Carrier</label>
-              <input type="text" class="vault-input" placeholder="e.g. BlueCross BlueShield" />
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <div class="modal-field"><label>Member ID</label><input type="text" class="vault-input" /></div>
-              <div class="modal-field"><label>Group #</label><input type="text" class="vault-input" /></div>
+
+          <div class="vault-lifecycle">
+            <div class="lifecycle-card">
+              <h4>Account Actions</h4>
+              <div class="lifecycle-actions">
+                <button class="btn-ghost" id="signOutBtn">Sign Out of SleekMed</button>
+                <button class="btn-danger" id="purgeBtn">Permanent Data Purge</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="text-align: center; margin-top: 40px;">
-          <button class="btn-primary" id="signOutBtn">Sign Out of SleekMed</button>
         </div>
       </div>
     </section>
 
-    <section class="page" id="page-cabinet">
+    <section class="page" id="page-faq">
       <div class="page-inner">
-        <h1 class="page-title">Medicine Cabinet</h1>
-        <div class="vault-panel">
-          <h3>Add New Prescription</h3>
-          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-top: 20px;">
-            <input type="text" class="vault-input" placeholder="Medication Name" />
-            <input type="text" class="vault-input" placeholder="Dosage (e.g. 50mg)" />
-            <input type="text" class="vault-input" placeholder="Qty (e.g. 30 tabs)" />
+        <div class="page-hero-small">
+          <h1 class="page-title">Questions & Answers</h1>
+        </div>
+        <div class="faq-list">
+          <div class="vault-panel" style="margin-bottom: 20px;">
+            <h3>Question Placeholder</h3>
+            <p style="color: #94a3b8; margin-top: 10px;">Answer placeholder. Question goes here.</p>
           </div>
-          <button class="btn-primary" style="margin-top: 16px;">Add to Cabinet</button>
+          <div class="vault-panel" style="margin-bottom: 20px;">
+            <h3>Question Placeholder</h3>
+            <p style="color: #94a3b8; margin-top: 10px;">Answer placeholder. Question goes here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-card">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Digital Access Card</div>
+          <h1 class="page-title">Your SleekMed Card</h1>
+          <p class="page-sub">Present this card at any of our 75,000+ partner pharmacies to apply your negotiated discount instantly.</p>
+        </div>
+
+        <div class="card-wrap">
+          <div class="digital-card" id="digitalCard">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-logo">Sleek<em>Med</em></div>
+                <div class="card-chip">
+                  <svg viewBox="0 0 32 24" fill="none" width="32" height="24">
+                    <rect x="1" y="1" width="30" height="22" rx="3" stroke="#f59e0b" stroke-width="1"/>
+                    <rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="#f59e0b" stroke-width="0.8"/>
+                    <path d="M8 10h16M8 14h16M16 5v14" stroke="#f59e0b" stroke-width="0.8"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-member-name" id="cardMemberName">MEMBER NAME</div>
+              <div class="card-codes">
+                <div class="card-code-item">
+                  <div class="card-code-label">BIN</div>
+                  <div class="card-code-value" id="cardBIN">610524</div>
+                </div>
+                <div class="card-code-item">
+                  <div class="card-code-label">PCN</div>
+                  <div class="card-code-value" id="cardPCN">SLKMD</div>
+                </div>
+                <div class="card-code-item">
+                  <div class="card-code-label">GROUP</div>
+                  <div class="card-code-value" id="cardGroup">SM2025</div>
+                </div>
+                <div class="card-code-item">
+                  <div class="card-code-label">MEMBER ID</div>
+                  <div class="card-code-value" id="cardMemberID"></div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="card-network">75,000+ Pharmacies</div>
+                <div class="card-tagline">No insurance required</div>
+              </div>
+              <div class="card-shine"></div>
+            </div>
+          </div>
+
+          <div class="card-instructions">
+            <h3>How to Use Your Card</h3>
+            <ol class="card-steps">
+              <li>Open your SleekMed Digital Card on your phone.</li>
+              <li>Tell the pharmacist you have a discount card.</li>
+              <li>Show this card or provide the BIN/PCN/Group codes verbally.</li>
+              <li>The discount is applied instantly at checkout. No claims to file.</li>
+            </ol>
+            <div class="card-insurance-note" id="cardInsuranceNote">
+              <strong>Insurance on file:</strong> <span id="cardInsuranceCarrier">None add in Security Vault for personalized estimates</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-primary">Add to Apple Wallet</button>
+              <button class="btn-ghost">Add to Google Pay</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="page" id="page-admin">
       <div class="page-inner">
-        <h1 class="page-title">Partner Portal &amp; Analytics</h1>
-        <div class="admin-kpis" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-          <div class="vault-panel"><div style="font-size: 2.5rem; color: var(--emerald);">$14,820</div><div>Projected MRR</div></div>
-          <div class="vault-panel"><div style="font-size: 2.5rem; color: var(--emerald);">1,204</div><div>Active Members</div></div>
+
+        <div class="admin-login-gate" id="adminLoginGate">
+          <div class="admin-login-card">
+            <div class="admin-login-logo">
+              <svg width="32" height="32" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lg3)" stroke-width="1.5"/><path d="M7 14h4l2-5 3 10 2-7 2 4h1" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg3" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg>
+              SleekMed Partner Portal
+            </div>
+            <div class="admin-login-label">Restricted Access</div>
+            <div class="admin-field">
+              <label>Email</label>
+              <input type="email" id="adminEmail" class="vault-input" placeholder="admin@sleekmed.com" />
+            </div>
+            <div class="admin-field">
+              <label>Password</label>
+              <input type="password" id="adminPass" class="vault-input" placeholder="••••••••" />
+            </div>
+            <button class="btn-primary" id="adminLoginBtn" style="width:100%">Access Portal</button>
+            <div class="admin-login-error" id="adminLoginError" style="display:none">Invalid credentials.</div>
+          </div>
+        </div>
+
+        <div class="admin-dashboard" id="adminDashboard" style="display:none">
+          <div class="admin-header">
+            <div>
+              <div class="section-eyebrow">SleekMed Internal</div>
+              <h1 class="page-title">Partner Portal</h1>
+            </div>
+            <button class="btn-ghost btn-sm" id="adminLogoutBtn">Log Out</button>
+          </div>
+
+          <div class="admin-kpis">
+            <div class="kpi-card">
+              <div class="kpi-value">$14,820</div>
+              <div class="kpi-label">MRR (Current)</div>
+              <div class="kpi-trend up">+12% vs last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">5,928</div>
+              <div class="kpi-label">Claims This Month</div>
+              <div class="kpi-trend up">+8%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">$2.50</div>
+              <div class="kpi-label">Avg. Affiliate Fee</div>
+              <div class="kpi-trend neutral">Stable</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">847</div>
+              <div class="kpi-label">Active Members</div>
+              <div class="kpi-trend up">+34 this week</div>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <h2 class="admin-section-title">Revenue Cheat Sheet MRR Projector</h2>
+            <div class="calc-grid">
+              <div class="calc-input-group">
+                <label>Monthly Claims Volume</label>
+                <input type="range" id="claimsSlider" min="500" max="50000" step="500" value="5000" />
+                <div class="calc-slider-val"><span id="claimsVal">5,000</span> claims/mo</div>
+              </div>
+              <div class="calc-input-group">
+                <label>Affiliate Fee per Claim</label>
+                <div class="fee-btns">
+                  <button class="fee-btn active" data-fee="2.50">$2.50</button>
+                  <button class="fee-btn" data-fee="3.50">$3.50</button>
+                  <button class="fee-btn" data-fee="5.00">$5.00</button>
+                </div>
+              </div>
+              <div class="calc-result">
+                <div class="calc-result-label">Projected MRR</div>
+                <div class="calc-result-value" id="calcMRR">$12,500</div>
+                <div class="calc-result-label">Projected ARR</div>
+                <div class="calc-result-value" id="calcARR">$150,000</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <h2 class="admin-section-title">Network Analytics</h2>
+            <div class="analytics-grid">
+              <div class="analytics-chart-wrap">
+                <div class="chart-label">Claims Growth (Last 6 Months)</div>
+                <div class="bar-chart" id="claimsChart">
+                  <div class="bar-item"><div class="bar-fill" style="height:42%"><span>Dec</span></div><div class="bar-lbl">Dec</div></div>
+                  <div class="bar-item"><div class="bar-fill" style="height:55%"><span>Jan</span></div><div class="bar-lbl">Jan</div></div>
+                  <div class="bar-item"><div class="bar-fill" style="height:63%"><span>Feb</span></div><div class="bar-lbl">Feb</div></div>
+                  <div class="bar-item"><div class="bar-fill" style="height:71%"><span>Mar</span></div><div class="bar-lbl">Mar</div></div>
+                  <div class="bar-item"><div class="bar-fill" style="height:84%"><span>Apr</span></div><div class="bar-lbl">Apr</div></div>
+                  <div class="bar-item"><div class="bar-fill" style="height:100%"><span>May</span></div><div class="bar-lbl">May</div></div>
+                </div>
+              </div>
+              <div class="top-searches-wrap">
+                <div class="chart-label">Top Searched Medications</div>
+                <table class="top-searches-table">
+                  <thead><tr><th>#</th><th>Drug</th><th>Searches</th><th>Avg. Save</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td>Metformin</td><td>4,821</td><td>$42</td></tr>
+                    <tr><td>2</td><td>Lisinopril</td><td>3,992</td><td>$18</td></tr>
+                    <tr><td>3</td><td>Ozempic</td><td>3,541</td><td>$91</td></tr>
+                    <tr><td>4</td><td>Atorvastatin</td><td>2,877</td><td>$34</td></tr>
+                    <tr><td>5</td><td>Adderall</td><td>2,613</td><td>$67</td></tr>
+                    <tr><td>6</td><td>Lexapro</td><td>2,104</td><td>$28</td></tr>
+                    <tr><td>7</td><td>Omeprazole</td><td>1,988</td><td>$11</td></tr>
+                    <tr><td>8</td><td>Semaglutide</td><td>1,844</td><td>$110</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer" style="padding: 40px; border-top: 1px solid var(--border); text-align: center;">
-    <div class="logo-text">Sleek<em>Med</em></div>
-    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">© 2026 SleekMed, Inc. All rights reserved.</p>
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="modal auth-modal" id="authModal">
+      <button class="modal-close" id="authModalClose">X</button>
+
+      <div class="auth-view" id="authSignInView">
+        <div class="modal-logo">Sleek<em>Med</em></div>
+        <h2>Welcome Back</h2>
+        <p class="modal-sub">Sign in to access your Security Vault, Medicine Cabinet, and Digital Card.</p>
+        <div class="modal-field">
+          <label>Email Address</label>
+          <input type="email" id="signInEmail" class="vault-input" placeholder="you@email.com" />
+        </div>
+        <div class="modal-field">
+          <label>Password</label>
+          <input type="password" id="signInPass" class="vault-input" placeholder="••••••••" />
+        </div>
+        <button class="btn-primary" style="width:100%" id="doSignInBtn">Sign In</button>
+        <div class="modal-switch">Don't have an account? <a href="#" id="switchToRegister">Create one</a></div>
+        <div class="modal-error" id="signInError" style="display:none">Invalid credentials. Try: user@test.com / test123</div>
+      </div>
+
+      <div class="auth-view" id="authRegisterView" style="display:none">
+        <div class="modal-logo">Sleek<em>Med</em></div>
+        <h2>Create Account</h2>
+        <p class="modal-sub">Set up your secure SleekMed profile in three steps.</p>
+
+        <div class="onboard-steps">
+          <div class="onboard-step active" data-step="1">
+            <div class="onboard-step-num">1</div>
+            <div class="onboard-step-label">Identity</div>
+          </div>
+          <div class="onboard-connector"></div>
+          <div class="onboard-step" data-step="2">
+            <div class="onboard-step-num">2</div>
+            <div class="onboard-step-label">Insurance</div>
+          </div>
+          <div class="onboard-connector"></div>
+          <div class="onboard-step" data-step="3">
+            <div class="onboard-step-num">3</div>
+            <div class="onboard-step-label">Clinical</div>
+          </div>
+        </div>
+
+        <div class="onboard-panel active" id="onboardStep1">
+          <div class="modal-field">
+            <label>Full Legal Name</label>
+            <input type="text" id="reg-name" class="vault-input" placeholder="First Middle Last" />
+          </div>
+          <div class="modal-field">
+            <label>Email</label>
+            <input type="email" id="reg-email" class="vault-input" placeholder="you@email.com" />
+          </div>
+          <div class="modal-field-row">
+            <div class="modal-field">
+              <label>Date of Birth</label>
+              <input type="date" id="reg-dob" class="vault-input" />
+            </div>
+            <div class="modal-field">
+              <label>Password</label>
+              <input type="password" id="reg-pass" class="vault-input" placeholder="Min 8 chars" />
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%" id="onboardNext1">Continue</button>
+        </div>
+
+        <div class="onboard-panel" id="onboardStep2">
+          <div class="modal-field">
+            <label>Insurance Carrier <span class="optional-tag">Optional</span></label>
+            <input type="text" id="reg-carrier" class="vault-input" placeholder="e.g. BlueCross, Aetna, Cigna" />
+          </div>
+          <div class="modal-field-row">
+            <div class="modal-field">
+              <label>Member ID</label>
+              <input type="text" id="reg-member" class="vault-input" placeholder="Member ID" />
+            </div>
+            <div class="modal-field">
+              <label>Group #</label>
+              <input type="text" id="reg-group" class="vault-input" placeholder="Group Number" />
+            </div>
+          </div>
+          <div class="modal-field-row">
+            <div class="modal-field">
+              <label>RX BIN</label>
+              <input type="text" id="reg-bin" class="vault-input" placeholder="BIN" />
+            </div>
+            <div class="modal-field">
+              <label>RX PCN</label>
+              <input type="text" id="reg-pcn" class="vault-input" placeholder="PCN" />
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%" id="onboardNext2">Continue</button>
+          <button class="btn-ghost" style="width:100%;margin-top:8px" id="onboardSkip2">Skip for now</button>
+        </div>
+
+        <div class="onboard-panel" id="onboardStep3">
+          <div class="modal-field">
+            <label>Primary Physician <span class="optional-tag">Optional</span></label>
+            <input type="text" id="reg-doctor" class="vault-input" placeholder="Dr. Last Name" />
+          </div>
+          <div class="modal-field">
+            <label>Clinic / Practice ZIP</label>
+            <input type="text" id="reg-zip" class="vault-input" placeholder="5-digit ZIP" />
+          </div>
+          <button class="btn-primary" style="width:100%" id="completeRegBtn">Complete Setup</button>
+        </div>
+
+        <div class="modal-switch">Already have an account? <a href="#" id="switchToSignIn">Sign in</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="purgeModalOverlay">
+    <div class="modal purge-modal" id="purgeModal">
+      <div class="purge-icon"></div>
+      <h2>Permanent Data Purge</h2>
+      <p>This action will <strong>permanently delete</strong> all your SleekMed data including your vault, insurance records, medication list, and account history. This cannot be undone.</p>
+      <p>Type <strong>DELETE</strong> to confirm:</p>
+      <input type="text" id="purgeConfirmInput" class="vault-input" placeholder="Type DELETE" />
+      <div class="modal-actions">
+        <button class="btn-danger" id="confirmPurgeBtn">Purge All Data</button>
+        <button class="btn-ghost" id="cancelPurgeBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="vault-lock-overlay" id="vaultLockOverlay" style="display:none">
+    <div class="vault-lock-anim">
+      <div class="vl-icon"></div>
+      <div class="vl-text">Vault Data Encrypted &amp; Stored</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer class="site-footer">
+    <div class="footer-disclaimer">
+      <strong>Medical Disclaimer:</strong> SleekMed is a price aggregator and data tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before making any medical decisions. SleekMed does not provide medical advice.
+    </div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo-block">
+          <div class="logo-mark sm">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lgf)" stroke-width="1.5"/><path d="M7 14h4l2-5 3 10 2-7 2 4h1" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lgf" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg>
+          </div>
+          <span class="logo-text sm">Sleek<em>Med</em></span>
+        </div>
+        <p>Clinical Authority. Radical Transparency.<br/>Fintech Precision.</p>
+        <p class="footer-copy">© 2025 SleekMed, Inc. All rights reserved.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="footer-col-title">Platform</div>
+          <a href="#" data-page="search">Savings Finder</a>
+          <a href="#" data-page="cabinet">Medicine Cabinet</a>
+          <a href="#" data-page="card">Digital Card</a>
+          <a href="#" data-page="howitworks">How It Works</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="#" data-page="about">About Us</a>
+          <a href="#" data-page="providers">For Providers</a>
+          <a href="mailto:partners@sleekmed.com">Partner Inquiries</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Legal</div>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">HIPAA Notice</a>
+          <a href="#">Affiliate Disclosure</a>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <script src="claudescript.js"></script>
