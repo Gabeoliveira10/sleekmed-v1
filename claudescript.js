@@ -255,3 +255,57 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const mockDrugs = ["Metformin", "Lisinopril", "Atorvastatin", "Ozempic", "Adderall"];
+  let isLoggedIn = false;
+  const authOverlay = document.getElementById('authModalOverlay');
+  
+  function updateAuth() {
+    if (isLoggedIn) {
+      document.querySelectorAll('.auth-req').forEach(el => el.style.display = 'block');
+      document.getElementById('btnSignIn').style.display = 'none';
+      if(document.getElementById('cabinetAuthGate')) document.getElementById('cabinetAuthGate').style.display = 'none';
+      if(document.getElementById('cabinetContent')) document.getElementById('cabinetContent').style.display = 'block';
+      if(document.getElementById('vaultAuthGate')) document.getElementById('vaultAuthGate').style.display = 'none';
+      if(document.getElementById('vaultContent')) document.getElementById('vaultContent').style.display = 'block';
+    }
+  }
+
+  const signBtn = document.getElementById('doSignInBtn');
+  if (signBtn) {
+    signBtn.addEventListener('click', () => {
+      isLoggedIn = true;
+      authOverlay.style.display = 'none';
+      updateAuth();
+    });
+  }
+
+  const searchInput = document.getElementById('heroSearchInput');
+  const searchDropdown = document.getElementById('heroSearchDropdown');
+  
+  if(searchInput && searchDropdown) {
+    searchInput.addEventListener('input', () => {
+      const val = searchInput.value.toLowerCase();
+      searchDropdown.innerHTML = '';
+      if(!val) return;
+      
+      mockDrugs.filter(d => d.toLowerCase().includes(val)).forEach(match => {
+        const div = document.createElement('div');
+        div.innerText = match;
+        div.addEventListener('click', () => {
+          searchInput.value = match;
+          searchDropdown.innerHTML = '';
+        });
+        searchDropdown.appendChild(div);
+      });
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && searchInput.value) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-search').classList.add('active');
+        searchDropdown.innerHTML = '';
+      }
+    });
+  }
+});
