@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   const pages = document.querySelectorAll('.page');
-  const navLinks = document.querySelectorAll('.nav-link, .sidebar-link');
+  const navLinks = document.querySelectorAll('.nav-link');
   const authModalOverlay = document.getElementById('authModalOverlay');
-  const purgeModalOverlay = document.getElementById('purgeModalOverlay');
   
   let isLoggedIn = false;
 
-  // Navigation Logic
+  const mockDrugs = [
+    "Metformin", "Lisinopril", "Atorvastatin", "Ozempic", "Adderall",
+    "Levothyroxine", "Amlodipine", "Albuterol", "Omeprazole", "Losartan"
+  ];
+
   function switchPage(pageId) {
     pages.forEach(p => p.classList.remove('active'));
     navLinks.forEach(l => l.classList.remove('active'));
@@ -19,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         l.classList.add('active');
       }
     });
+    window.scrollTo(0,0);
   }
 
   navLinks.forEach(link => {
@@ -29,124 +33,126 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Modal Triggers
-  function openModal(modal) {
-    modal.style.display = 'flex';
-  }
+  document.getElementById('btnSignIn').addEventListener('click', () => {
+    authModalOverlay.style.display = 'flex';
+  });
   
-  function closeModal(modal) {
-    modal.style.display = 'none';
-  }
-
-  // Open Auth Modal
-  document.getElementById('btnSignIn').addEventListener('click', () => openModal(authModalOverlay));
-  document.getElementById('cabinetSignInBtn')?.addEventListener('click', () => openModal(authModalOverlay));
-  document.getElementById('vaultSignInBtn')?.addEventListener('click', () => openModal(authModalOverlay));
-  
-  // Close Auth Modal
-  document.getElementById('authModalClose').addEventListener('click', () => closeModal(authModalOverlay));
-
-  // Switch between Sign In and Register inside Modal
-  const signInView = document.getElementById('authSignInView');
-  const registerView = document.getElementById('authRegisterView');
-
-  document.getElementById('switchToRegister').addEventListener('click', (e) => {
-    e.preventDefault();
-    signInView.style.display = 'none';
-    registerView.style.display = 'block';
+  document.getElementById('authModalClose').addEventListener('click', () => {
+    authModalOverlay.style.display = 'none';
   });
 
-  document.getElementById('switchToSignIn').addEventListener('click', (e) => {
-    e.preventDefault();
-    registerView.style.display = 'none';
-    signInView.style.display = 'block';
-  });
-
-  // Handle Mock Login Execution
   document.getElementById('doSignInBtn').addEventListener('click', () => {
     isLoggedIn = true;
-    closeModal(authModalOverlay);
+    authModalOverlay.style.display = 'none';
     updateUIForAuth();
+    switchPage('vault');
   });
 
-  document.getElementById('completeRegBtn').addEventListener('click', () => {
-    isLoggedIn = true;
-    closeModal(authModalOverlay);
-    updateUIForAuth();
-  });
-
-  // Update UI based on Login State
-  function updateUIForAuth() {
-    if (isLoggedIn) {
-      document.getElementById('btnSignIn').style.display = 'none';
-      document.getElementById('btnJoin').innerText = 'My Account';
-      
-      // Cabinet Update
-      document.getElementById('cabinetAuthGate').style.display = 'none';
-      document.getElementById('cabinetContent').style.display = 'block';
-
-      // Vault Update
-      document.getElementById('vaultAuthGate').style.display = 'none';
-      document.getElementById('vaultContent').style.display = 'block';
-      
-      // Card Update
-      document.getElementById('cardMemberName').innerText = "GABRIEL OLIVEIRA";
-    } else {
-      document.getElementById('btnSignIn').style.display = 'block';
-      document.getElementById('btnJoin').innerText = 'Get Started';
-      
-      // Cabinet Update
-      document.getElementById('cabinetAuthGate').style.display = 'block';
-      document.getElementById('cabinetContent').style.display = 'none';
-
-      // Vault Update
-      document.getElementById('vaultAuthGate').style.display = 'block';
-      document.getElementById('vaultContent').style.display = 'none';
-      
-      // Card Update
-      document.getElementById('cardMemberName').innerText = "MEMBER NAME";
-    }
-  }
-
-  // Handle Sign Out
   document.getElementById('signOutBtn')?.addEventListener('click', () => {
     isLoggedIn = false;
     updateUIForAuth();
     switchPage('home');
   });
 
-  // Purge Modal Logic
-  document.getElementById('purgeBtn')?.addEventListener('click', () => openModal(purgeModalOverlay));
-  document.getElementById('cancelPurgeBtn')?.addEventListener('click', () => closeModal(purgeModalOverlay));
-  document.getElementById('confirmPurgeBtn')?.addEventListener('click', () => {
-    const input = document.getElementById('purgeConfirmInput').value;
-    if (input === 'DELETE') {
-      isLoggedIn = false;
-      closeModal(purgeModalOverlay);
-      updateUIForAuth();
-      switchPage('home');
-      alert('Data permanently purged.');
+  function updateUIForAuth() {
+    const authLinks = document.querySelectorAll('.req-auth');
+    if (isLoggedIn) {
+      document.getElementById('btnSignIn').style.display = 'none';
+      document.getElementById('btnJoin').innerText = 'My Account';
+      authLinks.forEach(link => link.style.display = 'block');
     } else {
-      alert('You must type DELETE to confirm.');
+      document.getElementById('btnSignIn').style.display = 'block';
+      document.getElementById('btnJoin').innerText = 'Get Started';
+      authLinks.forEach(link => link.style.display = 'none');
     }
+  }
+
+  // Autocomplete Logic
+  function setupAutocomplete(inputId, dropdownId) {
+    const input = document.getElementById(inputId);
+    const dropdown = document.getElementById(dropdownId);
+
+    input.addEventListener('input', () => {
+      const val = input.value.toLowerCase();
+      dropdown.innerHTML = '';
+      if (!val) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      const matches = mockDrugs.filter(d => d.toLowerCase().includes(val));
+      if (matches.length > 0) {
+        dropdown.style.display = 'block';
+        matches.forEach(match => {
+          const div = document.createElement('div');
+          div.className = 'autocomplete-item';
+          div.innerText = match;
+          div.addEventListener('click', () => {
+            input.value = match;
+            dropdown.style.display = 'none';
+            executeSearch(match);
+          });
+          dropdown.appendChild(div);
+        });
+      } else {
+        dropdown.style.display = 'none';
+      }
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && input.value) {
+        dropdown.style.display = 'none';
+        executeSearch(input.value);
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target !== input) dropdown.style.display = 'none';
+    });
+  }
+
+  setupAutocomplete('heroSearchInput', 'heroAutocomplete');
+  setupAutocomplete('pageSearchInput', 'pageAutocomplete');
+
+  function executeSearch(query) {
+    switchPage('search');
+    document.getElementById('pageSearchInput').value = query;
+    document.getElementById('searchResultTitle').innerText = `Results for "${query}"`;
+    document.getElementById('searchResultsPanel').style.display = 'block';
+    
+    // Generate mock pricing grid
+    const grid = document.getElementById('priceGrid');
+    grid.innerHTML = `
+      <div class="price-card best-price">
+        <div class="best-badge">★ Best Price</div>
+        <div class="provider-name">SleekMed Direct</div>
+        <div class="price-value">$4.87</div>
+        <div class="payment-type">Cash / No Insurance</div>
+      </div>
+      <div class="price-card">
+        <div class="provider-name">Cost Plus Drug Co.</div>
+        <div class="price-value">$8.50</div>
+        <div class="payment-type">Cash + Shipping</div>
+      </div>
+      <div class="price-card">
+        <div class="provider-name">GoodRx Network</div>
+        <div class="price-value">$12.40</div>
+        <div class="payment-type">Discount Card</div>
+      </div>
+      <div class="price-card">
+        <div class="provider-name">Avg. Insurance Co-Pay</div>
+        <div class="price-value">$45.00</div>
+        <div class="payment-type">Tier 2 Formulary</div>
+      </div>
+    `;
+  }
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
   });
 
-  // Search Logic (Mock)
-  const heroSearchInput = document.getElementById('heroSearchInput');
-  heroSearchInput?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      switchPage('search');
-      document.getElementById('pageSearchInput').value = heroSearchInput.value;
-      document.getElementById('searchResultsPanel').style.display = 'block';
-      document.getElementById('searchEmptyState').style.display = 'none';
-    }
-  });
-
-  const pageSearchInput = document.getElementById('pageSearchInput');
-  pageSearchInput?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      document.getElementById('searchResultsPanel').style.display = 'block';
-      document.getElementById('searchEmptyState').style.display = 'none';
-    }
-  });
+  // Initialize
+  updateUIForAuth();
 });
