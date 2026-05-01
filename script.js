@@ -85,6 +85,7 @@ let state = {
   isAdmin: false,
   user: null, 
   activeTab: 'search',
+  tempLoginEmail: ''
 };
 
 function saveDatabase() {
@@ -96,7 +97,6 @@ function saveDatabase() {
 
 function bootApp() {
   updateUIForAuth();
-  renderPopularGrid(); 
   switchTab('search', 'fade');
 }
 
@@ -109,27 +109,32 @@ function updateUIForAuth() {
     
     navContainer.innerHTML = `
       <button class="bnav-item active" data-tab="search" onclick="window.switchTab('search', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <i class="fa-solid fa-magnifying-glass"></i>
         <span>Prices</span>
       </button>
       <button class="bnav-item" data-tab="access" onclick="window.switchTab('access', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        <i class="fa-solid fa-credit-card"></i>
         <span>Card</span>
       </button>
       <button class="bnav-item" data-tab="profile" onclick="window.switchTab('profile', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <i class="fa-solid fa-user"></i>
         <span>Dashboard</span>
       </button>
       ${state.isAdmin ? `
       <button class="bnav-item" data-tab="partner" onclick="window.switchTab('partner', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <i class="fa-solid fa-handshake"></i>
         <span>Partner</span>
+      </button>
+      <button class="bnav-item" data-tab="analytics" onclick="window.switchTab('analytics', 'fade')">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Analytics</span>
       </button>
       ` : ''}
     `;
 
     injectUserData();
     renderMedicineCabinet();
+    updateRewardsDisplay();
   } else {
     $('topbar-profile-text').textContent = 'Sign In';
     navContainer.innerHTML = '';
@@ -139,7 +144,7 @@ function updateUIForAuth() {
 
 function injectUserData() {
   if(!state.user) return;
-  const { name, email, memberId, dob, insurance, idNum, idState, prefs } = state.user;
+  const { name, email, memberId, dob, insurance, prefs } = state.user;
   
   $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
   $('card-member-email').textContent = email;
@@ -149,19 +154,29 @@ function injectUserData() {
   $('pf-name').value = name;
   $('pf-email').value = email;
   $('pf-dob').value = dob || '';
-  $('pf-idnum').value = idNum || '';
-  $('pf-idstate').value = idState || '';
   
   if(insurance && typeof insurance === 'object') {
      $('pf-insurance').value = insurance.provider || '';
-     $('pf-ins-member').value = insurance.memberId || '';
-     $('pf-ins-group').value = insurance.group || '';
-     $('pf-ins-bin').value = insurance.bin || '';
-     $('pf-ins-pcn').value = insurance.pcn || '';
+  } else {
+     $('pf-insurance').value = insurance || '';
   }
   
   $('pref-alerts').checked = prefs ? prefs.alerts : true;
   $('pref-digest').checked = prefs ? prefs.digest : false;
+}
+
+function updateRewardsDisplay() {
+  if(!state.user) return;
+  
+  let points = 0;
+  if(state.user.name && state.user.dob) points += 500;
+  if(state.user.cabinet && state.user.cabinet.length > 0) points += 250;
+  
+  $('dashboard-pts').textContent = `${points} points`;
+  $('reward-points-display').textContent = `${points}`;
+  
+  const progress = Math.min((points / 500) * 100, 100);
+  $('reward-progress-fill').style.width = `${progress}%`;
 }
 
 function renderMedicineCabinet() {
@@ -169,10 +184,9 @@ function renderMedicineCabinet() {
   if (!state.user.cabinet || state.user.cabinet.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 24px 0;">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--border-light)" stroke-width="1.5" style="margin-bottom: 12px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <i class="fa-solid fa-prescription-bottle-medical" style="font-size: 48px; color: var(--border-light); margin-bottom: 16px;"></i>
         <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px; letter-spacing: 0.5px;">Cabinet is empty</div>
-        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills get reminders and access member savings.</div>
-        <button class="btn-secondary" style="margin: 0 auto; width: 100%; justify-content: center; color: var(--blue); border-color: var(--border);" onclick="window.switchTab('search', 'backward')">Search prescriptions</button>
+        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills and access member savings.</div>
       </div>`;
     return;
   }
@@ -186,10 +200,29 @@ function renderMedicineCabinet() {
         <div class="cabinet-item-name">${drugName}</div>
         <div class="cabinet-item-sub">Active Prescription</div>
       </div>
-      <button style="color: var(--red); font-weight: bold; padding: 8px;" onclick="removeFromCabinet(${index})">X</button>
+      <button style="color: var(--red); font-weight: bold; padding: 8px; font-size: 16px; background: none; border: none; cursor: pointer;" onclick="removeFromCabinet(${index})"><i class="fa-solid fa-xmark"></i></button>
     `;
     container.appendChild(item);
   });
+}
+
+function toggleCabinetSearch() {
+  const searchArea = $('cabinet-search-area');
+  searchArea.classList.toggle('hidden');
+  if(!searchArea.classList.contains('hidden')) {
+    $('cabinet-drug-input').focus();
+  }
+}
+
+function handleCabinetAdd(event) {
+  if (event.key === 'Enter') {
+    const drugName = $('cabinet-drug-input').value.trim();
+    if (drugName) {
+      addToCabinet(drugName);
+      $('cabinet-drug-input').value = '';
+      $('cabinet-search-area').classList.add('hidden');
+    }
+  }
 }
 
 function addToCabinet(drugName) {
@@ -202,6 +235,7 @@ function addToCabinet(drugName) {
     state.user.cabinet.push(drugName);
     saveDatabase();
     renderMedicineCabinet();
+    updateRewardsDisplay();
     showToast(`${drugName} added to cabinet.`);
   } else {
     showToast(`${drugName} is already in your cabinet.`);
@@ -212,31 +246,8 @@ function removeFromCabinet(index) {
   state.user.cabinet.splice(index, 1);
   saveDatabase();
   renderMedicineCabinet();
+  updateRewardsDisplay();
   showToast(`Prescription removed.`);
-}
-
-function renderPopularGrid() {
-  const grid = $('drug-grid');
-  grid.innerHTML = '';
-  
-  DRUGS.forEach((d) => {
-    const lowest = Math.min(...d.variants.map(v => v.sleekmed));
-    const card = document.createElement('div');
-    card.className = 'drug-card';
-    card.innerHTML = `
-      <div class="drug-name">${d.name}</div>
-      <div class="drug-generic">${d.generic}</div>
-      <div class="drug-footer">
-        <div class="savings-badge">From ${fmt(lowest)}</div>
-      </div>
-    `;
-    card.addEventListener('click', () => {
-      $('search-results-list').classList.add('hidden');
-      $('drug-search').value = '';
-      showDrugPage(d);
-    });
-    grid.appendChild(card);
-  });
 }
 
 function filterDrugs() {
@@ -261,7 +272,7 @@ function filterDrugs() {
           <div class="search-item-name">${d.name}</div>
           <div class="search-item-gen">${d.generic}</div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <i class="fa-solid fa-chevron-right text-muted"></i>
       `;
       li.addEventListener('click', () => {
         list.classList.add('hidden');
@@ -274,19 +285,32 @@ function filterDrugs() {
   list.classList.remove('hidden');
 }
 
+function filterFAQ() {
+  const q = $('faq-search-input').value.toLowerCase();
+  const items = $$('.faq-item');
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    if(text.includes(q)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
 function showDrugPage(drug) {
   currentDrugInfo = drug;
   const uniqueDosages = [...new Set(drug.variants.map(v => v.dosage))];
   
   $('drug-detail-content').innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+    <div class="flex-between" style="margin-bottom: 24px;">
       <div>
         <div class="panel-title" style="margin-bottom: 4px;">${drug.name}</div>
         <div class="panel-sub" style="font-size: 16px;">${drug.generic}</div>
       </div>
       ${state.loggedIn ? `
       <button class="btn-secondary" style="border-color: var(--blue); color: var(--blue);" onclick="addToCabinet('${drug.name}')">
-        + Save to Cabinet
+        <i class="fa-solid fa-plus"></i> Save
       </button>
       ` : ''}
     </div>
@@ -336,13 +360,13 @@ function updatePriceBoard() {
   const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
   if (!v) return;
 
-  const insName = (state.loggedIn && state.user.insurance && state.user.insurance.provider) 
-    ? `${state.user.insurance.provider} Co Pay (Avg)` 
+  const insName = (state.loggedIn && state.user.insurance) 
+    ? `${state.user.insurance} Co Pay (Avg)` 
     : 'Insurance Co Pay (Avg)';
 
   $('price-board').innerHTML = `
     <div class="price-row best-price">
-      <span class="price-source">SleekMed Direct <span class="star-icon">★ Best Price</span></span>
+      <span class="price-source">SleekMed Direct <span class="star-icon"><i class="fa-solid fa-star"></i> Best Price</span></span>
       <span class="price-value">${fmt(v.sleekmed)}</span>
     </div>
     <div class="price-row">
@@ -367,11 +391,43 @@ function updatePriceBoard() {
 function openAuth() {
   $('auth-overlay').classList.remove('hidden');
   $('auth-panel').classList.remove('hidden');
+  $('auth-step-1').classList.remove('hidden');
+  $('auth-step-2').classList.add('hidden');
 }
 
 function closeAuth() {
   $('auth-overlay').classList.add('hidden');
   $('auth-panel').classList.add('hidden');
+}
+
+function showAuthStep1() {
+  $('auth-step-1').classList.remove('hidden');
+  $('auth-step-2').classList.add('hidden');
+}
+
+function showAuthStep2() {
+  const email = $('login-email').value.trim();
+  const name = $('login-name').value.trim();
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) { 
+    highlightField('login-email'); 
+    showToast('Please enter a valid email address.');
+    return; 
+  }
+  
+  state.tempLoginEmail = email;
+  
+  if (email === 'admin@sleekmed.com') {
+    $('code-label').textContent = 'ADMINISTRATOR PIN';
+    $('code-subtext').textContent = 'Enter secure access PIN to unlock partner portal.';
+  } else {
+    $('code-label').textContent = 'ENTER VERIFICATION CODE';
+    $('code-subtext').textContent = 'A 6 digit code was sent to your email. (Any code works for demo).';
+  }
+  
+  $('auth-step-1').classList.add('hidden');
+  $('auth-step-2').classList.remove('hidden');
 }
 
 function openDeleteModal() {
@@ -393,19 +449,21 @@ function highlightField(id) {
 }
 
 function handleLogin() {
+  const email = state.tempLoginEmail;
   const name = $('login-name').value.trim();
-  const email = $('login-email').value.trim();
   const code = $('login-code').value.trim();
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) { 
-    highlightField('login-email'); 
-    showToast('Please enter a valid email address.');
+  if (!code) { 
+    highlightField('login-code');
     return; 
   }
 
   if (email === 'admin@sleekmed.com' && code === 'ADMIN888') {
     state.isAdmin = true;
+  } else if (email === 'admin@sleekmed.com') {
+    highlightField('login-code');
+    showToast('Invalid Administrator PIN.');
+    return;
   } else {
     state.isAdmin = false;
   }
@@ -416,9 +474,7 @@ function handleLogin() {
       email: email,
       memberId: 'SM ' + Math.floor(100000 + Math.random() * 900000),
       dob: '',
-      idNum: '',
-      idState: '',
-      insurance: { provider: '', memberId: '', group: '', bin: '', pcn: '' },
+      insurance: '',
       cabinet: [],
       prefs: { alerts: true, digest: false }
     };
@@ -482,10 +538,47 @@ function switchTab(tab, direction = 'fade') {
   });
 }
 
+function autoSaveProfile() {
+  if (state.user) {
+      const newEmail = $('pf-email').value.trim();
+      const oldEmail = state.user.email;
+
+      if (!newEmail || !newEmail.includes('@')) {
+         return;
+      }
+
+      state.user.name = $('pf-name').value;
+      state.user.dob = $('pf-dob').value;
+      state.user.insurance = $('pf-insurance').value;
+      
+      state.user.prefs = {
+        alerts: $('pref-alerts').checked,
+        digest: $('pref-digest').checked
+      };
+
+      if (newEmail !== oldEmail) {
+         state.user.email = newEmail;
+         db[newEmail] = state.user;
+         delete db[oldEmail];
+         localStorage.setItem('sleekmed_db', JSON.stringify(db));
+      } else {
+         saveDatabase();
+      }
+
+      injectUserData();
+      updateRewardsDisplay();
+  }
+}
+
 window.switchTab = switchTab;
 window.closeDeleteModal = closeDeleteModal;
 window.confirmDeleteAccount = confirmDeleteAccount;
 window.openDeleteModal = openDeleteModal;
+window.showAuthStep1 = showAuthStep1;
+window.toggleCabinetSearch = toggleCabinetSearch;
+window.handleCabinetAdd = handleCabinetAdd;
+window.filterFAQ = filterFAQ;
+window.autoSaveProfile = autoSaveProfile;
 
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
@@ -495,6 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else openAuth();
   });
 
+  $('continue-btn').addEventListener('click', showAuthStep2);
   $('login-btn').addEventListener('click', handleLogin);
   $('close-auth').addEventListener('click', closeAuth);
   $('auth-overlay').addEventListener('click', closeAuth);
@@ -521,49 +615,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   $('sidebar-close').addEventListener('click', closeSidebar);
   $('sidebar-overlay').addEventListener('click', closeSidebar);
-
-  $('save-profile-btn').addEventListener('click', () => {
-    if (state.user) {
-      const newEmail = $('pf-email').value.trim();
-      const oldEmail = state.user.email;
-
-      if (!newEmail || !newEmail.includes('@')) {
-         highlightField('pf-email');
-         showToast('Please enter a valid email.');
-         return;
-      }
-
-      state.user.name = $('pf-name').value;
-      state.user.dob = $('pf-dob').value;
-      state.user.idNum = $('pf-idnum').value;
-      state.user.idState = $('pf-idstate').value;
-      
-      state.user.insurance = {
-         provider: $('pf-insurance').value,
-         memberId: $('pf-ins-member').value,
-         group: $('pf-ins-group').value,
-         bin: $('pf-ins-bin').value,
-         pcn: $('pf-ins-pcn').value
-      };
-      
-      state.user.prefs = {
-        alerts: $('pref-alerts').checked,
-        digest: $('pref-digest').checked
-      };
-
-      if (newEmail !== oldEmail) {
-         state.user.email = newEmail;
-         db[newEmail] = state.user;
-         delete db[oldEmail];
-         localStorage.setItem('sleekmed_db', JSON.stringify(db));
-      } else {
-         saveDatabase();
-      }
-
-      injectUserData();
-      showToast('Profile and Preferences updated.');
-    }
-  });
-
+  
   $('logout-btn').addEventListener('click', handleLogout);
 });
