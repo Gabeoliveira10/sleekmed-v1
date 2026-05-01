@@ -1,32 +1,127 @@
 'use strict';
 
 const DRUGS = [
-  { name: 'Albuterol', generic: 'Generic ProAir', category: 'Respiratory', variants: [{ dosage: '90mcg', qty: '1 inhaler', hospital: 60, insurance: 20, costplus: 15, goodrx: 18, sleekmed: 12 }] },
-  { name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular', variants: [{ dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, costplus: 8.00, goodrx: 10.00, sleekmed: 5.80 }] },
-  { name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic', variants: [{ dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, costplus: 6.50, goodrx: 8.00, sleekmed: 4.00 }] },
-  { name: 'Astelin', generic: 'Azelastine', category: 'Respiratory', variants: [{ dosage: '137mcg', qty: '1 bottle', hospital: 85, insurance: 30, costplus: 12, goodrx: 15, sleekmed: 9.50 }] },
-  { name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 66.60, insurance: 20.00, costplus: 5.74, goodrx: 11.20, sleekmed: 4.80 }] },
-  { name: 'Bupropion', generic: 'Generic Wellbutrin', category: 'Mental Health', variants: [{ dosage: '150mg XL', qty: '30 tablets', hospital: 110, insurance: 25, costplus: 9, goodrx: 12, sleekmed: 7.20 }] },
-  { name: 'Citalopram', generic: 'Generic Celexa', category: 'Mental Health', variants: [{ dosage: '20mg', qty: '30 tablets', hospital: 95, insurance: 20, costplus: 5.50, goodrx: 8, sleekmed: 4.50 }] },
-  { name: 'Duloxetine', generic: 'Generic Cymbalta', category: 'Mental Health', variants: [{ dosage: '60mg', qty: '30 capsules', hospital: 210, insurance: 35, costplus: 12, goodrx: 16, sleekmed: 9.80 }] },
-  { name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health', variants: [{ dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, costplus: 8.50, goodrx: 11.00, sleekmed: 6.20 }] },
-  { name: 'Fluticasone', generic: 'Generic Flonase', category: 'Respiratory', variants: [{ dosage: '50mcg', qty: '1 bottle', hospital: 55, insurance: 15, costplus: 10, goodrx: 13, sleekmed: 8.00 }] },
-  { name: 'Furosemide', generic: 'Generic Lasix', category: 'Cardiovascular', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 45, insurance: 10, costplus: 4, goodrx: 6, sleekmed: 3.50 }] },
-  { name: 'Gabapentin', generic: 'Generic Neurontin', category: 'Anticonvulsant', variants: [{ dosage: '300mg', qty: '90 capsules', hospital: 140, insurance: 25, costplus: 11, goodrx: 15, sleekmed: 8.50 }] },
-  { name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant', variants: [{ dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, costplus: 12.80, goodrx: 9.00, sleekmed: 8.50 }] },
-  { name: 'Levothyroxine', generic: 'Generic Synthroid', category: 'Endocrine', variants: [{ dosage: '50mcg', qty: '30 tablets', hospital: 40, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
-  { name: 'Lisinopril', generic: 'Generic Prinivil', category: 'Cardiovascular', variants: [{ dosage: '10mg', qty: '30 tablets', hospital: 55, insurance: 15, costplus: 4.50, goodrx: 7, sleekmed: 3.80 }] },
-  { name: 'Lorazepam', generic: 'Generic Ativan', category: 'Mental Health', variants: [{ dosage: '1mg', qty: '30 tablets', hospital: 65, insurance: 15, costplus: 6, goodrx: 9, sleekmed: 4.80 }] },
-  { name: 'Losartan', generic: 'Generic Cozaar', category: 'Cardiovascular', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 90, insurance: 20, costplus: 7, goodrx: 10, sleekmed: 5.50 }] },
-  { name: 'Metformin', generic: 'Generic Glucophage', category: 'Endocrine', variants: [{ dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, costplus: 6.00, goodrx: 8.00, sleekmed: 4.60 }] },
-  { name: 'Omeprazole', generic: 'Generic Prilosec', category: 'Gastrointestinal', variants: [{ dosage: '20mg', qty: '30 capsules', hospital: 75, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 5.00 }] },
-  { name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine', variants: [{ dosage: '1mg', qty: '1 pen', hospital: 1350.00, insurance: 300.00, costplus: 995.00, goodrx: 349.00, sleekmed: 320.00 }] },
-  { name: 'Pantoprazole', generic: 'Generic Protonix', category: 'Gastrointestinal', variants: [{ dosage: '40mg', qty: '30 tablets', hospital: 85, insurance: 20, costplus: 6.50, goodrx: 10, sleekmed: 5.20 }] },
-  { name: 'Promethazine', generic: 'Generic Phenergan', category: 'Gastrointestinal', variants: [{ dosage: '25mg', qty: '30 tablets', hospital: 60, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
-  { name: 'Rosuvastatin', generic: 'Generic Crestor', category: 'Cardiovascular', variants: [{ dosage: '20mg', qty: '30 tablets', hospital: 180, insurance: 30, costplus: 8, goodrx: 12, sleekmed: 6.50 }] },
-  { name: 'Sertraline', generic: 'Generic Zoloft', category: 'Mental Health', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 120, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 4.50 }] },
-  { name: 'Trazodone', generic: 'Generic Desyrel', category: 'Mental Health', variants: [{ dosage: '50mg', qty: '30 tablets', hospital: 50, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }] },
-  { name: 'Venlafaxine', generic: 'Generic Effexor', category: 'Mental Health', variants: [{ dosage: '75mg ER', qty: '30 capsules', hospital: 160, insurance: 30, costplus: 11, goodrx: 15, sleekmed: 8.50 }] }
+  { name: 'Albuterol', generic: 'Generic ProAir', category: 'Respiratory', variants: [
+      { dosage: '90mcg', qty: '1 inhaler', hospital: 60, insurance: 20, costplus: 15, goodrx: 18, sleekmed: 12 },
+      { dosage: '90mcg', qty: '3 inhalers', hospital: 180, insurance: 50, costplus: 40, goodrx: 45, sleekmed: 32 }
+  ]},
+  { name: 'Amlodipine', generic: 'Generic Norvasc', category: 'Cardiovascular', variants: [
+      { dosage: '2.5mg', qty: '30 tablets', hospital: 180, insurance: 25, costplus: 6.00, goodrx: 8.00, sleekmed: 4.10 },
+      { dosage: '5mg', qty: '30 tablets', hospital: 224, insurance: 38, costplus: 8.00, goodrx: 10.00, sleekmed: 5.80 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 250, insurance: 45, costplus: 9.50, goodrx: 12.00, sleekmed: 6.20 }
+  ]},
+  { name: 'Amoxicillin', generic: 'Generic Amoxil', category: 'Antibiotic', variants: [
+      { dosage: '250mg', qty: '30 capsules', hospital: 110, insurance: 15, costplus: 5.00, goodrx: 6.00, sleekmed: 3.20 },
+      { dosage: '500mg', qty: '30 capsules', hospital: 148, insurance: 24, costplus: 6.50, goodrx: 8.00, sleekmed: 4.00 },
+      { dosage: '875mg', qty: '20 tablets', hospital: 160, insurance: 28, costplus: 7.00, goodrx: 9.00, sleekmed: 4.50 }
+  ]},
+  { name: 'Astelin', generic: 'Azelastine', category: 'Respiratory', variants: [
+      { dosage: '137mcg', qty: '1 bottle', hospital: 85, insurance: 30, costplus: 12, goodrx: 15, sleekmed: 9.50 },
+      { dosage: '137mcg', qty: '2 bottles', hospital: 160, insurance: 50, costplus: 20, goodrx: 25, sleekmed: 16.00 }
+  ]},
+  { name: 'Atorvastatin', generic: 'Generic Lipitor', category: 'Cardiovascular', variants: [
+      { dosage: '10mg', qty: '30 tablets', hospital: 68.70, insurance: 20.00, costplus: 5.46, goodrx: 9.50, sleekmed: 4.20 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 66.60, insurance: 20.00, costplus: 5.74, goodrx: 11.20, sleekmed: 4.80 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 70.20, insurance: 20.00, costplus: 5.92, goodrx: 14.50, sleekmed: 5.10 },
+      { dosage: '80mg', qty: '90 tablets', hospital: 190.00, insurance: 50.00, costplus: 14.00, goodrx: 25.00, sleekmed: 12.00 }
+  ]},
+  { name: 'Bupropion', generic: 'Generic Wellbutrin', category: 'Mental Health', variants: [
+      { dosage: '150mg XL', qty: '30 tablets', hospital: 110, insurance: 25, costplus: 9, goodrx: 12, sleekmed: 7.20 },
+      { dosage: '300mg XL', qty: '30 tablets', hospital: 150, insurance: 35, costplus: 14, goodrx: 18, sleekmed: 11.00 }
+  ]},
+  { name: 'Citalopram', generic: 'Generic Celexa', category: 'Mental Health', variants: [
+      { dosage: '10mg', qty: '30 tablets', hospital: 80, insurance: 15, costplus: 4.50, goodrx: 6, sleekmed: 3.50 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 95, insurance: 20, costplus: 5.50, goodrx: 8, sleekmed: 4.50 }
+  ]},
+  { name: 'Duloxetine', generic: 'Generic Cymbalta', category: 'Mental Health', variants: [
+      { dosage: '30mg', qty: '30 capsules', hospital: 180, insurance: 25, costplus: 10, goodrx: 14, sleekmed: 7.50 },
+      { dosage: '60mg', qty: '30 capsules', hospital: 210, insurance: 35, costplus: 12, goodrx: 16, sleekmed: 9.80 }
+  ]},
+  { name: 'Escitalopram', generic: 'Generic Lexapro', category: 'Mental Health', variants: [
+      { dosage: '5mg', qty: '30 tablets', hospital: 150, insurance: 25, costplus: 7.00, goodrx: 9.00, sleekmed: 4.80 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 228, insurance: 40, costplus: 8.50, goodrx: 11.00, sleekmed: 6.20 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 290, insurance: 50, costplus: 11.00, goodrx: 15.00, sleekmed: 8.10 }
+  ]},
+  { name: 'Fluticasone', generic: 'Generic Flonase', category: 'Respiratory', variants: [
+      { dosage: '50mcg', qty: '1 bottle', hospital: 55, insurance: 15, costplus: 10, goodrx: 13, sleekmed: 8.00 },
+      { dosage: '50mcg', qty: '3 bottles', hospital: 140, insurance: 35, costplus: 25, goodrx: 32, sleekmed: 21.00 }
+  ]},
+  { name: 'Furosemide', generic: 'Generic Lasix', category: 'Cardiovascular', variants: [
+      { dosage: '20mg', qty: '30 tablets', hospital: 35, insurance: 10, costplus: 3.50, goodrx: 5, sleekmed: 3.00 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 45, insurance: 10, costplus: 4, goodrx: 6, sleekmed: 3.50 }
+  ]},
+  { name: 'Gabapentin', generic: 'Generic Neurontin', category: 'Anticonvulsant', variants: [
+      { dosage: '100mg', qty: '90 capsules', hospital: 90, insurance: 15, costplus: 8, goodrx: 10, sleekmed: 6.00 },
+      { dosage: '300mg', qty: '90 capsules', hospital: 140, insurance: 25, costplus: 11, goodrx: 15, sleekmed: 8.50 },
+      { dosage: '600mg', qty: '90 tablets', hospital: 190, insurance: 35, costplus: 16, goodrx: 22, sleekmed: 12.00 }
+  ]},
+  { name: 'Keppra', generic: 'Levetiracetam', category: 'Anticonvulsant', variants: [
+      { dosage: '250mg', qty: '90 tablets', hospital: 65.00, insurance: 30.00, costplus: 14.50, goodrx: 19.24, sleekmed: 12.00 },
+      { dosage: '500mg', qty: '60 tablets', hospital: 85.74, insurance: 25.00, costplus: 12.80, goodrx: 9.00, sleekmed: 8.50 },
+      { dosage: '750mg', qty: '60 tablets', hospital: 115.74, insurance: 35.00, costplus: 18.50, goodrx: 14.92, sleekmed: 13.00 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 134.24, insurance: 40.00, costplus: 22.00, goodrx: 23.86, sleekmed: 19.00 }
+  ]},
+  { name: 'Levothyroxine', generic: 'Generic Synthroid', category: 'Endocrine', variants: [
+      { dosage: '25mcg', qty: '30 tablets', hospital: 35, insurance: 15, costplus: 4.50, goodrx: 7, sleekmed: 3.80 },
+      { dosage: '50mcg', qty: '30 tablets', hospital: 40, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 },
+      { dosage: '100mcg', qty: '30 tablets', hospital: 45, insurance: 15, costplus: 5.50, goodrx: 9, sleekmed: 4.50 }
+  ]},
+  { name: 'Lisinopril', generic: 'Generic Prinivil', category: 'Cardiovascular', variants: [
+      { dosage: '5mg', qty: '30 tablets', hospital: 45, insurance: 15, costplus: 4.00, goodrx: 6, sleekmed: 3.20 },
+      { dosage: '10mg', qty: '30 tablets', hospital: 55, insurance: 15, costplus: 4.50, goodrx: 7, sleekmed: 3.80 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 65, insurance: 15, costplus: 5.00, goodrx: 8, sleekmed: 4.20 }
+  ]},
+  { name: 'Lorazepam', generic: 'Generic Ativan', category: 'Mental Health', variants: [
+      { dosage: '0.5mg', qty: '30 tablets', hospital: 55, insurance: 15, costplus: 5.50, goodrx: 8, sleekmed: 4.20 },
+      { dosage: '1mg', qty: '30 tablets', hospital: 65, insurance: 15, costplus: 6, goodrx: 9, sleekmed: 4.80 }
+  ]},
+  { name: 'Losartan', generic: 'Generic Cozaar', category: 'Cardiovascular', variants: [
+      { dosage: '25mg', qty: '30 tablets', hospital: 75, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 4.80 },
+      { dosage: '50mg', qty: '30 tablets', hospital: 90, insurance: 20, costplus: 7, goodrx: 10, sleekmed: 5.50 }
+  ]},
+  { name: 'Metformin', generic: 'Generic Glucophage', category: 'Endocrine', variants: [
+      { dosage: '500mg', qty: '60 tablets', hospital: 186, insurance: 32, costplus: 6.00, goodrx: 8.00, sleekmed: 4.60 },
+      { dosage: '850mg', qty: '60 tablets', hospital: 210, insurance: 38, costplus: 7.50, goodrx: 10.00, sleekmed: 5.40 },
+      { dosage: '1000mg', qty: '60 tablets', hospital: 240, insurance: 45, costplus: 9.00, goodrx: 12.00, sleekmed: 6.80 },
+      { dosage: '1000mg ER', qty: '60 tablets', hospital: 300, insurance: 55, costplus: 12.00, goodrx: 15.00, sleekmed: 9.20 }
+  ]},
+  { name: 'Omeprazole', generic: 'Generic Prilosec', category: 'Gastrointestinal', variants: [
+      { dosage: '20mg', qty: '30 capsules', hospital: 75, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 5.00 },
+      { dosage: '40mg', qty: '30 capsules', hospital: 90, insurance: 25, costplus: 8, goodrx: 12, sleekmed: 6.50 }
+  ]},
+  { name: 'Ozempic', generic: 'Semaglutide', category: 'Endocrine', variants: [
+      { dosage: '0.25mg', qty: '1 pen', hospital: 1200.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
+      { dosage: '0.5mg', qty: '1 pen', hospital: 1232.00, insurance: 300.00, costplus: 995.00, goodrx: 199.00, sleekmed: 185.00 },
+      { dosage: '1mg', qty: '1 pen', hospital: 1350.00, insurance: 300.00, costplus: 995.00, goodrx: 349.00, sleekmed: 320.00 },
+      { dosage: '2mg', qty: '1 pen', hospital: 1475.12, insurance: 300.00, costplus: 995.00, goodrx: 499.00, sleekmed: 450.00 }
+  ]},
+  { name: 'Pantoprazole', generic: 'Generic Protonix', category: 'Gastrointestinal', variants: [
+      { dosage: '20mg', qty: '30 tablets', hospital: 70, insurance: 20, costplus: 5.50, goodrx: 8, sleekmed: 4.50 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 85, insurance: 20, costplus: 6.50, goodrx: 10, sleekmed: 5.20 }
+  ]},
+  { name: 'Promethazine', generic: 'Generic Phenergan', category: 'Gastrointestinal', variants: [
+      { dosage: '12.5mg', qty: '30 tablets', hospital: 50, insurance: 15, costplus: 4.50, goodrx: 7, sleekmed: 3.50 },
+      { dosage: '25mg', qty: '30 tablets', hospital: 60, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 }
+  ]},
+  { name: 'Rosuvastatin', generic: 'Generic Crestor', category: 'Cardiovascular', variants: [
+      { dosage: '10mg', qty: '30 tablets', hospital: 150, insurance: 25, costplus: 7, goodrx: 10, sleekmed: 5.50 },
+      { dosage: '20mg', qty: '30 tablets', hospital: 180, insurance: 30, costplus: 8, goodrx: 12, sleekmed: 6.50 },
+      { dosage: '40mg', qty: '30 tablets', hospital: 210, insurance: 35, costplus: 10, goodrx: 15, sleekmed: 8.00 }
+  ]},
+  { name: 'Sertraline', generic: 'Generic Zoloft', category: 'Mental Health', variants: [
+      { dosage: '25mg', qty: '30 tablets', hospital: 90, insurance: 20, costplus: 5, goodrx: 7, sleekmed: 3.80 },
+      { dosage: '50mg', qty: '30 tablets', hospital: 120, insurance: 20, costplus: 6, goodrx: 9, sleekmed: 4.50 },
+      { dosage: '100mg', qty: '30 tablets', hospital: 150, insurance: 25, costplus: 7.50, goodrx: 11, sleekmed: 5.80 }
+  ]},
+  { name: 'Trazodone', generic: 'Generic Desyrel', category: 'Mental Health', variants: [
+      { dosage: '50mg', qty: '30 tablets', hospital: 50, insurance: 15, costplus: 5, goodrx: 8, sleekmed: 4.00 },
+      { dosage: '100mg', qty: '30 tablets', hospital: 70, insurance: 15, costplus: 6.50, goodrx: 10, sleekmed: 5.50 }
+  ]},
+  { name: 'Venlafaxine', generic: 'Generic Effexor', category: 'Mental Health', variants: [
+      { dosage: '37.5mg ER', qty: '30 capsules', hospital: 120, insurance: 25, costplus: 8, goodrx: 11, sleekmed: 6.00 },
+      { dosage: '75mg ER', qty: '30 capsules', hospital: 160, insurance: 30, costplus: 11, goodrx: 15, sleekmed: 8.50 },
+      { dosage: '150mg ER', qty: '30 capsules', hospital: 210, insurance: 40, costplus: 15, goodrx: 21, sleekmed: 12.00 }
+  ]}
 ];
 
 let currentDrugInfo = null;
@@ -76,7 +171,7 @@ function updateUIForAuth() {
     navContainer.classList.remove('hidden');
     
     navContainer.innerHTML = `
-      <button class="bnav-item active" data-tab="search" onclick="window.switchTab('search', 'fade')">
+      <button class="bnav-item" data-tab="search" onclick="window.switchTab('search', 'fade')">
         <i class="fa-solid fa-magnifying-glass"></i>
         <span>Prices</span>
       </button>
@@ -104,6 +199,11 @@ function updateUIForAuth() {
     renderMedicineCabinet();
     updateRewardsDisplay();
     calcAdminRev();
+    
+    $$('.bnav-item').forEach(b => {
+      if(b.dataset.tab === state.activeTab) b.classList.add('active');
+    });
+
   } else {
     $('topbar-profile-text').textContent = 'Sign In';
     navContainer.innerHTML = '';
@@ -124,7 +224,6 @@ function injectUserData() {
   $('pf-email').value = email;
   $('pf-dob').value = dob || '';
   $('pf-idnum').value = idNum || '';
-  $('pf-idstate').value = idState || '';
   
   if(insurance && typeof insurance === 'object') {
      $('pf-insurance').value = insurance.provider || '';
@@ -154,6 +253,8 @@ function updateRewardsDisplay() {
 
 function renderMedicineCabinet() {
   const container = $('medicine-cabinet-list');
+  const orderList = $('order-history-list');
+
   if (!state.user.cabinet || state.user.cabinet.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 24px 0;">
@@ -161,51 +262,61 @@ function renderMedicineCabinet() {
         <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px; letter-spacing: 0.5px;">Cabinet is empty</div>
         <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills and access member savings.</div>
       </div>`;
+    orderList.innerHTML = `<div class="text-muted" style="text-align: center; padding: 20px 0;">No past orders found in your history.</div>`;
     return;
   }
 
   container.innerHTML = '';
-  state.user.cabinet.forEach((drugName, index) => {
+  orderList.innerHTML = '';
+
+  state.user.cabinet.forEach((drug, index) => {
     const item = document.createElement('div');
     item.className = 'cabinet-item';
     item.innerHTML = `
       <div>
-        <div class="cabinet-item-name">${drugName}</div>
-        <div class="cabinet-item-sub">Active Prescription</div>
+        <div class="cabinet-item-name">${drug.name} <span style="color: var(--text-muted); font-size: 14px; font-weight: normal;">${drug.dosage}</span></div>
+        <div class="cabinet-item-sub">Qty: ${drug.qty} | Refills: ${drug.refills}</div>
       </div>
       <button style="color: var(--red); font-weight: bold; padding: 8px; font-size: 16px; background: none; border: none; cursor: pointer;" onclick="removeFromCabinet(${index})"><i class="fa-solid fa-xmark"></i></button>
     `;
     container.appendChild(item);
+
+    const hist = document.createElement('div');
+    hist.style.cssText = "display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border);";
+    hist.innerHTML = `
+      <div>
+        <div style="font-weight: 700; font-size: 14px;">${drug.name}</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Filled at CVS Pharmacy</div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-weight: 700; font-size: 14px; color: var(--emerald);">COMPLETED</div>
+        <div style="font-size: 12px; color: var(--text-muted);">04/15/2026</div>
+      </div>
+    `;
+    orderList.appendChild(hist);
   });
 }
 
 function toggleCabinetSearch() {
-  const searchArea = $('cabinet-search-area');
-  searchArea.classList.toggle('hidden');
-  if(!searchArea.classList.contains('hidden')) {
-    $('cabinet-drug-input').focus();
-  }
+  window.switchTab('search', 'backward');
 }
 
-function handleCabinetAdd(event) {
-  if (event.key === 'Enter') {
-    const drugName = $('cabinet-drug-input').value.trim();
-    if (drugName) {
-      addToCabinet(drugName);
-      $('cabinet-drug-input').value = '';
-      $('cabinet-search-area').classList.add('hidden');
-    }
-  }
-}
-
-function addToCabinet(drugName) {
+function addToCabinet(drugName, dosage, qty) {
   if (!state.loggedIn) {
     openAuth();
     return;
   }
   if (!state.user.cabinet) state.user.cabinet = [];
-  if (!state.user.cabinet.includes(drugName)) {
-    state.user.cabinet.push(drugName);
+  
+  const exists = state.user.cabinet.find(d => d.name === drugName && d.dosage === dosage);
+  
+  if (!exists) {
+    state.user.cabinet.push({
+      name: drugName,
+      dosage: dosage,
+      qty: qty,
+      refills: 3
+    });
     saveDatabase();
     renderMedicineCabinet();
     updateRewardsDisplay();
@@ -334,7 +445,7 @@ function showDrugPage(drug) {
         <div class="panel-sub" style="font-size: 16px;">${drug.generic}</div>
       </div>
       ${state.loggedIn ? `
-      <button class="btn-secondary" style="border-color: var(--blue); color: var(--blue);" onclick="addToCabinet('${drug.name}')">
+      <button class="btn-secondary" style="border-color: var(--blue); color: var(--blue);" onclick="window.saveCurrentDrugToCabinet()">
         <i class="fa-solid fa-plus"></i> Save
       </button>
       ` : ''}
@@ -379,6 +490,13 @@ function showDrugPage(drug) {
   window.scrollTo(0, 0);
 }
 
+function saveCurrentDrugToCabinet() {
+  const dName = currentDrugInfo.name;
+  const dos = $('sel-dosage').value;
+  const qty = $('sel-qty').value;
+  addToCabinet(dName, dos, qty);
+}
+
 function updateQuantities() {
   const selectedDosage = $('sel-dosage').value;
   const qtySelect = $('sel-qty');
@@ -403,9 +521,15 @@ function updatePriceBoard(isLocal) {
   let gPrice = v.goodrx;
   
   if (isLocal) {
-    sPrice = sPrice * 0.95; // Simulate localized cheaper finding
-    gPrice = gPrice * 1.05; // Simulate standard fluctuation
-    $('location-badge').textContent = `Local Pricing (${$('detail-zip').value})`;
+    const zip = $('detail-zip').value.trim();
+    let hash = 0;
+    for(let i=0; i<zip.length; i++) hash += zip.charCodeAt(i);
+    
+    const modifier = 0.90 + ((hash % 20) / 100); 
+    
+    sPrice = sPrice * modifier;
+    gPrice = gPrice * (modifier + 0.05); 
+    $('location-badge').textContent = `Local Pricing (${zip})`;
   } else {
     $('location-badge').textContent = `National Average`;
   }
@@ -529,7 +653,9 @@ function handleLogin() {
     state.isAdmin = false;
   }
 
+  let isNewUser = false;
   if (!db[email]) {
+    isNewUser = true;
     db[email] = {
       name: name || 'Member',
       email: email,
@@ -539,7 +665,8 @@ function handleLogin() {
       idState: '',
       insurance: { provider: '', memberId: '', group: '', bin: '', pcn: '' },
       cabinet: [],
-      prefs: { alerts: true, digest: false }
+      prefs: { alerts: true, digest: false },
+      onboardingComplete: false
     };
   }
   
@@ -553,10 +680,36 @@ function handleLogin() {
   if (state.isAdmin) {
     switchTab('partner', 'bounce');
     showToast('Admin Portal Unlocked');
+  } else if (isNewUser || !state.user.onboardingComplete) {
+    startOnboarding();
   } else {
     switchTab('access', 'bounce');
     showToast('Account verified. Access card ready.');
   }
+}
+
+function startOnboarding() {
+  $('onboard-overlay').classList.remove('hidden');
+  nextOnboard(1);
+}
+
+function nextOnboard(step) {
+  $('onboard-step-1').classList.add('hidden');
+  $('onboard-step-2').classList.add('hidden');
+  $('onboard-step-3').classList.add('hidden');
+  $('onboard-step-' + step).classList.remove('hidden');
+}
+
+function finishOnboard() {
+  state.user.dob = $('ob-dob').value;
+  state.user.onboardingComplete = true;
+  saveDatabase();
+  
+  $('onboard-overlay').classList.add('hidden');
+  injectUserData();
+  updateRewardsDisplay();
+  switchTab('profile', 'bounce');
+  showToast('Profile setup complete. You earned 500 points.');
 }
 
 function handleLogout() {
@@ -604,8 +757,9 @@ function switchTab(tab, direction = 'fade') {
     else if (direction === 'bounce') panel.classList.add('bounce-in');
   }
 
-  $$('.bnav-item').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === tab);
+  $$('.bnav-item, .sidebar-link').forEach(b => {
+    b.classList.remove('active');
+    if(b.dataset.tab === tab) b.classList.add('active');
   });
 }
 
@@ -621,7 +775,6 @@ function autoSaveProfile() {
       state.user.name = $('pf-name').value;
       state.user.dob = $('pf-dob').value;
       state.user.idNum = $('pf-idnum').value;
-      state.user.idState = $('pf-idstate').value;
       
       state.user.insurance = {
          provider: $('pf-insurance').value,
@@ -662,6 +815,9 @@ window.filterDirectory = filterDirectory;
 window.autoSaveProfile = autoSaveProfile;
 window.simulateLocalPricing = simulateLocalPricing;
 window.calcAdminRev = calcAdminRev;
+window.saveCurrentDrugToCabinet = saveCurrentDrugToCabinet;
+window.nextOnboard = nextOnboard;
+window.finishOnboard = finishOnboard;
 
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
