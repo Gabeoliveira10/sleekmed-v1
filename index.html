@@ -45,8 +45,11 @@
   
   <div class="sidebar-section-label" style="margin-top: 20px;">COMPANY</div>
   <ul class="sidebar-nav">
-    <li><button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
+    <li><button class="sidebar-link" data-tab="about" onclick="window.switchTab('about', 'forward'); window.closeSidebar();">
       <i class="fa-solid fa-building"></i> About Us
+    </button></li>
+    <li><button class="sidebar-link" data-tab="providers" onclick="window.switchTab('providers', 'forward'); window.closeSidebar();">
+      <i class="fa-solid fa-user-doctor"></i> For Providers
     </button></li>
     <li><button class="sidebar-link" onclick="window.switchTab('coming-soon', 'forward'); window.closeSidebar();">
       <i class="fa-solid fa-headset"></i> Support
@@ -92,7 +95,65 @@
   </div>
 </div>
 
-<div id="delete-modal-overlay" class="gate-overlay hidden modal-center">
+<div id="onboard-overlay" class="gate-overlay hidden modal-center" style="z-index: 2000;">
+  <div id="onboard-panel" class="delete-modal-panel" style="max-width: 500px; padding: 40px; text-align: left; align-items: flex-start;">
+    
+    <div id="onboard-step-1">
+      <div style="color: var(--emerald); margin-bottom: 16px;"><i class="fa-solid fa-heart-pulse" style="font-size: 32px;"></i></div>
+      <div class="modal-title">Welcome to SleekMed</div>
+      <div class="modal-desc" style="font-size: 15px; margin-bottom: 32px;">Let us set up your health profile so we can provide accurate pricing and medication tracking.</div>
+      
+      <div class="field-group">
+        <label class="field-label">DATE OF BIRTH</label>
+        <input type="date" id="ob-dob" class="gate-input" style="color-scheme: dark;" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">GOVERNMENT ID NUMBER</label>
+        <input type="text" id="ob-id" class="gate-input" placeholder="Driver License Number" />
+      </div>
+      <button class="gate-btn" onclick="window.nextOnboard(2)">Next Step</button>
+    </div>
+
+    <div id="onboard-step-2" class="hidden">
+      <div class="modal-title">Medical History</div>
+      <div class="modal-desc" style="font-size: 15px; margin-bottom: 32px;">This information is encrypted and helps prevent dangerous drug interactions.</div>
+      
+      <div class="field-group">
+        <label class="field-label">KNOWN ALLERGIES</label>
+        <input type="text" id="ob-allergies" class="gate-input" placeholder="e.g. Penicillin Peanuts" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">CHRONIC CONDITIONS</label>
+        <input type="text" id="ob-conditions" class="gate-input" placeholder="e.g. Asthma Hypertension" />
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 32px;">
+        <button class="btn-secondary flex-1 center-text" onclick="window.nextOnboard(1)">Back</button>
+        <button class="gate-btn flex-1" style="margin-top: 0;" onclick="window.nextOnboard(3)">Next</button>
+      </div>
+    </div>
+
+    <div id="onboard-step-3" class="hidden">
+      <div class="modal-title">Primary Care</div>
+      <div class="modal-desc" style="font-size: 15px; margin-bottom: 32px;">Connect your local provider for seamless prescription transfers.</div>
+      
+      <div class="field-group">
+        <label class="field-label">PRIMARY DOCTOR NAME</label>
+        <input type="text" id="ob-doc" class="gate-input" placeholder="Dr. First Last" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">CLINIC ZIP CODE</label>
+        <input type="text" id="ob-doc-zip" class="gate-input" placeholder="e.g. 32259" />
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 32px;">
+        <button class="btn-secondary flex-1 center-text" onclick="window.nextOnboard(2)">Back</button>
+        <button class="gate-btn flex-1" style="margin-top: 0;" onclick="window.finishOnboard()">Complete</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<div id="delete-modal-overlay" class="gate-overlay hidden modal-center" style="z-index: 2000;">
   <div id="delete-modal-panel" class="delete-modal-panel">
     <i class="fa-solid fa-triangle-exclamation" style="font-size: 40px; color: var(--red); margin-bottom: 16px;"></i>
     <div class="modal-title">Delete Account?</div>
@@ -137,7 +198,7 @@
           <div class="search-row">
             <div class="search-wrap" style="width: 100%;">
               <i class="fa-solid fa-magnifying-glass search-icon"></i>
-              <input id="drug-search" type="text" class="search-input" placeholder="Search medications by name..." autocomplete="off" />
+              <input id="drug-search" type="text" class="search-input" placeholder="Search medications by name" autocomplete="off" />
               <ul id="search-results-list" class="search-dropdown hidden"></ul>
             </div>
           </div>
@@ -147,8 +208,8 @@
       <div class="founder-message">
         <div class="founder-content">
           <h2 class="emerald-text">Welcome to radical transparency.</h2>
-          <p class="text-secondary">SleekMed is not a pharmacy. We are an unbiased aggregator built to cut through the noise of the healthcare industry. Prices for the exact same medication vary wildly between pharmacies, discount networks, and insurance co-pays.</p>
-          <p class="text-secondary">We pull real-time data across all these channels and present it to you on one screen. You decide where to fill, and you decide whether to use our free digital access card, a competitor's card, or your own insurance. We just provide the truth.</p>
+          <p class="text-secondary">SleekMed is not a pharmacy. We are an unbiased aggregator built to cut through the noise of the healthcare industry. Prices for the exact same medication vary wildly between pharmacies discount networks and insurance co pays.</p>
+          <p class="text-secondary">We pull real time data across all these channels and present it to you on one screen. You decide where to fill and you decide whether to use our free digital access card a competitor card or your own insurance. We just provide the truth.</p>
           <div class="founder-name">Gabriel Oliveira</div>
           <div class="founder-title">FOUNDER AND CEO</div>
         </div>
@@ -159,7 +220,7 @@
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-scale-balanced"></i></div>
           <h3>Unbiased Comparisons</h3>
-          <p>We show you Cost Plus, GoodRx, and insurance pricing side-by-side.</p>
+          <p>We show you Cost Plus GoodRx and insurance pricing side by side.</p>
         </div>
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-store"></i></div>
@@ -174,7 +235,7 @@
         <div class="prop-item">
           <div class="prop-icon"><i class="fa-solid fa-lock"></i></div>
           <h3>Privacy First</h3>
-          <p>Your search history and medication data are secured with enterprise-grade encryption.</p>
+          <p>Your search history and medication data are secured with enterprise grade encryption.</p>
         </div>
       </div>
 
@@ -191,6 +252,62 @@
       </div>
     </section>
 
+    <section id="tab-about" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">About SleekMed</div>
+          <div class="panel-sub">Our mission to revolutionize healthcare pricing.</div>
+        </div>
+      </div>
+      
+      <div class="content-block">
+        <h2>The Problem We Are Solving</h2>
+        <p>For decades the pharmaceutical supply chain has operated in the shadows. Manufacturers sell to wholesalers who sell to pharmacies all while Pharmacy Benefit Managers negotiate secret rebates. The end result is that the patient at the counter has zero visibility into what a medication actually costs to produce and dispense.</p>
+        <p>This lack of transparency leads to situations where paying cash is often cheaper than using insurance but patients are never told this at the register.</p>
+        
+        <h2 style="margin-top: 32px;">The SleekMed Solution</h2>
+        <p>We built a technology engine that aggregates pricing data from thousands of endpoints across the United States. We do not manufacture drugs and we do not own pharmacies. Our sole product is truth.</p>
+        <p>By empowering patients with clear comparative data we are forcing the industry to compete on price and efficiency rather than hidden contracts.</p>
+
+        <div style="background: var(--bg-elevated); padding: 32px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-top: 40px; text-align: center;">
+          <i class="fa-solid fa-building-shield" style="font-size: 40px; color: var(--emerald); margin-bottom: 16px;"></i>
+          <h3>Corporate Headquarters</h3>
+          <p class="text-muted" style="margin-top: 8px;">Jacksonville FL</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-providers" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">For Providers</div>
+          <div class="panel-sub">Empower your patients with affordable treatment options.</div>
+        </div>
+      </div>
+      
+      <div class="content-block">
+        <h2>Partnering with Clinics</h2>
+        <p>Medical non compliance due to cost is one of the leading causes of readmission and deteriorating health outcomes. When you prescribe a medication your patient should not have to choose between their health and their groceries.</p>
+        
+        <div class="value-props" style="margin-top: 32px;">
+          <div class="prop-item">
+            <div class="prop-icon"><i class="fa-solid fa-chart-pie"></i></div>
+            <h3>Formulary Data</h3>
+            <p>Access our provider dashboard to see real time local cash prices before you send the script to the pharmacy.</p>
+          </div>
+          <div class="prop-item">
+            <div class="prop-icon"><i class="fa-solid fa-file-prescription"></i></div>
+            <h3>EHR Integration</h3>
+            <p>SleekMed pricing intelligence can be routed directly into standard electronic health record systems.</p>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+          <button class="gate-btn max-w-200" onclick="window.switchTab('coming-soon', 'forward')">Request Demo</button>
+        </div>
+      </div>
+    </section>
+
     <section id="tab-directory" class="tab-panel">
       <div class="panel-header">
         <div>
@@ -202,7 +319,7 @@
       <div class="flex-between" style="align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div class="search-wrap" style="flex: 2; min-width: 200px;">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input id="dir-search" type="text" class="search-input" placeholder="Filter by name..." onkeyup="window.filterDirectory()" />
+          <input id="dir-search" type="text" class="search-input" placeholder="Filter by name" onkeyup="window.filterDirectory()" />
         </div>
         <div style="flex: 1; min-width: 150px;">
           <select id="dir-category" class="gate-input" onchange="window.filterDirectory()" style="cursor: pointer;">
@@ -241,13 +358,13 @@
 
       <div class="faq-search-wrap">
         <i class="fa-solid fa-magnifying-glass faq-search-icon"></i>
-        <input type="text" id="faq-search-input" class="gate-input" placeholder="Search our help center..." onkeyup="window.filterFAQ()" />
+        <input type="text" id="faq-search-input" class="gate-input" placeholder="Search our help center" onkeyup="window.filterFAQ()" />
       </div>
       
       <div class="faq-container" id="faq-list">
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">What exactly is SleekMed? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">We are an unbiased healthcare price aggregator. We collect data from various discount networks, direct-to-consumer pharmacies, and standard insurers to show you all your options on one screen.</div>
+          <div class="faq-answer">We are an unbiased healthcare price aggregator. We collect data from various discount networks direct to consumer pharmacies and standard insurers to show you all your options on one screen.</div>
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">How much does it cost to use? <i class="fa-solid fa-chevron-down"></i></div>
@@ -259,11 +376,11 @@
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">Do I need insurance to use this? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">No insurance is required. In fact, many of our users find that our negotiated cash prices are actually lower than their insurance co-pays.</div>
+          <div class="faq-answer">No insurance is required. In fact many of our users find that our negotiated cash prices are actually lower than their insurance co pays.</div>
         </div>
         <div class="faq-item" onclick="this.classList.toggle('active')">
           <div class="faq-question">Can I combine this with my insurance? <i class="fa-solid fa-chevron-down"></i></div>
-          <div class="faq-answer">Our discounts cannot be stacked or combined with insurance or Medicare. However, you can ask your pharmacist to compare our price against your insurance price and simply select whichever is cheaper.</div>
+          <div class="faq-answer">Our discounts cannot be stacked or combined with insurance or Medicare. However you can ask your pharmacist to compare our price against your insurance price and simply select whichever is cheaper.</div>
         </div>
       </div>
     </section>
@@ -306,7 +423,7 @@
             </div>
             <div class="card-data-item">
               <div class="card-data-label">MEMBER ID</div>
-              <div class="card-data-val" id="card-member-id">SM-000000</div>
+              <div class="card-data-val" id="card-member-id">SM 000000</div>
             </div>
           </div>
 
@@ -320,7 +437,7 @@
     <section id="tab-rewards" class="tab-panel">
       <div class="panel-header">
         <button class="btn-secondary" onclick="window.switchTab('profile', 'backward')">
-          <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+          <i class="fa-solid fa-arrow-left"></i> Back
         </button>
         <div class="header-text-right">
           <div class="panel-title">Rewards Hub</div>
@@ -371,7 +488,7 @@
       <div class="panel-header flex-between">
         <div>
           <div class="panel-title">My Dashboard</div>
-          <div class="panel-sub">Manage your prescriptions and identity details.</div>
+          <div class="panel-sub">Manage your prescriptions identity and plan details.</div>
         </div>
         <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);">Save</button>
       </div>
@@ -383,30 +500,44 @@
         </div>
       </div>
 
-      <div class="dashboard-card clickable-card" onclick="window.switchTab('rewards', 'forward')">
-        <div class="card-left">
-          <div class="icon-circle amber"><i class="fa-solid fa-coins"></i></div>
-          <div>
-            <div class="card-label">Rewards Balance</div>
-            <div class="card-value" id="dashboard-pts">0 points</div>
+      <div class="dashboard-kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div class="dashboard-card clickable-card" style="margin-bottom: 0;" onclick="window.switchTab('rewards', 'forward')">
+          <div class="card-left">
+            <div class="icon-circle amber"><i class="fa-solid fa-coins"></i></div>
+            <div>
+              <div class="card-label">Rewards Balance</div>
+              <div class="card-value" id="dashboard-pts">0 points</div>
+            </div>
           </div>
         </div>
-        <i class="fa-solid fa-chevron-right text-muted"></i>
+        
+        <div class="dashboard-card" style="margin-bottom: 0;">
+          <div class="card-left">
+            <div class="icon-circle" style="color: var(--emerald); border: 2px solid var(--emerald); background: rgba(0,245,160,0.1);"><i class="fa-solid fa-chart-pie"></i></div>
+            <div>
+              <div class="card-label">Lifetime Savings</div>
+              <div class="card-value" id="dashboard-savings">$0.00</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="dashboard-card">
         <div class="card-header-row">
           <div class="card-title">Medicine Cabinet</div>
-          <button class="btn-text-blue" onclick="window.toggleCabinetSearch()">
-            <i class="fa-solid fa-plus"></i> Add
+          <button class="btn-text-blue" onclick="window.switchTab('search', 'backward')">
+            <i class="fa-solid fa-plus"></i> Search to Add
           </button>
         </div>
-        
-        <div id="cabinet-search-area" class="hidden" style="margin-bottom: 16px;">
-          <input type="text" id="cabinet-drug-input" class="gate-input" placeholder="Type a drug name and press enter..." onkeydown="window.handleCabinetAdd(event)">
-        </div>
+        <div id="medicine-cabinet-list"></div>
+      </div>
 
-        <div id="medicine-cabinet-list">
+      <div class="dashboard-card">
+        <div class="card-header-row">
+          <div class="card-title">Order History & Refills</div>
+        </div>
+        <div id="order-history-list">
+           <div class="text-muted" style="text-align: center; padding: 20px 0;">No past orders found in your history.</div>
         </div>
       </div>
 
@@ -440,10 +571,30 @@
               <label class="field-label">GOVERNMENT ID NUMBER</label>
               <input type="text" class="profile-input" id="pf-idnum" placeholder="Driver License Number" onblur="window.autoSaveProfile()"/>
             </div>
-            <div class="profile-field" style="grid-column: 1 / -1;">
-              <label class="field-label">PRIMARY INSURANCE PROVIDER</label>
-              <input type="text" class="profile-input" id="pf-insurance" placeholder="e.g. United Healthcare" onblur="window.autoSaveProfile()"/>
-            </div>
+          </div>
+        </div>
+
+        <div class="profile-section-label">INSURANCE DETAILS</div>
+        <div class="profile-grid">
+          <div class="profile-field" style="grid-column: 1 / -1;">
+            <label class="field-label">PRIMARY INSURANCE PROVIDER</label>
+            <input type="text" class="profile-input" id="pf-insurance" placeholder="e.g. United Healthcare" onblur="window.autoSaveProfile()"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">MEMBER ID</label>
+            <input type="text" class="profile-input" id="pf-ins-member" placeholder="ID Number" onblur="window.autoSaveProfile()"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">GROUP NUMBER</label>
+            <input type="text" class="profile-input" id="pf-ins-group" placeholder="Group Number" onblur="window.autoSaveProfile()"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">RX BIN</label>
+            <input type="text" class="profile-input" id="pf-ins-bin" placeholder="BIN Number" onblur="window.autoSaveProfile()"/>
+          </div>
+          <div class="profile-field">
+            <label class="field-label">RX PCN</label>
+            <input type="text" class="profile-input" id="pf-ins-pcn" placeholder="PCN Number" onblur="window.autoSaveProfile()"/>
           </div>
         </div>
 
@@ -455,6 +606,13 @@
               <div class="toggle-desc">Notify when saved drug prices change</div>
             </div>
             <label class="toggle-switch"><input type="checkbox" id="pref-alerts" onchange="window.autoSaveProfile()"/><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-title">Monthly Digest</div>
+              <div class="toggle-desc">Receive a summary of potential savings</div>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" id="pref-digest" onchange="window.autoSaveProfile()"/><span class="toggle-track"></span></label>
           </div>
         </div>
 
@@ -499,7 +657,7 @@
           </div>
         </div>
         <div class="kpi-card" style="background: rgba(0, 245, 160, 0.05);">
-          <div class="kpi-label" style="color: var(--emerald);">Projected MRR (Monthly Rev)</div>
+          <div class="kpi-label" style="color: var(--emerald);">Projected MRR</div>
           <div class="kpi-val" id="admin-rev-display" style="color: #fff; margin-top: 8px;">$127,080</div>
         </div>
       </div>
