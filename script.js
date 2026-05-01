@@ -108,21 +108,21 @@ function updateUIForAuth() {
     navContainer.classList.remove('hidden');
     
     navContainer.innerHTML = `
-      <button class="bnav-item active" data-tab="search" onclick="switchTab('search', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21 4.35 4.35"/></svg>
+      <button class="bnav-item active" data-tab="search" onclick="window.switchTab('search', 'fade')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <span>Prices</span>
       </button>
-      <button class="bnav-item" data-tab="access" onclick="switchTab('access', 'fade')">
+      <button class="bnav-item" data-tab="access" onclick="window.switchTab('access', 'fade')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
         <span>Card</span>
       </button>
-      <button class="bnav-item" data-tab="profile" onclick="switchTab('profile', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0 4 3.6 7 8 7s8 3 8 7"/></svg>
+      <button class="bnav-item" data-tab="profile" onclick="window.switchTab('profile', 'fade')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         <span>Dashboard</span>
       </button>
       ${state.isAdmin ? `
-      <button class="bnav-item" data-tab="partner" onclick="switchTab('partner', 'fade')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v 2a4 4 0 0 0 4 4H5a4 4 0 0 0 4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v 2a4 4 0 0 0 3 3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <button class="bnav-item" data-tab="partner" onclick="window.switchTab('partner', 'fade')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span>Partner</span>
       </button>
       ` : ''}
@@ -139,7 +139,7 @@ function updateUIForAuth() {
 
 function injectUserData() {
   if(!state.user) return;
-  const { name, email, memberId, dob, insurance, prefs } = state.user;
+  const { name, email, memberId, dob, insurance, idNum, idState, prefs } = state.user;
   
   $('card-member-name').textContent = name.toUpperCase() || 'VALUED MEMBER';
   $('card-member-email').textContent = email;
@@ -149,7 +149,16 @@ function injectUserData() {
   $('pf-name').value = name;
   $('pf-email').value = email;
   $('pf-dob').value = dob || '';
-  $('pf-insurance').value = insurance || '';
+  $('pf-idnum').value = idNum || '';
+  $('pf-idstate').value = idState || '';
+  
+  if(insurance && typeof insurance === 'object') {
+     $('pf-insurance').value = insurance.provider || '';
+     $('pf-ins-member').value = insurance.memberId || '';
+     $('pf-ins-group').value = insurance.group || '';
+     $('pf-ins-bin').value = insurance.bin || '';
+     $('pf-ins-pcn').value = insurance.pcn || '';
+  }
   
   $('pref-alerts').checked = prefs ? prefs.alerts : true;
   $('pref-digest').checked = prefs ? prefs.digest : false;
@@ -162,8 +171,8 @@ function renderMedicineCabinet() {
       <div style="text-align: center; padding: 24px 0;">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--border-light)" stroke-width="1.5" style="margin-bottom: 12px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         <div style="font-weight: 700; font-size: 16px; margin-bottom: 8px; letter-spacing: 0.5px;">Cabinet is empty</div>
-        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills, get reminders, and access member savings.</div>
-        <button class="btn-secondary" style="margin: 0 auto; width: 100%; justify-content: center; color: var(--blue); border-color: var(--border);" onclick="switchTab('search', 'backward')">Search prescriptions</button>
+        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Track refills get reminders and access member savings.</div>
+        <button class="btn-secondary" style="margin: 0 auto; width: 100%; justify-content: center; color: var(--blue); border-color: var(--border);" onclick="window.switchTab('search', 'backward')">Search prescriptions</button>
       </div>`;
     return;
   }
@@ -252,7 +261,7 @@ function filterDrugs() {
           <div class="search-item-name">${d.name}</div>
           <div class="search-item-gen">${d.generic}</div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6 6 6 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
       `;
       li.addEventListener('click', () => {
         list.classList.add('hidden');
@@ -327,8 +336,8 @@ function updatePriceBoard() {
   const v = currentDrugInfo.variants.find(v => v.dosage === selectedDosage && v.qty === selectedQty);
   if (!v) return;
 
-  const insName = (state.loggedIn && state.user.insurance) 
-    ? `${state.user.insurance} Co Pay (Avg)` 
+  const insName = (state.loggedIn && state.user.insurance && state.user.insurance.provider) 
+    ? `${state.user.insurance.provider} Co Pay (Avg)` 
     : 'Insurance Co Pay (Avg)';
 
   $('price-board').innerHTML = `
@@ -407,7 +416,9 @@ function handleLogin() {
       email: email,
       memberId: 'SM ' + Math.floor(100000 + Math.random() * 900000),
       dob: '',
-      insurance: '',
+      idNum: '',
+      idState: '',
+      insurance: { provider: '', memberId: '', group: '', bin: '', pcn: '' },
       cabinet: [],
       prefs: { alerts: true, digest: false }
     };
@@ -471,6 +482,11 @@ function switchTab(tab, direction = 'fade') {
   });
 }
 
+window.switchTab = switchTab;
+window.closeDeleteModal = closeDeleteModal;
+window.confirmDeleteAccount = confirmDeleteAccount;
+window.openDeleteModal = openDeleteModal;
+
 document.addEventListener('DOMContentLoaded', () => {
   bootApp();
 
@@ -501,6 +517,8 @@ document.addEventListener('DOMContentLoaded', () => {
     $('sidebar-overlay').classList.remove('open');
   };
   
+  window.closeSidebar = closeSidebar;
+  
   $('sidebar-close').addEventListener('click', closeSidebar);
   $('sidebar-overlay').addEventListener('click', closeSidebar);
 
@@ -517,7 +535,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       state.user.name = $('pf-name').value;
       state.user.dob = $('pf-dob').value;
-      state.user.insurance = $('pf-insurance').value;
+      state.user.idNum = $('pf-idnum').value;
+      state.user.idState = $('pf-idstate').value;
+      
+      state.user.insurance = {
+         provider: $('pf-insurance').value,
+         memberId: $('pf-ins-member').value,
+         group: $('pf-ins-group').value,
+         bin: $('pf-ins-bin').value,
+         pcn: $('pf-ins-pcn').value
+      };
+      
       state.user.prefs = {
         alerts: $('pref-alerts').checked,
         digest: $('pref-digest').checked
