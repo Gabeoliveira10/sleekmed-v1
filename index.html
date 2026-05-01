@@ -97,7 +97,6 @@
 
 <div id="onboard-overlay" class="gate-overlay hidden modal-center" style="z-index: 2000;">
   <div id="onboard-panel" class="delete-modal-panel" style="max-width: 500px; padding: 40px; text-align: left; align-items: flex-start;">
-    
     <div id="onboard-step-1">
       <div style="color: var(--emerald); margin-bottom: 16px;"><i class="fa-solid fa-heart-pulse" style="font-size: 32px;"></i></div>
       <div class="modal-title">Welcome to SleekMed</div>
@@ -149,7 +148,6 @@
         <button class="gate-btn flex-1" style="margin-top: 0;" onclick="window.finishOnboard()">Complete</button>
       </div>
     </div>
-    
   </div>
 </div>
 
@@ -205,6 +203,17 @@
         </div>
       </div>
 
+      <div class="section-heading">Why people overpay</div>
+      <div class="overpay-section">
+        <p style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px;">Most people don’t know:</p>
+        <ul style="list-style: none; padding: 0; margin-bottom: 24px; color: var(--text-secondary); line-height: 1.8;">
+          <li><i class="fa-solid fa-xmark" style="color: var(--red); margin-right: 8px;"></i> Insurance isn’t always the cheapest</li>
+          <li><i class="fa-solid fa-xmark" style="color: var(--red); margin-right: 8px;"></i> Prices vary wildly by pharmacy</li>
+          <li><i class="fa-solid fa-check" style="color: var(--emerald); margin-right: 8px;"></i> Coupons can beat both</li>
+        </ul>
+        <p style="font-size: 16px; color: var(--text-primary); font-weight: 700;"><i class="fa-solid fa-arrow-right" style="color: var(--emerald); margin-right: 8px;"></i> SleekMed fixes this by showing you every price option so you always win.</p>
+      </div>
+
       <div class="founder-message">
         <div class="founder-content">
           <h2 class="emerald-text">Welcome to radical transparency.</h2>
@@ -239,16 +248,11 @@
         </div>
       </div>
 
-      <div class="section-heading">Member Stories</div>
-      <div class="testimonial-section">
-        <div class="testimonial-card">
-          <p class="quote">I checked the app while standing in line. Found out I could save forty dollars just by using the digital card instead of my high deductible plan.</p>
-          <div class="author">Sarah M.</div>
-        </div>
-        <div class="testimonial-card">
-          <p class="quote">Finally a tool that shows all the options in one place without hiding the competitor prices. I use it for my whole family now.</p>
-          <div class="author">David R.</div>
-        </div>
+      <div class="cta-section">
+        <h2 style="font-size: 24px; color: var(--text-primary); margin-bottom: 20px;">Start saving on your prescriptions today.</h2>
+        <button class="gate-btn max-w-200" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); document.getElementById('drug-search').focus();">
+          <i class="fa-solid fa-arrow-right"></i> Compare Prices
+        </button>
       </div>
     </section>
 
@@ -437,7 +441,7 @@
     <section id="tab-rewards" class="tab-panel">
       <div class="panel-header">
         <button class="btn-secondary" onclick="window.switchTab('profile', 'backward')">
-          <i class="fa-solid fa-arrow-left"></i> Back
+          <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
         </button>
         <div class="header-text-right">
           <div class="panel-title">Rewards Hub</div>
@@ -490,7 +494,7 @@
           <div class="panel-title">My Dashboard</div>
           <div class="panel-sub">Manage your prescriptions identity and plan details.</div>
         </div>
-        <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);">Save</button>
+        <button class="btn-secondary" id="save-profile-btn" style="border-color: var(--emerald); color: var(--emerald);" onclick="window.autoSaveProfile()">Save</button>
       </div>
 
       <div class="profile-header-area">
@@ -525,7 +529,7 @@
       <div class="dashboard-card">
         <div class="card-header-row">
           <div class="card-title">Medicine Cabinet</div>
-          <button class="btn-text-blue" onclick="window.switchTab('search', 'backward')">
+          <button class="btn-text-blue" onclick="window.toggleCabinetSearch()">
             <i class="fa-solid fa-plus"></i> Search to Add
           </button>
         </div>
