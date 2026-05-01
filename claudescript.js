@@ -156,3 +156,102 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize
   updateUIForAuth();
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const mockDrugs = ["Metformin", "Lisinopril", "Atorvastatin", "Ozempic", "Adderall"];
+  let isLoggedIn = false;
+
+  const authOverlay = document.getElementById('authModalOverlay');
+  const doSignInBtn = document.getElementById('doSignInBtn');
+  const btnSignIn = document.getElementById('btnSignIn');
+  const vaultSignInBtn = document.getElementById('vaultSignInBtn');
+  const cabinetSignInBtn = document.getElementById('cabinetSignInBtn');
+  
+  function updateAuthUI() {
+    const hiddenNavs = document.querySelectorAll('.auth-req');
+    if (isLoggedIn) {
+      hiddenNavs.forEach(nav => nav.style.display = 'block');
+      document.getElementById('btnSignIn').style.display = 'none';
+      if(document.getElementById('cabinetAuthGate')) document.getElementById('cabinetAuthGate').style.display = 'none';
+      if(document.getElementById('cabinetContent')) document.getElementById('cabinetContent').style.display = 'block';
+      if(document.getElementById('vaultAuthGate')) document.getElementById('vaultAuthGate').style.display = 'none';
+      if(document.getElementById('vaultContent')) document.getElementById('vaultContent').style.display = 'block';
+    }
+  }
+
+  function openAuth() { authOverlay.style.display = 'flex'; }
+  
+  if(btnSignIn) btnSignIn.addEventListener('click', openAuth);
+  if(vaultSignInBtn) vaultSignInBtn.addEventListener('click', openAuth);
+  if(cabinetSignInBtn) cabinetSignInBtn.addEventListener('click', openAuth);
+  if(document.getElementById('authModalClose')) {
+    document.getElementById('authModalClose').addEventListener('click', () => {
+      authOverlay.style.display = 'none';
+    });
+  }
+
+  if(doSignInBtn) {
+    doSignInBtn.addEventListener('click', () => {
+      isLoggedIn = true;
+      authOverlay.style.display = 'none';
+      updateAuthUI();
+    });
+  }
+
+  const searchInput = document.getElementById('pageSearchInput');
+  const searchDropdown = document.getElementById('pageSearchDropdown');
+
+  if(searchInput && searchDropdown) {
+    searchInput.addEventListener('input', () => {
+      const val = searchInput.value.toLowerCase();
+      searchDropdown.innerHTML = '';
+      if (!val) return;
+      
+      const matches = mockDrugs.filter(d => d.toLowerCase().includes(val));
+      matches.forEach(match => {
+        const div = document.createElement('div');
+        div.style.padding = '10px';
+        div.style.cursor = 'pointer';
+        div.style.borderBottom = '1px solid #1e2f4a';
+        div.innerText = match;
+        div.addEventListener('click', () => {
+          searchInput.value = match;
+          searchDropdown.innerHTML = '';
+          executeSearch(match);
+        });
+        searchDropdown.appendChild(div);
+      });
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchDropdown.innerHTML = '';
+        executeSearch(searchInput.value);
+      }
+    });
+  }
+
+  function executeSearch(query) {
+    document.getElementById('searchResultsPanel').style.display = 'block';
+    const grid = document.getElementById('priceComparisonGrid');
+    const basePrice = Math.random() * 30 + 10;
+    
+    grid.innerHTML = `
+      <div class="price-card best-price">
+        <div style="color: #10b981; font-size: 0.8rem; margin-bottom: 8px;">★ BEST PRICE</div>
+        <div style="color: #94a3b8; font-size: 0.9rem;">Cost Plus Drug Co.</div>
+        <div style="font-size: 2rem; color: #10b981;">$${basePrice.toFixed(2)}</div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">Direct Cash</div>
+      </div>
+      <div class="price-card">
+        <div style="color: #94a3b8; font-size: 0.9rem;">GoodRx Gold</div>
+        <div style="font-size: 2rem;">$${(basePrice * 1.3).toFixed(2)}</div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">Network Discount</div>
+      </div>
+      <div class="price-card">
+        <div style="color: #94a3b8; font-size: 0.9rem;">Insurance Co-Pay</div>
+        <div style="font-size: 2rem;">$${(basePrice * 3).toFixed(2)}</div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">Est. Tier 2</div>
+      </div>
+    `;
+  }
+});
