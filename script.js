@@ -1,334 +1,438 @@
 /* ═══════════════════════════════════════════════════════════════
-   SLEEKMED — PRODUCTION SCRIPT
-   script.js — All functional modules
+   FAIR PLAY — PRODUCTION SCRIPT v2
+   50-Drug Database · 3D Card Flip · Golden Record Insurance Engine
 ═══════════════════════════════════════════════════════════════ */
 
 'use strict';
 
 /* ─── GLOBAL STATE ───────────────────────────────────────────── */
 const State = {
-  user: null,           // { name, email, avatar }
-  vault: {},            // Insurance & identity fields
-  cabinet: [],          // Saved medications
-  currentDrug: null,
+  user:           null,   // { name, email, avatar }
+  vault:          {},     // All identity + insurance fields
+  cabinet:        [],     // Saved medications
+  currentDrug:    null,
   currentVariant: null,
-  adminLoggedIn: false,
-  onboardStep: 1,
-  activeFee: 2.50,
+  adminLoggedIn:  false,
+  onboardStep:    1,
+  activeFee:      2.50,
+  drawerDrug:     null,
 };
 
-/* ─── MEDICATION DATABASE — 30+ DRUGS ───────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   50-DRUG DATABASE
+   5-point price matrix per variant:
+   { label, fairplay, insurance, goodrx, costplus, retail }
+═══════════════════════════════════════════════════════════════ */
 const DRUGS = [
   {
-    name: "Metformin",
-    category: "Diabetes",
-    icon: "💊",
+    name: "Metformin", category: "Diabetes", icon: "💊",
     variants: [
-      { label: "500mg · 30 tabs", sleekmed: 4.87, goodrx: 6.20, costplus: 3.90, insurance: 15.00 },
-      { label: "500mg · 90 tabs", sleekmed: 8.40, goodrx: 11.50, costplus: 7.20, insurance: 35.00 },
-      { label: "1000mg · 30 tabs", sleekmed: 5.50, goodrx: 7.80, costplus: 4.50, insurance: 18.00 },
-      { label: "1000mg · 90 tabs", sleekmed: 12.20, goodrx: 16.40, costplus: 9.80, insurance: 42.00 },
+      { label: "500mg · 30 tabs",  fairplay: 4.87,  insurance: 15.00,  goodrx: 6.20,   costplus: 3.90,  retail: 42.00 },
+      { label: "500mg · 90 tabs",  fairplay: 8.40,  insurance: 35.00,  goodrx: 11.50,  costplus: 7.20,  retail: 98.00 },
+      { label: "1000mg · 30 tabs", fairplay: 5.50,  insurance: 18.00,  goodrx: 7.80,   costplus: 4.50,  retail: 52.00 },
+      { label: "1000mg · 90 tabs", fairplay: 12.20, insurance: 42.00,  goodrx: 16.40,  costplus: 9.80,  retail: 118.00 },
     ]
   },
   {
-    name: "Lisinopril",
-    category: "Blood Pressure",
-    icon: "💊",
+    name: "Lisinopril", category: "Blood Pressure", icon: "💊",
     variants: [
-      { label: "5mg · 30 tabs", sleekmed: 3.50, goodrx: 5.10, costplus: 2.80, insurance: 12.00 },
-      { label: "10mg · 30 tabs", sleekmed: 4.20, goodrx: 6.00, costplus: 3.30, insurance: 14.00 },
-      { label: "20mg · 30 tabs", sleekmed: 4.80, goodrx: 7.20, costplus: 3.90, insurance: 16.00 },
-      { label: "20mg · 90 tabs", sleekmed: 10.50, goodrx: 14.80, costplus: 8.40, insurance: 38.00 },
+      { label: "5mg · 30 tabs",   fairplay: 3.50,  insurance: 12.00,  goodrx: 5.10,   costplus: 2.80,  retail: 28.00 },
+      { label: "10mg · 30 tabs",  fairplay: 4.20,  insurance: 14.00,  goodrx: 6.00,   costplus: 3.30,  retail: 34.00 },
+      { label: "20mg · 30 tabs",  fairplay: 4.80,  insurance: 16.00,  goodrx: 7.20,   costplus: 3.90,  retail: 40.00 },
+      { label: "20mg · 90 tabs",  fairplay: 10.50, insurance: 38.00,  goodrx: 14.80,  costplus: 8.40,  retail: 92.00 },
     ]
   },
   {
-    name: "Atorvastatin",
-    category: "Cholesterol",
-    icon: "💊",
+    name: "Atorvastatin", category: "Cholesterol", icon: "💊",
     variants: [
-      { label: "10mg · 30 tabs", sleekmed: 7.40, goodrx: 10.20, costplus: 5.80, insurance: 22.00 },
-      { label: "20mg · 30 tabs", sleekmed: 8.90, goodrx: 12.50, costplus: 6.90, insurance: 26.00 },
-      { label: "40mg · 30 tabs", sleekmed: 10.20, goodrx: 14.80, costplus: 8.10, insurance: 30.00 },
-      { label: "80mg · 30 tabs", sleekmed: 12.60, goodrx: 17.20, costplus: 9.80, insurance: 36.00 },
+      { label: "10mg · 30 tabs",  fairplay: 7.40,  insurance: 22.00,  goodrx: 10.20,  costplus: 5.80,  retail: 68.00 },
+      { label: "20mg · 30 tabs",  fairplay: 8.90,  insurance: 26.00,  goodrx: 12.50,  costplus: 6.90,  retail: 82.00 },
+      { label: "40mg · 30 tabs",  fairplay: 10.20, insurance: 30.00,  goodrx: 14.80,  costplus: 8.10,  retail: 94.00 },
+      { label: "80mg · 30 tabs",  fairplay: 12.60, insurance: 36.00,  goodrx: 17.20,  costplus: 9.80,  retail: 112.00 },
     ]
   },
   {
-    name: "Ozempic",
-    category: "Diabetes / Weight",
-    icon: "💉",
+    name: "Ozempic", category: "Diabetes / Weight", icon: "💉",
     variants: [
-      { label: "0.25mg/0.5mg · 1 pen", sleekmed: 89.00, goodrx: 136.50, costplus: 82.00, insurance: 178.00 },
-      { label: "1mg · 1 pen", sleekmed: 112.00, goodrx: 158.00, costplus: 98.00, insurance: 210.00 },
-      { label: "2mg · 1 pen", sleekmed: 134.00, goodrx: 188.00, costplus: 118.00, insurance: 245.00 },
+      { label: "0.25–0.5mg · 1 pen", fairplay: 89.00,  insurance: 178.00, goodrx: 136.50, costplus: 82.00,  retail: 935.00 },
+      { label: "1mg · 1 pen",         fairplay: 112.00, insurance: 210.00, goodrx: 158.00, costplus: 98.00,  retail: 988.00 },
+      { label: "2mg · 1 pen",         fairplay: 134.00, insurance: 245.00, goodrx: 188.00, costplus: 118.00, retail: 1036.00 },
     ]
   },
   {
-    name: "Semaglutide",
-    category: "Diabetes / Weight",
-    icon: "💉",
+    name: "Semaglutide", category: "Diabetes / Weight", icon: "💉",
     variants: [
-      { label: "2.4mg weekly · 4 pens", sleekmed: 210.00, goodrx: 320.00, costplus: 195.00, insurance: 420.00 },
-      { label: "Oral 7mg · 30 tabs", sleekmed: 88.00, goodrx: 140.00, costplus: 79.00, insurance: 185.00 },
-      { label: "Oral 14mg · 30 tabs", sleekmed: 110.00, goodrx: 168.00, costplus: 98.00, insurance: 220.00 },
+      { label: "2.4mg/wk · 4 pens",  fairplay: 210.00, insurance: 420.00, goodrx: 320.00, costplus: 195.00, retail: 1349.00 },
+      { label: "Oral 7mg · 30 tabs",  fairplay: 88.00,  insurance: 185.00, goodrx: 140.00, costplus: 79.00,  retail: 995.00 },
+      { label: "Oral 14mg · 30 tabs", fairplay: 110.00, insurance: 220.00, goodrx: 168.00, costplus: 98.00,  retail: 1048.00 },
     ]
   },
   {
-    name: "Adderall",
-    category: "ADHD",
-    icon: "💊",
+    name: "Adderall", category: "ADHD", icon: "💊",
     variants: [
-      { label: "10mg IR · 30 tabs", sleekmed: 28.40, goodrx: 42.00, costplus: 24.50, insurance: 55.00 },
-      { label: "20mg IR · 30 tabs", sleekmed: 34.80, goodrx: 52.00, costplus: 29.00, insurance: 65.00 },
-      { label: "30mg XR · 30 caps", sleekmed: 48.20, goodrx: 68.00, costplus: 42.00, insurance: 88.00 },
+      { label: "10mg IR · 30 tabs",  fairplay: 28.40, insurance: 55.00,  goodrx: 42.00,  costplus: 24.50, retail: 178.00 },
+      { label: "20mg IR · 30 tabs",  fairplay: 34.80, insurance: 65.00,  goodrx: 52.00,  costplus: 29.00, retail: 204.00 },
+      { label: "30mg XR · 30 caps",  fairplay: 48.20, insurance: 88.00,  goodrx: 68.00,  costplus: 42.00, retail: 284.00 },
     ]
   },
   {
-    name: "Lexapro",
-    category: "Antidepressant",
-    icon: "💊",
+    name: "Lexapro", category: "Antidepressant", icon: "💊",
     variants: [
-      { label: "5mg · 30 tabs", sleekmed: 9.80, goodrx: 14.20, costplus: 7.90, insurance: 25.00 },
-      { label: "10mg · 30 tabs", sleekmed: 11.40, goodrx: 16.80, costplus: 9.20, insurance: 28.00 },
-      { label: "20mg · 30 tabs", sleekmed: 14.60, goodrx: 20.40, costplus: 11.80, insurance: 34.00 },
+      { label: "5mg · 30 tabs",   fairplay: 9.80,  insurance: 25.00, goodrx: 14.20, costplus: 7.90,  retail: 112.00 },
+      { label: "10mg · 30 tabs",  fairplay: 11.40, insurance: 28.00, goodrx: 16.80, costplus: 9.20,  retail: 128.00 },
+      { label: "20mg · 30 tabs",  fairplay: 14.60, insurance: 34.00, goodrx: 20.40, costplus: 11.80, retail: 148.00 },
     ]
   },
   {
-    name: "Omeprazole",
-    category: "Acid Reflux",
-    icon: "💊",
+    name: "Omeprazole", category: "Acid Reflux", icon: "💊",
     variants: [
-      { label: "20mg · 30 caps", sleekmed: 5.20, goodrx: 8.40, costplus: 4.10, insurance: 14.00 },
-      { label: "40mg · 30 caps", sleekmed: 7.80, goodrx: 11.20, costplus: 5.90, insurance: 18.00 },
-      { label: "20mg · 90 caps", sleekmed: 11.40, goodrx: 18.00, costplus: 9.20, insurance: 32.00 },
+      { label: "20mg · 30 caps",  fairplay: 5.20,  insurance: 14.00, goodrx: 8.40,  costplus: 4.10,  retail: 26.00 },
+      { label: "40mg · 30 caps",  fairplay: 7.80,  insurance: 18.00, goodrx: 11.20, costplus: 5.90,  retail: 38.00 },
+      { label: "20mg · 90 caps",  fairplay: 11.40, insurance: 32.00, goodrx: 18.00, costplus: 9.20,  retail: 58.00 },
     ]
   },
   {
-    name: "Sertraline",
-    category: "Antidepressant",
-    icon: "💊",
+    name: "Sertraline", category: "Antidepressant", icon: "💊",
     variants: [
-      { label: "50mg · 30 tabs", sleekmed: 6.40, goodrx: 10.20, costplus: 5.10, insurance: 18.00 },
-      { label: "100mg · 30 tabs", sleekmed: 8.20, goodrx: 12.80, costplus: 6.40, insurance: 22.00 },
-      { label: "50mg · 90 tabs", sleekmed: 14.80, goodrx: 22.00, costplus: 11.50, insurance: 42.00 },
+      { label: "50mg · 30 tabs",  fairplay: 6.40,  insurance: 18.00, goodrx: 10.20, costplus: 5.10,  retail: 88.00 },
+      { label: "100mg · 30 tabs", fairplay: 8.20,  insurance: 22.00, goodrx: 12.80, costplus: 6.40,  retail: 104.00 },
+      { label: "50mg · 90 tabs",  fairplay: 14.80, insurance: 42.00, goodrx: 22.00, costplus: 11.50, retail: 198.00 },
     ]
   },
   {
-    name: "Amlodipine",
-    category: "Blood Pressure",
-    icon: "💊",
+    name: "Amlodipine", category: "Blood Pressure", icon: "💊",
     variants: [
-      { label: "5mg · 30 tabs", sleekmed: 4.20, goodrx: 6.80, costplus: 3.40, insurance: 12.00 },
-      { label: "10mg · 30 tabs", sleekmed: 5.80, goodrx: 8.90, costplus: 4.60, insurance: 15.00 },
+      { label: "5mg · 30 tabs",   fairplay: 4.20, insurance: 12.00, goodrx: 6.80,  costplus: 3.40, retail: 24.00 },
+      { label: "10mg · 30 tabs",  fairplay: 5.80, insurance: 15.00, goodrx: 8.90,  costplus: 4.60, retail: 32.00 },
     ]
   },
   {
-    name: "Gabapentin",
-    category: "Nerve Pain / Epilepsy",
-    icon: "💊",
+    name: "Gabapentin", category: "Nerve Pain / Epilepsy", icon: "💊",
     variants: [
-      { label: "100mg · 90 caps", sleekmed: 9.20, goodrx: 14.00, costplus: 7.40, insurance: 22.00 },
-      { label: "300mg · 90 caps", sleekmed: 12.80, goodrx: 18.40, costplus: 10.20, insurance: 28.00 },
-      { label: "600mg · 60 tabs", sleekmed: 16.40, goodrx: 23.00, costplus: 13.00, insurance: 36.00 },
+      { label: "100mg · 90 caps",  fairplay: 9.20,  insurance: 22.00, goodrx: 14.00, costplus: 7.40,  retail: 62.00 },
+      { label: "300mg · 90 caps",  fairplay: 12.80, insurance: 28.00, goodrx: 18.40, costplus: 10.20, retail: 84.00 },
+      { label: "600mg · 60 tabs",  fairplay: 16.40, insurance: 36.00, goodrx: 23.00, costplus: 13.00, retail: 108.00 },
     ]
   },
   {
-    name: "Losartan",
-    category: "Blood Pressure",
-    icon: "💊",
+    name: "Losartan", category: "Blood Pressure", icon: "💊",
     variants: [
-      { label: "25mg · 30 tabs", sleekmed: 5.60, goodrx: 8.20, costplus: 4.40, insurance: 14.00 },
-      { label: "50mg · 30 tabs", sleekmed: 6.80, goodrx: 10.00, costplus: 5.40, insurance: 17.00 },
-      { label: "100mg · 30 tabs", sleekmed: 8.40, goodrx: 12.20, costplus: 6.60, insurance: 21.00 },
+      { label: "25mg · 30 tabs",  fairplay: 5.60, insurance: 14.00, goodrx: 8.20,  costplus: 4.40, retail: 36.00 },
+      { label: "50mg · 30 tabs",  fairplay: 6.80, insurance: 17.00, goodrx: 10.00, costplus: 5.40, retail: 44.00 },
+      { label: "100mg · 30 tabs", fairplay: 8.40, insurance: 21.00, goodrx: 12.20, costplus: 6.60, retail: 54.00 },
     ]
   },
   {
-    name: "Levothyroxine",
-    category: "Thyroid",
-    icon: "💊",
+    name: "Levothyroxine", category: "Thyroid", icon: "💊",
     variants: [
-      { label: "25mcg · 30 tabs", sleekmed: 6.20, goodrx: 9.40, costplus: 4.90, insurance: 16.00 },
-      { label: "50mcg · 30 tabs", sleekmed: 7.40, goodrx: 11.00, costplus: 5.80, insurance: 18.00 },
-      { label: "100mcg · 30 tabs", sleekmed: 8.80, goodrx: 13.20, costplus: 7.00, insurance: 22.00 },
+      { label: "25mcg · 30 tabs",  fairplay: 6.20, insurance: 16.00, goodrx: 9.40,  costplus: 4.90, retail: 48.00 },
+      { label: "50mcg · 30 tabs",  fairplay: 7.40, insurance: 18.00, goodrx: 11.00, costplus: 5.80, retail: 56.00 },
+      { label: "100mcg · 30 tabs", fairplay: 8.80, insurance: 22.00, goodrx: 13.20, costplus: 7.00, retail: 68.00 },
     ]
   },
   {
-    name: "Alprazolam",
-    category: "Anxiety",
-    icon: "💊",
+    name: "Alprazolam", category: "Anxiety", icon: "💊",
     variants: [
-      { label: "0.25mg · 30 tabs", sleekmed: 8.40, goodrx: 13.00, costplus: 6.80, insurance: 20.00 },
-      { label: "0.5mg · 30 tabs", sleekmed: 9.80, goodrx: 15.20, costplus: 7.90, insurance: 24.00 },
-      { label: "1mg · 30 tabs", sleekmed: 11.60, goodrx: 17.80, costplus: 9.20, insurance: 28.00 },
+      { label: "0.25mg · 30 tabs", fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80, retail: 72.00 },
+      { label: "0.5mg · 30 tabs",  fairplay: 9.80,  insurance: 24.00, goodrx: 15.20, costplus: 7.90, retail: 84.00 },
+      { label: "1mg · 30 tabs",    fairplay: 11.60, insurance: 28.00, goodrx: 17.80, costplus: 9.20, retail: 98.00 },
     ]
   },
   {
-    name: "Bupropion",
-    category: "Antidepressant / Smoking",
-    icon: "💊",
+    name: "Bupropion", category: "Antidepressant / Smoking", icon: "💊",
     variants: [
-      { label: "150mg SR · 60 tabs", sleekmed: 14.20, goodrx: 20.80, costplus: 11.40, insurance: 32.00 },
-      { label: "300mg XL · 30 tabs", sleekmed: 18.60, goodrx: 26.40, costplus: 14.80, insurance: 42.00 },
+      { label: "150mg SR · 60 tabs", fairplay: 14.20, insurance: 32.00, goodrx: 20.80, costplus: 11.40, retail: 148.00 },
+      { label: "300mg XL · 30 tabs", fairplay: 18.60, insurance: 42.00, goodrx: 26.40, costplus: 14.80, retail: 192.00 },
     ]
   },
   {
-    name: "Pantoprazole",
-    category: "Acid Reflux",
-    icon: "💊",
+    name: "Pantoprazole", category: "Acid Reflux", icon: "💊",
     variants: [
-      { label: "20mg · 30 tabs", sleekmed: 6.80, goodrx: 10.40, costplus: 5.40, insurance: 16.00 },
-      { label: "40mg · 30 tabs", sleekmed: 8.60, goodrx: 13.00, costplus: 6.80, insurance: 20.00 },
-      { label: "40mg · 90 tabs", sleekmed: 18.40, goodrx: 26.80, costplus: 14.60, insurance: 42.00 },
+      { label: "20mg · 30 tabs",  fairplay: 6.80,  insurance: 16.00, goodrx: 10.40, costplus: 5.40,  retail: 44.00 },
+      { label: "40mg · 30 tabs",  fairplay: 8.60,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 58.00 },
+      { label: "40mg · 90 tabs",  fairplay: 18.40, insurance: 42.00, goodrx: 26.80, costplus: 14.60, retail: 128.00 },
     ]
   },
   {
-    name: "Furosemide",
-    category: "Diuretic / Heart",
-    icon: "💊",
+    name: "Furosemide", category: "Diuretic / Heart", icon: "💊",
     variants: [
-      { label: "20mg · 30 tabs", sleekmed: 4.40, goodrx: 7.20, costplus: 3.60, insurance: 12.00 },
-      { label: "40mg · 30 tabs", sleekmed: 5.20, goodrx: 8.40, costplus: 4.20, insurance: 14.00 },
+      { label: "20mg · 30 tabs",  fairplay: 4.40, insurance: 12.00, goodrx: 7.20, costplus: 3.60, retail: 22.00 },
+      { label: "40mg · 30 tabs",  fairplay: 5.20, insurance: 14.00, goodrx: 8.40, costplus: 4.20, retail: 28.00 },
     ]
   },
   {
-    name: "Trazodone",
-    category: "Sleep / Depression",
-    icon: "💊",
+    name: "Trazodone", category: "Sleep / Depression", icon: "💊",
     variants: [
-      { label: "50mg · 30 tabs", sleekmed: 7.20, goodrx: 11.40, costplus: 5.80, insurance: 18.00 },
-      { label: "100mg · 30 tabs", sleekmed: 9.40, goodrx: 14.80, costplus: 7.60, insurance: 22.00 },
+      { label: "50mg · 30 tabs",  fairplay: 7.20, insurance: 18.00, goodrx: 11.40, costplus: 5.80, retail: 64.00 },
+      { label: "100mg · 30 tabs", fairplay: 9.40, insurance: 22.00, goodrx: 14.80, costplus: 7.60, retail: 82.00 },
     ]
   },
   {
-    name: "Clopidogrel",
-    category: "Blood Thinners",
-    icon: "💊",
+    name: "Clopidogrel", category: "Blood Thinners", icon: "💊",
     variants: [
-      { label: "75mg · 30 tabs", sleekmed: 11.80, goodrx: 17.20, costplus: 9.40, insurance: 26.00 },
-      { label: "75mg · 90 tabs", sleekmed: 28.40, goodrx: 40.00, costplus: 22.80, insurance: 60.00 },
+      { label: "75mg · 30 tabs",  fairplay: 11.80, insurance: 26.00, goodrx: 17.20, costplus: 9.40,  retail: 98.00 },
+      { label: "75mg · 90 tabs",  fairplay: 28.40, insurance: 60.00, goodrx: 40.00, costplus: 22.80, retail: 228.00 },
     ]
   },
   {
-    name: "Rosuvastatin",
-    category: "Cholesterol",
-    icon: "💊",
+    name: "Rosuvastatin", category: "Cholesterol", icon: "💊",
     variants: [
-      { label: "5mg · 30 tabs", sleekmed: 8.80, goodrx: 13.20, costplus: 6.90, insurance: 22.00 },
-      { label: "10mg · 30 tabs", sleekmed: 10.40, goodrx: 15.80, costplus: 8.20, insurance: 26.00 },
-      { label: "20mg · 30 tabs", sleekmed: 13.20, goodrx: 19.40, costplus: 10.40, insurance: 32.00 },
+      { label: "5mg · 30 tabs",   fairplay: 8.80,  insurance: 22.00, goodrx: 13.20, costplus: 6.90,  retail: 72.00 },
+      { label: "10mg · 30 tabs",  fairplay: 10.40, insurance: 26.00, goodrx: 15.80, costplus: 8.20,  retail: 86.00 },
+      { label: "20mg · 30 tabs",  fairplay: 13.20, insurance: 32.00, goodrx: 19.40, costplus: 10.40, retail: 108.00 },
     ]
   },
   {
-    name: "Amoxicillin",
-    category: "Antibiotic",
-    icon: "💊",
+    name: "Amoxicillin", category: "Antibiotic", icon: "💊",
     variants: [
-      { label: "250mg · 21 caps", sleekmed: 5.80, goodrx: 9.20, costplus: 4.60, insurance: 15.00 },
-      { label: "500mg · 21 caps", sleekmed: 7.40, goodrx: 11.80, costplus: 5.90, insurance: 18.00 },
-      { label: "875mg · 20 tabs", sleekmed: 9.20, goodrx: 14.40, costplus: 7.40, insurance: 22.00 },
+      { label: "250mg · 21 caps",  fairplay: 5.80,  insurance: 15.00, goodrx: 9.20,  costplus: 4.60, retail: 32.00 },
+      { label: "500mg · 21 caps",  fairplay: 7.40,  insurance: 18.00, goodrx: 11.80, costplus: 5.90, retail: 42.00 },
+      { label: "875mg · 20 tabs",  fairplay: 9.20,  insurance: 22.00, goodrx: 14.40, costplus: 7.40, retail: 56.00 },
     ]
   },
   {
-    name: "Doxycycline",
-    category: "Antibiotic",
-    icon: "💊",
+    name: "Doxycycline", category: "Antibiotic", icon: "💊",
     variants: [
-      { label: "100mg · 14 caps", sleekmed: 8.40, goodrx: 12.80, costplus: 6.80, insurance: 20.00 },
-      { label: "100mg · 30 caps", sleekmed: 14.20, goodrx: 21.00, costplus: 11.40, insurance: 32.00 },
+      { label: "100mg · 14 caps",  fairplay: 8.40,  insurance: 20.00, goodrx: 12.80, costplus: 6.80,  retail: 48.00 },
+      { label: "100mg · 30 caps",  fairplay: 14.20, insurance: 32.00, goodrx: 21.00, costplus: 11.40, retail: 82.00 },
     ]
   },
   {
-    name: "Montelukast",
-    category: "Allergy / Asthma",
-    icon: "💊",
+    name: "Montelukast", category: "Allergy / Asthma", icon: "💊",
     variants: [
-      { label: "10mg · 30 tabs", sleekmed: 7.80, goodrx: 12.40, costplus: 6.20, insurance: 20.00 },
-      { label: "10mg · 90 tabs", sleekmed: 18.40, goodrx: 28.00, costplus: 14.80, insurance: 44.00 },
+      { label: "10mg · 30 tabs",  fairplay: 7.80,  insurance: 20.00, goodrx: 12.40, costplus: 6.20,  retail: 88.00 },
+      { label: "10mg · 90 tabs",  fairplay: 18.40, insurance: 44.00, goodrx: 28.00, costplus: 14.80, retail: 198.00 },
     ]
   },
   {
-    name: "Duloxetine",
-    category: "Antidepressant / Pain",
-    icon: "💊",
+    name: "Duloxetine", category: "Antidepressant / Pain", icon: "💊",
     variants: [
-      { label: "20mg · 30 caps", sleekmed: 12.40, goodrx: 18.80, costplus: 9.80, insurance: 28.00 },
-      { label: "60mg · 30 caps", sleekmed: 16.80, goodrx: 24.40, costplus: 13.40, insurance: 36.00 },
-      { label: "60mg · 90 caps", sleekmed: 38.40, goodrx: 56.00, costplus: 30.80, insurance: 82.00 },
+      { label: "20mg · 30 caps",  fairplay: 12.40, insurance: 28.00, goodrx: 18.80, costplus: 9.80,  retail: 128.00 },
+      { label: "60mg · 30 caps",  fairplay: 16.80, insurance: 36.00, goodrx: 24.40, costplus: 13.40, retail: 164.00 },
+      { label: "60mg · 90 caps",  fairplay: 38.40, insurance: 82.00, goodrx: 56.00, costplus: 30.80, retail: 368.00 },
     ]
   },
   {
-    name: "Clonazepam",
-    category: "Anxiety / Seizures",
-    icon: "💊",
+    name: "Clonazepam", category: "Anxiety / Seizures", icon: "💊",
     variants: [
-      { label: "0.5mg · 30 tabs", sleekmed: 9.20, goodrx: 14.80, costplus: 7.40, insurance: 22.00 },
-      { label: "1mg · 30 tabs", sleekmed: 10.80, goodrx: 17.20, costplus: 8.60, insurance: 26.00 },
+      { label: "0.5mg · 30 tabs",  fairplay: 9.20,  insurance: 22.00, goodrx: 14.80, costplus: 7.40,  retail: 78.00 },
+      { label: "1mg · 30 tabs",    fairplay: 10.80, insurance: 26.00, goodrx: 17.20, costplus: 8.60,  retail: 92.00 },
     ]
   },
   {
-    name: "Citalopram",
-    category: "Antidepressant",
-    icon: "💊",
+    name: "Citalopram", category: "Antidepressant", icon: "💊",
     variants: [
-      { label: "10mg · 30 tabs", sleekmed: 6.20, goodrx: 10.00, costplus: 4.90, insurance: 16.00 },
-      { label: "20mg · 30 tabs", sleekmed: 7.80, goodrx: 12.40, costplus: 6.20, insurance: 20.00 },
-      { label: "40mg · 30 tabs", sleekmed: 9.40, goodrx: 14.80, costplus: 7.40, insurance: 24.00 },
+      { label: "10mg · 30 tabs",  fairplay: 6.20, insurance: 16.00, goodrx: 10.00, costplus: 4.90, retail: 72.00 },
+      { label: "20mg · 30 tabs",  fairplay: 7.80, insurance: 20.00, goodrx: 12.40, costplus: 6.20, retail: 86.00 },
+      { label: "40mg · 30 tabs",  fairplay: 9.40, insurance: 24.00, goodrx: 14.80, costplus: 7.40, retail: 98.00 },
     ]
   },
   {
-    name: "Metoprolol",
-    category: "Blood Pressure / Heart",
-    icon: "💊",
+    name: "Metoprolol", category: "Blood Pressure / Heart", icon: "💊",
     variants: [
-      { label: "25mg · 30 tabs", sleekmed: 5.40, goodrx: 8.60, costplus: 4.30, insurance: 14.00 },
-      { label: "50mg · 30 tabs", sleekmed: 6.80, goodrx: 10.40, costplus: 5.40, insurance: 17.00 },
-      { label: "100mg · 30 tabs", sleekmed: 8.40, goodrx: 12.80, costplus: 6.60, insurance: 21.00 },
+      { label: "25mg · 30 tabs",  fairplay: 5.40, insurance: 14.00, goodrx: 8.60,  costplus: 4.30, retail: 38.00 },
+      { label: "50mg · 30 tabs",  fairplay: 6.80, insurance: 17.00, goodrx: 10.40, costplus: 5.40, retail: 48.00 },
+      { label: "100mg · 30 tabs", fairplay: 8.40, insurance: 21.00, goodrx: 12.80, costplus: 6.60, retail: 60.00 },
     ]
   },
   {
-    name: "Fluoxetine",
-    category: "Antidepressant",
-    icon: "💊",
+    name: "Fluoxetine", category: "Antidepressant", icon: "💊",
     variants: [
-      { label: "10mg · 30 caps", sleekmed: 5.80, goodrx: 9.40, costplus: 4.60, insurance: 16.00 },
-      { label: "20mg · 30 caps", sleekmed: 7.20, goodrx: 11.80, costplus: 5.80, insurance: 20.00 },
-      { label: "40mg · 30 caps", sleekmed: 9.80, goodrx: 15.20, costplus: 7.80, insurance: 26.00 },
+      { label: "10mg · 30 caps",  fairplay: 5.80, insurance: 16.00, goodrx: 9.40,  costplus: 4.60, retail: 68.00 },
+      { label: "20mg · 30 caps",  fairplay: 7.20, insurance: 20.00, goodrx: 11.80, costplus: 5.80, retail: 82.00 },
+      { label: "40mg · 30 caps",  fairplay: 9.80, insurance: 26.00, goodrx: 15.20, costplus: 7.80, retail: 104.00 },
     ]
   },
   {
-    name: "Cyclobenzaprine",
-    category: "Muscle Relaxer",
-    icon: "💊",
+    name: "Cyclobenzaprine", category: "Muscle Relaxer", icon: "💊",
     variants: [
-      { label: "5mg · 30 tabs", sleekmed: 7.60, goodrx: 12.00, costplus: 6.00, insurance: 18.00 },
-      { label: "10mg · 30 tabs", sleekmed: 9.20, goodrx: 14.60, costplus: 7.40, insurance: 22.00 },
+      { label: "5mg · 30 tabs",   fairplay: 7.60, insurance: 18.00, goodrx: 12.00, costplus: 6.00, retail: 62.00 },
+      { label: "10mg · 30 tabs",  fairplay: 9.20, insurance: 22.00, goodrx: 14.60, costplus: 7.40, retail: 78.00 },
     ]
   },
   {
-    name: "Hydrochlorothiazide",
-    category: "Blood Pressure / Diuretic",
-    icon: "💊",
+    name: "Hydrochlorothiazide", category: "Blood Pressure / Diuretic", icon: "💊",
     variants: [
-      { label: "12.5mg · 30 tabs", sleekmed: 3.80, goodrx: 6.40, costplus: 3.00, insurance: 10.00 },
-      { label: "25mg · 30 tabs", sleekmed: 4.60, goodrx: 7.80, costplus: 3.70, insurance: 12.00 },
+      { label: "12.5mg · 30 tabs", fairplay: 3.80, insurance: 10.00, goodrx: 6.40, costplus: 3.00, retail: 18.00 },
+      { label: "25mg · 30 tabs",   fairplay: 4.60, insurance: 12.00, goodrx: 7.80, costplus: 3.70, retail: 22.00 },
     ]
   },
   {
-    name: "Prednisone",
-    category: "Corticosteroid",
-    icon: "💊",
+    name: "Prednisone", category: "Corticosteroid", icon: "💊",
     variants: [
-      { label: "5mg · 21 tabs (dose pack)", sleekmed: 6.40, goodrx: 10.20, costplus: 5.10, insurance: 16.00 },
-      { label: "10mg · 30 tabs", sleekmed: 7.80, goodrx: 12.40, costplus: 6.20, insurance: 20.00 },
-      { label: "20mg · 30 tabs", sleekmed: 9.20, goodrx: 14.80, costplus: 7.40, insurance: 24.00 },
+      { label: "5mg · 21 tabs (pack)",  fairplay: 6.40, insurance: 16.00, goodrx: 10.20, costplus: 5.10, retail: 38.00 },
+      { label: "10mg · 30 tabs",        fairplay: 7.80, insurance: 20.00, goodrx: 12.40, costplus: 6.20, retail: 46.00 },
+      { label: "20mg · 30 tabs",        fairplay: 9.20, insurance: 24.00, goodrx: 14.80, costplus: 7.40, retail: 56.00 },
+    ]
+  },
+  {
+    name: "Zolpidem", category: "Sleep Aid", icon: "💊",
+    variants: [
+      { label: "5mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.20, costplus: 6.80,  retail: 82.00 },
+      { label: "10mg · 30 tabs",  fairplay: 10.20, insurance: 24.00, goodrx: 15.80, costplus: 8.20,  retail: 98.00 },
+    ]
+  },
+  {
+    name: "Warfarin", category: "Blood Thinners", icon: "💊",
+    variants: [
+      { label: "2mg · 30 tabs",   fairplay: 5.20, insurance: 14.00, goodrx: 8.40,  costplus: 4.20, retail: 34.00 },
+      { label: "5mg · 30 tabs",   fairplay: 6.80, insurance: 17.00, goodrx: 10.60, costplus: 5.40, retail: 42.00 },
+    ]
+  },
+  {
+    name: "Tamsulosin", category: "Urology / BPH", icon: "💊",
+    variants: [
+      { label: "0.4mg · 30 caps",  fairplay: 7.80,  insurance: 20.00, goodrx: 12.20, costplus: 6.20,  retail: 68.00 },
+      { label: "0.4mg · 90 caps",  fairplay: 18.40, insurance: 44.00, goodrx: 27.80, costplus: 14.60, retail: 152.00 },
+    ]
+  },
+  {
+    name: "Methylphenidate", category: "ADHD", icon: "💊",
+    variants: [
+      { label: "10mg IR · 30 tabs",  fairplay: 24.60, insurance: 48.00, goodrx: 36.80, costplus: 20.40, retail: 162.00 },
+      { label: "20mg IR · 30 tabs",  fairplay: 30.40, insurance: 58.00, goodrx: 44.00, costplus: 25.60, retail: 192.00 },
+      { label: "36mg XR · 30 tabs",  fairplay: 44.80, insurance: 82.00, goodrx: 62.00, costplus: 38.20, retail: 264.00 },
+    ]
+  },
+  {
+    name: "Carvedilol", category: "Heart Failure / BP", icon: "💊",
+    variants: [
+      { label: "6.25mg · 60 tabs",  fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 58.00 },
+      { label: "12.5mg · 60 tabs",  fairplay: 10.60, insurance: 24.00, goodrx: 16.20, costplus: 8.40,  retail: 72.00 },
+      { label: "25mg · 60 tabs",    fairplay: 13.20, insurance: 30.00, goodrx: 19.80, costplus: 10.60, retail: 88.00 },
+    ]
+  },
+  {
+    name: "Quetiapine", category: "Antipsychotic / Mood", icon: "💊",
+    variants: [
+      { label: "25mg · 30 tabs",   fairplay: 12.40, insurance: 28.00, goodrx: 18.60, costplus: 9.80,  retail: 128.00 },
+      { label: "100mg · 30 tabs",  fairplay: 18.80, insurance: 38.00, goodrx: 26.40, costplus: 14.80, retail: 182.00 },
+      { label: "200mg · 30 tabs",  fairplay: 24.60, insurance: 48.00, goodrx: 34.80, costplus: 19.40, retail: 228.00 },
+    ]
+  },
+  {
+    name: "Aripiprazole", category: "Antipsychotic", icon: "💊",
+    variants: [
+      { label: "5mg · 30 tabs",    fairplay: 14.20, insurance: 32.00, goodrx: 21.40, costplus: 11.40, retail: 148.00 },
+      { label: "10mg · 30 tabs",   fairplay: 18.60, insurance: 40.00, goodrx: 26.80, costplus: 14.80, retail: 188.00 },
+      { label: "15mg · 30 tabs",   fairplay: 22.40, insurance: 48.00, goodrx: 32.00, costplus: 17.80, retail: 224.00 },
+    ]
+  },
+  {
+    name: "Venlafaxine", category: "Antidepressant / Anxiety", icon: "💊",
+    variants: [
+      { label: "37.5mg · 30 caps",   fairplay: 10.80, insurance: 24.00, goodrx: 16.40, costplus: 8.60,  retail: 112.00 },
+      { label: "75mg ER · 30 caps",  fairplay: 14.20, insurance: 30.00, goodrx: 20.80, costplus: 11.40, retail: 142.00 },
+      { label: "150mg ER · 30 caps", fairplay: 18.40, insurance: 38.00, goodrx: 26.40, costplus: 14.80, retail: 178.00 },
+    ]
+  },
+  {
+    name: "Lisinopril-HCTZ", category: "Blood Pressure (Combo)", icon: "💊",
+    variants: [
+      { label: "10/12.5mg · 30 tabs", fairplay: 7.20,  insurance: 18.00, goodrx: 11.20, costplus: 5.80,  retail: 52.00 },
+      { label: "20/12.5mg · 30 tabs", fairplay: 8.60,  insurance: 22.00, goodrx: 13.00, costplus: 6.80,  retail: 64.00 },
+      { label: "20/25mg · 30 tabs",   fairplay: 10.20, insurance: 26.00, goodrx: 15.40, costplus: 8.20,  retail: 76.00 },
+    ]
+  },
+  {
+    name: "Meloxicam", category: "Anti-Inflammatory (NSAID)", icon: "💊",
+    variants: [
+      { label: "7.5mg · 30 tabs",   fairplay: 6.80, insurance: 16.00, goodrx: 10.60, costplus: 5.40, retail: 48.00 },
+      { label: "15mg · 30 tabs",    fairplay: 8.40, insurance: 20.00, goodrx: 12.80, costplus: 6.60, retail: 58.00 },
+    ]
+  },
+  {
+    name: "Spironolactone", category: "Diuretic / Hormonal", icon: "💊",
+    variants: [
+      { label: "25mg · 30 tabs",   fairplay: 7.40,  insurance: 18.00, goodrx: 11.40, costplus: 5.80,  retail: 54.00 },
+      { label: "50mg · 30 tabs",   fairplay: 9.60,  insurance: 22.00, goodrx: 14.20, costplus: 7.60,  retail: 68.00 },
+      { label: "100mg · 30 tabs",  fairplay: 13.20, insurance: 30.00, goodrx: 19.00, costplus: 10.40, retail: 92.00 },
+    ]
+  },
+  {
+    name: "Oxycodone", category: "Pain (Opioid)", icon: "💊",
+    variants: [
+      { label: "5mg IR · 30 tabs",   fairplay: 22.40, insurance: 44.00, goodrx: 32.80, costplus: 18.40, retail: 148.00 },
+      { label: "10mg IR · 30 tabs",  fairplay: 28.60, insurance: 58.00, goodrx: 42.00, costplus: 23.40, retail: 184.00 },
+    ]
+  },
+  {
+    name: "Tramadol", category: "Pain (Opioid-Like)", icon: "💊",
+    variants: [
+      { label: "50mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.20, costplus: 6.80,  retail: 72.00 },
+      { label: "100mg ER · 30 tabs", fairplay: 14.20, insurance: 32.00, goodrx: 21.00, costplus: 11.40, retail: 118.00 },
+    ]
+  },
+  {
+    name: "Insulin Glargine", category: "Diabetes (Insulin)", icon: "💉",
+    variants: [
+      { label: "100u/mL · 1 vial",   fairplay: 35.00, insurance: 72.00, goodrx: 58.00, costplus: 29.00, retail: 316.00 },
+      { label: "300u/mL · 3 pens",   fairplay: 88.00, insurance: 160.00, goodrx: 132.00, costplus: 75.00, retail: 480.00 },
+    ]
+  },
+  {
+    name: "Albuterol", category: "Asthma / COPD", icon: "💨",
+    variants: [
+      { label: "90mcg · 1 inhaler",    fairplay: 18.40, insurance: 38.00, goodrx: 28.00, costplus: 14.80, retail: 82.00 },
+      { label: "Nebulizer 2.5mg/3mL · 25", fairplay: 12.60, insurance: 28.00, goodrx: 19.40, costplus: 10.20, retail: 58.00 },
+    ]
+  },
+  {
+    name: "Fluticasone", category: "Allergy / Asthma", icon: "💨",
+    variants: [
+      { label: "50mcg nasal spray",     fairplay: 12.20, insurance: 26.00, goodrx: 18.40, costplus: 9.80,  retail: 62.00 },
+      { label: "110mcg · 1 inhaler",    fairplay: 28.40, insurance: 56.00, goodrx: 42.00, costplus: 22.80, retail: 148.00 },
+    ]
+  },
+  {
+    name: "Triamcinolone", category: "Corticosteroid", icon: "💊",
+    variants: [
+      { label: "0.1% cream 15g",   fairplay: 6.40, insurance: 16.00, goodrx: 10.20, costplus: 5.10, retail: 38.00 },
+      { label: "0.1% cream 80g",   fairplay: 12.80, insurance: 28.00, goodrx: 18.80, costplus: 10.20, retail: 74.00 },
+    ]
+  },
+  {
+    name: "Escitalopram", category: "Antidepressant", icon: "💊",
+    variants: [
+      { label: "5mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 88.00 },
+      { label: "10mg · 30 tabs",  fairplay: 10.20, insurance: 24.00, goodrx: 15.60, costplus: 8.20,  retail: 108.00 },
+      { label: "20mg · 30 tabs",  fairplay: 13.60, insurance: 30.00, goodrx: 20.00, costplus: 10.80, retail: 134.00 },
+    ]
+  },
+  {
+    name: "Linagliptin", category: "Diabetes (DPP-4)", icon: "💊",
+    variants: [
+      { label: "5mg · 30 tabs",  fairplay: 88.00,  insurance: 168.00, goodrx: 128.00, costplus: 78.00,  retail: 624.00 },
+      { label: "5mg · 90 tabs",  fairplay: 198.00, insurance: 380.00, goodrx: 286.00, costplus: 174.00, retail: 1380.00 },
+    ]
+  },
+  {
+    name: "Empagliflozin", category: "Diabetes (SGLT2)", icon: "💊",
+    variants: [
+      { label: "10mg · 30 tabs",  fairplay: 94.00,  insurance: 180.00, goodrx: 138.00, costplus: 84.00,  retail: 680.00 },
+      { label: "25mg · 30 tabs",  fairplay: 112.00, insurance: 210.00, goodrx: 162.00, costplus: 98.00,  retail: 720.00 },
+    ]
+  },
+  {
+    name: "Celecoxib", category: "Anti-Inflammatory", icon: "💊",
+    variants: [
+      { label: "100mg · 60 caps",  fairplay: 14.60, insurance: 32.00, goodrx: 22.00, costplus: 11.60, retail: 128.00 },
+      { label: "200mg · 30 caps",  fairplay: 12.40, insurance: 28.00, goodrx: 18.60, costplus: 9.80,  retail: 108.00 },
+    ]
+  },
+  {
+    name: "Topiramate", category: "Epilepsy / Migraine", icon: "💊",
+    variants: [
+      { label: "25mg · 60 tabs",   fairplay: 9.80,  insurance: 22.00, goodrx: 14.80, costplus: 7.80,  retail: 82.00 },
+      { label: "100mg · 60 tabs",  fairplay: 18.40, insurance: 38.00, goodrx: 26.40, costplus: 14.60, retail: 148.00 },
     ]
   },
 ];
 
 /* ─── UTILS ──────────────────────────────────────────────────── */
-function $(id) { return document.getElementById(id); }
-function $$(sel) { return document.querySelectorAll(sel); }
-function fmt(n) { return '$' + Number(n).toFixed(2); }
-function slug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+const fmt = n => '$' + Number(n).toFixed(2);
 
 function showToast(msg, type = 'success') {
   const t = $('toast');
@@ -340,46 +444,42 @@ function showToast(msg, type = 'success') {
 
 function loadState() {
   try {
-    const u = localStorage.getItem('sm_user');
-    const v = localStorage.getItem('sm_vault');
-    const c = localStorage.getItem('sm_cabinet');
+    const u = localStorage.getItem('fp_user');
+    const v = localStorage.getItem('fp_vault');
+    const c = localStorage.getItem('fp_cabinet');
     if (u) State.user = JSON.parse(u);
     if (v) State.vault = JSON.parse(v);
     if (c) State.cabinet = JSON.parse(c);
   } catch(e) {}
 }
 
-function saveUser() { localStorage.setItem('sm_user', JSON.stringify(State.user)); }
-function saveVault() { localStorage.setItem('sm_vault', JSON.stringify(State.vault)); }
-function saveCabinet() { localStorage.setItem('sm_cabinet', JSON.stringify(State.cabinet)); }
+const saveUser    = () => localStorage.setItem('fp_user',    JSON.stringify(State.user));
+const saveVault   = () => localStorage.setItem('fp_vault',   JSON.stringify(State.vault));
+const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(State.cabinet));
 
-/* ─── PAGE NAVIGATION ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════════════ */
 function navigateTo(pageId) {
-  // Hide all pages
   $$('.page').forEach(p => p.classList.remove('active'));
-  // Show target
   const target = $(`page-${pageId}`);
   if (target) target.classList.add('active');
 
-  // Update nav links
-  $$('.nav-link').forEach(l => {
-    l.classList.toggle('active', l.dataset.page === pageId);
-  });
-  $$('[data-sidebar-link]').forEach(l => {
-    l.classList.toggle('active', l.dataset.page === pageId);
-  });
+  $$('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
+  $$('[data-sidebar-link]').forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
 
   closeSidebar();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Page-specific init
   if (pageId === 'cabinet') renderCabinet();
-  if (pageId === 'vault') renderVault();
-  if (pageId === 'card') renderCard();
-  if (pageId === 'admin') initAdmin();
+  if (pageId === 'vault')   renderVault();
+  if (pageId === 'card')    renderCard();
+  if (pageId === 'admin')   initAdmin();
 }
 
-/* ─── SIDEBAR ────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
 function openSidebar() {
   $('sidebar').classList.add('open');
   $('sidebarOverlay').classList.add('active');
@@ -392,11 +492,12 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
-/* ─── AUTH ───────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════════════════════ */
 function openAuthModal(mode = 'signin') {
   $('authModalOverlay').classList.add('open');
-  if (mode === 'register') showRegView();
-  else showSignInView();
+  mode === 'register' ? showRegView() : showSignInView();
 }
 
 function closeAuthModal() {
@@ -423,68 +524,59 @@ function goToOnboardStep(step) {
     const n = parseInt(s.dataset.step);
     s.classList.remove('active', 'done');
     if (n === step) s.classList.add('active');
-    if (n < step) s.classList.add('done');
+    if (n < step)  s.classList.add('done');
   });
 }
 
 function doSignIn(email, password) {
-  // Demo: accept any with basic validation, or test credentials
-  const validEmail = email.trim().toLowerCase();
-  const validPass = password.trim();
-  if (!validEmail.includes('@') || validPass.length < 3) {
+  const e = email.trim().toLowerCase();
+  const p = password.trim();
+  if (!e.includes('@') || p.length < 3) {
     $('signInError').style.display = 'block';
     return;
   }
-
-  // Use existing vault name or generate from email
-  const name = State.vault['vf-name'] || email.split('@')[0];
-  State.user = { name, email: validEmail, avatar: name[0].toUpperCase() };
+  const name = State.vault['vf-name'] || e.split('@')[0];
+  State.user = { name, email: e, avatar: name[0].toUpperCase() };
   saveUser();
   closeAuthModal();
   updateAuthUI();
-  showToast(`Welcome back, ${name.split(' ')[0]}!`, 'success');
+  showToast(`Welcome back, ${name.split(' ')[0]}!`);
 }
 
 function doRegister() {
-  const name = $('reg-name').value.trim();
+  const name  = $('reg-name').value.trim();
   const email = $('reg-email').value.trim().toLowerCase();
-  const password = $('reg-pass').value.trim();
+  const pass  = $('reg-pass').value.trim();
 
-  if (!name || !email.includes('@') || password.length < 8) {
-    showToast('Please complete all required fields.', 'error');
+  if (!name || !email.includes('@') || pass.length < 8) {
+    showToast('Please complete all required fields (password min 8 chars).', 'error');
     return;
   }
 
-  // Save vault data from onboarding
-  State.vault['vf-name'] = name;
-  State.vault['vf-dob'] = $('reg-dob').value;
-  State.vault['vf-carrier'] = $('reg-carrier').value;
-  State.vault['vf-member'] = $('reg-member').value;
-  State.vault['vf-group'] = $('reg-group').value;
-  State.vault['vf-bin'] = $('reg-bin').value;
-  State.vault['vf-pcn'] = $('reg-pcn').value;
-  State.vault['vf-doctor'] = $('reg-doctor').value;
-  State.vault['vf-zip'] = $('reg-zip').value;
+  // Sync onboarding data to vault
+  ['name','dob','carrier','member','group','bin','pcn','doctor','zip'].forEach(k => {
+    const el = $(`reg-${k}`);
+    if (el && el.value) State.vault[`vf-${k}`] = el.value;
+  });
   saveVault();
 
   State.user = { name, email, avatar: name[0].toUpperCase() };
   saveUser();
   closeAuthModal();
   updateAuthUI();
-  showToast(`Account created! Welcome, ${name.split(' ')[0]}.`, 'success');
+  showToast(`Account created! Welcome, ${name.split(' ')[0]}.`);
 }
 
 function signOut() {
   State.user = null;
-  localStorage.removeItem('sm_user');
+  localStorage.removeItem('fp_user');
   updateAuthUI();
   navigateTo('home');
-  showToast('You have been signed out.', 'success');
+  showToast('You have been signed out.');
 }
 
 function updateAuthUI() {
   const loggedIn = !!State.user;
-
   $('btnSignIn').style.display = loggedIn ? 'none' : 'inline-flex';
   $('btnJoin').textContent = loggedIn ? 'My Account' : 'Get Started';
 
@@ -497,37 +589,60 @@ function updateAuthUI() {
   } else {
     su.style.display = 'none';
   }
-
-  // Update insurance notice in search
   updateInsuranceNotice();
 }
 
-/* ─── VAULT ──────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   GOLDEN RECORD — INSURANCE ROUTING
+═══════════════════════════════════════════════════════════════ */
+function getInsuranceRecord() {
+  return {
+    carrier:  State.vault['vf-carrier']  || null,
+    member:   State.vault['vf-member']   || null,
+    group:    State.vault['vf-group']    || null,
+    bin:      State.vault['vf-bin']      || '610524',
+    pcn:      State.vault['vf-pcn']      || 'FPLAY',
+    plan:     State.vault['vf-plan']     || null,
+  };
+}
+
+function updateInsuranceNotice() {
+  const el = $('insuranceNoticeText');
+  if (!el) return;
+  const ins = getInsuranceRecord();
+  if (State.user && ins.carrier) {
+    el.innerHTML = `Showing estimated co-pay for <strong>${ins.carrier}</strong>. <a href="#" data-page="vault">Update in Vault</a>.`;
+  } else if (State.user) {
+    el.innerHTML = `No insurance on file. <a href="#" data-page="vault">Add in Security Vault</a> for personalized estimates.`;
+  } else {
+    el.innerHTML = `Showing national average insurance co-pay. <a href="#" data-page="vault">Add your insurance</a> for personalized estimates.`;
+  }
+  el.querySelectorAll('[data-page]').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); navigateTo(a.dataset.page); });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VAULT
+═══════════════════════════════════════════════════════════════ */
 function renderVault() {
   const loggedIn = !!State.user;
   $('vaultAuthGate').style.display = loggedIn ? 'none' : 'block';
-  $('vaultContent').style.display = loggedIn ? 'block' : 'none';
-
+  $('vaultContent').style.display  = loggedIn ? 'block' : 'none';
   if (!loggedIn) return;
 
-  // Fill fields from vault
   const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
   fields.forEach(id => {
     const el = $(id);
     if (el) el.value = State.vault[id] || '';
   });
-
-  // Reset to locked
   $('secureEditToggle').checked = false;
   setVaultLocked(true);
 }
 
 function setVaultLocked(locked) {
   const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
-  fields.forEach(id => {
-    const el = $(id);
-    if (el) el.disabled = locked;
-  });
+  fields.forEach(id => { const el = $(id); if (el) el.disabled = locked; });
 
   const dot = document.querySelector('.vault-status-dot');
   const txt = $('vaultStatusText');
@@ -538,109 +653,86 @@ function setVaultLocked(locked) {
     dot.className = 'vault-status-dot unlocked';
     txt.textContent = 'Edit Mode Active';
   }
-
   $('vaultActions').style.display = locked ? 'none' : 'flex';
 }
 
 function saveVaultData() {
   const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
-  fields.forEach(id => {
-    const el = $(id);
-    if (el) State.vault[id] = el.value;
-  });
+  fields.forEach(id => { const el = $(id); if (el) State.vault[id] = el.value; });
   saveVault();
 
-  // Update user name if changed
   if (State.user && State.vault['vf-name']) {
-    State.user.name = State.vault['vf-name'];
+    State.user.name   = State.vault['vf-name'];
     State.user.avatar = State.vault['vf-name'][0].toUpperCase();
     saveUser();
     updateAuthUI();
   }
 
-  // Show vault lock animation
-  showVaultLockAnim();
-}
-
-function showVaultLockAnim() {
   const overlay = $('vaultLockOverlay');
   overlay.style.display = 'flex';
   setTimeout(() => {
     overlay.style.display = 'none';
     $('secureEditToggle').checked = false;
     setVaultLocked(true);
-    const dot = document.querySelector('.vault-status-dot');
-    dot.className = 'vault-status-dot saved';
+    document.querySelector('.vault-status-dot').className = 'vault-status-dot saved';
     $('vaultStatusText').textContent = 'Vault Secured';
-    showToast('Vault Data Encrypted & Stored', 'success');
+    showToast('Vault Data Encrypted & Stored');
     updateInsuranceNotice();
     renderCard();
   }, 2000);
 }
 
-/* ─── DIGITAL CARD ───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   DIGITAL CARD — pulls live from vault
+═══════════════════════════════════════════════════════════════ */
 function renderCard() {
-  const vault = State.vault;
-  const user = State.user;
+  const ins  = getInsuranceRecord();
+  const name = State.vault['vf-name'] || (State.user && State.user.name) || 'MEMBER NAME';
 
-  $('cardMemberName').textContent = (vault['vf-name'] || (user && user.name) || 'MEMBER NAME').toUpperCase();
-  $('cardBIN').textContent = vault['vf-bin'] || '610524';
-  $('cardPCN').textContent = vault['vf-pcn'] || 'SLKMD';
-  $('cardGroup').textContent = vault['vf-group'] || 'SM2025';
-  $('cardMemberID').textContent = vault['vf-member'] || '—';
+  $('cardMemberName').textContent = name.toUpperCase();
+  $('cardBIN').textContent   = ins.bin;
+  $('cardPCN').textContent   = ins.pcn;
+  $('cardGroup').textContent = ins.group || 'FP2026';
+  $('cardMemberID').textContent = ins.member || '—';
 
-  const carrier = vault['vf-carrier'];
-  if (carrier) {
-    $('cardInsuranceCarrier').textContent = `${carrier} (Member ID: ${vault['vf-member'] || '—'})`;
-  } else {
-    $('cardInsuranceCarrier').textContent = 'None — add in Security Vault for personalized estimates';
-  }
+  $('cardInsuranceCarrier').textContent = ins.carrier
+    ? `${ins.carrier} · Member ID: ${ins.member || '—'}`
+    : 'None — add in Security Vault for personalized estimates';
 }
 
-/* ─── INSURANCE NOTICE ───────────────────────────────────────── */
-function updateInsuranceNotice() {
-  const notice = $('insuranceNoticeText');
-  if (!notice) return;
-  const carrier = State.vault && State.vault['vf-carrier'];
-  if (State.user && carrier) {
-    notice.innerHTML = `Showing estimated co-pay for <strong>${carrier}</strong>. <a href="#" data-page="vault">Update in Vault</a>.`;
-  } else if (State.user) {
-    notice.innerHTML = `No insurance on file. <a href="#" data-page="vault">Add in Security Vault</a> for personalized estimates.`;
-  } else {
-    notice.innerHTML = `Showing national average insurance co-pay. <a href="#" data-page="vault">Add your insurance</a> for personalized estimates.`;
-  }
-  // Re-attach link events
-  notice.querySelectorAll('[data-page]').forEach(a => {
-    a.addEventListener('click', e => { e.preventDefault(); navigateTo(a.dataset.page); });
-  });
-}
-
-/* ─── SEARCH ENGINE ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SEARCH ENGINE
+═══════════════════════════════════════════════════════════════ */
 function initSearch() {
-  // Popular tags
-  const popularDrugs = ['Metformin', 'Ozempic', 'Lisinopril', 'Adderall', 'Atorvastatin', 'Lexapro'];
+  // Populate popular tags
+  const popularNames = ['Metformin','Ozempic','Lisinopril','Adderall','Atorvastatin','Lexapro','Gabapentin','Sertraline'];
   const popCont = $('popularTagsSearch');
   if (popCont) {
-    popularDrugs.forEach(name => {
+    popularNames.forEach(name => {
       const tag = document.createElement('span');
       tag.className = 'hero-tag';
       tag.textContent = name;
-      tag.addEventListener('click', () => { triggerSearch(name, 'page'); });
+      tag.addEventListener('click', () => { navigateTo('search'); setTimeout(() => triggerSearch(name), 100); });
       popCont.appendChild(tag);
     });
   }
 
-  // Hero tags
+  // Hero quick-tags
   $$('.hero-tag[data-search]').forEach(tag => {
     tag.addEventListener('click', () => {
       navigateTo('search');
-      setTimeout(() => triggerSearch(tag.dataset.search, 'page'), 100);
+      setTimeout(() => triggerSearch(tag.dataset.search), 150);
     });
   });
 
-  // Hero search
+  // Hero search box
   setupSearchBox($('heroSearchInput'), $('heroSearchDropdown'), $('heroSearchClear'), 'hero');
+
+  // Page search box
   setupSearchBox($('pageSearchInput'), $('pageSearchDropdown'), $('pageSearchClear'), 'page');
+
+  // Drawer search box
+  setupDrawerSearch();
 }
 
 function setupSearchBox(input, dropdown, clearBtn, context) {
@@ -648,29 +740,30 @@ function setupSearchBox(input, dropdown, clearBtn, context) {
 
   input.addEventListener('input', () => {
     const q = input.value.trim();
-    clearBtn.style.display = q ? 'block' : 'none';
+    if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
     if (q.length < 1) { dropdown.classList.remove('open'); return; }
-    const results = DRUGS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()));
+    const results = DRUGS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()) || d.category.toLowerCase().includes(q.toLowerCase()));
     renderDropdown(dropdown, results, context, input);
   });
 
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
-    clearBtn.style.display = 'none';
-    dropdown.classList.remove('open');
-    if (context === 'page') resetSearchPage();
-  });
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      clearBtn.style.display = 'none';
+      dropdown.classList.remove('open');
+      if (context === 'page') resetSearchPage();
+    });
+  }
 
   document.addEventListener('click', e => {
-    if (!input.closest('.hero-search-wrap, .page-hero-small').contains(e.target)) {
-      dropdown.classList.remove('open');
-    }
+    const wrap = input.closest('.hero-search-wrap, .search-page-wrap, .page-hero-small');
+    if (wrap && !wrap.contains(e.target)) dropdown.classList.remove('open');
   });
 }
 
 function renderDropdown(dropdown, results, context, input) {
   if (!results.length) {
-    dropdown.innerHTML = `<div class="dropdown-item" style="justify-content:center;color:var(--text-muted);font-size:13px">No results found</div>`;
+    dropdown.innerHTML = `<div class="dropdown-item" style="justify-content:center;color:var(--text-muted);font-size:13px;cursor:default">No results found</div>`;
   } else {
     dropdown.innerHTML = results.slice(0, 8).map(d => `
       <div class="dropdown-item" data-name="${d.name}">
@@ -678,19 +771,20 @@ function renderDropdown(dropdown, results, context, input) {
           <div class="dropdown-drug-name">${d.name}</div>
           <div class="dropdown-drug-cat">${d.category}</div>
         </div>
-        <div class="dropdown-drug-price">from ${fmt(Math.min(...d.variants.map(v => v.sleekmed)))}</div>
+        <div class="dropdown-drug-price">from ${fmt(Math.min(...d.variants.map(v => v.fairplay)))}</div>
       </div>
     `).join('');
-    dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+
+    dropdown.querySelectorAll('.dropdown-item[data-name]').forEach(item => {
       item.addEventListener('click', () => {
         const name = item.dataset.name;
         input.value = name;
         dropdown.classList.remove('open');
         if (context === 'hero') {
           navigateTo('search');
-          setTimeout(() => triggerSearch(name, 'page'), 150);
+          setTimeout(() => triggerSearch(name), 150);
         } else {
-          triggerSearch(name, 'page');
+          triggerSearch(name);
         }
       });
     });
@@ -698,27 +792,23 @@ function renderDropdown(dropdown, results, context, input) {
   dropdown.classList.add('open');
 }
 
-function triggerSearch(name, context) {
+function triggerSearch(name) {
   const drug = DRUGS.find(d => d.name.toLowerCase() === name.toLowerCase());
   if (!drug) return;
 
-  State.currentDrug = drug;
+  State.currentDrug    = drug;
   State.currentVariant = drug.variants[0];
 
-  if (context === 'page') {
-    const input = $('pageSearchInput');
-    if (input) input.value = drug.name;
-    $('pageSearchClear').style.display = 'block';
-    renderSearchResults(drug);
-  }
+  const pi = $('pageSearchInput');
+  if (pi) { pi.value = drug.name; $('pageSearchClear').style.display = 'block'; }
+
+  hideCardFlip();
+  renderSearchResults(drug);
 }
 
 function renderSearchResults(drug) {
-  const panel = $('searchResultsPanel');
-  const empty = $('searchEmptyState');
-  panel.style.display = 'block';
-  empty.style.display = 'none';
-
+  $('searchResultsPanel').style.display = 'block';
+  $('searchEmptyState').style.display   = 'none';
   $('resultsTitle').textContent = `${drug.name} — Price Comparison`;
 
   // Variant selector
@@ -726,11 +816,13 @@ function renderSearchResults(drug) {
   vs.innerHTML = drug.variants.map((v, i) => `
     <button class="variant-btn ${i === 0 ? 'active' : ''}" data-index="${i}">${v.label}</button>
   `).join('');
+
   vs.querySelectorAll('.variant-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       vs.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       State.currentVariant = drug.variants[parseInt(btn.dataset.index)];
+      hideCardFlip();
       renderPriceCards(State.currentVariant, drug.name);
     });
   });
@@ -740,154 +832,291 @@ function renderSearchResults(drug) {
 }
 
 function renderPriceCards(variant, drugName) {
-  const carrier = State.vault && State.vault['vf-carrier'];
-  const insuranceLabel = carrier ? `Est. ${carrier} Co-pay` : 'Avg. Insurance Co-pay';
+  const ins = getInsuranceRecord();
+  const insLabel = (State.user && ins.carrier) ? `${ins.carrier} Co-pay` : 'Avg. Insurance Co-pay';
 
   const prices = [
-    { source: 'SleekMed Direct', amount: variant.sleekmed, action: 'Use This Card', best: true, id: 'sm' },
-    { source: 'GoodRx', amount: variant.goodrx, action: 'View on GoodRx', best: false, id: 'grx' },
-    { source: 'Cost Plus Drugs', amount: variant.costplus, action: 'View on Cost Plus', best: false, id: 'cp' },
-    { source: insuranceLabel, amount: variant.insurance, action: 'Use Your Insurance', best: false, id: 'ins' },
+    { id: 'fp',  source: 'Fair Play Direct',  amount: variant.fairplay,  action: 'Use This Card',      isFP: true },
+    { id: 'ins', source: insLabel,             amount: variant.insurance, action: 'Use Your Insurance',  isFP: false },
+    { id: 'grx', source: 'GoodRx',             amount: variant.goodrx,    action: 'View on GoodRx',      isFP: false },
+    { id: 'cp',  source: 'Cost Plus Drugs',    amount: variant.costplus,  action: 'View on Cost Plus',   isFP: false },
+    { id: 'ret', source: 'Retail Cash',        amount: variant.retail,    action: 'Standard Retail',     isFP: false },
   ];
 
-  const bestPrice = Math.min(...prices.map(p => p.amount));
-  const grid = $('priceComparisonGrid');
+  const bestAmount = Math.min(...prices.map(p => p.amount));
 
-  grid.innerHTML = prices.map(p => {
-    const isBest = p.amount === bestPrice;
+  $('priceComparisonGrid').innerHTML = prices.map(p => {
+    const isBest = p.amount === bestAmount;
     return `
       <div class="price-card ${isBest ? 'best-price' : ''}">
         ${isBest ? '<div class="price-card-badge">Lowest Price</div>' : ''}
         <div class="price-source">${p.source}</div>
         <div class="price-amount">${fmt(p.amount)}</div>
         <div class="price-per-unit">${variant.label}</div>
-        <button class="price-action">${p.action}</button>
+        <button class="price-action"
+          data-source-id="${p.id}"
+          data-source-label="${p.source}"
+          data-price="${p.amount}"
+          data-drug="${drugName}"
+          data-variant="${variant.label}"
+          data-retail="${variant.retail}"
+        >${p.action}</button>
       </div>
     `;
   }).join('');
 
-  // Savings callout
-  const maxPrice = Math.max(...prices.map(p => p.amount));
-  const saved = maxPrice - bestPrice;
-  if (saved > 0) {
-    const callout = document.createElement('div');
-    callout.className = 'detail-callout';
-    callout.style.marginBottom = '24px';
-    callout.innerHTML = `<strong>💰 Potential Savings:</strong> Using the lowest price option saves you <strong style="color:var(--mint)">${fmt(saved)}</strong> vs. the highest available price on this page.`;
-    const existingCallout = grid.parentElement.querySelector('.detail-callout');
-    if (existingCallout) existingCallout.remove();
-    grid.after(callout);
+  // Bind price action buttons
+  $$('#priceComparisonGrid .price-action').forEach(btn => {
+    btn.addEventListener('click', () => handlePriceAction(btn));
+  });
+
+  // Savings note
+  const saved = variant.retail - bestAmount;
+  const existing = $('priceComparisonGrid').nextElementSibling;
+  if (existing && existing.classList.contains('savings-note')) existing.remove();
+  if (saved > 1) {
+    const note = document.createElement('div');
+    note.className = 'detail-callout savings-note';
+    note.style.marginBottom = '24px';
+    note.innerHTML = `<strong>💰 Potential Savings:</strong> The lowest price saves you <strong style="color:var(--mint)">${fmt(saved)}</strong> vs. retail cash price for ${drugName}.`;
+    $('priceComparisonGrid').after(note);
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRICE ACTION → 3D CARD FLIP
+═══════════════════════════════════════════════════════════════ */
+function handlePriceAction(btn) {
+  const sourceId    = btn.dataset.sourceId;
+  const sourceLabel = btn.dataset.sourceLabel;
+  const price       = parseFloat(btn.dataset.price);
+  const drug        = btn.dataset.drug;
+  const variantLbl  = btn.dataset.variant;
+  const retail      = parseFloat(btn.dataset.retail);
+
+  // "Use This Card" (Fair Play) OR "View Discount" (any) → show flip card
+  const ins   = getInsuranceRecord();
+  const name  = State.vault['vf-name'] || (State.user && State.user.name) || 'MEMBER';
+  const saved = retail - price;
+
+  // Populate front
+  $('flipSourceLabel').textContent = sourceLabel;
+  $('flipPrice').textContent       = fmt(price);
+  $('flipDrug').textContent        = `${drug} · ${variantLbl}`;
+
+  // Populate back
+  $('flipCardName').textContent = name.toUpperCase();
+  $('flipBIN').textContent      = ins.bin;
+  $('flipPCN').textContent      = ins.pcn;
+  $('flipGroup').textContent    = ins.group || 'FP2026';
+  $('flipSavings').textContent  = saved > 0 ? fmt(saved) : '—';
+
+  // Show panel, reset flip state
+  const panel = $('cardFlipPanel');
+  const card  = $('cardFlipCard');
+  card.classList.remove('flipped');
+  panel.style.display = 'flex';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Tap/click on card = flip
+  card._flipBound && card.removeEventListener('click', card._flipBound);
+  card._flipBound = () => card.classList.toggle('flipped');
+  card.addEventListener('click', card._flipBound);
+
+  // If it's the FP card and user is not logged in — prompt
+  if (sourceId === 'fp' && !State.user) {
+    showToast('Create a free account to save your card details.', 'success');
+  }
+}
+
+function hideCardFlip() {
+  const panel = $('cardFlipPanel');
+  if (panel) panel.style.display = 'none';
+  const card = $('cardFlipCard');
+  if (card) card.classList.remove('flipped');
 }
 
 function resetSearchPage() {
   $('searchResultsPanel').style.display = 'none';
-  $('searchEmptyState').style.display = 'block';
-  State.currentDrug = null;
+  $('searchEmptyState').style.display   = 'block';
+  hideCardFlip();
+  State.currentDrug    = null;
+  State.currentVariant = null;
 }
 
-/* ─── MEDICINE CABINET ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   MEDICINE CABINET
+═══════════════════════════════════════════════════════════════ */
 function renderCabinet() {
   const loggedIn = !!State.user;
   $('cabinetAuthGate').style.display = loggedIn ? 'none' : 'block';
-  $('cabinetContent').style.display = loggedIn ? 'block' : 'none';
+  $('cabinetContent').style.display  = loggedIn ? 'block' : 'none';
   if (!loggedIn) return;
 
-  // Demo meds if empty
-  if (State.cabinet.length === 0) {
-    State.cabinet = [
-      { id: 1, name: 'Metformin', variant: '1000mg · 90 tabs', fills: 3, maxFills: 5, icon: '💊' },
-      { id: 2, name: 'Lisinopril', variant: '10mg · 30 tabs', fills: 1, maxFills: 5, icon: '💊' },
-      { id: 3, name: 'Atorvastatin', variant: '40mg · 30 tabs', fills: 4, maxFills: 5, icon: '💊' },
-    ];
-    saveCabinet();
-  }
-
   const list = $('medList');
-  if (State.cabinet.length === 0) {
-    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">No medications saved. Use Savings Finder to search and add drugs.</div>`;
-  } else {
-    list.innerHTML = State.cabinet.map(med => {
-      const pct = (med.fills / med.maxFills) * 100;
-      const barClass = pct <= 20 ? 'critical' : pct <= 40 ? 'low' : '';
-      return `
-        <div class="med-item" data-id="${med.id}">
-          <div class="med-icon">${med.icon}</div>
-          <div class="med-info">
-            <div class="med-name">${med.name}</div>
-            <div class="med-detail">${med.variant}</div>
-          </div>
-          <div class="med-refill">
-            <div class="refill-count">${med.fills} fill${med.fills !== 1 ? 's' : ''} remaining</div>
-            <div class="refill-bar-wrap">
-              <div class="refill-bar ${barClass}" style="width:${pct}%"></div>
-            </div>
-          </div>
-          <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
-        </div>
-      `;
-    }).join('');
 
-    list.querySelectorAll('.med-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        State.cabinet = State.cabinet.filter(m => m.id != btn.dataset.id);
-        saveCabinet();
-        renderCabinet();
-      });
-    });
+  if (State.cabinet.length === 0) {
+    list.innerHTML = `
+      <div style="text-align:center;padding:48px 20px;color:var(--text-muted)">
+        <div style="font-size:36px;margin-bottom:12px">💊</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:6px">Your cabinet is empty</div>
+        <div style="font-size:13px">Click <strong style="color:var(--mint)">+ Add Medication</strong> to get started</div>
+      </div>
+    `;
+    $('refillTrackerSection').style.display = 'none';
+    return;
   }
+
+  list.innerHTML = State.cabinet.map(med => {
+    const pct      = Math.max(0, Math.min(100, (med.fills / (med.maxFills || 5)) * 100));
+    const barClass = pct <= 20 ? 'critical' : pct <= 40 ? 'low' : '';
+    return `
+      <div class="med-item" data-id="${med.id}">
+        <div class="med-icon">${med.icon || '💊'}</div>
+        <div class="med-info">
+          <div class="med-name">${med.name}</div>
+          <div class="med-detail">${med.variant}</div>
+        </div>
+        <div class="med-refill">
+          <div class="refill-count">${med.fills} fill${med.fills !== 1 ? 's' : ''} left</div>
+          <div class="refill-bar-wrap"><div class="refill-bar ${barClass}" style="width:${pct}%"></div></div>
+        </div>
+        <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
+      </div>
+    `;
+  }).join('');
+
+  // X buttons — permanent delete
+  list.querySelectorAll('.med-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      State.cabinet = State.cabinet.filter(m => m.id !== id);
+      saveCabinet();
+      renderCabinet();
+      showToast('Medication removed.');
+    });
+  });
 
   // Tracker
-  const tg = $('trackerGrid');
-  tg.innerHTML = State.cabinet.map(med => `
+  $('refillTrackerSection').style.display = 'block';
+  $('trackerGrid').innerHTML = State.cabinet.map(med => `
     <div class="tracker-card">
       <div class="tracker-drug">${med.name}</div>
       <div class="tracker-fills-left">${med.fills}</div>
       <div class="tracker-fills-label">fills remaining</div>
     </div>
   `).join('');
-
-  if (State.cabinet.length === 0) {
-    tg.innerHTML = `<div style="color:var(--text-muted);font-size:13px">No medications tracked.</div>`;
-  }
 }
 
-function addMedToCabinet(drugName, variantLabel) {
-  const drug = DRUGS.find(d => d.name === drugName);
-  if (!drug) return;
-  const id = Date.now();
+/* ─── ADD MED DRAWER ─────────────────────────────────────────── */
+function setupDrawerSearch() {
+  const input    = $('drawerSearchInput');
+  const dropdown = $('drawerSearchDropdown');
+  if (!input) return;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (q.length < 1) { dropdown.classList.remove('open'); $('drawerVariantSelect').style.display = 'none'; return; }
+    const results = DRUGS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()));
+
+    dropdown.innerHTML = results.slice(0, 8).map(d => `
+      <div class="dropdown-item" data-name="${d.name}">
+        <div>
+          <div class="dropdown-drug-name">${d.name}</div>
+          <div class="dropdown-drug-cat">${d.category}</div>
+        </div>
+      </div>
+    `).join('');
+
+    dropdown.querySelectorAll('.dropdown-item[data-name]').forEach(item => {
+      item.addEventListener('click', () => {
+        const drug = DRUGS.find(d => d.name === item.dataset.name);
+        if (!drug) return;
+        State.drawerDrug = drug;
+        input.value = drug.name;
+        dropdown.classList.remove('open');
+
+        // Populate variant dropdown
+        const sel = $('drawerVariantDropdown');
+        sel.innerHTML = drug.variants.map((v, i) => `<option value="${i}">${v.label}</option>`).join('');
+        $('drawerVariantSelect').style.display = 'flex';
+      });
+    });
+
+    dropdown.classList.add('open');
+  });
+
+  document.addEventListener('click', e => {
+    if (!input.closest('.drawer-search-wrap').contains(e.target)) dropdown.classList.remove('open');
+  });
+}
+
+function openAddMedDrawer() {
+  const drawer = $('addMedDrawer');
+  drawer.style.display = 'block';
+  $('drawerSearchInput').value = '';
+  $('drawerVariantSelect').style.display = 'none';
+  $('drawerSearchDropdown').classList.remove('open');
+  State.drawerDrug = null;
+  setTimeout(() => $('drawerSearchInput').focus(), 50);
+}
+
+function closeAddMedDrawer() {
+  $('addMedDrawer').style.display = 'none';
+}
+
+function confirmAddMed() {
+  if (!State.drawerDrug) return;
+  const variantIndex = parseInt($('drawerVariantDropdown').value);
+  const variant      = State.drawerDrug.variants[variantIndex];
+  const fills        = parseInt($('drawerFills').value) || 5;
+
   State.cabinet.push({
-    id,
-    name: drugName,
-    variant: variantLabel,
-    fills: Math.floor(Math.random() * 4) + 1,
-    maxFills: 5,
-    icon: drug.icon,
+    id:       Date.now(),
+    name:     State.drawerDrug.name,
+    variant:  variant.label,
+    fills,
+    maxFills: fills,
+    icon:     State.drawerDrug.icon,
   });
   saveCabinet();
-  showToast(`${drugName} added to Medicine Cabinet`, 'success');
+  closeAddMedDrawer();
+  renderCabinet();
+  showToast(`${State.drawerDrug.name} added to your cabinet.`);
 }
 
-/* ─── STAT COUNTER ANIMATION ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   COUNTER ANIMATION
+═══════════════════════════════════════════════════════════════ */
 function animateCounters() {
   $$('[data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
+    const target   = parseInt(el.dataset.count);
     const duration = 1800;
-    const start = performance.now();
+    const start    = performance.now();
     function step(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const value = Math.floor(ease * target);
-      el.textContent = value >= 1000 ? value.toLocaleString() : value;
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = target.toLocaleString() + (target >= 10000 ? '+' : '+');
+      const p   = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(ease * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString() + '+';
     }
     requestAnimationFrame(step);
   });
 }
 
-/* ─── ADMIN PORTAL ───────────────────────────────────────────── */
+function observeStats() {
+  const strip = document.querySelector('.hero-stat-strip');
+  if (!strip) return;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { animateCounters(); obs.disconnect(); }
+  }, { threshold: 0.3 });
+  obs.observe(strip);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN — 3-field auth: email + password + access code
+═══════════════════════════════════════════════════════════════ */
 function initAdmin() {
   if (State.adminLoggedIn) {
     $('adminLoginGate').style.display = 'none';
@@ -898,25 +1127,35 @@ function initAdmin() {
   }
 }
 
+function doAdminLogin() {
+  const email = $('adminEmail').value.trim().toLowerCase();
+  const pass  = $('adminPass').value.trim();
+  const code  = $('adminCode').value.trim();
+
+  if (email === 'admin@fairplay.com' && pass === 'ADMIN2026888' && code === 'ADMIN888') {
+    State.adminLoggedIn = true;
+    $('adminLoginGate').style.display = 'none';
+    $('adminDashboard').style.display = 'block';
+    $('adminLoginError').style.display = 'none';
+    showToast('Welcome to the Partner Portal.');
+  } else {
+    $('adminLoginError').style.display = 'block';
+  }
+}
+
 function calcMRR() {
   const claims = parseInt($('claimsSlider').value);
-  const fee = State.activeFee;
-  const mrr = claims * fee;
-  const arr = mrr * 12;
+  const mrr    = claims * State.activeFee;
   $('claimsVal').textContent = claims.toLocaleString();
-  $('calcMRR').textContent = '$' + mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  $('calcARR').textContent = '$' + arr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  $('calcMRR').textContent   = '$' + Math.round(mrr).toLocaleString();
+  $('calcARR').textContent   = '$' + Math.round(mrr * 12).toLocaleString();
 }
 
-/* ─── DATA PURGE ─────────────────────────────────────────────── */
-function openPurgeModal() {
-  $('purgeModalOverlay').classList.add('open');
-  $('purgeConfirmInput').value = '';
-}
-
-function closePurgeModal() {
-  $('purgeModalOverlay').classList.remove('open');
-}
+/* ═══════════════════════════════════════════════════════════════
+   DATA PURGE
+═══════════════════════════════════════════════════════════════ */
+function openPurgeModal()  { $('purgeModalOverlay').classList.add('open'); $('purgeConfirmInput').value = ''; }
+function closePurgeModal() { $('purgeModalOverlay').classList.remove('open'); }
 
 function executePurge() {
   if ($('purgeConfirmInput').value.trim().toUpperCase() !== 'DELETE') {
@@ -925,133 +1164,94 @@ function executePurge() {
   }
   localStorage.clear();
   sessionStorage.clear();
-  State.user = null;
-  State.vault = {};
-  State.cabinet = [];
+  State.user = null; State.vault = {}; State.cabinet = [];
   closePurgeModal();
   updateAuthUI();
   navigateTo('home');
-  showToast('All data permanently purged.', 'success');
+  showToast('All data permanently purged.');
 }
 
-/* ─── EVENT LISTENERS ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   BIND ALL EVENTS
+═══════════════════════════════════════════════════════════════ */
 function bindEvents() {
 
-  // Hamburger / Sidebar
+  // Sidebar
   $('hamburgerBtn').addEventListener('click', openSidebar);
   $('sidebarClose').addEventListener('click', closeSidebar);
   $('sidebarOverlay').addEventListener('click', closeSidebar);
 
-  // Page navigation (nav links)
-  $$('[data-page]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      navigateTo(el.dataset.page);
-    });
+  // Page links (all [data-page] elements)
+  document.addEventListener('click', e => {
+    const link = e.target.closest('[data-page]');
+    if (!link) return;
+    const page = link.dataset.page;
+    // Let auth modal links work too
+    if (link.id === 'switchToRegister' || link.id === 'switchToSignIn') return;
+    e.preventDefault();
+    navigateTo(page);
   });
 
   // Header buttons
   $('btnSignIn').addEventListener('click', () => openAuthModal('signin'));
-  $('btnJoin').addEventListener('click', () => {
-    if (State.user) navigateTo('vault');
-    else openAuthModal('register');
-  });
+  $('btnJoin').addEventListener('click', () => State.user ? navigateTo('vault') : openAuthModal('register'));
 
   // Auth modal
   $('authModalClose').addEventListener('click', closeAuthModal);
-  $('authModalOverlay').addEventListener('click', e => {
-    if (e.target === $('authModalOverlay')) closeAuthModal();
-  });
-
+  $('authModalOverlay').addEventListener('click', e => { if (e.target === $('authModalOverlay')) closeAuthModal(); });
   $('switchToRegister').addEventListener('click', e => { e.preventDefault(); showRegView(); });
   $('switchToSignIn').addEventListener('click', e => { e.preventDefault(); showSignInView(); });
-
-  $('doSignInBtn').addEventListener('click', () => {
-    doSignIn($('signInEmail').value, $('signInPass').value);
-  });
-
+  $('doSignInBtn').addEventListener('click', () => doSignIn($('signInEmail').value, $('signInPass').value));
   $('signInEmail').addEventListener('keydown', e => { if (e.key === 'Enter') doSignIn($('signInEmail').value, $('signInPass').value); });
-  $('signInPass').addEventListener('keydown', e => { if (e.key === 'Enter') doSignIn($('signInEmail').value, $('signInPass').value); });
+  $('signInPass').addEventListener('keydown',  e => { if (e.key === 'Enter') doSignIn($('signInEmail').value, $('signInPass').value); });
 
-  // Onboarding steps
+  // Onboarding
   $('onboardNext1').addEventListener('click', () => {
     if (!$('reg-name').value || !$('reg-email').value.includes('@') || $('reg-pass').value.length < 8) {
-      showToast('Please fill in all required fields (password min 8 chars).', 'error');
+      showToast('Please complete all fields (password min 8 chars).', 'error');
       return;
     }
     goToOnboardStep(2);
   });
-
   $('onboardNext2').addEventListener('click', () => goToOnboardStep(3));
   $('onboardSkip2').addEventListener('click', () => goToOnboardStep(3));
   $('completeRegBtn').addEventListener('click', doRegister);
 
   // Vault
-  $('secureEditToggle').addEventListener('change', e => {
-    setVaultLocked(!e.target.checked);
-  });
-
+  $('secureEditToggle').addEventListener('change', e => setVaultLocked(!e.target.checked));
   $('saveVaultBtn').addEventListener('click', saveVaultData);
-  $('cancelVaultBtn').addEventListener('click', () => {
-    $('secureEditToggle').checked = false;
-    setVaultLocked(true);
-    renderVault();
-  });
-
-  $('vaultAuthGate') && $('vaultSignInBtn').addEventListener('click', () => openAuthModal('signin'));
-  $('vaultCreateBtn') && $('vaultCreateBtn').addEventListener('click', () => openAuthModal('register'));
-
+  $('cancelVaultBtn').addEventListener('click', () => { $('secureEditToggle').checked = false; setVaultLocked(true); renderVault(); });
+  $('vaultSignInBtn').addEventListener('click', () => openAuthModal('signin'));
+  $('vaultCreateBtn').addEventListener('click', () => openAuthModal('register'));
   $('signOutBtn').addEventListener('click', signOut);
   $('sidebarSignOut').addEventListener('click', signOut);
-
   $('purgeBtn').addEventListener('click', openPurgeModal);
   $('confirmPurgeBtn').addEventListener('click', executePurge);
   $('cancelPurgeBtn').addEventListener('click', closePurgeModal);
+  $('purgeModalOverlay').addEventListener('click', e => { if (e.target === $('purgeModalOverlay')) closePurgeModal(); });
 
-  $('purgeModalOverlay').addEventListener('click', e => {
-    if (e.target === $('purgeModalOverlay')) closePurgeModal();
-  });
-
-  // Cabinet auth gates
+  // Cabinet
   $('cabinetSignInBtn').addEventListener('click', () => openAuthModal('signin'));
   $('cabinetCreateBtn').addEventListener('click', () => openAuthModal('register'));
+  $('addMedBtn').addEventListener('click', openAddMedDrawer);
+  $('addMedDrawerClose').addEventListener('click', closeAddMedDrawer);
+  $('confirmAddMedBtn').addEventListener('click', confirmAddMed);
 
-  // Add med button
-  $('addMedBtn') && $('addMedBtn').addEventListener('click', () => {
-    navigateTo('search');
-    showToast('Search for a medication to add it to your cabinet.', 'success');
+  // Cabinet filter buttons
+  $$('.filter-btn[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
   });
 
-  // Price card actions — "Use This Card" saves to cabinet
-  document.addEventListener('click', e => {
-    if (e.target.classList.contains('price-action') && e.target.textContent === 'Use This Card') {
-      if (!State.user) { openAuthModal('signin'); return; }
-      if (State.currentDrug && State.currentVariant) {
-        addMedToCabinet(State.currentDrug.name, State.currentVariant.label);
-      }
-    }
-  });
+  // Card flip close
+  $('closeFlipBtn').addEventListener('click', hideCardFlip);
 
   // Admin
-  $('adminLoginBtn').addEventListener('click', () => {
-    const email = $('adminEmail').value.trim();
-    const pass = $('adminPass').value.trim();
-    if (email === 'admin@sleekmed.com' && pass === 'ADMIN888') {
-      State.adminLoggedIn = true;
-      $('adminLoginGate').style.display = 'none';
-      $('adminDashboard').style.display = 'block';
-      showToast('Welcome to the Partner Portal.', 'success');
-    } else {
-      $('adminLoginError').style.display = 'block';
-    }
-  });
-
-  $('adminLogoutBtn').addEventListener('click', () => {
-    State.adminLoggedIn = false;
-    initAdmin();
-  });
-
-  // Admin calculator
+  $('adminLoginBtn').addEventListener('click', doAdminLogin);
+  $('adminCode').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
+  $('adminLogoutBtn').addEventListener('click', () => { State.adminLoggedIn = false; initAdmin(); });
   $('claimsSlider').addEventListener('input', calcMRR);
   $$('.fee-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1063,55 +1263,14 @@ function bindEvents() {
   });
 
   // Telehealth notify
-  $('teleNotifyBtn') && $('teleNotifyBtn').addEventListener('click', () => {
-    showToast('You\'ll be notified when Online Care launches!', 'success');
-  });
+  const tele = $('teleNotifyBtn');
+  if (tele) tele.addEventListener('click', () => showToast("You'll be notified when Online Care launches!"));
 
-  // Footer nav links
-  $$('.footer-col [data-page]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      navigateTo(el.dataset.page);
-    });
-  });
-
-  // Filter buttons (cabinet)
-  $$('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      $$('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeAuthModal(); closePurgeModal(); closeSidebar(); hideCardFlip(); }
   });
 }
-
-/* ─── INTERSECTION OBSERVER (stat counter trigger) ───────────── */
-function observeStats() {
-  const strip = document.querySelector('.hero-stat-strip');
-  if (!strip) return;
-  const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      animateCounters();
-      obs.disconnect();
-    }
-  }, { threshold: 0.3 });
-  obs.observe(strip);
-}
-
-/* ─── INITIAL CALC for admin ─────────────────────────────────── */
-function initCalcDisplay() {
-  $('claimsVal').textContent = '5,000';
-  $('calcMRR').textContent = '$12,500';
-  $('calcARR').textContent = '$150,000';
-}
-
-/* ─── KEYBOARD SHORTCUTS ─────────────────────────────────────── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeAuthModal();
-    closePurgeModal();
-    closeSidebar();
-  }
-});
 
 /* ═══════════════════════════════════════════════════════════════
    BOOT
@@ -1122,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSearch();
   updateAuthUI();
   observeStats();
-  initCalcDisplay();
   renderCard();
+  calcMRR();
   navigateTo('home');
 });
