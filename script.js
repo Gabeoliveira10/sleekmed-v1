@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   FAIR PLAY — PRODUCTION SCRIPT v2
+   VITAL — PRODUCTION SCRIPT v2
    50-Drug Database · 3D Card Flip · Golden Record Insurance Engine
 ═══════════════════════════════════════════════════════════════ */
 
@@ -792,6 +792,23 @@ function renderDropdown(dropdown, results, context, input) {
   dropdown.classList.add('open');
 }
 
+function showSearchSkeletons() {
+  $('searchResultsPanel').style.display = 'block';
+  $('searchEmptyState').style.display   = 'none';
+  $('resultsTitle').textContent = 'Loading…';
+  $('variantSelector').innerHTML = [1,2,3].map(() =>
+    `<div class="skeleton skeleton-variant-btn"></div>`
+  ).join('');
+  $('priceComparisonGrid').innerHTML = [1,2,3,4,5].map(() => `
+    <div class="price-card">
+      <div class="skeleton skeleton-source-bar"></div>
+      <div class="skeleton skeleton-amount-bar"></div>
+      <div class="skeleton skeleton-unit-bar"></div>
+      <div class="skeleton skeleton-action-bar"></div>
+    </div>
+  `).join('');
+}
+
 function triggerSearch(name) {
   const drug = DRUGS.find(d => d.name.toLowerCase() === name.toLowerCase());
   if (!drug) return;
@@ -803,7 +820,8 @@ function triggerSearch(name) {
   if (pi) { pi.value = drug.name; $('pageSearchClear').style.display = 'block'; }
 
   hideCardFlip();
-  renderSearchResults(drug);
+  showSearchSkeletons();
+  setTimeout(() => renderSearchResults(drug), 700);
 }
 
 function renderSearchResults(drug) {
@@ -836,7 +854,7 @@ function renderPriceCards(variant, drugName) {
   const insLabel = (State.user && ins.carrier) ? `${ins.carrier} Co-pay` : 'Avg. Insurance Co-pay';
 
   const prices = [
-    { id: 'fp',  source: 'Fair Play Direct',  amount: variant.fairplay,  action: 'Use This Card',      isFP: true },
+    { id: 'fp',  source: 'VITAL Direct',       amount: variant.fairplay,  action: 'Use This Card',      isFP: true },
     { id: 'ins', source: insLabel,             amount: variant.insurance, action: 'Use Your Insurance',  isFP: false },
     { id: 'grx', source: 'GoodRx',             amount: variant.goodrx,    action: 'View on GoodRx',      isFP: false },
     { id: 'cp',  source: 'Cost Plus Drugs',    amount: variant.costplus,  action: 'View on Cost Plus',   isFP: false },
@@ -1132,7 +1150,7 @@ function doAdminLogin() {
   const pass  = $('adminPass').value.trim();
   const code  = $('adminCode').value.trim();
 
-  if (email === 'admin@fairplay.com' && pass === 'ADMIN2026888' && code === 'ADMIN888') {
+  if (email === 'admin@vital.com' && pass === 'ADMIN2026888' && code === 'ADMIN888') {
     State.adminLoggedIn = true;
     $('adminLoginGate').style.display = 'none';
     $('adminDashboard').style.display = 'block';
