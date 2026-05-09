@@ -86,6 +86,15 @@ img { max-width: 100%; display: block; }
 button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
+h1, h2, h3, h4 {
+  line-height: 1.6;
+  padding-bottom: 12px;
+}
+p {
+  line-height: 1.6;
+  padding-bottom: 12px;
+}
+
 /* ─── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
@@ -158,27 +167,54 @@ input, select, textarea { font-family: var(--font-sans); }
 }
 
 /* Logo */
-.logo-block { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.logo-block { display: flex; align-items: center; gap: 9px; flex-shrink: 0; cursor: pointer; }
 .logo-mark { display: flex; align-items: center; justify-content: center; }
-.logo-text { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--text-primary); letter-spacing: 0.06em; text-transform: uppercase; }
+.logo-text { font-family: 'Lexend', var(--font-sans); font-size: 22px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.04em; text-transform: uppercase; }
 .logo-text em { font-style: normal; color: var(--mint); }
 .logo-text.sm { font-size: 16px; }
 
+/* Capsule Logo Icon */
+.logo-capsule {
+  width: 14px;
+  height: 25px;
+  border-radius: 7px;
+  transform: rotate(45deg);
+  border: 2px solid #001f3f;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  display: block;
+}
+.logo-capsule::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: #2ECC71;
+}
+.logo-capsule.sm {
+  width: 10px;
+  height: 18px;
+  border-radius: 5px;
+  border-width: 1.5px;
+}
+
 /* Top Nav */
-.top-nav { display: flex; align-items: center; gap: 2px; flex: 1; }
+.top-nav { display: flex; align-items: center; gap: 45px; flex: 1; }
 
 .nav-link {
-  padding: 6px 11px;
+  padding: 6px 2px;
   border-radius: var(--radius-sm);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-family: 'Lexend', var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: 700;
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s var(--ease-satin), background 0.2s var(--ease-satin);
   white-space: nowrap;
 }
-.nav-link:hover { color: var(--text-primary); background: var(--bg-raised); opacity: 1; }
-.nav-link.active { color: var(--mint); background: var(--mint-glow-sm); }
+.nav-link:hover { color: var(--text-primary); background: transparent; opacity: 0.8; }
+.nav-link.active { color: #00E676; background: transparent; }
 
 .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
 
@@ -186,12 +222,12 @@ input, select, textarea { font-family: var(--font-sans); }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 0 20px; height: var(--input-h);
-  background: var(--mint); color: #0a1f16;
+  background: #00E676; color: #001f3f;
   border-radius: var(--radius-sm);
   font-size: 13.5px; font-weight: 700; border: none; cursor: pointer;
   transition: all 0.2s var(--ease-satin); white-space: nowrap;
 }
-.btn-primary:hover { background: #3de6aa; transform: translateY(-1px); box-shadow: 0 4px 20px var(--mint-glow); }
+.btn-primary:hover { background: #00c864; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,230,118,0.3); }
 .btn-primary:active { transform: translateY(0); }
 
 .btn-ghost {
@@ -465,7 +501,7 @@ input, select, textarea { font-family: var(--font-sans); }
 /* Price Cards — 5 columns */
 .price-comparison-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 36px; }
 
-.price-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 22px 18px; position: relative; transition: all 0.3s var(--ease-satin); }
+.price-card { background: var(--bg-surface); border: 1px solid var(--border-muted); border-radius: var(--radius-lg); padding: 22px 18px; position: relative; transition: all 0.3s var(--ease-satin); }
 .price-card:hover { border-color: var(--border-muted); transform: translateY(-2px); }
 .price-card.best-price { border-color: rgba(52,211,153,0.35); background: linear-gradient(135deg, rgba(52,211,153,0.06) 0%, var(--bg-surface) 100%); box-shadow: 0 0 24px var(--mint-glow-sm); }
 
@@ -601,7 +637,7 @@ input, select, textarea { font-family: var(--font-sans); }
 .med-item { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px 18px; display: flex; align-items: center; gap: 14px; transition: border-color 0.2s; }
 .med-item:hover { border-color: var(--border-muted); }
 
-.med-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--mint-glow-sm); border: 1px solid rgba(52,211,153,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.med-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--mint-glow-sm); border: 1px solid rgba(0,230,118,0.25); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; font-family: var(--font-mono); color: #00E676; letter-spacing: 0.04em; flex-shrink: 0; }
 .med-info { flex: 1; min-width: 0; }
 .med-name { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
 .med-detail { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -890,6 +926,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 .site-footer { border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
 .footer-disclaimer { background: rgba(245,158,11,0.06); border-bottom: 1px solid rgba(245,158,11,0.14); padding: 12px 20px; font-size: 12px; color: var(--text-muted); text-align: center; line-height: 1.6; max-width: 900px; margin: 0 auto; }
 .footer-disclaimer strong { color: var(--gold); }
+.footer-market-disclaimer { background: rgba(0,31,63,0.04); border-bottom: 1px solid rgba(0,31,63,0.10); margin-top: 0; }
+.footer-market-disclaimer strong { color: #001f3f; font-weight: 700; }
 .footer-inner { max-width: 1100px; margin: 0 auto; padding: 44px 20px; display: grid; grid-template-columns: 250px 1fr; gap: 44px; }
 .footer-brand p { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin: 12px 0; }
 .footer-copy { font-size: 11.5px; color: var(--text-disabled); }
@@ -926,6 +964,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .footer-inner { grid-template-columns: 1fr; gap: 30px; }
   .footer-links { grid-template-columns: 1fr 1fr; }
   .hiw-steps { grid-template-columns: 1fr 1fr; }
+  .health-conditions-grid { grid-template-columns: 1fr 1fr; }
+  .price-shock-grid { grid-template-columns: 1fr; }
+  .price-shock-divider { padding: 12px 0; }
 }
 
 @media (max-width: 640px) {
@@ -945,6 +986,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .admin-kpis { grid-template-columns: 1fr 1fr; }
   .card-flip-scene { width: 300px; height: 186px; }
   .hiw-detail-block { grid-template-columns: 1fr; gap: 12px; }
+  .health-conditions-grid { grid-template-columns: 1fr; }
+  .ps-price { font-size: 32px; }
 }
 
 /* ─── SKELETON SHIMMER ──────────────────────────────────────── */
@@ -966,6 +1009,248 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 .skeleton-amount-bar  { height: 32px; width: 75%; margin-bottom: 6px; }
 .skeleton-unit-bar    { height: 10px; width: 90%; margin-bottom: 16px; }
 .skeleton-action-bar  { height: 32px; width: 100%; border-radius: var(--radius-sm); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MISSION BLOCK — Deep Navy Background
+═══════════════════════════════════════════════════════════════ */
+.mission-block {
+  background: #001f3f !important;
+  border-top: none;
+  border-bottom: none;
+}
+.mission-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+.mission-block .section-eyebrow {
+  color: #00E676;
+}
+.mission-statement p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.8;
+  max-width: 780px;
+  margin: 0 auto 16px;
+}
+.mission-sig {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEALTH CONDITIONS GRID
+═══════════════════════════════════════════════════════════════ */
+.health-conditions-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.health-condition-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-satin);
+  position: relative;
+  overflow: hidden;
+}
+.health-condition-card:hover {
+  border-color: #00E676;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,230,118,0.12);
+}
+.hc-icon {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  color: #00E676;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hc-icon svg { width: 36px; height: 36px; }
+.health-condition-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  padding-bottom: 0;
+}
+.health-condition-card p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  padding-bottom: 0;
+}
+.hc-arrow {
+  display: inline-block;
+  font-size: 16px;
+  color: #00E676;
+  font-weight: 700;
+  transition: transform 0.2s var(--ease-satin);
+}
+.health-condition-card:hover .hc-arrow { transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PRICE SHOCK SECTION
+═══════════════════════════════════════════════════════════════ */
+.price-shock-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.price-shock-grid {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  align-items: center;
+}
+.price-shock-card {
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+}
+.price-shock-card.market-high {
+  background: #f1f3f5;
+  border: 1px solid #dee2e6;
+}
+.price-shock-card.vital-floor {
+  background: #FFC107;
+  border: 1px solid #e0a800;
+}
+.ps-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  margin-bottom: 8px;
+  padding-bottom: 0;
+}
+.price-shock-card.vital-floor .ps-label { color: #001f3f; }
+.ps-drug {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  padding-bottom: 0;
+}
+.price-shock-card.vital-floor .ps-drug { color: #001f3f; }
+.ps-price {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+  padding-bottom: 0;
+}
+.price-shock-card.vital-floor .ps-price { color: #001f3f; }
+.ps-source {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  padding-bottom: 0;
+}
+.price-shock-card.vital-floor .ps-source { color: rgba(0,31,63,0.7); }
+.price-shock-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ps-vs {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.price-shock-footer {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-secondary);
+  background: rgba(0,31,63,0.05);
+  border: 1px solid rgba(0,31,63,0.12);
+  border-radius: var(--radius-md);
+  padding: 14px 24px;
+}
+.price-shock-footer strong { color: #001f3f; }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO PHOTO BACKGROUND
+═══════════════════════════════════════════════════════════════ */
+.hero-bg-photo {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1920&q=80') center 40% / cover no-repeat;
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO PILL INDICATORS
+═══════════════════════════════════════════════════════════════ */
+.hero-tag-with-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pill-dot {
+  width: 18px;
+  height: 10px;
+  border-radius: 5px;
+  border: 1.5px solid #ccc;
+  background: linear-gradient(135deg, #fff 40%, #e8e8e8 100%);
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.15);
+}
+.pill-dot.oval {
+  width: 22px;
+  height: 10px;
+  border-radius: 5px;
+}
+.pill-dot.round {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NETWORK PARTNERS STAT — Yellow Accent
+═══════════════════════════════════════════════════════════════ */
+.stat-item.network-partners {
+  background: #FFC107;
+  border-radius: var(--radius-lg) 0 0 0;
+}
+.stat-item.network-partners .stat-num { color: #001f3f; }
+.stat-item.network-partners .stat-label { color: rgba(0,31,63,0.7); }
+
+/* ═══════════════════════════════════════════════════════════════
+   SVG ICON WRAPPERS (replacing emoji)
+═══════════════════════════════════════════════════════════════ */
+.auth-gate-icon { font-size: 44px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+.auth-gate-icon svg { width: 52px; height: 52px; color: var(--text-muted); }
+.value-icon { font-size: 26px; margin-bottom: 12px; display: flex; align-items: center; }
+.value-icon svg { width: 28px; height: 28px; color: var(--mint); }
+.provider-card-icon { font-size: 26px; margin-bottom: 14px; display: flex; align-items: center; }
+.provider-card-icon svg { width: 30px; height: 30px; color: var(--mint); }
+.empty-icon { margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+.empty-icon svg { width: 56px; height: 56px; color: var(--text-muted); }
+.purge-icon { display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.purge-icon svg { width: 48px; height: 48px; color: var(--red); }
+.vl-icon { margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+.vl-icon svg { width: 72px; height: 72px; color: var(--mint); animation: lockBounce 0.6s var(--ease-bounce) 0.2s both; }
 
 /* ─── UTILITY ───────────────────────────────────────────────── */
 .hidden { display: none !important; }

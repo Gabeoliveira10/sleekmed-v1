@@ -6,7 +6,7 @@
   <title>VITAL — Prescription Intelligence Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -25,13 +25,7 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="logo-block">
-        <div class="logo-mark">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lg1)" stroke-width="1.5"/>
-            <path d="M6 18l4-8 4 4 3-6 5 10" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs><linearGradient id="lg1" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
-          </svg>
-        </div>
+        <div class="logo-capsule"></div>
         <span class="logo-text">VITAL</span>
       </div>
       <nav class="top-nav" id="topNav">
@@ -53,9 +47,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo-block">
-        <div class="logo-mark">
-          <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lg2)" stroke-width="1.5"/><path d="M6 18l4-8 4 4 3-6 5 10" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg2" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg>
-        </div>
+        <div class="logo-capsule"></div>
         <span class="logo-text">VITAL</span>
       </div>
       <button class="sidebar-close" id="sidebarClose">✕</button>
@@ -92,6 +84,7 @@
     <!-- PAGE: HOME -->
     <section class="page active" id="page-home">
       <div class="hero">
+        <div class="hero-bg-photo"></div>
         <div class="hero-bg-fx"></div>
         <div class="hero-content">
           <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Prescription Price Intelligence Platform</div>
@@ -106,20 +99,18 @@
             <div class="search-dropdown" id="heroSearchDropdown"></div>
           </div>
           <div class="hero-tags">
-            <span class="hero-tag" data-search="Metformin">Metformin</span>
-            <span class="hero-tag" data-search="Lisinopril">Lisinopril</span>
-            <span class="hero-tag" data-search="Atorvastatin">Atorvastatin</span>
+            <span class="hero-tag" data-search="Metformin"><span class="hero-tag-with-pill"><span class="pill-dot round"></span>Metformin</span></span>
+            <span class="hero-tag" data-search="Lisinopril"><span class="hero-tag-with-pill"><span class="pill-dot round"></span>Lisinopril</span></span>
+            <span class="hero-tag" data-search="Atorvastatin"><span class="hero-tag-with-pill"><span class="pill-dot oval"></span>Atorvastatin</span></span>
             <span class="hero-tag" data-search="Ozempic">Ozempic</span>
             <span class="hero-tag" data-search="Adderall">Adderall</span>
             <span class="hero-tag" data-search="Lexapro">Lexapro</span>
           </div>
         </div>
         <div class="hero-stat-strip">
-          <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
+          <div class="stat-item network-partners"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
           <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num" data-count="50">0</span><span class="stat-label">+ Medications Indexed</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num">$0</span><span class="stat-label">Membership Fee</span></div>
+          <div class="stat-item"><span class="stat-num">70,000+</span><span class="stat-label">Medications Indexed</span></div>
           <div class="stat-divider"></div>
           <div class="stat-item"><span class="stat-num">80%</span><span class="stat-label">Avg. Savings vs. List</span></div>
         </div>
@@ -154,6 +145,33 @@
         </div>
       </div>
 
+      <!-- Price Shock Section -->
+      <div class="section-block price-shock-section">
+        <div class="section-header">
+          <div class="section-eyebrow">Market Intelligence</div>
+          <h2 class="section-title">The Price Gap Is Real.</h2>
+          <p class="section-sub">One drug. Two very different prices. This is why VITAL exists.</p>
+        </div>
+        <div class="price-shock-grid">
+          <div class="price-shock-card market-high">
+            <div class="ps-label">Average Pharmacy Cash Price (Pens)</div>
+            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
+            <div class="ps-price">$1,086.37</div>
+            <div class="ps-source">Retail Pharmacy Average · May 2026</div>
+          </div>
+          <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
+          <div class="price-shock-card vital-floor">
+            <div class="ps-label">VITAL Discovery Floor (Vials)</div>
+            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
+            <div class="ps-price">$399.00</div>
+            <div class="ps-source">VITAL Network Price · Verified Direct</div>
+          </div>
+        </div>
+        <div class="price-shock-footer">
+          A <strong>$687.37 gap in pricing exists</strong> for patients without insurance coverage.
+        </div>
+      </div>
+
       <!-- How It Works -->
       <div class="section-block alt-bg" id="howItWorksHome">
         <div class="section-header"><div class="section-eyebrow">Platform Logic</div><h2 class="section-title">How VITAL Works</h2></div>
@@ -165,18 +183,14 @@
         </div>
       </div>
 
-      <!-- Founder -->
-      <div class="section-block" id="founderSection">
-        <div class="founder-block">
-          <div class="founder-photo-wrap">
-            <div class="founder-photo-placeholder"><span>GO</span></div>
-            <div class="founder-badge">Founder &amp; CEO</div>
-          </div>
-          <div class="founder-text">
-            <div class="section-eyebrow">Message from the Founder</div>
-            <h2 class="founder-name">Gabriel Oliveira</h2>
-            <blockquote class="founder-quote">"I founded VITAL after realizing my insurance co-pay at Walmart was significantly higher than the cash price available through a discount tool. I built this to expose that gap."</blockquote>
-            <p class="founder-sig">— Gabriel Oliveira, Founder, VITAL</p>
+      <!-- Our Mission -->
+      <div class="section-block mission-block" id="founderSection">
+        <div class="mission-inner">
+          <div class="section-eyebrow">Our Mission</div>
+          <div class="mission-statement">
+            <p>VITAL was born out of a gap in the system. While transitioning between insurance plans, I found myself at the pharmacy counter without coverage, facing an out-of-pocket bill for essential medication. When the system couldn't provide transparency on pricing, I looked elsewhere and discovered that a third-party code was significantly cheaper than the insurance I had been paying hundreds for every month.</p>
+            <p>That experience revealed a fundamental flaw in healthcare: the 'negotiated' price isn't always the best price. I built VITAL to pull back the curtain, giving every patient the transparency they deserve and the tools to find the real price of their medication.</p>
+            <p class="mission-sig">— Gabriel Oliveira, Founder &amp; CEO</p>
           </div>
         </div>
       </div>
@@ -188,6 +202,40 @@
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I was paying $180/month for Ozempic through my insurance. VITAL showed me a Cost Plus path at $89. That's $1,092 back in my pocket every year."</p><div class="testimonial-author"><div class="author-avatar">MR</div><div><strong>Maria R.</strong><span>Type 2 Diabetic, Austin TX</span></div></div></div>
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"As someone uninsured for 18 months, the transparency VITAL provided was genuinely life-changing. I didn't know I could get Lisinopril for $3.50 until I searched here."</p><div class="testimonial-author"><div class="author-avatar">JK</div><div><strong>James K.</strong><span>Self-Employed, Denver CO</span></div></div></div>
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I manage prescriptions for four family members. The Medicine Cabinet feature keeps everything organized, and the refill tracker alerts me before we run out."</p><div class="testimonial-author"><div class="author-avatar">SL</div><div><strong>Sandra L.</strong><span>Family Caregiver, Portland OR</span></div></div></div>
+        </div>
+      </div>
+
+      <!-- Browse by Health Condition -->
+      <div class="section-block">
+        <div class="section-header">
+          <div class="section-eyebrow">Explore by Category</div>
+          <h2 class="section-title">Browse by Health Condition</h2>
+        </div>
+        <div class="health-conditions-grid">
+          <div class="health-condition-card" data-condition="Lisinopril">
+            <div class="hc-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C12 21 3 14 3 8.5a5.5 5.5 0 0111-0.5 5.5 5.5 0 0111 0.5C25 14 12 21 12 21z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.15" stroke-linejoin="round"/></svg></div>
+            <h3>Heart Health</h3>
+            <p>Lisinopril, Atorvastatin, Metoprolol &amp; more</p>
+            <span class="hc-arrow">→</span>
+          </div>
+          <div class="health-condition-card" data-condition="Lexapro">
+            <div class="hc-icon"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 5c-5 0-9 3-9 8 0 2 1 4 2 5-1 1-2 3-2 5 0 3 2 6 6 7h6c4-1 6-4 6-7 0-2-1-4-2-5 1-1 2-3 2-5 0-5-4-8-9-8z" stroke="currentColor" stroke-width="1.5"/><path d="M12 16c0 2 1.5 4 4 4s4-2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="5" x2="16" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <h3>Mental Health</h3>
+            <p>Lexapro, Sertraline, Adderall &amp; more</p>
+            <span class="hc-arrow">→</span>
+          </div>
+          <div class="health-condition-card" data-condition="Metformin">
+            <div class="hc-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a4 4 0 014 4v8a4 4 0 01-8 0V7a4 4 0 014-4z" stroke="currentColor" stroke-width="1.5"/><path d="M8 10h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <h3>Diabetes</h3>
+            <p>Metformin, Ozempic, Semaglutide &amp; more</p>
+            <span class="hc-arrow">→</span>
+          </div>
+          <div class="health-condition-card" data-condition="Albuterol">
+            <div class="hc-icon"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 5v14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 12c-3 2-5 5-5 8 0 5 4 8 8 8 2 0 4-1 5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M25 12c3 2 5 5 5 8 0 5-4 8-8 8-2 0-4-1-5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <h3>Respiratory</h3>
+            <p>Albuterol, Fluticasone, Montelukast &amp; more</p>
+            <span class="hc-arrow">→</span>
+          </div>
         </div>
       </div>
     </section>
@@ -259,7 +307,7 @@
         </div>
 
         <div class="search-empty-state" id="searchEmptyState">
-          <div class="empty-icon">💊</div>
+          <div class="empty-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="24" cy="24" rx="14" ry="8" stroke="currentColor" stroke-width="2" transform="rotate(45 24 24)"/><line x1="14.1" y1="14.1" x2="33.9" y2="33.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
           <h3>Search any medication to compare prices</h3>
           <p>Our database covers 50+ drugs with live pricing from our verified partner network.</p>
           <div class="popular-list">
@@ -279,7 +327,7 @@
           <p class="page-sub">Save your prescriptions, track refills, and get alerted when it's time to reorder.</p>
         </div>
         <div class="auth-gate" id="cabinetAuthGate">
-          <div class="auth-gate-icon">🔐</div>
+          <div class="auth-gate-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="10" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></div>
           <h3>Secure Account Required</h3>
           <p>Your Medicine Cabinet is protected. Sign in or create a free account to manage your medications.</p>
           <div class="auth-gate-actions">
@@ -362,7 +410,7 @@
         <div class="page-hero-small"><div class="section-eyebrow">Our Story</div><h1 class="page-title">About VITAL</h1></div>
         <div class="about-content">
           <div class="about-mission"><h2>Our Mission</h2><p>VITAL is a prescription price intelligence platform built on a single belief: <em>every patient deserves to know what they're actually paying for, and why</em>. We aggregate pricing data from five channels and present it without bias, without markup, and without agenda.</p><p>We are a data company. We are not a pharmacy. We are not an insurance company. We are not your doctor.</p></div>
-          <div class="about-values"><div class="value-card"><div class="value-icon">⚕</div><h3>Clinical Integrity</h3><p>We never recommend treatments. We present data. Every price, every disclaimer, every data source is clearly attributed.</p></div><div class="value-card"><div class="value-icon">🔒</div><h3>Radical Privacy</h3><p>Your health data is yours. We encrypt it locally, never sell it, and give you a one-click permanent purge at any time.</p></div><div class="value-card"><div class="value-icon">⚡</div><h3>Fintech Precision</h3><p>We treat prescription pricing with the same rigor a Bloomberg terminal applies to bond yields. Real data. Real time. No rounding.</p></div></div>
+          <div class="about-values"><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Clinical Integrity</h3><p>We never recommend treatments. We present data. Every price, every disclaimer, every data source is clearly attributed.</p></div><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="9" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 9V7a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></div><h3>Radical Privacy</h3><p>Your health data is yours. We encrypt it locally, never sell it, and give you a one-click permanent purge at any time.</p></div><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><h3>Fintech Precision</h3><p>We treat prescription pricing with the same rigor a Bloomberg terminal applies to bond yields. Real data. Real time. No rounding.</p></div></div>
           <div class="about-legal"><h3>Legal Disclaimer</h3><p>VITAL is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary at point of sale. Always consult a licensed physician before starting, changing, or stopping any medication.</p></div>
         </div>
       </div>
@@ -373,9 +421,9 @@
       <div class="page-inner">
         <div class="page-hero-small"><div class="section-eyebrow">Provider Network</div><h1 class="page-title">For Healthcare Providers</h1><p class="page-sub">Join our verified network and give your patients real-time access to the best prescription prices at the point of care.</p></div>
         <div class="providers-grid">
-          <div class="provider-card"><div class="provider-card-icon">🏥</div><h3>Clinic Integration</h3><p>Integrate VITAL's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p><a href="#" class="provider-cta">Request API Access →</a></div>
-          <div class="provider-card"><div class="provider-card-icon">💼</div><h3>Pharmacy Partnership</h3><p>Join our 75,000+ pharmacy network. Accept VITAL affiliate claims, earn guaranteed reimbursement, and expand your customer base to VITAL members nationwide.</p><a href="#" class="provider-cta">Apply for Partnership →</a></div>
-          <div class="provider-card"><div class="provider-card-icon">📊</div><h3>Practice Analytics</h3><p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p><a href="#" class="provider-cta">View Sample Report →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V8l9-5 9 5v13H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21V15h6v6M12 9v5M9.5 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Clinic Integration</h3><p>Integrate VITAL's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p><a href="#" class="provider-cta">Request API Access →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M2 13h20" stroke="currentColor" stroke-width="1.5"/></svg></div><h3>Pharmacy Partnership</h3><p>Join our 75,000+ pharmacy network. Accept VITAL affiliate claims, earn guaranteed reimbursement, and expand your customer base to VITAL members nationwide.</p><a href="#" class="provider-cta">Apply for Partnership →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20h18M7 14v6M11 8v12M15 11v9M19 4v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Practice Analytics</h3><p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p><a href="#" class="provider-cta">View Sample Report →</a></div>
         </div>
         <div class="provider-contact"><h3>Partner Inquiries</h3><p>For clinical or pharmacy partnership inquiries, contact our Provider Relations team.</p><a href="mailto:partners@vital.com" class="btn-primary">partners@vital.com</a></div>
       </div>
@@ -397,7 +445,7 @@
       <div class="page-inner">
         <div class="page-hero-small"><div class="section-eyebrow">HIPAA-Grade Security</div><h1 class="page-title">Personal Security Vault</h1><p class="page-sub">Your identity and insurance data is encrypted and stored locally. Only you can access or delete it.</p></div>
         <div class="auth-gate" id="vaultAuthGate">
-          <div class="auth-gate-icon">🔐</div>
+          <div class="auth-gate-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="10" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></div>
           <h3>Secure Authentication Required</h3>
           <p>Access to the Security Vault requires a verified VITAL account.</p>
           <div class="auth-gate-actions"><button class="btn-primary" id="vaultSignInBtn">Sign In</button><button class="btn-ghost" id="vaultCreateBtn">Create Account</button></div>
@@ -485,7 +533,7 @@
       <div class="page-inner">
         <div class="admin-login-gate" id="adminLoginGate">
           <div class="admin-login-card">
-            <div class="admin-login-logo"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lg3)" stroke-width="1.5"/><path d="M6 18l4-8 4 4 3-6 5 10" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg3" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg> VITAL Partner Portal</div>
+            <div class="admin-login-logo"><div class="logo-capsule" style="display:inline-block;vertical-align:middle;margin-right:8px"></div> VITAL Partner Portal</div>
             <div class="admin-login-label">Restricted Admin Access</div>
             <div class="admin-field"><label>Email</label><input type="email" id="adminEmail" class="vault-input" placeholder="admin@vital.com" /></div>
             <div class="admin-field"><label>Password</label><input type="password" id="adminPass" class="vault-input" placeholder="••••••••" /></div>
@@ -583,7 +631,7 @@
   <!-- PURGE MODAL -->
   <div class="modal-overlay" id="purgeModalOverlay">
     <div class="modal purge-modal">
-      <div class="purge-icon">⚠️</div>
+      <div class="purge-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 21h20L12 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="17.5" r="0.75" fill="currentColor"/></svg></div>
       <h2>Permanent Data Purge</h2>
       <p>This action will <strong>permanently delete</strong> all your VITAL data. This cannot be undone.</p>
       <p>Type <strong>DELETE</strong> to confirm:</p>
@@ -597,7 +645,7 @@
 
   <!-- VAULT LOCK OVERLAY -->
   <div class="vault-lock-overlay" id="vaultLockOverlay" style="display:none">
-    <div class="vault-lock-anim"><div class="vl-icon">🔒</div><div class="vl-text">Vault Data Encrypted &amp; Stored</div></div>
+    <div class="vault-lock-anim"><div class="vl-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="10" width="18" height="12" rx="2" stroke="#00E676" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="#00E676" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="#00E676"/></svg></div><div class="vl-text">Vault Data Encrypted &amp; Stored</div></div>
   </div>
 
   <!-- TOAST -->
@@ -606,14 +654,15 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-disclaimer"><strong>Medical Disclaimer:</strong> VITAL is a price aggregator and data tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before making any medical decisions.</div>
+    <div class="footer-disclaimer footer-market-disclaimer"><strong>Estimated market intelligence based on retail averages and verified manufacturer-direct pricing as of May 2026. Actual pharmacy prices vary.</strong></div>
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="logo-block"><div class="logo-mark sm"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="6" stroke="url(#lgf)" stroke-width="1.5"/><path d="M6 18l4-8 4 4 3-6 5 10" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lgf" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg></div><span class="logo-text sm">VITAL</span></div>
+        <div class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">VITAL</span></div>
         <p>Clinical Authority. Radical Transparency.<br/>Fintech Precision.</p>
         <p class="footer-copy">© 2026 VITAL, Inc. All rights reserved.</p>
       </div>
       <div class="footer-links">
-        <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Savings Finder</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a></div>
+        <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Savings Finder</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a><a href="#">Browse A-Z Index</a></div>
         <div class="footer-col"><div class="footer-col-title">Company</div><a href="#" data-page="about">About Us</a><a href="#" data-page="providers">For Providers</a><a href="mailto:partners@vital.com">Partner Inquiries</a></div>
         <div class="footer-col"><div class="footer-col-title">Legal</div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">HIPAA Notice</a><a href="#">Affiliate Disclosure</a></div>
       </div>

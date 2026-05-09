@@ -25,7 +25,7 @@ const State = {
 ═══════════════════════════════════════════════════════════════ */
 const DRUGS = [
   {
-    name: "Metformin", category: "Diabetes", icon: "💊",
+    name: "Metformin", category: "Diabetes", icon: "Rx",
     variants: [
       { label: "500mg · 30 tabs",  fairplay: 4.87,  insurance: 15.00,  goodrx: 6.20,   costplus: 3.90,  retail: 42.00 },
       { label: "500mg · 90 tabs",  fairplay: 8.40,  insurance: 35.00,  goodrx: 11.50,  costplus: 7.20,  retail: 98.00 },
@@ -34,7 +34,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Lisinopril", category: "Blood Pressure", icon: "💊",
+    name: "Lisinopril", category: "Blood Pressure", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 3.50,  insurance: 12.00,  goodrx: 5.10,   costplus: 2.80,  retail: 28.00 },
       { label: "10mg · 30 tabs",  fairplay: 4.20,  insurance: 14.00,  goodrx: 6.00,   costplus: 3.30,  retail: 34.00 },
@@ -43,7 +43,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Atorvastatin", category: "Cholesterol", icon: "💊",
+    name: "Atorvastatin", category: "Cholesterol", icon: "Rx",
     variants: [
       { label: "10mg · 30 tabs",  fairplay: 7.40,  insurance: 22.00,  goodrx: 10.20,  costplus: 5.80,  retail: 68.00 },
       { label: "20mg · 30 tabs",  fairplay: 8.90,  insurance: 26.00,  goodrx: 12.50,  costplus: 6.90,  retail: 82.00 },
@@ -52,7 +52,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Ozempic", category: "Diabetes / Weight", icon: "💉",
+    name: "Ozempic", category: "Diabetes / Weight", icon: "Rx",
     variants: [
       { label: "0.25–0.5mg · 1 pen", fairplay: 89.00,  insurance: 178.00, goodrx: 136.50, costplus: 82.00,  retail: 935.00 },
       { label: "1mg · 1 pen",         fairplay: 112.00, insurance: 210.00, goodrx: 158.00, costplus: 98.00,  retail: 988.00 },
@@ -60,7 +60,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Semaglutide", category: "Diabetes / Weight", icon: "💉",
+    name: "Semaglutide", category: "Diabetes / Weight", icon: "Rx",
     variants: [
       { label: "2.4mg/wk · 4 pens",  fairplay: 210.00, insurance: 420.00, goodrx: 320.00, costplus: 195.00, retail: 1349.00 },
       { label: "Oral 7mg · 30 tabs",  fairplay: 88.00,  insurance: 185.00, goodrx: 140.00, costplus: 79.00,  retail: 995.00 },
@@ -68,7 +68,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Adderall", category: "ADHD", icon: "💊",
+    name: "Adderall", category: "ADHD", icon: "Rx",
     variants: [
       { label: "10mg IR · 30 tabs",  fairplay: 28.40, insurance: 55.00,  goodrx: 42.00,  costplus: 24.50, retail: 178.00 },
       { label: "20mg IR · 30 tabs",  fairplay: 34.80, insurance: 65.00,  goodrx: 52.00,  costplus: 29.00, retail: 204.00 },
@@ -76,7 +76,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Lexapro", category: "Antidepressant", icon: "💊",
+    name: "Lexapro", category: "Antidepressant", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 9.80,  insurance: 25.00, goodrx: 14.20, costplus: 7.90,  retail: 112.00 },
       { label: "10mg · 30 tabs",  fairplay: 11.40, insurance: 28.00, goodrx: 16.80, costplus: 9.20,  retail: 128.00 },
@@ -84,7 +84,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Omeprazole", category: "Acid Reflux", icon: "💊",
+    name: "Omeprazole", category: "Acid Reflux", icon: "Rx",
     variants: [
       { label: "20mg · 30 caps",  fairplay: 5.20,  insurance: 14.00, goodrx: 8.40,  costplus: 4.10,  retail: 26.00 },
       { label: "40mg · 30 caps",  fairplay: 7.80,  insurance: 18.00, goodrx: 11.20, costplus: 5.90,  retail: 38.00 },
@@ -92,7 +92,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Sertraline", category: "Antidepressant", icon: "💊",
+    name: "Sertraline", category: "Antidepressant", icon: "Rx",
     variants: [
       { label: "50mg · 30 tabs",  fairplay: 6.40,  insurance: 18.00, goodrx: 10.20, costplus: 5.10,  retail: 88.00 },
       { label: "100mg · 30 tabs", fairplay: 8.20,  insurance: 22.00, goodrx: 12.80, costplus: 6.40,  retail: 104.00 },
@@ -100,14 +100,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Amlodipine", category: "Blood Pressure", icon: "💊",
+    name: "Amlodipine", category: "Blood Pressure", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 4.20, insurance: 12.00, goodrx: 6.80,  costplus: 3.40, retail: 24.00 },
       { label: "10mg · 30 tabs",  fairplay: 5.80, insurance: 15.00, goodrx: 8.90,  costplus: 4.60, retail: 32.00 },
     ]
   },
   {
-    name: "Gabapentin", category: "Nerve Pain / Epilepsy", icon: "💊",
+    name: "Gabapentin", category: "Nerve Pain / Epilepsy", icon: "Rx",
     variants: [
       { label: "100mg · 90 caps",  fairplay: 9.20,  insurance: 22.00, goodrx: 14.00, costplus: 7.40,  retail: 62.00 },
       { label: "300mg · 90 caps",  fairplay: 12.80, insurance: 28.00, goodrx: 18.40, costplus: 10.20, retail: 84.00 },
@@ -115,7 +115,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Losartan", category: "Blood Pressure", icon: "💊",
+    name: "Losartan", category: "Blood Pressure", icon: "Rx",
     variants: [
       { label: "25mg · 30 tabs",  fairplay: 5.60, insurance: 14.00, goodrx: 8.20,  costplus: 4.40, retail: 36.00 },
       { label: "50mg · 30 tabs",  fairplay: 6.80, insurance: 17.00, goodrx: 10.00, costplus: 5.40, retail: 44.00 },
@@ -123,7 +123,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Levothyroxine", category: "Thyroid", icon: "💊",
+    name: "Levothyroxine", category: "Thyroid", icon: "Rx",
     variants: [
       { label: "25mcg · 30 tabs",  fairplay: 6.20, insurance: 16.00, goodrx: 9.40,  costplus: 4.90, retail: 48.00 },
       { label: "50mcg · 30 tabs",  fairplay: 7.40, insurance: 18.00, goodrx: 11.00, costplus: 5.80, retail: 56.00 },
@@ -131,7 +131,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Alprazolam", category: "Anxiety", icon: "💊",
+    name: "Alprazolam", category: "Anxiety", icon: "Rx",
     variants: [
       { label: "0.25mg · 30 tabs", fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80, retail: 72.00 },
       { label: "0.5mg · 30 tabs",  fairplay: 9.80,  insurance: 24.00, goodrx: 15.20, costplus: 7.90, retail: 84.00 },
@@ -139,14 +139,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Bupropion", category: "Antidepressant / Smoking", icon: "💊",
+    name: "Bupropion", category: "Antidepressant / Smoking", icon: "Rx",
     variants: [
       { label: "150mg SR · 60 tabs", fairplay: 14.20, insurance: 32.00, goodrx: 20.80, costplus: 11.40, retail: 148.00 },
       { label: "300mg XL · 30 tabs", fairplay: 18.60, insurance: 42.00, goodrx: 26.40, costplus: 14.80, retail: 192.00 },
     ]
   },
   {
-    name: "Pantoprazole", category: "Acid Reflux", icon: "💊",
+    name: "Pantoprazole", category: "Acid Reflux", icon: "Rx",
     variants: [
       { label: "20mg · 30 tabs",  fairplay: 6.80,  insurance: 16.00, goodrx: 10.40, costplus: 5.40,  retail: 44.00 },
       { label: "40mg · 30 tabs",  fairplay: 8.60,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 58.00 },
@@ -154,28 +154,28 @@ const DRUGS = [
     ]
   },
   {
-    name: "Furosemide", category: "Diuretic / Heart", icon: "💊",
+    name: "Furosemide", category: "Diuretic / Heart", icon: "Rx",
     variants: [
       { label: "20mg · 30 tabs",  fairplay: 4.40, insurance: 12.00, goodrx: 7.20, costplus: 3.60, retail: 22.00 },
       { label: "40mg · 30 tabs",  fairplay: 5.20, insurance: 14.00, goodrx: 8.40, costplus: 4.20, retail: 28.00 },
     ]
   },
   {
-    name: "Trazodone", category: "Sleep / Depression", icon: "💊",
+    name: "Trazodone", category: "Sleep / Depression", icon: "Rx",
     variants: [
       { label: "50mg · 30 tabs",  fairplay: 7.20, insurance: 18.00, goodrx: 11.40, costplus: 5.80, retail: 64.00 },
       { label: "100mg · 30 tabs", fairplay: 9.40, insurance: 22.00, goodrx: 14.80, costplus: 7.60, retail: 82.00 },
     ]
   },
   {
-    name: "Clopidogrel", category: "Blood Thinners", icon: "💊",
+    name: "Clopidogrel", category: "Blood Thinners", icon: "Rx",
     variants: [
       { label: "75mg · 30 tabs",  fairplay: 11.80, insurance: 26.00, goodrx: 17.20, costplus: 9.40,  retail: 98.00 },
       { label: "75mg · 90 tabs",  fairplay: 28.40, insurance: 60.00, goodrx: 40.00, costplus: 22.80, retail: 228.00 },
     ]
   },
   {
-    name: "Rosuvastatin", category: "Cholesterol", icon: "💊",
+    name: "Rosuvastatin", category: "Cholesterol", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 8.80,  insurance: 22.00, goodrx: 13.20, costplus: 6.90,  retail: 72.00 },
       { label: "10mg · 30 tabs",  fairplay: 10.40, insurance: 26.00, goodrx: 15.80, costplus: 8.20,  retail: 86.00 },
@@ -183,7 +183,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Amoxicillin", category: "Antibiotic", icon: "💊",
+    name: "Amoxicillin", category: "Antibiotic", icon: "Rx",
     variants: [
       { label: "250mg · 21 caps",  fairplay: 5.80,  insurance: 15.00, goodrx: 9.20,  costplus: 4.60, retail: 32.00 },
       { label: "500mg · 21 caps",  fairplay: 7.40,  insurance: 18.00, goodrx: 11.80, costplus: 5.90, retail: 42.00 },
@@ -191,21 +191,21 @@ const DRUGS = [
     ]
   },
   {
-    name: "Doxycycline", category: "Antibiotic", icon: "💊",
+    name: "Doxycycline", category: "Antibiotic", icon: "Rx",
     variants: [
       { label: "100mg · 14 caps",  fairplay: 8.40,  insurance: 20.00, goodrx: 12.80, costplus: 6.80,  retail: 48.00 },
       { label: "100mg · 30 caps",  fairplay: 14.20, insurance: 32.00, goodrx: 21.00, costplus: 11.40, retail: 82.00 },
     ]
   },
   {
-    name: "Montelukast", category: "Allergy / Asthma", icon: "💊",
+    name: "Montelukast", category: "Allergy / Asthma", icon: "Rx",
     variants: [
       { label: "10mg · 30 tabs",  fairplay: 7.80,  insurance: 20.00, goodrx: 12.40, costplus: 6.20,  retail: 88.00 },
       { label: "10mg · 90 tabs",  fairplay: 18.40, insurance: 44.00, goodrx: 28.00, costplus: 14.80, retail: 198.00 },
     ]
   },
   {
-    name: "Duloxetine", category: "Antidepressant / Pain", icon: "💊",
+    name: "Duloxetine", category: "Antidepressant / Pain", icon: "Rx",
     variants: [
       { label: "20mg · 30 caps",  fairplay: 12.40, insurance: 28.00, goodrx: 18.80, costplus: 9.80,  retail: 128.00 },
       { label: "60mg · 30 caps",  fairplay: 16.80, insurance: 36.00, goodrx: 24.40, costplus: 13.40, retail: 164.00 },
@@ -213,14 +213,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Clonazepam", category: "Anxiety / Seizures", icon: "💊",
+    name: "Clonazepam", category: "Anxiety / Seizures", icon: "Rx",
     variants: [
       { label: "0.5mg · 30 tabs",  fairplay: 9.20,  insurance: 22.00, goodrx: 14.80, costplus: 7.40,  retail: 78.00 },
       { label: "1mg · 30 tabs",    fairplay: 10.80, insurance: 26.00, goodrx: 17.20, costplus: 8.60,  retail: 92.00 },
     ]
   },
   {
-    name: "Citalopram", category: "Antidepressant", icon: "💊",
+    name: "Citalopram", category: "Antidepressant", icon: "Rx",
     variants: [
       { label: "10mg · 30 tabs",  fairplay: 6.20, insurance: 16.00, goodrx: 10.00, costplus: 4.90, retail: 72.00 },
       { label: "20mg · 30 tabs",  fairplay: 7.80, insurance: 20.00, goodrx: 12.40, costplus: 6.20, retail: 86.00 },
@@ -228,7 +228,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Metoprolol", category: "Blood Pressure / Heart", icon: "💊",
+    name: "Metoprolol", category: "Blood Pressure / Heart", icon: "Rx",
     variants: [
       { label: "25mg · 30 tabs",  fairplay: 5.40, insurance: 14.00, goodrx: 8.60,  costplus: 4.30, retail: 38.00 },
       { label: "50mg · 30 tabs",  fairplay: 6.80, insurance: 17.00, goodrx: 10.40, costplus: 5.40, retail: 48.00 },
@@ -236,7 +236,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Fluoxetine", category: "Antidepressant", icon: "💊",
+    name: "Fluoxetine", category: "Antidepressant", icon: "Rx",
     variants: [
       { label: "10mg · 30 caps",  fairplay: 5.80, insurance: 16.00, goodrx: 9.40,  costplus: 4.60, retail: 68.00 },
       { label: "20mg · 30 caps",  fairplay: 7.20, insurance: 20.00, goodrx: 11.80, costplus: 5.80, retail: 82.00 },
@@ -244,21 +244,21 @@ const DRUGS = [
     ]
   },
   {
-    name: "Cyclobenzaprine", category: "Muscle Relaxer", icon: "💊",
+    name: "Cyclobenzaprine", category: "Muscle Relaxer", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 7.60, insurance: 18.00, goodrx: 12.00, costplus: 6.00, retail: 62.00 },
       { label: "10mg · 30 tabs",  fairplay: 9.20, insurance: 22.00, goodrx: 14.60, costplus: 7.40, retail: 78.00 },
     ]
   },
   {
-    name: "Hydrochlorothiazide", category: "Blood Pressure / Diuretic", icon: "💊",
+    name: "Hydrochlorothiazide", category: "Blood Pressure / Diuretic", icon: "Rx",
     variants: [
       { label: "12.5mg · 30 tabs", fairplay: 3.80, insurance: 10.00, goodrx: 6.40, costplus: 3.00, retail: 18.00 },
       { label: "25mg · 30 tabs",   fairplay: 4.60, insurance: 12.00, goodrx: 7.80, costplus: 3.70, retail: 22.00 },
     ]
   },
   {
-    name: "Prednisone", category: "Corticosteroid", icon: "💊",
+    name: "Prednisone", category: "Corticosteroid", icon: "Rx",
     variants: [
       { label: "5mg · 21 tabs (pack)",  fairplay: 6.40, insurance: 16.00, goodrx: 10.20, costplus: 5.10, retail: 38.00 },
       { label: "10mg · 30 tabs",        fairplay: 7.80, insurance: 20.00, goodrx: 12.40, costplus: 6.20, retail: 46.00 },
@@ -266,28 +266,28 @@ const DRUGS = [
     ]
   },
   {
-    name: "Zolpidem", category: "Sleep Aid", icon: "💊",
+    name: "Zolpidem", category: "Sleep Aid", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.20, costplus: 6.80,  retail: 82.00 },
       { label: "10mg · 30 tabs",  fairplay: 10.20, insurance: 24.00, goodrx: 15.80, costplus: 8.20,  retail: 98.00 },
     ]
   },
   {
-    name: "Warfarin", category: "Blood Thinners", icon: "💊",
+    name: "Warfarin", category: "Blood Thinners", icon: "Rx",
     variants: [
       { label: "2mg · 30 tabs",   fairplay: 5.20, insurance: 14.00, goodrx: 8.40,  costplus: 4.20, retail: 34.00 },
       { label: "5mg · 30 tabs",   fairplay: 6.80, insurance: 17.00, goodrx: 10.60, costplus: 5.40, retail: 42.00 },
     ]
   },
   {
-    name: "Tamsulosin", category: "Urology / BPH", icon: "💊",
+    name: "Tamsulosin", category: "Urology / BPH", icon: "Rx",
     variants: [
       { label: "0.4mg · 30 caps",  fairplay: 7.80,  insurance: 20.00, goodrx: 12.20, costplus: 6.20,  retail: 68.00 },
       { label: "0.4mg · 90 caps",  fairplay: 18.40, insurance: 44.00, goodrx: 27.80, costplus: 14.60, retail: 152.00 },
     ]
   },
   {
-    name: "Methylphenidate", category: "ADHD", icon: "💊",
+    name: "Methylphenidate", category: "ADHD", icon: "Rx",
     variants: [
       { label: "10mg IR · 30 tabs",  fairplay: 24.60, insurance: 48.00, goodrx: 36.80, costplus: 20.40, retail: 162.00 },
       { label: "20mg IR · 30 tabs",  fairplay: 30.40, insurance: 58.00, goodrx: 44.00, costplus: 25.60, retail: 192.00 },
@@ -295,7 +295,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Carvedilol", category: "Heart Failure / BP", icon: "💊",
+    name: "Carvedilol", category: "Heart Failure / BP", icon: "Rx",
     variants: [
       { label: "6.25mg · 60 tabs",  fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 58.00 },
       { label: "12.5mg · 60 tabs",  fairplay: 10.60, insurance: 24.00, goodrx: 16.20, costplus: 8.40,  retail: 72.00 },
@@ -303,7 +303,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Quetiapine", category: "Antipsychotic / Mood", icon: "💊",
+    name: "Quetiapine", category: "Antipsychotic / Mood", icon: "Rx",
     variants: [
       { label: "25mg · 30 tabs",   fairplay: 12.40, insurance: 28.00, goodrx: 18.60, costplus: 9.80,  retail: 128.00 },
       { label: "100mg · 30 tabs",  fairplay: 18.80, insurance: 38.00, goodrx: 26.40, costplus: 14.80, retail: 182.00 },
@@ -311,7 +311,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Aripiprazole", category: "Antipsychotic", icon: "💊",
+    name: "Aripiprazole", category: "Antipsychotic", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",    fairplay: 14.20, insurance: 32.00, goodrx: 21.40, costplus: 11.40, retail: 148.00 },
       { label: "10mg · 30 tabs",   fairplay: 18.60, insurance: 40.00, goodrx: 26.80, costplus: 14.80, retail: 188.00 },
@@ -319,7 +319,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Venlafaxine", category: "Antidepressant / Anxiety", icon: "💊",
+    name: "Venlafaxine", category: "Antidepressant / Anxiety", icon: "Rx",
     variants: [
       { label: "37.5mg · 30 caps",   fairplay: 10.80, insurance: 24.00, goodrx: 16.40, costplus: 8.60,  retail: 112.00 },
       { label: "75mg ER · 30 caps",  fairplay: 14.20, insurance: 30.00, goodrx: 20.80, costplus: 11.40, retail: 142.00 },
@@ -327,7 +327,7 @@ const DRUGS = [
     ]
   },
   {
-    name: "Lisinopril-HCTZ", category: "Blood Pressure (Combo)", icon: "💊",
+    name: "Lisinopril-HCTZ", category: "Blood Pressure (Combo)", icon: "Rx",
     variants: [
       { label: "10/12.5mg · 30 tabs", fairplay: 7.20,  insurance: 18.00, goodrx: 11.20, costplus: 5.80,  retail: 52.00 },
       { label: "20/12.5mg · 30 tabs", fairplay: 8.60,  insurance: 22.00, goodrx: 13.00, costplus: 6.80,  retail: 64.00 },
@@ -335,14 +335,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Meloxicam", category: "Anti-Inflammatory (NSAID)", icon: "💊",
+    name: "Meloxicam", category: "Anti-Inflammatory (NSAID)", icon: "Rx",
     variants: [
       { label: "7.5mg · 30 tabs",   fairplay: 6.80, insurance: 16.00, goodrx: 10.60, costplus: 5.40, retail: 48.00 },
       { label: "15mg · 30 tabs",    fairplay: 8.40, insurance: 20.00, goodrx: 12.80, costplus: 6.60, retail: 58.00 },
     ]
   },
   {
-    name: "Spironolactone", category: "Diuretic / Hormonal", icon: "💊",
+    name: "Spironolactone", category: "Diuretic / Hormonal", icon: "Rx",
     variants: [
       { label: "25mg · 30 tabs",   fairplay: 7.40,  insurance: 18.00, goodrx: 11.40, costplus: 5.80,  retail: 54.00 },
       { label: "50mg · 30 tabs",   fairplay: 9.60,  insurance: 22.00, goodrx: 14.20, costplus: 7.60,  retail: 68.00 },
@@ -350,21 +350,21 @@ const DRUGS = [
     ]
   },
   {
-    name: "Oxycodone", category: "Pain (Opioid)", icon: "💊",
+    name: "Oxycodone", category: "Pain (Opioid)", icon: "Rx",
     variants: [
       { label: "5mg IR · 30 tabs",   fairplay: 22.40, insurance: 44.00, goodrx: 32.80, costplus: 18.40, retail: 148.00 },
       { label: "10mg IR · 30 tabs",  fairplay: 28.60, insurance: 58.00, goodrx: 42.00, costplus: 23.40, retail: 184.00 },
     ]
   },
   {
-    name: "Tramadol", category: "Pain (Opioid-Like)", icon: "💊",
+    name: "Tramadol", category: "Pain (Opioid-Like)", icon: "Rx",
     variants: [
       { label: "50mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.20, costplus: 6.80,  retail: 72.00 },
       { label: "100mg ER · 30 tabs", fairplay: 14.20, insurance: 32.00, goodrx: 21.00, costplus: 11.40, retail: 118.00 },
     ]
   },
   {
-    name: "Insulin Glargine", category: "Diabetes (Insulin)", icon: "💉",
+    name: "Insulin Glargine", category: "Diabetes (Insulin)", icon: "Rx",
     variants: [
       { label: "100u/mL · 1 vial",   fairplay: 35.00, insurance: 72.00, goodrx: 58.00, costplus: 29.00, retail: 316.00 },
       { label: "300u/mL · 3 pens",   fairplay: 88.00, insurance: 160.00, goodrx: 132.00, costplus: 75.00, retail: 480.00 },
@@ -385,14 +385,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Triamcinolone", category: "Corticosteroid", icon: "💊",
+    name: "Triamcinolone", category: "Corticosteroid", icon: "Rx",
     variants: [
       { label: "0.1% cream 15g",   fairplay: 6.40, insurance: 16.00, goodrx: 10.20, costplus: 5.10, retail: 38.00 },
       { label: "0.1% cream 80g",   fairplay: 12.80, insurance: 28.00, goodrx: 18.80, costplus: 10.20, retail: 74.00 },
     ]
   },
   {
-    name: "Escitalopram", category: "Antidepressant", icon: "💊",
+    name: "Escitalopram", category: "Antidepressant", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",   fairplay: 8.40,  insurance: 20.00, goodrx: 13.00, costplus: 6.80,  retail: 88.00 },
       { label: "10mg · 30 tabs",  fairplay: 10.20, insurance: 24.00, goodrx: 15.60, costplus: 8.20,  retail: 108.00 },
@@ -400,28 +400,28 @@ const DRUGS = [
     ]
   },
   {
-    name: "Linagliptin", category: "Diabetes (DPP-4)", icon: "💊",
+    name: "Linagliptin", category: "Diabetes (DPP-4)", icon: "Rx",
     variants: [
       { label: "5mg · 30 tabs",  fairplay: 88.00,  insurance: 168.00, goodrx: 128.00, costplus: 78.00,  retail: 624.00 },
       { label: "5mg · 90 tabs",  fairplay: 198.00, insurance: 380.00, goodrx: 286.00, costplus: 174.00, retail: 1380.00 },
     ]
   },
   {
-    name: "Empagliflozin", category: "Diabetes (SGLT2)", icon: "💊",
+    name: "Empagliflozin", category: "Diabetes (SGLT2)", icon: "Rx",
     variants: [
       { label: "10mg · 30 tabs",  fairplay: 94.00,  insurance: 180.00, goodrx: 138.00, costplus: 84.00,  retail: 680.00 },
       { label: "25mg · 30 tabs",  fairplay: 112.00, insurance: 210.00, goodrx: 162.00, costplus: 98.00,  retail: 720.00 },
     ]
   },
   {
-    name: "Celecoxib", category: "Anti-Inflammatory", icon: "💊",
+    name: "Celecoxib", category: "Anti-Inflammatory", icon: "Rx",
     variants: [
       { label: "100mg · 60 caps",  fairplay: 14.60, insurance: 32.00, goodrx: 22.00, costplus: 11.60, retail: 128.00 },
       { label: "200mg · 30 caps",  fairplay: 12.40, insurance: 28.00, goodrx: 18.60, costplus: 9.80,  retail: 108.00 },
     ]
   },
   {
-    name: "Topiramate", category: "Epilepsy / Migraine", icon: "💊",
+    name: "Topiramate", category: "Epilepsy / Migraine", icon: "Rx",
     variants: [
       { label: "25mg · 60 tabs",   fairplay: 9.80,  insurance: 22.00, goodrx: 14.80, costplus: 7.80,  retail: 82.00 },
       { label: "100mg · 60 tabs",  fairplay: 18.40, insurance: 38.00, goodrx: 26.40, costplus: 14.60, retail: 148.00 },
@@ -722,6 +722,14 @@ function initSearch() {
     tag.addEventListener('click', () => {
       navigateTo('search');
       setTimeout(() => triggerSearch(tag.dataset.search), 150);
+    });
+  });
+
+  // Health condition cards
+  $$('.health-condition-card[data-condition]').forEach(card => {
+    card.addEventListener('click', () => {
+      navigateTo('search');
+      setTimeout(() => triggerSearch(card.dataset.condition), 150);
     });
   });
 
