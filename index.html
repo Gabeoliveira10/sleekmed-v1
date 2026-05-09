@@ -92,16 +92,16 @@
           <p class="hero-sub">VITAL compares cash prices, insurance co-pays, and discount networks side-by-side — so you never overpay at the pharmacy again.</p>
           <div class="hero-search-wrap">
             <div class="search-box" id="heroSearchBox">
-              <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#34d399" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#0057AD" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#0057AD" stroke-width="1.5" stroke-linecap="round"/></svg>
               <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
               <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
             </div>
             <div class="search-dropdown" id="heroSearchDropdown"></div>
           </div>
           <div class="hero-tags">
-            <span class="hero-tag" data-search="Metformin"><span class="hero-tag-with-pill"><span class="pill-dot round"></span>Metformin</span></span>
-            <span class="hero-tag" data-search="Lisinopril"><span class="hero-tag-with-pill"><span class="pill-dot round"></span>Lisinopril</span></span>
-            <span class="hero-tag" data-search="Atorvastatin"><span class="hero-tag-with-pill"><span class="pill-dot oval"></span>Atorvastatin</span></span>
+            <span class="hero-tag" data-search="Metformin"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=56&h=56&q=85" alt="Metformin tablet" />Metformin</span></span>
+            <span class="hero-tag" data-search="Lisinopril"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=56&h=56&q=85" alt="Lisinopril tablet" />Lisinopril</span></span>
+            <span class="hero-tag" data-search="Atorvastatin"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&w=56&h=56&q=85" alt="Atorvastatin tablet" />Atorvastatin</span></span>
             <span class="hero-tag" data-search="Ozempic">Ozempic</span>
             <span class="hero-tag" data-search="Adderall">Adderall</span>
             <span class="hero-tag" data-search="Lexapro">Lexapro</span>
@@ -110,9 +110,29 @@
         <div class="hero-stat-strip">
           <div class="stat-item network-partners"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
           <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num">70,000+</span><span class="stat-label">Medications Indexed</span></div>
+          <div class="stat-item"><span class="stat-num" style="font-size:18px;font-weight:800;letter-spacing:0">Comprehensive</span><span class="stat-label">Rx Catalog</span></div>
           <div class="stat-divider"></div>
           <div class="stat-item"><span class="stat-num">80%</span><span class="stat-label">Avg. Savings vs. List</span></div>
+        </div>
+      </div>
+
+      <!-- Transparency Pillars -->
+      <div class="transparency-pillars">
+        <div class="pillars-grid">
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span class="pillar-text">Direct Market Access</span>
+          </div>
+          <div class="pillar-sep"></div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12h3l3-7 4 14 3-9 2 2h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="pillar-text">Live Data Intelligence</span>
+          </div>
+          <div class="pillar-sep"></div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l8 3v6c0 5-4 9-8 11C8 20 4 16 4 11V5l8-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="pillar-text">Zero Middleman Markup</span>
+          </div>
         </div>
       </div>
 
@@ -163,7 +183,7 @@
           <div class="price-shock-card vital-floor">
             <div class="ps-label">VITAL Discovery Floor (Vials)</div>
             <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
-            <div class="ps-price">$399.00</div>
+            <div class="ps-price" style="font-weight:900">$399.00</div>
             <div class="ps-source">VITAL Network Price · Verified Direct</div>
           </div>
         </div>
@@ -183,10 +203,12 @@
         </div>
       </div>
 
-      <!-- Our Mission -->
+      <!-- Our Mission (Cuban Layout) -->
       <div class="section-block mission-block" id="founderSection">
         <div class="mission-inner">
           <div class="section-eyebrow">Our Mission</div>
+          <blockquote class="mission-blockquote">Everyone deserves safe, affordable medicines with transparent prices.</blockquote>
+          <div class="mission-divider"></div>
           <div class="mission-statement">
             <p>VITAL was born out of a gap in the system. While transitioning between insurance plans, I found myself at the pharmacy counter without coverage, facing an out-of-pocket bill for essential medication. When the system couldn't provide transparency on pricing, I looked elsewhere and discovered that a third-party code was significantly cheaper than the insurance I had been paying hundreds for every month.</p>
             <p>That experience revealed a fundamental flaw in healthcare: the 'negotiated' price isn't always the best price. I built VITAL to pull back the curtain, giving every patient the transparency they deserve and the tools to find the real price of their medication.</p>

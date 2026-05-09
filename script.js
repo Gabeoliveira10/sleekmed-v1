@@ -484,12 +484,14 @@ function openSidebar() {
   $('sidebar').classList.add('open');
   $('sidebarOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
+  document.body.classList.add('menu-open');
 }
 
 function closeSidebar() {
   $('sidebar').classList.remove('open');
   $('sidebarOverlay').classList.remove('active');
   document.body.style.overflow = '';
+  document.body.classList.remove('menu-open');
 }
 
 /* ═══════════════════════════════════════════════════════════════
