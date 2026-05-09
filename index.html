@@ -6,7 +6,7 @@
   <title>VITAL — Prescription Intelligence Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -108,16 +108,16 @@
           </div>
           <div class="clinical-photos-row">
             <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=192&h=192&q=85" alt="Round white tablet" />
+              <img class="cph-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=192&h=192&q=90" alt="White round Metformin tablets — top-down macro" />
               <span class="cph-label">Metformin</span>
             </div>
             <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=192&h=192&q=85" alt="Clinical tablet" />
+              <img class="cph-img" src="https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&w=192&h=192&q=90" alt="White round Lisinopril tablets — top-down macro" />
               <span class="cph-label">Lisinopril</span>
             </div>
             <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=192&h=192&q=85" alt="Medical vial" />
-              <span class="cph-label">Tirzepatide</span>
+              <img class="cph-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=192&h=192&q=90" alt="Semaglutide clinical vial — Ozempic" />
+              <span class="cph-label">Ozempic</span>
             </div>
           </div>
         </div>
@@ -152,39 +152,44 @@
         </div>
       </div>
 
-      <!-- Why You Overpay — 3 cards -->
+      <!-- Why You Overpay — Dashboard Row -->
       <div class="section-block" id="whyOverpay">
         <div class="section-header">
           <div class="section-eyebrow">Clinical Transparency</div>
           <h2 class="section-title">Why You Overpay.</h2>
-          <p class="section-sub">The prescription drug pricing system has three systemic failures. VITAL addresses all of them.</p>
+          <p class="section-sub">The prescription pricing system has three systemic failures. VITAL solves all three.</p>
         </div>
-        <div class="overpay-grid">
-          <div class="overpay-card">
-            <div class="overpay-num">01</div>
-            <div class="overpay-icon-wrap"><svg viewBox="0 0 32 32" fill="none"><rect x="6" y="8" width="20" height="16" rx="2" stroke="#34d399" stroke-width="1.5"/><path d="M11 16h10M11 20h6" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <h3>Insurance Co-Pays Aren't Always Cheapest</h3>
-            <p>For generic medications, your insurance co-pay is often higher than the cash price available through discount networks. Pharmacies are forbidden by "gag clauses" from telling you this without being asked.</p>
+        <div class="overpay-dash">
+          <div class="overpay-dash-col">
+            <div class="od-icon green">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#34d399" stroke-width="1.5"/><path d="M8 11h8M8 15h5" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="od-title">Co-Pays Aren't Always Cheapest</h3>
+            <p class="od-desc">For generics, your co-pay is often higher than available cash prices. Pharmacists are barred by "gag clauses" from disclosing this without being asked.</p>
           </div>
-          <div class="overpay-card">
-            <div class="overpay-num">02</div>
-            <div class="overpay-icon-wrap"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9" stroke="#818cf8" stroke-width="1.5"/><path d="M16 12v4l3 3" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <h3>Hidden Price Variations</h3>
-            <p>Drug manufacturers set one "list price" but negotiate dozens of secret rebate tiers. The price you see at the counter is after your insurer's rebate was already collected — without passing savings to you.</p>
+          <div class="od-sep"></div>
+          <div class="overpay-dash-col">
+            <div class="od-icon purple">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M2 9h3l3-7 4 14 3-9 2 2h5" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="od-title">Hidden Rebate Tiers</h3>
+            <p class="od-desc">Manufacturers negotiate secret rebates with your insurer. The savings are collected at the corporate level — none of it reaches your counter price.</p>
           </div>
-          <div class="overpay-card">
-            <div class="overpay-num">03</div>
-            <div class="overpay-icon-wrap"><svg viewBox="0 0 32 32" fill="none"><path d="M10 22l6-12 6 12M13 18h6" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <h3>No Single Source of Truth</h3>
-            <p>GoodRx, Cost Plus, and your insurance each have different price points for the same drug. Comparing them required visiting multiple platforms. VITAL shows all five prices in one place, instantly.</p>
+          <div class="od-sep"></div>
+          <div class="overpay-dash-col">
+            <div class="od-icon red">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#f87171" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="od-title">No Single Source of Truth</h3>
+            <p class="od-desc">GoodRx, Cost Plus, and insurance all quote different prices for the same drug. VITAL shows all five sources side-by-side, instantly.</p>
           </div>
         </div>
       </div>
 
-      <!-- Price Shock Section -->
+      <!-- Wholesale Savings Opportunity Section -->
       <div class="section-block price-shock-section">
         <div class="section-header">
-          <div class="section-eyebrow">Market Intelligence</div>
+          <div class="section-eyebrow">Wholesale Savings Opportunity</div>
           <h2 class="section-title">The Price Gap Is Real.</h2>
           <p class="section-sub">One drug. Two very different prices. This is why VITAL exists.</p>
         </div>
@@ -197,8 +202,8 @@
           </div>
           <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
           <div class="price-shock-card vital-floor">
-            <img class="ps-vial-photo" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=480&h=220&q=85" alt="Medical vial — Tirzepatide" />
-            <div class="ps-label">VITAL Discovery Floor (Vials)</div>
+            <img class="ps-vial-photo" src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=480&h=200&q=90" alt="Tirzepatide auto-injector pen — Mounjaro style" />
+            <div class="ps-label">VITAL Discovery Floor (Direct)</div>
             <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
             <div class="ps-price" style="font-weight:900">$399.00</div>
             <div class="ps-source">VITAL Network Price · Verified Direct</div>
