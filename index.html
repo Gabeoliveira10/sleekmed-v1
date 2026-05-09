@@ -24,10 +24,10 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <div class="logo-block">
+      <a href="index.html" class="logo-block">
         <div class="logo-capsule"></div>
         <span class="logo-text">VITAL</span>
-      </div>
+      </a>
       <nav class="top-nav" id="topNav">
         <a href="#" class="nav-link active" data-page="home">Home</a>
         <a href="#" class="nav-link" data-page="search">Savings Finder</a>
@@ -46,10 +46,10 @@
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo-block">
+      <a href="index.html" class="logo-block">
         <div class="logo-capsule"></div>
         <span class="logo-text">VITAL</span>
-      </div>
+      </a>
       <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
     <nav class="sidebar-nav">
@@ -99,20 +99,36 @@
             <div class="search-dropdown" id="heroSearchDropdown"></div>
           </div>
           <div class="hero-tags">
-            <span class="hero-tag" data-search="Metformin"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=56&h=56&q=85" alt="Metformin tablet" />Metformin</span></span>
-            <span class="hero-tag" data-search="Lisinopril"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=56&h=56&q=85" alt="Lisinopril tablet" />Lisinopril</span></span>
-            <span class="hero-tag" data-search="Atorvastatin"><span class="hero-tag-with-pill"><img class="pill-photo" src="https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&w=56&h=56&q=85" alt="Atorvastatin tablet" />Atorvastatin</span></span>
+            <span class="hero-tag" data-search="Metformin">Metformin</span>
+            <span class="hero-tag" data-search="Lisinopril">Lisinopril</span>
+            <span class="hero-tag" data-search="Atorvastatin">Atorvastatin</span>
             <span class="hero-tag" data-search="Ozempic">Ozempic</span>
             <span class="hero-tag" data-search="Adderall">Adderall</span>
             <span class="hero-tag" data-search="Lexapro">Lexapro</span>
           </div>
+          <div class="clinical-photos-row">
+            <div class="cph-item">
+              <img class="cph-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=192&h=192&q=85" alt="Round white tablet" />
+              <span class="cph-label">Metformin</span>
+            </div>
+            <div class="cph-item">
+              <img class="cph-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=192&h=192&q=85" alt="Clinical tablet" />
+              <span class="cph-label">Lisinopril</span>
+            </div>
+            <div class="cph-item">
+              <img class="cph-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=192&h=192&q=85" alt="Medical vial" />
+              <span class="cph-label">Tirzepatide</span>
+            </div>
+          </div>
         </div>
         <div class="hero-stat-strip">
-          <div class="stat-item network-partners"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num" style="font-size:18px;font-weight:800;letter-spacing:0">Comprehensive</span><span class="stat-label">Rx Catalog</span></div>
+          <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
           <div class="stat-divider"></div>
           <div class="stat-item"><span class="stat-num">80%</span><span class="stat-label">Avg. Savings vs. List</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num" style="font-size:18px;font-weight:800;letter-spacing:0;color:#001f3f">Comprehensive</span><span class="stat-label">Rx Catalog</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num" style="font-size:15px;font-weight:800;letter-spacing:0;color:#001f3f">Real-Time</span><span class="stat-label">Price Intelligence</span></div>
         </div>
       </div>
 
@@ -121,17 +137,17 @@
         <div class="pillars-grid">
           <div class="pillar">
             <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <span class="pillar-text">Direct Market Access</span>
+            <span class="pillar-text">Direct Sourcing</span>
           </div>
           <div class="pillar-sep"></div>
           <div class="pillar">
             <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12h3l3-7 4 14 3-9 2 2h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <span class="pillar-text">Live Data Intelligence</span>
+            <span class="pillar-text">Live Data</span>
           </div>
           <div class="pillar-sep"></div>
           <div class="pillar">
             <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l8 3v6c0 5-4 9-8 11C8 20 4 16 4 11V5l8-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <span class="pillar-text">Zero Middleman Markup</span>
+            <span class="pillar-text">Zero Middleman Fees</span>
           </div>
         </div>
       </div>
@@ -181,6 +197,7 @@
           </div>
           <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
           <div class="price-shock-card vital-floor">
+            <img class="ps-vial-photo" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=480&h=220&q=85" alt="Medical vial — Tirzepatide" />
             <div class="ps-label">VITAL Discovery Floor (Vials)</div>
             <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
             <div class="ps-price" style="font-weight:900">$399.00</div>
@@ -207,7 +224,7 @@
       <div class="section-block mission-block" id="founderSection">
         <div class="mission-inner">
           <div class="section-eyebrow">Our Mission</div>
-          <blockquote class="mission-blockquote">Everyone deserves safe, affordable medicines with transparent prices.</blockquote>
+          <blockquote class="mission-blockquote">The right price for your medicine shouldn't be a secret.</blockquote>
           <div class="mission-divider"></div>
           <div class="mission-statement">
             <p>VITAL was born out of a gap in the system. While transitioning between insurance plans, I found myself at the pharmacy counter without coverage, facing an out-of-pocket bill for essential medication. When the system couldn't provide transparency on pricing, I looked elsewhere and discovered that a third-party code was significantly cheaper than the insurance I had been paying hundreds for every month.</p>
@@ -679,7 +696,7 @@
     <div class="footer-disclaimer footer-market-disclaimer"><strong>Estimated market intelligence based on retail averages and verified manufacturer-direct pricing as of May 2026. Actual pharmacy prices vary.</strong></div>
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">VITAL</span></div>
+        <a href="index.html" class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">VITAL</span></a>
         <p>Clinical Authority. Radical Transparency.<br/>Fintech Precision.</p>
         <p class="footer-copy">© 2026 VITAL, Inc. All rights reserved.</p>
       </div>
