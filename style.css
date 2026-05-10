@@ -91,16 +91,15 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
 h1, h2, h3, h4 {
-  line-height: 1.6;
+  line-height: 1.4;
   padding-bottom: 15px;
-  overflow: visible;
+  overflow: visible !important;
 }
-h1, h2 { padding-bottom: 28px; }
-h3 { padding-bottom: 28px; }
+h1, h2, h3 { padding-bottom: 30px; }
 p {
   line-height: 1.6;
   padding-bottom: 15px;
-  overflow: visible;
+  overflow: visible !important;
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────── */
@@ -457,21 +456,42 @@ body.menu-open .site-header {
 .hero-tag { padding: 5px 14px; background: rgba(0,31,63,0.05); border: 1.5px solid rgba(0,31,63,0.15); border-radius: var(--radius-pill); font-size: 12.5px; color: var(--brand-navy); font-weight: 600; cursor: pointer; transition: all 0.2s var(--ease-satin); }
 .hero-tag:hover { background: rgba(0,87,173,0.08); border-color: var(--brand-blue); color: var(--brand-blue); }
 
-/* Clinical Photos Row */
-.clinical-photos-row { display: flex; justify-content: center; gap: 36px; padding: 4px 0 40px; }
-.cph-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.cph-img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0,31,63,0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
-.cph-label { font-size: 10.5px; font-weight: 700; color: rgba(0,31,63,0.55); text-transform: uppercase; letter-spacing: 0.09em; }
+/* Clinical Photos Row — card format */
+.clinical-photos-row { display: flex; justify-content: center; gap: 16px; padding: 4px 0 40px; }
+.cph-item {
+  display: flex; flex-direction: column; align-items: stretch;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  width: 200px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.cph-img {
+  width: 100%; height: 150px;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+.cph-label {
+  font-size: 10.5px; font-weight: 700; color: rgba(0,31,63,0.6);
+  text-transform: uppercase; letter-spacing: 0.09em;
+  padding: 10px 14px 11px;
+  text-align: center;
+}
 
-/* Savings Bar — IKEA Yellow #FBDA0C */
-.hero-stat-strip { max-width: 100%; margin: 0; background: #FBDA0C; border: none; border-top: none; border-radius: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; z-index: 1; }
+/* Savings Bar — IKEA Yellow #FEDA00 */
+.hero-stat-strip { max-width: 100%; margin: 0; background: #FEDA00; border: none; border-top: none; border-radius: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; z-index: 1; }
 .stat-item { padding: 26px 20px; text-align: center; }
 .stat-num { display: block; font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--brand-navy); letter-spacing: -0.02em; margin-bottom: 4px; }
 .stat-label { font-size: 11.5px; color: rgba(0,31,63,0.65); text-transform: uppercase; letter-spacing: 0.06em; }
 .stat-divider { width: 1px; background: rgba(0,31,63,0.2); margin: 14px 0; }
 
-/* Vial photo for price shock */
-.ps-vial-photo { width: 100%; max-height: 110px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 14px; }
+/* Pen/device photo for price shock card */
+.ps-vial-photo { width: 100%; max-height: 160px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 14px; }
 
 /* Logo anchor — no underline */
 a.logo-block { text-decoration: none; color: inherit; }
@@ -1044,6 +1064,34 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .price-shock-divider { padding: 12px 0; }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   iPHONE-FIRST — 430px (iPhone 15/16 Pro)
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 430px) {
+  /* Health Conditions — single column, no squish */
+  .health-conditions-grid { grid-template-columns: 1fr !important; }
+  .health-condition-card { width: 100%; margin-bottom: 24px; }
+
+  /* Why You Overpay dashboard — single column */
+  .overpay-dash { flex-direction: column; }
+  .overpay-dash-col { width: 100%; }
+  .od-sep { width: auto; height: 1px; margin: 0; }
+
+  /* Stats bar — 2×2 grid, single yellow layer */
+  .hero-stat-strip { grid-template-columns: 1fr 1fr !important; }
+  .stat-divider { display: none; }
+
+  /* Clinical photos — full-width, 200px tall, dominant */
+  .clinical-photos-row { flex-direction: column; align-items: stretch; padding: 0 0 32px; gap: 14px; }
+  .cph-item { width: 100%; }
+  .cph-img { height: 200px; max-height: 200px; }
+
+  /* Mission — wider editorial column */
+  .mission-inner { max-width: 94%; }
+  .mission-blockquote { font-size: clamp(22px, 7vw, 34px); }
+  .mission-statement p { font-size: 17px; }
+}
+
 @media (max-width: 640px) {
   .trust-bar-inner { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; gap: 8px; }
   .trust-divider { display: none; }
@@ -1052,6 +1100,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .section-block { padding: 56px 16px; }
   .page-inner { padding: 30px 16px 60px; }
   .hero-stat-strip { grid-template-columns: 1fr 1fr; }
+  .stat-divider { display: none; }
   .hiw-steps { grid-template-columns: 1fr; }
   .hiw-step:not(:last-child)::after { display: none; }
   .price-comparison-grid { grid-template-columns: 1fr 1fr; }
@@ -1063,6 +1112,11 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .hiw-detail-block { grid-template-columns: 1fr; gap: 12px; }
   .health-conditions-grid { grid-template-columns: 1fr; }
   .ps-price { font-size: 32px; }
+  .clinical-photos-row { flex-direction: column; align-items: stretch; padding: 0 0 32px; gap: 14px; }
+  .cph-item { width: 100%; }
+  .cph-img { height: 200px; }
+  .overpay-dash { flex-direction: column; }
+  .od-sep { width: auto; height: 1px; margin: 0; }
 }
 
 /* ─── SKELETON SHIMMER ──────────────────────────────────────── */
@@ -1128,13 +1182,14 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 }
 .mission-statement p {
   font-family: 'Lexend', var(--font-sans);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   color: rgba(255,255,255,0.82);
   line-height: 1.82;
   max-width: 720px;
   margin: 0 auto;
   padding-bottom: 16px;
+  text-align: left;
 }
 .mission-sig {
   font-size: 14px;
@@ -1222,7 +1277,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   border: 1px solid #dee2e6;
 }
 .price-shock-card.vital-floor {
-  background: #FBDA0C;
+  background: #FEDA00;
   border: none;
 }
 .ps-label {
