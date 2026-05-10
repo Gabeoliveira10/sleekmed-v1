@@ -91,13 +91,17 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
 h1, h2, h3, h4 {
-  line-height: 1.4;
+  line-height: 1.5;
   padding-bottom: 15px;
   overflow: visible !important;
 }
-h1, h2, h3 { padding-bottom: 30px; }
+h1, h2, h3 {
+  padding-bottom: 30px !important;
+  overflow: visible !important;
+  line-height: 1.5;
+}
 p {
-  line-height: 1.6;
+  line-height: 1.65;
   padding-bottom: 15px;
   overflow: visible !important;
 }
@@ -485,7 +489,7 @@ body.menu-open .site-header {
 
 /* Savings Bar — IKEA Yellow #FEDA00 */
 .hero-stat-strip { max-width: 100%; margin: 0; background: #FEDA00; border: none; border-top: none; border-radius: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; z-index: 1; }
-.stat-item { padding: 26px 20px; text-align: center; }
+.stat-item { padding: 26px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90px; }
 .stat-num { display: block; font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--brand-navy); letter-spacing: -0.02em; margin-bottom: 4px; }
 .stat-label { font-size: 11.5px; color: rgba(0,31,63,0.65); text-transform: uppercase; letter-spacing: 0.06em; }
 .stat-divider { width: 1px; background: rgba(0,31,63,0.2); margin: 14px 0; }
@@ -507,47 +511,39 @@ a.logo-block { text-decoration: none; color: inherit; }
 .section-title { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 14px; }
 .section-sub { font-size: 16px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
 
-/* Why Overpay — Dashboard Row */
-.overpay-dash {
+/* Why Overpay — High-Contrast Cards (restored) */
+.overpay-grid {
   max-width: 1100px;
   margin: 0 auto;
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.overpay-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-muted);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  padding: 36px 28px;
+  transition: border-color 0.3s var(--ease-satin), box-shadow 0.3s var(--ease-satin);
 }
-.overpay-dash-col {
-  flex: 1;
-  padding: 40px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.overpay-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
-.od-sep { width: 1px; background: var(--border-subtle); flex-shrink: 0; margin: 28px 0; }
-.od-icon {
-  width: 48px; height: 48px;
+.overpay-icon-wrap {
+  width: 52px; height: 52px;
   border-radius: 14px;
+  background: var(--bg-raised);
   display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
   flex-shrink: 0;
-  margin-bottom: 4px;
 }
-.od-icon svg { width: 26px; height: 26px; }
-.od-icon.green  { background: rgba(52,211,153,0.12); }
-.od-icon.purple { background: rgba(99,102,241,0.12); }
-.od-icon.red    { background: rgba(248,113,113,0.12); }
-.od-title { font-size: 15.5px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
-.od-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.68; }
-
-/* Legacy grid kept for mobile fallback */
-.overpay-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.overpay-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px 24px; }
-.overpay-num { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 16px; }
-.overpay-icon-wrap { width: 36px; height: 36px; margin-bottom: 16px; }
-.overpay-icon-wrap svg { width: 32px; height: 32px; }
-.overpay-card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; line-height: 1.3; }
-.overpay-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+.overpay-icon-wrap svg { width: 28px; height: 28px; display: block; }
+.overpay-icon-wrap.green { background: rgba(52,211,153,0.12); }
+.overpay-icon-wrap.purple { background: rgba(99,102,241,0.12); }
+.overpay-icon-wrap.red { background: rgba(248,113,113,0.12); }
+.overpay-card h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.overpay-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.68; }
 
 /* HIW Steps */
 .hiw-steps { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
@@ -1050,9 +1046,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .founder-photo-placeholder { width: 100px; height: 100px; font-size: 20px; }
   .card-wrap { grid-template-columns: 1fr; }
   .digital-card { width: 100%; max-width: 330px; margin: 0 auto; }
-  .overpay-grid { grid-template-columns: 1fr; }
-  .overpay-dash { flex-direction: column; }
-  .od-sep { width: auto; height: 1px; margin: 0 28px; }
+  .overpay-grid { grid-template-columns: 1fr; gap: 20px; }
+  .mission-content-row { flex-direction: column-reverse; align-items: center; gap: 32px; }
+  .founder-photo-slot { margin: 0 auto; }
   .about-values { grid-template-columns: 1fr; }
   .providers-grid { grid-template-columns: 1fr; }
   .testimonial-grid { grid-template-columns: 1fr; }
@@ -1072,10 +1068,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .health-conditions-grid { grid-template-columns: 1fr !important; }
   .health-condition-card { width: 100%; margin-bottom: 24px; }
 
-  /* Why You Overpay dashboard — single column */
-  .overpay-dash { flex-direction: column; }
-  .overpay-dash-col { width: 100%; }
-  .od-sep { width: auto; height: 1px; margin: 0; }
+  /* Why You Overpay cards — single column, 20px gap */
+  .overpay-grid { grid-template-columns: 1fr !important; gap: 20px; }
+  .overpay-card { width: 100%; }
 
   /* Stats bar — 2×2 grid, single yellow layer */
   .hero-stat-strip { grid-template-columns: 1fr 1fr !important; }
@@ -1115,8 +1110,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .clinical-photos-row { flex-direction: column; align-items: stretch; padding: 0 0 32px; gap: 14px; }
   .cph-item { width: 100%; }
   .cph-img { height: 200px; }
-  .overpay-dash { flex-direction: column; }
-  .od-sep { width: auto; height: 1px; margin: 0; }
+  .overpay-grid { grid-template-columns: 1fr; gap: 20px; }
+  .overpay-card { width: 100%; }
 }
 
 /* ─── SKELETON SHIMMER ──────────────────────────────────────── */
@@ -1149,9 +1144,33 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   padding: 88px 20px !important;
 }
 .mission-inner {
-  max-width: 860px;
+  max-width: 960px;
   margin: 0 auto;
   text-align: center;
+}
+.mission-content-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  text-align: left;
+}
+.mission-text-col { flex: 1; min-width: 0; }
+.founder-photo-slot {
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 2px dashed rgba(255,255,255,0.35);
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+}
+.founder-photo-slot svg { width: 40px; height: 40px; color: rgba(255,255,255,0.4); }
+.founder-photo-slot-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-align: center; line-height: 1.4;
 }
 .mission-block .section-eyebrow {
   color: var(--brand-yellow);
@@ -1181,13 +1200,12 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   border-radius: 2px;
 }
 .mission-statement p {
-  font-family: 'Lexend', var(--font-sans);
-  font-size: 18px;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-style: normal;
+  font-size: 17px;
   font-weight: 400;
-  color: rgba(255,255,255,0.82);
-  line-height: 1.82;
-  max-width: 720px;
-  margin: 0 auto;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.85;
   padding-bottom: 16px;
   text-align: left;
 }
@@ -1224,15 +1242,17 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   box-shadow: 0 12px 40px rgba(0,230,118,0.12);
 }
 .hc-icon {
-  width: 42px;
-  height: 42px;
-  margin-bottom: 14px;
-  color: #00E676;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  color: #00C896;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
 }
-.hc-icon svg { width: 36px; height: 36px; }
+.hc-icon svg { width: 40px; height: 40px; display: block; overflow: visible; }
 .health-condition-card h3 {
   font-size: 15px;
   font-weight: 700;
