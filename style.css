@@ -91,13 +91,18 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
 h1, h2, h3, h4 {
-  line-height: 1.7 !important;
+  line-height: 1.6 !important;
   padding-bottom: 15px;
   overflow: visible !important;
 }
 h1, h2, h3 {
-  line-height: 1.7 !important;
-  padding-bottom: 40px !important;
+  line-height: 1.6 !important;
+  padding-bottom: 25px !important;
+  overflow: visible !important;
+}
+.card-title {
+  line-height: 1.6 !important;
+  padding-bottom: 25px !important;
   overflow: visible !important;
 }
 p {
@@ -490,33 +495,62 @@ body.menu-open .site-header {
 /* ═══════════════════════════════════════════════════════════════
    ESSENTIAL MEDICATIONS GRID
 ═══════════════════════════════════════════════════════════════ */
-.medication-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.medication-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); padding-top: 48px !important; padding-bottom: 48px !important; }
 .medication-grid {
   max-width: 1100px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
 }
 .medication-card {
   background: #ffffff; border: 1px solid var(--border-muted);
   border-radius: var(--radius-lg); overflow: hidden;
+  position: relative;
   transition: box-shadow 0.25s var(--ease-satin);
 }
 .medication-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
 .med-img-placeholder {
-  height: 250px; background: #eeeeee; border-bottom: 1px solid #cccccc;
+  height: 180px; background: #eeeeee; border-bottom: 1px solid #cccccc;
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: 700; color: #aaaaaa;
   letter-spacing: 0.07em; font-family: var(--font-mono);
 }
-.med-info { padding: 14px 16px 18px; }
-.med-name { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; line-height: 1.3; }
-.med-sub { font-size: 12px; color: var(--text-muted); }
+.med-info { padding: 12px 14px 16px; }
+.med-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; line-height: 1.3; }
+.med-sub { font-size: 11.5px; color: var(--text-muted); }
+.med-badge {
+  position: absolute; top: 8px; left: 8px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: var(--radius-pill); z-index: 2;
+}
+.badge-popular { background: rgba(0,200,150,0.15); color: #00A87A; border: 1px solid rgba(0,200,150,0.3); }
+.badge-fda     { background: rgba(0,87,173,0.10);  color: #0057AD; border: 1px solid rgba(0,87,173,0.22); }
+.badge-generic { background: rgba(0,0,0,0.06);     color: #555555; border: 1px solid rgba(0,0,0,0.12); }
+.med-pricing {
+  display: flex; flex-direction: column; gap: 2px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+.med-retail { font-size: 11.5px; color: var(--text-muted); text-decoration: line-through; }
+.med-vital-price { font-size: 16px; font-weight: 800; color: #00C896; letter-spacing: -0.01em; }
 
-/* Savings Bar — IKEA Yellow #FEDA00 */
-.hero-stat-strip { max-width: 100%; margin: 0; background: #FEDA00; border: none; border-top: none; border-radius: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; z-index: 1; }
-.stat-item { padding: 26px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90px; background: transparent !important; box-shadow: none !important; border: none !important; }
-.stat-num { display: block; font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--brand-navy); letter-spacing: -0.02em; margin-bottom: 4px; }
-.stat-label { font-size: 11.5px; color: rgba(0,31,63,0.65); text-transform: uppercase; letter-spacing: 0.06em; }
-.stat-divider { width: 1px; background: rgba(0,31,63,0.2); margin: 14px 0; }
+/* Savings Bar — centered 2-stat yellow strip */
+.hero-stat-strip {
+  width: 100%; margin: 0; background: #FEDA00;
+  border: none; border-radius: 0;
+  display: flex; justify-content: center; align-items: center;
+  position: relative; z-index: 1;
+}
+.stat-center {
+  display: flex; align-items: stretch;
+}
+.stat-item {
+  padding: 22px 56px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 80px;
+  background: transparent !important; box-shadow: none !important; border: none !important;
+}
+.stat-num { display: block; font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--brand-navy); letter-spacing: -0.02em; margin-bottom: 3px; }
+.stat-label { font-size: 11px; color: rgba(0,31,63,0.65); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.stat-divider { width: 1px; background: rgba(0,31,63,0.25); margin: 18px 0; flex-shrink: 0; }
 
 /* Pen/device photo for price shock card */
 .ps-vial-photo { width: 100%; max-height: 160px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 14px; }
@@ -1090,30 +1124,37 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
    iPHONE-FIRST — 430px (iPhone 15/16 Pro)
 ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 430px) {
-  /* Health Conditions — single column, no squish */
+  /* Global: 50% section padding reduction */
+  .section-block { padding: 39px 16px !important; }
+  .medication-section { padding: 28px 16px !important; }
+  .price-shock-section { padding: 28px 16px !important; }
+
+  /* Hero headline — no full-screen takeover */
+  .hero-headline { font-size: clamp(26px, 8vw, 36px) !important; line-height: 1.25 !important; }
+
+  /* Stats bar — comfortable centered row */
+  .stat-item { padding: 18px 28px !important; }
+
+  /* Health Conditions — 95% width single column */
   .health-conditions-grid { grid-template-columns: 1fr !important; }
-  .health-condition-card { width: 100%; margin-bottom: 24px; }
+  .health-condition-card { width: 95%; margin: 0 auto 16px; }
 
-  /* Why You Overpay cards — single column, 20px gap */
+  /* Why You Overpay — 95% width single column */
   .overpay-grid { grid-template-columns: 1fr !important; gap: 20px; }
-  .overpay-card { width: 100%; }
+  .overpay-card { width: 95%; margin: 0 auto; }
 
-  /* Medication grid — full-width column */
-  .medication-grid { display: flex !important; flex-direction: column !important; width: 100%; gap: 16px; }
-  .medication-card { width: 100%; }
+  /* Medication grid — 95% width column */
+  .medication-grid { display: flex !important; flex-direction: column !important; width: 100%; gap: 14px; }
+  .medication-card { width: 95%; margin: 0 auto; }
 
-  /* Stats bar — 2×2 grid, single yellow layer */
-  .hero-stat-strip { grid-template-columns: 1fr 1fr !important; }
-  .stat-divider { display: none; }
-
-  /* Clinical photos — full-width, 200px tall, dominant */
+  /* Clinical photos — full-width, 200px tall */
   .clinical-photos-row { flex-direction: column; align-items: stretch; padding: 0 0 32px; gap: 14px; }
   .cph-item { width: 100%; }
   .cph-img { height: 200px; max-height: 200px; }
 
   /* Mission — wider editorial column */
   .mission-inner { max-width: 94%; }
-  .mission-blockquote { font-size: clamp(22px, 7vw, 34px); }
+  .mission-blockquote { font-size: clamp(20px, 6.5vw, 30px); }
   .mission-statement p { font-size: 17px; }
 }
 
@@ -1309,7 +1350,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 /* ═══════════════════════════════════════════════════════════════
    PRICE SHOCK SECTION
 ═══════════════════════════════════════════════════════════════ */
-.price-shock-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.price-shock-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); padding-top: 48px !important; padding-bottom: 48px !important; }
 .price-shock-grid {
   max-width: 900px;
   margin: 0 auto 20px;
