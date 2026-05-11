@@ -569,13 +569,41 @@ body.menu-open .site-header {
   transition: box-shadow 0.25s var(--ease-satin);
 }
 .medication-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
-.med-img-placeholder {
-  height: 180px; background: #eeeeee; border-bottom: 1px solid #cccccc;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: #aaaaaa;
-  letter-spacing: 0.07em; font-family: var(--font-mono);
+.med-img-wrap {
+  height: 200px;
+  background: #f7f8fa;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px;
+}
+.med-product-img {
+  width: 100%;
+  max-height: 176px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 16px 24px rgba(0,0,0,0.13));
+  transition: transform 0.3s var(--ease-satin), filter 0.3s var(--ease-satin);
+}
+.medication-card:hover .med-product-img {
+  transform: translateY(-4px) scale(1.03);
+  filter: drop-shadow(0 24px 32px rgba(0,0,0,0.18));
+}
+/* Price shock product image */
+.ps-product-img-wrap {
+  height: 200px;
+  background: rgba(255,255,255,0.30);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 10px;
+}
+.ps-product-img {
+  max-height: 180px;
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
 }
 .med-info { padding: 12px 14px 22px; }
 .med-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; line-height: 1.6; padding-bottom: 2px; }
@@ -594,7 +622,7 @@ body.menu-open .site-header {
   border-top: 1px solid var(--border-subtle);
 }
 .med-retail { font-size: 11.5px; color: var(--text-muted); text-decoration: line-through; }
-.med-vital-price { font-size: 16px; font-weight: 800; color: #00C896; letter-spacing: -0.01em; }
+.med-vital-price { font-size: 16px; font-weight: 800; color: #2e7d32; letter-spacing: -0.01em; }
 .med-as-low-as { font-size: 11px; color: #666666; letter-spacing: 0.04em; font-weight: 500; margin-bottom: 2px; display: block; }
 .med-price-green { font-size: 18px; font-weight: 800; color: #2e7d32; letter-spacing: -0.02em; display: block; }
 .med-retail-anchor { font-size: 12px; color: #999999; text-decoration: line-through; display: block; margin-top: 2px; }
@@ -1481,7 +1509,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 }
 .price-shock-card.market-high .ps-price { color: #dc2626; }
 .price-shock-card.vital-floor .ps-price {
-  color: #00C896;
+  color: #2e7d32;
   font-weight: 900;
   font-size: 60px;
 }
