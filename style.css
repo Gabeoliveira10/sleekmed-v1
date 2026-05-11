@@ -111,6 +111,27 @@ p {
   overflow: visible !important;
 }
 
+/* ─── GLOBAL DESCENDER FIX — g, y, p, q never clip anywhere ─── */
+p, span, a, li, td, th, label, button,
+.nav-link, .sidebar-link, .logo-text, .trust-text,
+.hero-headline, .hero-sub, .hero-tag, .hero-eyebrow,
+.section-title, .section-sub, .section-eyebrow,
+.page-title, .page-sub,
+.med-name, .med-sub, .med-vital-price, .med-price-green, .med-as-low-as, .med-retail,
+.stat-num, .stat-label, .pillar-text,
+.hc-arrow, .health-condition-card h3, .health-condition-card p,
+.ps-price, .ps-label, .ps-drug, .ps-source, .ps-saves-badge,
+.overpay-card h3, .overpay-card p,
+.hiw-step h3, .hiw-step p, .hiw-step-num,
+.testimonial-card p, .testimonial-author strong, .testimonial-author span,
+.mission-blockquote, .mission-statement p, .mission-sig,
+.footer-brand p, .footer-col a, .footer-disclaimer,
+.btn-primary, .btn-ghost, .badge-soon,
+.price-amount, .price-source, .price-per-unit, .price-action,
+.dropdown-drug-name, .dropdown-drug-cat, .dropdown-drug-price {
+  overflow: visible !important;
+}
+
 /* ─── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
@@ -365,7 +386,7 @@ body.menu-open .site-header {
 ═══════════════════════════════════════════════════════════════ */
 .hero {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   padding: 88px 20px 0;
   background: #ffffff;
 }
@@ -462,7 +483,7 @@ body.menu-open .site-header {
 
 /* Hero tags */
 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 36px; }
-.hero-tag { padding: 5px 14px; background: rgba(0,31,63,0.05); border: 1.5px solid rgba(0,31,63,0.15); border-radius: var(--radius-pill); font-size: 12.5px; color: var(--brand-navy); font-weight: 600; cursor: pointer; transition: all 0.2s var(--ease-satin); }
+.hero-tag { padding: 7px 14px; background: rgba(0,31,63,0.05); border: 1.5px solid rgba(0,31,63,0.15); border-radius: var(--radius-pill); font-size: 12.5px; color: var(--brand-navy); font-weight: 600; cursor: pointer; transition: all 0.2s var(--ease-satin); line-height: 1.6; overflow: visible !important; }
 .hero-tag:hover { background: rgba(0,87,173,0.08); border-color: var(--brand-blue); color: var(--brand-blue); }
 
 /* Clinical Photos Row — card format */
@@ -514,8 +535,8 @@ body.menu-open .site-header {
   font-size: 11px; font-weight: 700; color: #aaaaaa;
   letter-spacing: 0.07em; font-family: var(--font-mono);
 }
-.med-info { padding: 12px 14px 16px; }
-.med-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; line-height: 1.3; }
+.med-info { padding: 12px 14px 22px; }
+.med-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; line-height: 1.6; padding-bottom: 2px; }
 .med-sub { font-size: 11.5px; color: var(--text-muted); }
 .med-badge {
   position: absolute; top: 8px; left: 8px;
@@ -603,7 +624,7 @@ a.logo-block { text-decoration: none; color: inherit; }
 .overpay-icon-wrap.green { background: rgba(52,211,153,0.12); }
 .overpay-icon-wrap.purple { background: rgba(99,102,241,0.12); }
 .overpay-icon-wrap.red { background: rgba(248,113,113,0.12); }
-.overpay-card h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.overpay-card h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.6; padding-bottom: 4px; }
 .overpay-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.68; }
 
 /* HIW Steps */
@@ -658,7 +679,7 @@ a.logo-block { text-decoration: none; color: inherit; }
 .price-card-badge { position: absolute; top: -10px; left: 14px; background: var(--mint); color: #0a1f16; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
 
 .price-source { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px; }
-.price-amount { font-family: var(--font-mono); font-size: 28px; font-weight: 400; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+.price-amount { font-family: var(--font-mono); font-size: 28px; font-weight: 400; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.35; margin-bottom: 4px; padding-bottom: 4px; }
 .price-card.best-price .price-amount { color: var(--mint); }
 .price-per-unit { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4; }
 
@@ -703,7 +724,7 @@ a.logo-block { text-decoration: none; color: inherit; }
 }
 
 .flip-source-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-.flip-price { font-family: var(--font-mono); font-size: 42px; font-weight: 400; color: var(--mint); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+.flip-price { font-family: var(--font-mono); font-size: 42px; font-weight: 400; color: var(--mint); letter-spacing: -0.03em; line-height: 1.35; margin-bottom: 4px; padding-bottom: 4px; }
 .flip-drug { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
 .flip-hint { font-size: 11px; color: var(--text-muted); }
 
@@ -1399,9 +1420,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text-primary);
-  line-height: 1;
+  line-height: 1.3;
   margin-bottom: 8px;
-  padding-bottom: 0;
+  padding-bottom: 6px;
 }
 .price-shock-card.market-high .ps-price { color: #dc2626; }
 .price-shock-card.vital-floor .ps-price {
@@ -1413,13 +1434,15 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   display: inline-block;
   background: #001f3f;
   color: #FEDA00;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 4px 12px;
+  padding: 6px 22px;
   border-radius: var(--radius-pill);
-  margin-top: 12px;
+  margin-top: 14px;
+  white-space: nowrap;
+  line-height: 1.6;
 }
 
 /* ─── PILL PHOTOGRAPHY ───────────────────────────────────────── */
