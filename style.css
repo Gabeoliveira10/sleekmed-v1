@@ -91,18 +91,18 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
 h1, h2, h3, h4 {
-  line-height: 1.6 !important;
+  line-height: 1.8 !important;
   padding-bottom: 15px;
   overflow: visible !important;
 }
 h1, h2, h3 {
-  line-height: 1.6 !important;
-  padding-bottom: 25px !important;
+  line-height: 1.8 !important;
+  padding-bottom: 20px !important;
   overflow: visible !important;
 }
-.card-title {
-  line-height: 1.6 !important;
-  padding-bottom: 25px !important;
+.card-title, .medication-card h3 {
+  line-height: 1.8 !important;
+  padding-bottom: 20px !important;
   overflow: visible !important;
 }
 p {
@@ -501,9 +501,10 @@ body.menu-open .site-header {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
 }
 .medication-card {
-  background: #ffffff; border: 1px solid var(--border-muted);
+  background: #ffffff; border: 1px solid rgba(0,0,0,0.10);
   border-radius: var(--radius-lg); overflow: hidden;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   transition: box-shadow 0.25s var(--ease-satin);
 }
 .medication-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
@@ -531,6 +532,8 @@ body.menu-open .site-header {
 }
 .med-retail { font-size: 11.5px; color: var(--text-muted); text-decoration: line-through; }
 .med-vital-price { font-size: 16px; font-weight: 800; color: #00C896; letter-spacing: -0.01em; }
+.med-as-low-as { font-size: 10px; color: #999999; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 2px; display: block; }
+.med-price-green { font-size: 18px; font-weight: 900; color: #00C896; letter-spacing: -0.02em; display: block; }
 
 /* Savings Bar — centered 2-stat yellow strip */
 .hero-stat-strip {
@@ -1097,7 +1100,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 @media (max-width: 1024px) {
   .top-nav { display: none; }
   .hamburger { display: flex; }
-  .hero-stat-strip { grid-template-columns: 1fr 1fr; }
+  .stat-center { flex-wrap: wrap; justify-content: center; }
   .stat-divider { display: none; }
   .founder-block { grid-template-columns: 1fr; }
   .founder-photo-wrap { display: flex; gap: 16px; align-items: center; }
@@ -1124,10 +1127,10 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
    iPHONE-FIRST — 430px (iPhone 15/16 Pro)
 ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 430px) {
-  /* Global: 50% section padding reduction */
-  .section-block { padding: 39px 16px !important; }
-  .medication-section { padding: 28px 16px !important; }
-  .price-shock-section { padding: 28px 16px !important; }
+  /* Global: 40% section padding reduction */
+  .section-block { padding: 24px 16px !important; }
+  .medication-section { padding: 17px 16px !important; }
+  .price-shock-section { padding: 17px 16px !important; }
 
   /* Hero headline — no full-screen takeover */
   .hero-headline { font-size: clamp(26px, 8vw, 36px) !important; line-height: 1.25 !important; }
@@ -1163,9 +1166,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .trust-divider { display: none; }
   .site-header { top: 28px; }
   .hero { padding: 56px 16px 0; }
-  .section-block { padding: 56px 16px; }
+  .section-block { padding: 34px 16px; }
   .page-inner { padding: 30px 16px 60px; }
-  .hero-stat-strip { grid-template-columns: 1fr 1fr; }
+  .stat-center { flex-wrap: wrap; justify-content: center; }
   .stat-divider { display: none; }
   .hiw-steps { grid-template-columns: 1fr; }
   .hiw-step:not(:last-child)::after { display: none; }
@@ -1341,7 +1344,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 .hc-arrow {
   display: inline-block;
   font-size: 16px;
-  color: #00E676;
+  color: #00C896;
   font-weight: 700;
   transition: transform 0.2s var(--ease-satin);
 }
@@ -1400,10 +1403,23 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   margin-bottom: 8px;
   padding-bottom: 0;
 }
+.price-shock-card.market-high .ps-price { color: #dc2626; }
 .price-shock-card.vital-floor .ps-price {
-  color: #001f3f;
+  color: #00C896;
   font-weight: 900;
-  font-size: 56px;
+  font-size: 60px;
+}
+.ps-saves-badge {
+  display: inline-block;
+  background: #001f3f;
+  color: #FEDA00;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 10px;
 }
 
 /* ─── PILL PHOTOGRAPHY ───────────────────────────────────────── */
