@@ -106,20 +106,6 @@
             <span class="hero-tag" data-search="Adderall">Adderall</span>
             <span class="hero-tag" data-search="Lexapro">Lexapro</span>
           </div>
-          <div class="clinical-photos-row">
-            <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&h=300&crop=center&q=92" alt="White round Metformin 500mg tablet macro" />
-              <span class="cph-label">Metformin 500mg</span>
-            </div>
-            <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=400&h=300&crop=center&q=92" alt="White round Lisinopril 10mg tablet macro" />
-              <span class="cph-label">Lisinopril 10mg</span>
-            </div>
-            <div class="cph-item">
-              <img class="cph-img" src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=400&h=300&crop=center&q=92" alt="Ozempic semaglutide injection pen — clinical" />
-              <span class="cph-label">Ozempic (Pen)</span>
-            </div>
-          </div>
         </div>
         <div class="hero-stat-strip">
           <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Network Partners</span></div>
@@ -132,7 +118,74 @@
         </div>
       </div>
 
-      <!-- Transparency Pillars -->
+      <!-- ① Essential Medications — first child below hero -->
+      <div class="section-block medication-section">
+        <div class="section-header">
+          <div class="section-eyebrow">Essential Medications</div>
+          <h2 class="section-title">Medications We Cover</h2>
+          <p class="section-sub">Compare real prices across our network for the drugs most Americans rely on daily.</p>
+        </div>
+        <div class="medication-grid">
+          <div class="medication-card">
+            <div class="med-img-placeholder">metformin.png</div>
+            <div class="med-info">
+              <div class="med-name">Metformin 500mg</div>
+              <div class="med-sub">Generic · Type 2 Diabetes</div>
+            </div>
+          </div>
+          <div class="medication-card">
+            <div class="med-img-placeholder">lisinopril.png</div>
+            <div class="med-info">
+              <div class="med-name">Lisinopril 10mg</div>
+              <div class="med-sub">Generic · Hypertension</div>
+            </div>
+          </div>
+          <div class="medication-card">
+            <div class="med-img-placeholder">ozempic.png</div>
+            <div class="med-info">
+              <div class="med-name">Ozempic (Semaglutide)</div>
+              <div class="med-sub">Brand · GLP-1 / Diabetes</div>
+            </div>
+          </div>
+          <div class="medication-card">
+            <div class="med-img-placeholder">tirzepatide.png</div>
+            <div class="med-info">
+              <div class="med-name">Tirzepatide (Zepbound)</div>
+              <div class="med-sub">Brand · GLP-1 / Weight Loss</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② Price Gap Is Real — directly after stats bar, before Why You Overpay -->
+      <div class="section-block price-shock-section">
+        <div class="section-header">
+          <div class="section-eyebrow">Wholesale Savings Opportunity</div>
+          <h2 class="section-title">The Price Gap Is Real.</h2>
+          <p class="section-sub">One drug. Two very different prices. This is why VITAL exists.</p>
+        </div>
+        <div class="price-shock-grid">
+          <div class="price-shock-card market-high">
+            <div class="ps-label">Average Pharmacy Cash Price</div>
+            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
+            <div class="ps-price">$1,086.37</div>
+            <div class="ps-source">Retail Pharmacy Average · May 2026</div>
+          </div>
+          <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
+          <div class="price-shock-card vital-floor">
+            <div class="med-img-placeholder" style="height:200px;border-radius:8px;margin-bottom:16px;border:1px solid #cccccc;">tirzepatide.png</div>
+            <div class="ps-label">VITAL Discovery Floor (Direct)</div>
+            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
+            <div class="ps-price" style="font-weight:900">$399.00</div>
+            <div class="ps-source">VITAL Network Price · Verified Direct</div>
+          </div>
+        </div>
+        <div class="price-shock-footer">
+          A <strong>$687.37 gap in pricing exists</strong> for patients without insurance coverage.
+        </div>
+      </div>
+
+      <!-- ③ Transparency Pillars -->
       <div class="transparency-pillars">
         <div class="pillars-grid">
           <div class="pillar">
@@ -152,7 +205,7 @@
         </div>
       </div>
 
-      <!-- Why You Overpay — 3 High-Contrast Cards -->
+      <!-- ④ Why You Overpay — 3 High-Contrast Cards -->
       <div class="section-block" id="whyOverpay">
         <div class="section-header">
           <div class="section-eyebrow">Clinical Transparency</div>
@@ -181,34 +234,6 @@
             <h3>No Single Source of Truth</h3>
             <p>GoodRx, Cost Plus, and your insurance all quote different prices for the same drug. VITAL shows all five sources simultaneously — in one place, instantly.</p>
           </div>
-        </div>
-      </div>
-
-      <!-- Wholesale Savings Opportunity Section -->
-      <div class="section-block price-shock-section">
-        <div class="section-header">
-          <div class="section-eyebrow">Wholesale Savings Opportunity</div>
-          <h2 class="section-title">The Price Gap Is Real.</h2>
-          <p class="section-sub">One drug. Two very different prices. This is why VITAL exists.</p>
-        </div>
-        <div class="price-shock-grid">
-          <div class="price-shock-card market-high">
-            <div class="ps-label">Average Pharmacy Cash Price (Pens)</div>
-            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
-            <div class="ps-price">$1,086.37</div>
-            <div class="ps-source">Retail Pharmacy Average · May 2026</div>
-          </div>
-          <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
-          <div class="price-shock-card vital-floor">
-            <img class="ps-vial-photo" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=600&h=220&crop=center&q=92" alt="Tirzepatide clinical vial — isolated on white" />
-            <div class="ps-label">VITAL Discovery Floor (Direct)</div>
-            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
-            <div class="ps-price" style="font-weight:900">$399.00</div>
-            <div class="ps-source">VITAL Network Price · Verified Direct</div>
-          </div>
-        </div>
-        <div class="price-shock-footer">
-          A <strong>$687.37 gap in pricing exists</strong> for patients without insurance coverage.
         </div>
       </div>
 
@@ -262,16 +287,16 @@
           <h2 class="section-title">Browse by Health Condition</h2>
         </div>
         <div class="health-conditions-grid">
-          <!-- Heart Health — solid filled heart -->
+          <!-- Heart Health — solid green heart -->
           <div class="health-condition-card" data-condition="Lisinopril">
-            <div class="hc-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg></div>
+            <div class="hc-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#00C896"/></svg></div>
             <h3>Heart Health</h3>
             <p>Lisinopril, Atorvastatin, Metoprolol &amp; more</p>
             <span class="hc-arrow">→</span>
           </div>
-          <!-- Mental Health — anatomical brain outline -->
+          <!-- Mental Health — human brain SVG -->
           <div class="health-condition-card" data-condition="Lexapro">
-            <div class="hc-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C9 3 7 5 7 7.5c0 .8.2 1.5.5 2.1C6.1 10.2 5 11.7 5 13.5 5 16 7 18 9.5 18H10v2h4v-2h.5C17 18 19 16 19 13.5c0-1.8-1.1-3.3-2.5-4 .3-.6.5-1.3.5-2.1C17 5 15 3 12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 11.5c0 1.5 1.3 2.5 3 2.5s3-1 3-2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="12" y1="3" x2="12" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+            <div class="hc-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3C7 3 5 5 5 7.5c0 .9.2 1.7.6 2.4C4.2 10.7 3 12.5 3 14.5 3 17.5 5.5 20 9 20h1v1h4v-1h1c3.5 0 6-2.5 6-5.5 0-2-1.2-3.8-2.6-4.6.4-.7.6-1.5.6-2.4C19 5 17 3 14.5 3c-1.2 0-2.3.5-3 1.3C10.8 3.5 9.7 3 9.5 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 10c0 2 1.3 3.5 3 3.5S15 12 15 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M7 16c.5 1 1.5 1.5 2.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
             <h3>Mental Health</h3>
             <p>Lexapro, Sertraline, Adderall &amp; more</p>
             <span class="hc-arrow">→</span>

@@ -91,14 +91,14 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; }
 input, select, textarea { font-family: var(--font-sans); }
 
 h1, h2, h3, h4 {
-  line-height: 1.5;
+  line-height: 1.7 !important;
   padding-bottom: 15px;
   overflow: visible !important;
 }
 h1, h2, h3 {
-  padding-bottom: 30px !important;
+  line-height: 1.7 !important;
+  padding-bottom: 40px !important;
   overflow: visible !important;
-  line-height: 1.5;
 }
 p {
   line-height: 1.65;
@@ -487,9 +487,33 @@ body.menu-open .site-header {
   text-align: center;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   ESSENTIAL MEDICATIONS GRID
+═══════════════════════════════════════════════════════════════ */
+.medication-section { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.medication-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.medication-card {
+  background: #ffffff; border: 1px solid var(--border-muted);
+  border-radius: var(--radius-lg); overflow: hidden;
+  transition: box-shadow 0.25s var(--ease-satin);
+}
+.medication-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+.med-img-placeholder {
+  height: 250px; background: #eeeeee; border-bottom: 1px solid #cccccc;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #aaaaaa;
+  letter-spacing: 0.07em; font-family: var(--font-mono);
+}
+.med-info { padding: 14px 16px 18px; }
+.med-name { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; line-height: 1.3; }
+.med-sub { font-size: 12px; color: var(--text-muted); }
+
 /* Savings Bar — IKEA Yellow #FEDA00 */
 .hero-stat-strip { max-width: 100%; margin: 0; background: #FEDA00; border: none; border-top: none; border-radius: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; z-index: 1; }
-.stat-item { padding: 26px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90px; }
+.stat-item { padding: 26px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90px; background: transparent !important; box-shadow: none !important; border: none !important; }
 .stat-num { display: block; font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--brand-navy); letter-spacing: -0.02em; margin-bottom: 4px; }
 .stat-label { font-size: 11.5px; color: rgba(0,31,63,0.65); text-transform: uppercase; letter-spacing: 0.06em; }
 .stat-divider { width: 1px; background: rgba(0,31,63,0.2); margin: 14px 0; }
@@ -1047,6 +1071,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .card-wrap { grid-template-columns: 1fr; }
   .digital-card { width: 100%; max-width: 330px; margin: 0 auto; }
   .overpay-grid { grid-template-columns: 1fr; gap: 20px; }
+  .medication-grid { display: flex; flex-direction: column; width: 100%; }
+  .medication-card { width: 100%; }
   .mission-content-row { flex-direction: column-reverse; align-items: center; gap: 32px; }
   .founder-photo-slot { margin: 0 auto; }
   .about-values { grid-template-columns: 1fr; }
@@ -1071,6 +1097,10 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   /* Why You Overpay cards — single column, 20px gap */
   .overpay-grid { grid-template-columns: 1fr !important; gap: 20px; }
   .overpay-card { width: 100%; }
+
+  /* Medication grid — full-width column */
+  .medication-grid { display: flex !important; flex-direction: column !important; width: 100%; gap: 16px; }
+  .medication-card { width: 100%; }
 
   /* Stats bar — 2×2 grid, single yellow layer */
   .hero-stat-strip { grid-template-columns: 1fr 1fr !important; }
