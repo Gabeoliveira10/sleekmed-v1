@@ -578,7 +578,7 @@ body.menu-open .trust-bar {
 /* ═══════════════════════════════════════════════════════════════
    ESSENTIAL MEDICATIONS GRID
 ═══════════════════════════════════════════════════════════════ */
-.medication-section { background: #cce4f6; border-top: 1px solid #aed4ee; border-bottom: 1px solid #aed4ee; padding-top: 48px !important; padding-bottom: 48px !important; }
+.medication-section { background: #cce4f6; border-top: 1px solid #aed4ee; border-bottom: 1px solid #aed4ee; padding-top: 48px !important; padding-bottom: 48px !important; margin-top: 28px; }
 .section-blue { background: #cce4f6 !important; border-top: 1px solid #aed4ee !important; border-bottom: 1px solid #aed4ee !important; }
 .medication-grid {
   max-width: 1100px; margin: 0 auto;
@@ -1426,21 +1426,19 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 }
 .mission-text-col { flex: 1; min-width: 0; }
 .founder-photo-slot {
-  width: 150px; height: 150px;
+  width: 160px; height: 160px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.12);
-  border: 2px dashed rgba(255,255,255,0.35);
   flex-shrink: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 8px;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.45);
+  box-shadow: 0 8px 36px rgba(0,0,0,0.25), 0 0 0 6px rgba(255,255,255,0.08);
 }
-.founder-photo-slot svg { width: 40px; height: 40px; color: rgba(255,255,255,0.4); }
-.founder-photo-slot-label {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  text-align: center; line-height: 1.4;
+.founder-headshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 .mission-block .section-eyebrow {
   color: var(--brand-yellow);
