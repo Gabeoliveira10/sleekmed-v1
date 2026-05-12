@@ -983,6 +983,67 @@ function renderPriceCards(variant, drugName) {
 /* ═══════════════════════════════════════════════════════════════
    PRICE ACTION → 3D CARD FLIP
 ═══════════════════════════════════════════════════════════════ */
+/* Source themes: front card styling + back card content */
+const SOURCE_THEMES = {
+  fp:  {
+    frontBg: 'linear-gradient(145deg,#0a0a0a 0%,#000 55%,#0d0d0d 100%)',
+    frontBorder: 'rgba(255,255,255,0.09)', frontPriceColor: '#00C896',
+    frontLabelColor: 'rgba(255,255,255,0.6)', frontHintColor: 'rgba(255,255,255,0.32)',
+    glowColor: '#00C896',
+    backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
+    backBorder: 'rgba(255,255,255,0.10)',
+    logoHtml: '<span style="color:#00C896;font-weight:800;font-size:16px;letter-spacing:-0.02em">VITAL</span>',
+    chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
+    codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
+    noteColor: 'rgba(255,255,255,0.4)', note: 'Show to pharmacist', showCodes: true,
+  },
+  ins: {
+    frontBg: 'linear-gradient(135deg,#1a2f6b 0%,#0f1d45 100%)',
+    frontBorder: 'rgba(120,160,240,0.2)', frontPriceColor: '#90CAF9',
+    frontLabelColor: 'rgba(255,255,255,0.7)', frontHintColor: 'rgba(255,255,255,0.4)',
+    glowColor: '#3b82f6',
+    backBg: 'linear-gradient(135deg,#1a2f6b 0%,#0f1d45 100%)',
+    backBorder: 'rgba(120,160,240,0.2)',
+    logoHtml: '<span style="color:#90CAF9;font-weight:800;font-size:14px">Your Insurance</span>',
+    chipHtml: '', codeColor: '#90CAF9', labelColor: 'rgba(255,255,255,0.5)',
+    noteColor: 'rgba(255,255,255,0.45)', note: 'Present insurance card at checkout', showCodes: true,
+  },
+  grx: {
+    frontBg: 'linear-gradient(135deg,#006B68 0%,#004D4A 100%)',
+    frontBorder: 'rgba(0,210,190,0.2)', frontPriceColor: '#fff',
+    frontLabelColor: 'rgba(255,255,255,0.75)', frontHintColor: 'rgba(255,255,255,0.45)',
+    glowColor: '#00B5AD',
+    backBg: 'linear-gradient(135deg,#007A77 0%,#005956 100%)',
+    backBorder: 'rgba(0,210,190,0.18)',
+    logoHtml: '<span style="color:#fff;font-weight:800;font-size:16px">GoodRx</span>',
+    chipHtml: '', codeColor: '#fff', labelColor: 'rgba(255,255,255,0.55)',
+    noteColor: 'rgba(255,255,255,0.5)', note: 'Use your GoodRx coupon at checkout', showCodes: false,
+  },
+  cp:  {
+    frontBg: 'linear-gradient(135deg,#003d9e 0%,#001f5e 100%)',
+    frontBorder: 'rgba(100,160,255,0.18)', frontPriceColor: '#fff',
+    frontLabelColor: 'rgba(255,255,255,0.75)', frontHintColor: 'rgba(255,255,255,0.45)',
+    glowColor: '#1d4ed8',
+    backBg: 'linear-gradient(135deg,#0047AB 0%,#002F7A 100%)',
+    backBorder: 'rgba(100,160,255,0.18)',
+    logoHtml: '<span style="color:#fff;font-weight:800;font-size:14px;letter-spacing:-0.01em">Cost Plus Drugs</span>',
+    chipHtml: '', codeColor: '#90CAF9', labelColor: 'rgba(255,255,255,0.55)',
+    noteColor: 'rgba(255,255,255,0.5)', note: "Mark Cuban's Cost Plus Drugs", showCodes: false,
+  },
+  ret: {
+    frontBg: 'linear-gradient(145deg,#0a0a0a 0%,#000 55%,#0d0d0d 100%)',
+    frontBorder: 'rgba(255,255,255,0.08)', frontPriceColor: '#fff',
+    frontLabelColor: 'rgba(255,255,255,0.6)', frontHintColor: 'rgba(255,255,255,0.32)',
+    glowColor: '#00C896',
+    backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
+    backBorder: 'rgba(255,255,255,0.10)',
+    logoHtml: '<span style="color:#00C896;font-weight:800;font-size:16px;letter-spacing:-0.02em">VITAL</span>',
+    chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
+    codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
+    noteColor: 'rgba(255,255,255,0.35)', note: 'Standard retail — no discount applied', showCodes: false,
+  },
+};
+
 function handlePriceAction(btn) {
   const sourceId    = btn.dataset.sourceId;
   const sourceLabel = btn.dataset.sourceLabel;
@@ -990,37 +1051,69 @@ function handlePriceAction(btn) {
   const drug        = btn.dataset.drug;
   const variantLbl  = btn.dataset.variant;
   const retail      = parseFloat(btn.dataset.retail);
+  const theme       = SOURCE_THEMES[sourceId] || SOURCE_THEMES.fp;
 
-  // "Use This Card" (Fair Play) OR "View Discount" (any) → show flip card
+  // Highlight selected price card
+  $$('#priceComparisonGrid .price-card').forEach(c => {
+    c.classList.remove('selected-card');
+    c.style.removeProperty('--card-glow');
+  });
+  const selectedCard = btn.closest('.price-card');
+  selectedCard.classList.add('selected-card');
+  selectedCard.style.setProperty('--card-glow', theme.glowColor);
+
   const ins   = getInsuranceRecord();
   const name  = State.vault['vf-name'] || (State.user && State.user.name) || 'MEMBER';
   const saved = retail - price;
 
-  // Populate front
+  // Style the front card dynamically
+  const front = document.querySelector('.card-flip-front');
+  front.style.background = theme.frontBg;
+  front.style.borderColor = theme.frontBorder;
+  $('flipSourceLabel').style.color = theme.frontLabelColor;
   $('flipSourceLabel').textContent = sourceLabel;
-  $('flipPrice').textContent       = fmt(price);
-  $('flipDrug').textContent        = `${drug} · ${variantLbl}`;
+  $('flipPrice').style.color = theme.frontPriceColor;
+  $('flipPrice').textContent = fmt(price);
+  $('flipDrug').textContent = `${drug} · ${variantLbl}`;
+  document.querySelector('.flip-hint').style.color = theme.frontHintColor;
 
-  // Populate back
-  $('flipCardName').textContent = name.toUpperCase();
-  $('flipBIN').textContent      = ins.bin;
-  $('flipPCN').textContent      = ins.pcn;
-  $('flipGroup').textContent    = ins.group || 'FP2026';
-  $('flipSavings').textContent  = saved > 0 ? fmt(saved) : '—';
+  // Build dynamic back card
+  const codesHtml = theme.showCodes ? `
+    <div class="mini-card-codes">
+      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
+      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
+      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
+    </div>` : `<div style="height:14px"></div>`;
 
-  // Show panel, reset flip state
+  const back = document.querySelector('.card-flip-back');
+  back.style.background = theme.backBg;
+  back.style.borderColor = theme.backBorder;
+  back.style.boxShadow = `0 0 40px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.6)`;
+  back.innerHTML = `
+    <div class="mini-card">
+      <div class="mini-card-header">
+        ${theme.logoHtml}
+        ${theme.chipHtml}
+      </div>
+      <div class="mini-card-name" style="color:rgba(255,255,255,0.45)">${name.toUpperCase()}</div>
+      ${codesHtml}
+      <div class="mini-card-note" style="color:${theme.noteColor};border-top:1px solid rgba(255,255,255,0.07)">
+        ${theme.note} · Save <strong style="color:${theme.codeColor}">${saved > 0 ? fmt(saved) : '—'}</strong> vs. retail
+      </div>
+    </div>
+  `;
+
+  // Show panel, reset flip
   const panel = $('cardFlipPanel');
   const card  = $('cardFlipCard');
   card.classList.remove('flipped');
   panel.style.display = 'flex';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Tap/click on card = flip
   card._flipBound && card.removeEventListener('click', card._flipBound);
   card._flipBound = () => card.classList.toggle('flipped');
   card.addEventListener('click', card._flipBound);
 
-  // If it's the FP card and user is not logged in — prompt
   if (sourceId === 'fp' && !State.user) {
     showToast('Create a free account to save your card details.', 'success');
   }
@@ -1381,5 +1474,17 @@ document.addEventListener('DOMContentLoaded', () => {
   observeStats();
   renderCard();
   calcMRR();
+  initMedicationCards();
   navigateTo('home');
 });
+
+function initMedicationCards() {
+  document.querySelectorAll('.medication-card[data-drug]').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const drug = card.dataset.drug;
+      navigateTo('search');
+      setTimeout(() => triggerSearch(drug), 150);
+    });
+  });
+}
