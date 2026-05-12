@@ -67,14 +67,20 @@
       <a href="#" class="sidebar-link" data-page="about" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>About Us</a>
       <a href="#" class="sidebar-link" data-page="providers" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>For Providers</a>
       <a href="#" class="sidebar-link coming-soon-link" data-page="support" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 10a2 2 0 110-4 2 2 0 010 4z" stroke="currentColor" stroke-width="1.4"/><path d="M10 14v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Support<span class="badge-soon">Soon</span></a>
-      <div class="sidebar-section-label">Admin</div>
-      <a href="#" class="sidebar-link" data-page="admin" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M9 2L3 7v11h14V7L11 2H9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><rect x="8" y="13" width="4" height="4" stroke="currentColor" stroke-width="1.4"/></svg>Partner Portal</a>
+      <div class="sidebar-section-label" id="adminSidebarSection" style="display:none">Admin</div>
+      <a href="#" class="sidebar-link" id="adminSidebarLink" data-page="admin" data-sidebar-link style="display:none"><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M9 2L3 7v11h14V7L11 2H9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><rect x="8" y="13" width="4" height="4" stroke="currentColor" stroke-width="1.4"/></svg>Partner Portal</a>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebarUser" style="display:none">
         <div class="sidebar-avatar" id="sidebarAvatar">G</div>
         <div><div class="sidebar-username" id="sidebarUsername">Guest</div><div class="sidebar-email" id="sidebarEmail">—</div></div>
         <button class="btn-signout-sm" id="sidebarSignOut">Sign Out</button>
+      </div>
+      <div class="sidebar-signin-row" id="sidebarSignInRow">
+        <button class="btn-sidebar-signin" id="sidebarSignInBtn">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M13 10H4m6-4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 4H4a1 1 0 00-1 1v10a1 1 0 001 1h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Sign In
+        </button>
       </div>
     </div>
   </aside>
@@ -127,9 +133,9 @@
         </div>
         <div class="hero-stat-strip">
           <div class="stat-center">
-            <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Comprehensive RX Catalog</span></div>
+            <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Partner Pharmacies</span></div>
             <div class="stat-divider"></div>
-            <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Price Sources Compared Live</span></div>
+            <div class="stat-item"><span class="stat-num stat-infinity">∞</span><span class="stat-label">Comprehensive RX Catalog</span></div>
             <div class="stat-divider"></div>
             <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Drug Categories Covered</span></div>
             <div class="stat-divider"></div>
@@ -149,7 +155,7 @@
           <div class="medication-card">
             <div class="med-badge badge-generic">Most Affordable</div>
             <div class="med-img-wrap">
-              <img src="images/metformin.png" alt="Metformin 500mg" class="med-product-img" />
+              <img src="IMAGES/metformin.png" alt="Metformin 500mg" class="med-product-img" />
             </div>
             <div class="med-info">
               <div class="med-name">Metformin</div>
@@ -164,7 +170,7 @@
           <div class="medication-card">
             <div class="med-badge badge-generic">Generic Available</div>
             <div class="med-img-wrap">
-              <img src="images/lisinopril.png" alt="Lisinopril 10mg" class="med-product-img" />
+              <img src="IMAGES/lisinopril.png" alt="Lisinopril 10mg" class="med-product-img" />
             </div>
             <div class="med-info">
               <div class="med-name">Lisinopril</div>
@@ -179,7 +185,7 @@
           <div class="medication-card">
             <div class="med-badge badge-popular">Top Searched</div>
             <div class="med-img-wrap">
-              <img src="images/ozempic.png" alt="Ozempic (Semaglutide)" class="med-product-img" />
+              <img src="IMAGES/ozempic.png" alt="Ozempic (Semaglutide)" class="med-product-img" />
             </div>
             <div class="med-info">
               <div class="med-name">Ozempic (Semaglutide)</div>
@@ -193,7 +199,7 @@
           <div class="medication-card">
             <div class="med-badge badge-fda">FDA Approved</div>
             <div class="med-img-wrap">
-              <img src="images/tirzepatide.png" alt="Tirzepatide (Zepbound)" class="med-product-img" />
+              <img src="IMAGES/tirzepatide.png" alt="Tirzepatide (Zepbound)" class="med-product-img" />
             </div>
             <div class="med-info">
               <div class="med-name">Tirzepatide (Zepbound)</div>
@@ -310,7 +316,7 @@
           <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
           <div class="price-shock-card vital-floor">
             <div class="ps-product-img-wrap">
-              <img src="images/tirzepatide.png" alt="Tirzepatide" class="ps-product-img" />
+              <img src="IMAGES/tirzepatide.png" alt="Tirzepatide" class="ps-product-img" />
             </div>
             <div class="ps-label">VITAL Discovery Floor (Direct)</div>
             <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>

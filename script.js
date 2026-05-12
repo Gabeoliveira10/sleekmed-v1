@@ -583,15 +583,26 @@ function updateAuthUI() {
   $('btnJoin').textContent = loggedIn ? 'My Account' : 'Get Started';
 
   const su = $('sidebarUser');
+  const signInRow = $('sidebarSignInRow');
   if (loggedIn) {
     su.style.display = 'flex';
+    if (signInRow) signInRow.style.display = 'none';
     $('sidebarAvatar').textContent = State.user.avatar;
     $('sidebarUsername').textContent = State.user.name;
     $('sidebarEmail').textContent = State.user.email;
   } else {
     su.style.display = 'none';
+    if (signInRow) signInRow.style.display = 'block';
   }
   updateInsuranceNotice();
+}
+
+function updateAdminSidebarVisibility() {
+  const show = !!State.adminLoggedIn;
+  const sec  = $('adminSidebarSection');
+  const link = $('adminSidebarLink');
+  if (sec)  sec.style.display  = show ? '' : 'none';
+  if (link) link.style.display = show ? '' : 'none';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1153,6 +1164,7 @@ function initAdmin() {
     $('adminLoginGate').style.display = 'flex';
     $('adminDashboard').style.display = 'none';
   }
+  updateAdminSidebarVisibility();
 }
 
 function doAdminLogin() {
@@ -1223,6 +1235,10 @@ function bindEvents() {
   // Header buttons
   $('btnSignIn').addEventListener('click', () => openAuthModal('signin'));
   $('btnJoin').addEventListener('click', () => State.user ? navigateTo('vault') : openAuthModal('register'));
+
+  // Sidebar Sign In button
+  const sidebarSignInBtn = $('sidebarSignInBtn');
+  if (sidebarSignInBtn) sidebarSignInBtn.addEventListener('click', () => { closeSidebar(); openAuthModal('signin'); });
 
   // Auth modal
   $('authModalClose').addEventListener('click', closeAuthModal);
@@ -1308,6 +1324,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
   initSearch();
   updateAuthUI();
+  updateAdminSidebarVisibility();
   observeStats();
   renderCard();
   calcMRR();
