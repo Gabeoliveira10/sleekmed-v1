@@ -509,7 +509,34 @@ function closeAuthModal() {
 function showSignInView() {
   $('authSignInView').style.display = 'block';
   $('authRegisterView').style.display = 'none';
+  $('authAdminCodeView').style.display = 'none';
   $('signInError').style.display = 'none';
+}
+
+function showAdminCodeView() {
+  $('authSignInView').style.display = 'none';
+  $('authRegisterView').style.display = 'none';
+  $('authAdminCodeView').style.display = 'block';
+  $('authAdminCode').value = '';
+  $('authAdminCodeError').style.display = 'none';
+  setTimeout(() => $('authAdminCode').focus(), 100);
+}
+
+function doAdminCodeVerify() {
+  const code = $('authAdminCode').value.trim();
+  if (code === 'ADMIN888') {
+    State.adminLoggedIn = true;
+    State.user = { name: 'admin', email: 'admin@vital.com', avatar: 'A' };
+    saveUser();
+    closeAuthModal();
+    updateAuthUI();
+    updateAdminSidebarVisibility();
+    showToast('Welcome to the Partner Portal, Admin. 🔐');
+  } else {
+    $('authAdminCodeError').style.display = 'block';
+    $('authAdminCode').value = '';
+    $('authAdminCode').focus();
+  }
 }
 
 function showRegView() {
@@ -537,6 +564,12 @@ function doSignIn(email, password) {
     $('signInError').style.display = 'block';
     return;
   }
+  // Admin credential detection — route to access code step (no code shown to other users)
+  if (e === 'admin@vital.com' && p === 'ADMIN2026888') {
+    showAdminCodeView();
+    return;
+  }
+  // Regular sign-in
   const name = State.vault['vf-name'] || e.split('@')[0];
   State.user = { name, email: e, avatar: name[0].toUpperCase() };
   saveUser();
@@ -1245,6 +1278,9 @@ function bindEvents() {
   $('authModalOverlay').addEventListener('click', e => { if (e.target === $('authModalOverlay')) closeAuthModal(); });
   $('switchToRegister').addEventListener('click', e => { e.preventDefault(); showRegView(); });
   $('switchToSignIn').addEventListener('click', e => { e.preventDefault(); showSignInView(); });
+  $('authAdminContinueBtn').addEventListener('click', doAdminCodeVerify);
+  $('authAdminCode').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminCodeVerify(); });
+  $('authAdminBackBtn').addEventListener('click', showSignInView);
   $('doSignInBtn').addEventListener('click', () => doSignIn($('signInEmail').value, $('signInPass').value));
   $('signInEmail').addEventListener('keydown', e => { if (e.key === 'Enter') doSignIn($('signInEmail').value, $('signInPass').value); });
   $('signInPass').addEventListener('keydown',  e => { if (e.key === 'Enter') doSignIn($('signInEmail').value, $('signInPass').value); });
