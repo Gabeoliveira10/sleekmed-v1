@@ -1030,7 +1030,6 @@ function renderCabinet() {
   if (State.cabinet.length === 0) {
     list.innerHTML = `
       <div style="text-align:center;padding:48px 20px;color:var(--text-muted)">
-        <div style="font-size:36px;margin-bottom:12px">💊</div>
         <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:6px">Your cabinet is empty</div>
         <div style="font-size:13px">Click <strong style="color:var(--mint)">+ Add Medication</strong> to get started</div>
       </div>
@@ -1039,24 +1038,16 @@ function renderCabinet() {
     return;
   }
 
-  list.innerHTML = State.cabinet.map(med => {
-    const pct      = Math.max(0, Math.min(100, (med.fills / (med.maxFills || 5)) * 100));
-    const barClass = pct <= 20 ? 'critical' : pct <= 40 ? 'low' : '';
-    return `
-      <div class="med-item" data-id="${med.id}">
-        <div class="med-icon">${med.icon || '💊'}</div>
-        <div class="med-info">
-          <div class="med-name">${med.name}</div>
-          <div class="med-detail">${med.variant}</div>
-        </div>
-        <div class="med-refill">
-          <div class="refill-count">${med.fills} fill${med.fills !== 1 ? 's' : ''} left</div>
-          <div class="refill-bar-wrap"><div class="refill-bar ${barClass}" style="width:${pct}%"></div></div>
-        </div>
-        <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
+  list.innerHTML = State.cabinet.map(med => `
+    <div class="med-item" data-id="${med.id}">
+      <div class="med-icon">${med.icon || '💊'}</div>
+      <div class="med-info">
+        <div class="med-name">${med.name}</div>
+        <div class="med-detail">${med.variant}</div>
       </div>
-    `;
-  }).join('');
+      <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
+    </div>
+  `).join('');
 
   // X buttons — permanent delete
   list.querySelectorAll('.med-remove').forEach(btn => {
@@ -1070,15 +1061,7 @@ function renderCabinet() {
     });
   });
 
-  // Tracker
-  $('refillTrackerSection').style.display = 'block';
-  $('trackerGrid').innerHTML = State.cabinet.map(med => `
-    <div class="tracker-card">
-      <div class="tracker-drug">${med.name}</div>
-      <div class="tracker-fills-left">${med.fills}</div>
-      <div class="tracker-fills-label">fills remaining</div>
-    </div>
-  `).join('');
+  $('refillTrackerSection').style.display = 'none';
 }
 
 /* ─── ADD MED DRAWER ─────────────────────────────────────────── */

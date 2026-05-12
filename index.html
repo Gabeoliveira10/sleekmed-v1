@@ -478,7 +478,6 @@
             <div class="cabinet-filters">
               <button class="filter-btn active" data-filter="all">All</button>
               <button class="filter-btn" data-filter="active">Active</button>
-              <button class="filter-btn" data-filter="refill">Refill Due</button>
             </div>
           </div>
           <!-- Add Med Drawer -->
@@ -643,7 +642,16 @@
         <div class="card-wrap">
           <div class="digital-card" id="digitalCard">
             <div class="card-inner">
-              <div class="card-header"><div class="card-logo">VITAL</div><div class="card-chip"><svg viewBox="0 0 32 24" fill="none" width="32" height="24"><rect x="1" y="1" width="30" height="22" rx="3" stroke="#f59e0b" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="#f59e0b" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="#f59e0b" stroke-width="0.8"/></svg></div></div>
+              <div class="card-header">
+                <div class="card-logo">VITAL</div>
+                <div class="card-chip">
+                  <svg viewBox="0 0 32 24" fill="none" width="32" height="24">
+                    <rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                    <rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+                    <path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+                  </svg>
+                </div>
+              </div>
               <div class="card-member-name" id="cardMemberName">MEMBER NAME</div>
               <div class="card-codes">
                 <div class="card-code-item"><div class="card-code-label">BIN</div><div class="card-code-value" id="cardBIN">610524</div></div>
@@ -651,7 +659,9 @@
                 <div class="card-code-item"><div class="card-code-label">GROUP</div><div class="card-code-value" id="cardGroup">FP2026</div></div>
                 <div class="card-code-item"><div class="card-code-label">MEMBER ID</div><div class="card-code-value" id="cardMemberID">—</div></div>
               </div>
-              <div class="card-footer"><div class="card-network">75,000+ Pharmacies</div><div class="card-tagline">No insurance required</div></div>
+              <div class="card-footer">
+                <div class="card-not-insurance">VITAL is NOT Insurance</div>
+              </div>
               <div class="card-shine"></div>
             </div>
           </div>
