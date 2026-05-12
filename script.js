@@ -442,6 +442,27 @@ function showToast(msg, type = 'success') {
   t._timer = setTimeout(() => { t.className = 'toast'; }, 3200);
 }
 
+function showWalletComingSoon() {
+  const overlay = document.createElement('div');
+  overlay.className = 'wallet-modal-overlay';
+  overlay.innerHTML = `
+    <div class="wallet-modal-box">
+      <div class="wallet-modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="32" height="32">
+          <rect x="2" y="6" width="20" height="14" rx="2.5" stroke="#00C896" stroke-width="1.6"/>
+          <path d="M2 11h20" stroke="#00C896" stroke-width="1.6"/>
+          <path d="M6 15.5h3" stroke="#00C896" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="wallet-modal-title">VITAL Intelligence</div>
+      <div class="wallet-modal-msg">Wallet integration coming in v2.0.</div>
+      <button class="btn-primary" onclick="this.closest('.wallet-modal-overlay').remove()">Got It</button>
+    </div>
+  `;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
 function loadState() {
   try {
     const u = localStorage.getItem('fp_user');
@@ -933,6 +954,10 @@ function renderPriceCards(variant, drugName) {
           data-variant="${variant.label}"
           data-retail="${variant.retail}"
         >${p.action}</button>
+        ${p.isFP ? `<button class="btn-save-to-phone" onclick="showWalletComingSoon()">
+          <svg viewBox="0 0 20 20" fill="none" width="13" height="13"><rect x="3" y="5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h14" stroke="currentColor" stroke-width="1.4"/><path d="M7 13h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Save to Phone
+        </button>` : ''}
       </div>
     `;
   }).join('');
@@ -1042,7 +1067,16 @@ function renderCabinet() {
     <div class="med-item" data-id="${med.id}">
       <div class="med-icon">${med.icon || '💊'}</div>
       <div class="med-info">
-        <div class="med-name">${med.name}</div>
+        <div class="med-name-row">
+          <span class="med-name">${med.name}</span>
+          <button class="med-wallet-btn" title="Wallet (v2.0)" onclick="showWalletComingSoon()">
+            <svg viewBox="0 0 20 20" fill="none" width="13" height="13">
+              <rect x="2" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M2 9h16" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M5 13h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
         <div class="med-detail">${med.variant}</div>
       </div>
       <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
