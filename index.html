@@ -94,7 +94,7 @@
           <div class="hero-text-block">
             <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Prescription Price Intelligence Platform</div>
             <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
-            <p class="hero-sub">VITAL compares cash prices, insurance co-pays, and discount networks side-by-side — so you never overpay at the pharmacy again.</p>
+            <p class="hero-sub">VITAL compares VITAL Direct prices, manufacturer coupons, GoodRx, and Cost Plus Drugs side-by-side — so you never overpay at the pharmacy again.</p>
             <div class="hero-search-wrap">
               <div class="search-box" id="heroSearchBox">
                 <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#0057AD" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#0057AD" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -216,9 +216,9 @@
         <div class="section-header"><div class="section-eyebrow">Platform Logic</div><h2 class="section-title">How VITAL Works</h2></div>
         <div class="hiw-steps">
           <div class="hiw-step"><div class="hiw-step-num">1</div><h3>Search Your Medication</h3><p>Enter your drug name and select the exact dosage and quantity prescribed. Our engine retrieves live pricing from our 75,000+ partner network.</p></div>
-          <div class="hiw-step"><div class="hiw-step-num">2</div><h3>Compare All Prices</h3><p>View VITAL Direct, GoodRx, Cost Plus, Insurance Co-pay, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
+          <div class="hiw-step"><div class="hiw-step-num">2</div><h3>Compare All Prices</h3><p>View VITAL Direct, GoodRx, Cost Plus Drugs, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
           <div class="hiw-step"><div class="hiw-step-num">3</div><h3>Get Your Digital Card</h3><p>Create a free account to generate your Digital Access Card — pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy.</p></div>
-          <div class="hiw-step"><div class="hiw-step-num">4</div><h3>Save Immediately</h3><p>The pharmacist applies the VITAL discount in real-time. Average savings: 80% below retail. No claims. No waiting. No insurance required.</p></div>
+          <div class="hiw-step"><div class="hiw-step-num">4</div><h3>Save Immediately</h3><p>The pharmacist applies the VITAL discount in real-time. Average savings: 80% below retail. No claims. No waiting. Pay cash and keep moving.</p></div>
         </div>
       </div>
 
@@ -276,7 +276,7 @@
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="#34d399" stroke-width="1.6"/><path d="M7 10h10M7 14h6" stroke="#34d399" stroke-width="1.6" stroke-linecap="round"/></svg>
             </div>
             <h3>Co-Pays Aren't Always Cheapest</h3>
-            <p>For generic drugs, your insurance co-pay is often higher than cash prices available through discount networks. Pharmacists are legally barred by gag clauses from disclosing this.</p>
+            <p>For generic drugs, the retail cash price is often dramatically higher than what's available through direct discount networks. Pharmacists are legally barred by gag clauses from disclosing lower prices.</p>
           </div>
           <div class="overpay-card">
             <div class="overpay-icon-wrap purple">
@@ -290,7 +290,7 @@
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#f87171" stroke-width="1.6"/><path d="M12 7v5l3.5 3.5" stroke="#f87171" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>No Single Source of Truth</h3>
-            <p>GoodRx, Cost Plus, and your insurance all quote different prices for the same drug. VITAL shows all five sources simultaneously — in one place, instantly.</p>
+            <p>GoodRx, Cost Plus, and retail pharmacies all quote different prices for the same drug. VITAL shows every source simultaneously — in one place, instantly — so the lowest price is obvious.</p>
           </div>
         </div>
       </div>
@@ -322,7 +322,7 @@
           </div>
         </div>
         <div class="price-shock-footer">
-          A <strong>$687.37 gap in pricing exists</strong> for patients without insurance coverage.
+          A <strong>$687.37 gap in pricing exists</strong> between retail cash price and the lowest available discount network price.
         </div>
       </div>
 
@@ -381,7 +381,7 @@
         <div class="page-hero-small">
           <div class="section-eyebrow">Browse Medications</div>
           <h1 class="page-title">Search Your Medication</h1>
-          <p class="page-sub">Compare VITAL Direct, GoodRx, Cost Plus, Insurance Co-pay, and Retail — all in one place.</p>
+          <p class="page-sub">Search any medication and compare VITAL Direct, GoodRx, Cost Plus Drugs, and Retail Cash — all in one place.</p>
           <div class="search-page-wrap">
             <div class="search-box search-box-lg" id="pageSearchBox">
               <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#34d399" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -390,6 +390,15 @@
             </div>
             <div class="search-dropdown search-dropdown-attached" id="pageSearchDropdown"></div>
           </div>
+        </div>
+
+        <!-- Browse Catalog (shown when no search is active) -->
+        <div id="browseCatalog" class="browse-catalog">
+          <p class="browse-catalog-title">All Medications in Our Network</p>
+          <div class="browse-filters" id="browseFilters">
+            <button class="browse-filter-btn active" data-filter="all">All Medications</button>
+          </div>
+          <div class="browse-med-grid" id="browseMedGrid"></div>
         </div>
 
         <div class="search-results-panel" id="searchResultsPanel" style="display:none">
@@ -543,13 +552,124 @@
     <!-- PAGE: HOW IT WORKS -->
     <section class="page" id="page-howitworks">
       <div class="page-inner">
-        <div class="page-hero-small"><div class="section-eyebrow">Platform Education</div><h1 class="page-title">How VITAL Works</h1><p class="page-sub">A deep dive into the technology, network, and clinical logic behind our platform.</p></div>
-        <div class="hiw-detailed">
-          <div class="hiw-detail-block"><div class="hiw-detail-num">01</div><div class="hiw-detail-content"><h2>Our Pricing Engine</h2><p>VITAL's pricing engine aggregates data from five sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, national insurance carrier formulary databases, and retail cash prices.</p><div class="detail-callout"><strong>Note:</strong> Insurance co-pay estimates are based on formulary tier data and may vary by plan and deductible status.</div></div></div>
-          <div class="hiw-detail-block"><div class="hiw-detail-num">02</div><div class="hiw-detail-content"><h2>The VITAL Direct Price</h2><p>Our "VITAL Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Access Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale, and the negotiated price is honored immediately.</p><div class="detail-callout amber"><strong>Affiliate Disclosure:</strong> VITAL earns a small affiliate fee per claim ($2.50–$5.00) from our partner network. This fee is never passed to the consumer.</div></div></div>
-          <div class="hiw-detail-block"><div class="hiw-detail-num">03</div><div class="hiw-detail-content"><h2>Insurance Routing Logic</h2><p>When you provide your insurance details in the Security Vault, VITAL cross-references your carrier and Group ID against our formulary database to calculate an estimated co-pay for your specific plan tier. This estimate is displayed alongside cash prices in every search result.</p></div></div>
-          <div class="hiw-detail-block"><div class="hiw-detail-num">04</div><div class="hiw-detail-content"><h2>HIPAA &amp; Data Security</h2><p>All personal and insurance data stored in your Security Vault is encrypted client-side before storage. VITAL does not sell, share, or license your personal health information to any third party.</p><div class="detail-callout purple"><strong>HIPAA Commitment:</strong> VITAL is designed to align with HIPAA data handling best practices for consumer health applications.</div></div></div>
+        <div class="page-hero-small">
+          <div class="section-eyebrow">How It Works</div>
+          <h1 class="page-title">Four Steps to the Lowest Price</h1>
+          <p class="page-sub">No insurance needed. No account required for cash prices. Just transparency.</p>
         </div>
+
+        <!-- 4-Step Vertical Timeline -->
+        <div class="hiw-timeline">
+
+          <div class="hiw-tl-step">
+            <div class="hiw-tl-left">
+              <div class="hiw-tl-icon">
+                <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
+                  <circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="hiw-tl-line"></div>
+            </div>
+            <div class="hiw-tl-content">
+              <div class="hiw-tl-num">01</div>
+              <h3 class="hiw-tl-title">Search</h3>
+              <p class="hiw-tl-text">Find your medication across our network of 75,000+ pharmacies.</p>
+            </div>
+          </div>
+
+          <div class="hiw-tl-step">
+            <div class="hiw-tl-left">
+              <div class="hiw-tl-icon">
+                <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
+                  <rect x="3" y="14" width="4" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/>
+                  <rect x="10" y="9" width="4" height="12" rx="1" stroke="currentColor" stroke-width="1.6"/>
+                  <rect x="17" y="4" width="4" height="17" rx="1" stroke="currentColor" stroke-width="1.6"/>
+                </svg>
+              </div>
+              <div class="hiw-tl-line"></div>
+            </div>
+            <div class="hiw-tl-content">
+              <div class="hiw-tl-num">02</div>
+              <h3 class="hiw-tl-title">Compare</h3>
+              <p class="hiw-tl-text">See VITAL Direct prices and manufacturer coupons in one place.</p>
+            </div>
+          </div>
+
+          <div class="hiw-tl-step">
+            <div class="hiw-tl-left">
+              <div class="hiw-tl-icon">
+                <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
+                  <path d="M12 3L4 6.5V12c0 4.5 3.5 7.5 8 9 4.5-1.5 8-4.5 8-9V6.5L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="hiw-tl-line"></div>
+            </div>
+            <div class="hiw-tl-content">
+              <div class="hiw-tl-num">03</div>
+              <h3 class="hiw-tl-title">Eligibility</h3>
+              <p class="hiw-tl-text">Complete a quick check to unlock restricted manufacturer codes.</p>
+            </div>
+          </div>
+
+          <div class="hiw-tl-step hiw-tl-last">
+            <div class="hiw-tl-left">
+              <div class="hiw-tl-icon hiw-tl-icon-final">
+                <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
+                  <rect x="2" y="6" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M2 11h20" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M6 15.5h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="hiw-tl-content">
+              <div class="hiw-tl-num">04</div>
+              <h3 class="hiw-tl-title">Save</h3>
+              <p class="hiw-tl-text">Show your Digital Card to the pharmacist and pay the lowest price.</p>
+            </div>
+          </div>
+
+        </div><!-- /hiw-timeline -->
+
+        <!-- Digital Card CTA -->
+        <div class="hiw-card-cta">
+          <div class="hiw-card-cta-inner">
+            <div class="hiw-card-cta-text">
+              <h3>Your VITAL Digital Card</h3>
+              <p>Pre-loaded with your BIN, PCN, and Group codes. Show it at any of our 75,000+ partner pharmacies — no printing required.</p>
+            </div>
+            <button class="btn-primary" onclick="navigateTo('card')">Get Your Card</button>
+          </div>
+        </div>
+
+        <!-- Technical Disclosures Accordion -->
+        <div class="hiw-disclosures">
+          <button class="hiw-disclosure-toggle" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+            <span>Technical Disclosures</span>
+            <svg class="hiw-disclosure-chevron" viewBox="0 0 20 20" fill="none" width="18" height="18">
+              <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="hiw-disclosure-body">
+            <h4>Our Pricing Engine</h4>
+            <p>VITAL's pricing engine aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
+
+            <h4>The VITAL Direct Price</h4>
+            <p>Our "VITAL Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
+            <p><strong>Affiliate Disclosure:</strong> VITAL earns a small affiliate fee per claim ($2.50–$5.00) from our partner network. This fee is never passed to the consumer.</p>
+
+            <h4>HIPAA &amp; Data Security</h4>
+            <p>All personal data stored in your profile is encrypted client-side before storage. VITAL does not sell, share, or license your personal health information to any third party. VITAL is designed to align with HIPAA data handling best practices for consumer health applications.</p>
+
+            <h4>Eligibility &amp; Legal Compliance</h4>
+            <p>Federal law (42 U.S.C. § 1320a-7b) prohibits government beneficiaries (Medicare, Medicaid, VA, TRICARE) from using manufacturer savings cards. VITAL's eligibility check ensures compliance. Cash prices visible to all users without restriction.</p>
+
+            <h4>NOT Insurance</h4>
+            <p>VITAL is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before starting, changing, or stopping any medication.</p>
+          </div>
+        </div>
+
       </div>
     </section>
 

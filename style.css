@@ -2180,3 +2180,295 @@ body.compliance-open { overflow: hidden; }
   .app-store-btn { flex: 1; justify-content: center; }
   .app-promo-headline { font-size: 22px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   HOW IT WORKS — VERTICAL TIMELINE
+═══════════════════════════════════════════════════════════════ */
+.hiw-timeline {
+  max-width: 680px;
+  margin: 48px auto 0;
+  display: flex;
+  flex-direction: column;
+}
+.hiw-tl-step {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  min-height: 110px;
+}
+.hiw-tl-last { min-height: auto; }
+.hiw-tl-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 56px;
+}
+.hiw-tl-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-muted);
+  background: var(--bg-surface);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brand-navy);
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+.hiw-tl-icon-final {
+  border-color: rgba(0,200,150,0.45);
+  background: rgba(0,200,150,0.07);
+  color: #00C896;
+}
+.hiw-tl-line {
+  flex: 1;
+  width: 1.5px;
+  background: var(--border-subtle);
+  margin: 8px 0;
+  min-height: 40px;
+}
+.hiw-tl-content {
+  padding-top: 10px;
+  padding-bottom: 36px;
+  flex: 1;
+}
+.hiw-tl-last .hiw-tl-content { padding-bottom: 0; }
+.hiw-tl-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.hiw-tl-title {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+.hiw-tl-text {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Digital Card CTA block */
+.hiw-card-cta {
+  max-width: 680px;
+  margin: 48px auto 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--brand-navy) 0%, #003366 100%);
+  padding: 2px;
+}
+.hiw-card-cta-inner {
+  background: linear-gradient(135deg, var(--brand-navy) 0%, #003366 100%);
+  border-radius: calc(var(--radius-lg) - 2px);
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.hiw-card-cta-text h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: #ffffff;
+  margin: 0 0 8px;
+  font-weight: 400;
+}
+.hiw-card-cta-text p {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  margin: 0;
+}
+.hiw-card-cta .btn-primary {
+  flex-shrink: 0;
+  background: #00C896;
+  color: #001f3f;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.hiw-card-cta .btn-primary:hover { opacity: 0.88; }
+
+/* Disclosures accordion */
+.hiw-disclosures {
+  max-width: 680px;
+  margin: 40px auto 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.hiw-disclosure-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--bg-surface);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: left;
+  transition: background 0.15s;
+}
+.hiw-disclosure-toggle:hover { background: var(--bg-raised); }
+.hiw-disclosure-chevron {
+  flex-shrink: 0;
+  transition: transform 0.22s var(--ease-satin);
+  color: var(--text-muted);
+}
+.hiw-disclosure-toggle.open .hiw-disclosure-chevron { transform: rotate(180deg); }
+.hiw-disclosure-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s var(--ease-satin);
+  background: var(--bg-base);
+}
+.hiw-disclosure-body.open {
+  max-height: 1000px;
+}
+.hiw-disclosure-body h4 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 6px;
+}
+.hiw-disclosure-body h4:not(:first-child) { margin-top: 20px; }
+.hiw-disclosure-body p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.68;
+  margin: 0 0 4px;
+}
+.hiw-disclosure-body { padding: 0; }
+.hiw-disclosure-body.open { padding: 24px 20px; }
+
+/* HIW page end spacing */
+#page-howitworks .page-inner { padding-bottom: 64px; }
+
+@media (max-width: 640px) {
+  .hiw-tl-step { gap: 18px; }
+  .hiw-tl-left { width: 44px; }
+  .hiw-tl-icon { width: 44px; height: 44px; }
+  .hiw-tl-icon svg { width: 22px; height: 22px; }
+  .hiw-tl-title { font-size: 17px; }
+  .hiw-card-cta-inner { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
+  .hiw-card-cta .btn-primary { width: 100%; text-align: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BROWSE MEDICATIONS CATALOG
+═══════════════════════════════════════════════════════════════ */
+.browse-catalog {
+  margin-top: 32px;
+}
+.browse-catalog-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+}
+.browse-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.browse-filter-btn {
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-muted);
+  background: var(--bg-base);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s var(--ease-satin);
+  white-space: nowrap;
+}
+.browse-filter-btn:hover {
+  border-color: var(--brand-navy);
+  color: var(--brand-navy);
+  background: rgba(0,31,63,0.04);
+}
+.browse-filter-btn.active {
+  background: var(--brand-navy);
+  border-color: var(--brand-navy);
+  color: #ffffff;
+}
+.browse-med-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+.browse-drug-card {
+  background: var(--bg-base);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 16px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease-satin), box-shadow 0.2s var(--ease-satin), transform 0.18s var(--ease-satin);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.browse-drug-card:hover {
+  border-color: rgba(0,31,63,0.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+.browse-drug-icon {
+  width: 34px; height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border-subtle);
+}
+.browse-drug-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+.browse-drug-category {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.browse-drug-price {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: #00C896;
+  font-weight: 600;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .browse-med-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .browse-drug-card { padding: 14px 12px 11px; }
+}

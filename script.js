@@ -496,6 +496,7 @@ function navigateTo(pageId) {
   if (pageId === 'vault')   renderVault();
   if (pageId === 'card')    renderCard();
   if (pageId === 'admin')   initAdmin();
+  if (pageId === 'search')  showBrowseCatalog();
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -876,6 +877,7 @@ function renderDropdown(dropdown, results, context, input) {
 }
 
 function showSearchSkeletons() {
+  hideBrowseCatalog();
   $('searchResultsPanel').style.display = 'block';
   $('searchEmptyState').style.display   = 'none';
   $('resultsTitle').textContent = 'Loading…';
@@ -1607,6 +1609,7 @@ function hideCardFlip() {
 function resetSearchPage() {
   $('searchResultsPanel').style.display = 'none';
   $('searchEmptyState').style.display   = 'block';
+  showBrowseCatalog();
   hideCardFlip();
   State.currentDrug    = null;
   State.currentVariant = null;
@@ -1953,6 +1956,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCard();
   calcMRR();
   initMedicationCards();
+  initBrowseCatalog();
   navigateTo('home');
 });
 
@@ -1963,4 +1967,74 @@ function initMedicationCards() {
       showComplianceGauntlet(card.dataset.drug);
     });
   });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BROWSE MEDICATIONS CATALOG
+═══════════════════════════════════════════════════════════════ */
+function initBrowseCatalog() {
+  const grid    = $('browseMedGrid');
+  const filters = $('browseFilters');
+  if (!grid || !filters) return;
+
+  // Build unique sorted category list from DRUGS array
+  const cats = [...new Set(DRUGS.map(d => d.category))].sort();
+
+  // Inject category filter buttons (after the "All" button that's in HTML)
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'browse-filter-btn';
+    btn.dataset.filter = cat;
+    btn.textContent = cat;
+    filters.appendChild(btn);
+  });
+
+  // Render all drug cards initially
+  renderBrowseGrid('all');
+
+  // Filter button click handler
+  filters.addEventListener('click', e => {
+    const btn = e.target.closest('.browse-filter-btn');
+    if (!btn) return;
+    filters.querySelectorAll('.browse-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderBrowseGrid(btn.dataset.filter);
+  });
+}
+
+function renderBrowseGrid(filter) {
+  const grid = $('browseMedGrid');
+  if (!grid) return;
+
+  const list = filter === 'all' ? DRUGS : DRUGS.filter(d => d.category === filter);
+
+  grid.innerHTML = list.map(drug => {
+    // Grab lowest fairplay price from variants
+    const lowestPrice = Math.min(...drug.variants.map(v => v.fairplay));
+    return `
+      <div class="browse-drug-card" onclick="handleBrowseDrugClick('${drug.name.replace(/'/g,"\\'")}')">
+        <div class="browse-drug-icon">${drug.icon || 'Rx'}</div>
+        <div class="browse-drug-name">${drug.name}</div>
+        <div class="browse-drug-category">${drug.category}</div>
+        <div class="browse-drug-price">From $${lowestPrice.toFixed(2)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function handleBrowseDrugClick(drugName) {
+  // Hide catalog, run search
+  const catalog = $('browseCatalog');
+  if (catalog) catalog.style.display = 'none';
+  triggerSearch(drugName);
+}
+
+function showBrowseCatalog() {
+  const catalog = $('browseCatalog');
+  if (catalog) catalog.style.display = '';
+}
+
+function hideBrowseCatalog() {
+  const catalog = $('browseCatalog');
+  if (catalog) catalog.style.display = 'none';
 }
