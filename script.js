@@ -981,6 +981,381 @@ function renderPriceCards(variant, drugName) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   DRUG MANUFACTURER LOOKUP
+   Each drug maps to the actual company that makes it.
+═══════════════════════════════════════════════════════════════ */
+const DRUG_MFR = {
+  'Metformin':            'Various Generic Manufacturers',
+  'Lisinopril':           'Various Generic Manufacturers',
+  'Atorvastatin':         'Various Generic Manufacturers (brand: Lipitor® by Pfizer)',
+  'Ozempic':              'Novo Nordisk A/S',
+  'Semaglutide':          'Novo Nordisk A/S',
+  'Tirzepatide':          'Eli Lilly and Company (Mounjaro® / Zepbound®)',
+  'Adderall':             'Teva Pharmaceuticals / Shire',
+  'Lexapro':              'Various Generic Manufacturers (brand: Lexapro® by Allergan)',
+  'Omeprazole':           'Various Generic Manufacturers (brand: Prilosec® by AstraZeneca)',
+  'Sertraline':           'Various Generic Manufacturers (brand: Zoloft® by Pfizer)',
+  'Amlodipine':           'Various Generic Manufacturers (brand: Norvasc® by Pfizer)',
+  'Gabapentin':           'Various Generic Manufacturers (brand: Neurontin® by Pfizer)',
+  'Losartan':             'Various Generic Manufacturers (brand: Cozaar® by Merck)',
+  'Levothyroxine':        'Various Generic Manufacturers (brand: Synthroid® by AbbVie)',
+  'Alprazolam':           'Various Generic Manufacturers (brand: Xanax® by Pfizer)',
+  'Bupropion':            'Various Generic Manufacturers (brand: Wellbutrin® by GSK)',
+  'Pantoprazole':         'Various Generic Manufacturers (brand: Protonix® by Pfizer)',
+  'Furosemide':           'Various Generic Manufacturers (brand: Lasix® by Sanofi)',
+  'Trazodone':            'Various Generic Manufacturers',
+  'Clopidogrel':          'Various Generic Manufacturers (brand: Plavix® by Sanofi/BMS)',
+  'Rosuvastatin':         'Various Generic Manufacturers (brand: Crestor® by AstraZeneca)',
+  'Amoxicillin':          'Various Generic Manufacturers',
+  'Doxycycline':          'Various Generic Manufacturers',
+  'Montelukast':          'Various Generic Manufacturers (brand: Singulair® by Merck)',
+  'Duloxetine':           'Various Generic Manufacturers (brand: Cymbalta® by Eli Lilly)',
+  'Clonazepam':           'Various Generic Manufacturers (brand: Klonopin® by Roche)',
+  'Citalopram':           'Various Generic Manufacturers (brand: Celexa® by Allergan)',
+  'Metoprolol':           'Various Generic Manufacturers (brand: Lopressor® by Novartis)',
+  'Fluoxetine':           'Various Generic Manufacturers (brand: Prozac® by Eli Lilly)',
+  'Cyclobenzaprine':      'Various Generic Manufacturers',
+  'Hydrochlorothiazide':  'Various Generic Manufacturers',
+  'Prednisone':           'Various Generic Manufacturers',
+  'Zolpidem':             'Various Generic Manufacturers (brand: Ambien® by Sanofi)',
+  'Warfarin':             'Various Generic Manufacturers (brand: Coumadin® by BMS)',
+  'Tamsulosin':           'Various Generic Manufacturers (brand: Flomax® by Boehringer Ingelheim)',
+  'Methylphenidate':      'Various Generic Manufacturers (brand: Ritalin® by Novartis)',
+  'Carvedilol':           'Various Generic Manufacturers (brand: Coreg® by GSK)',
+  'Quetiapine':           'Various Generic Manufacturers (brand: Seroquel® by AstraZeneca)',
+  'Aripiprazole':         'Various Generic Manufacturers (brand: Abilify® by Otsuka/BMS)',
+  'Venlafaxine':          'Various Generic Manufacturers (brand: Effexor® by Pfizer)',
+  'Lisinopril-HCTZ':      'Various Generic Manufacturers',
+  'Meloxicam':            'Various Generic Manufacturers (brand: Mobic® by Boehringer Ingelheim)',
+  'Spironolactone':       'Various Generic Manufacturers (brand: Aldactone® by Pfizer)',
+  'Oxycodone':            'Various Generic Manufacturers',
+  'Tramadol':             'Various Generic Manufacturers',
+  'Insulin Glargine':     'Sanofi (Lantus® / Toujeo®) and Eli Lilly (Basaglar®)',
+  'Albuterol':            'Various Manufacturers (brand: ProAir®/Ventolin® by GSK)',
+  'Fluticasone':          'Various Manufacturers (brand: Flovent®/Flonase® by GSK)',
+  'Triamcinolone':        'Various Generic Manufacturers',
+  'Escitalopram':         'Various Generic Manufacturers (brand: Lexapro® by Allergan/Lundbeck)',
+  'Linagliptin':          'Boehringer Ingelheim / Eli Lilly (brand: Tradjenta®)',
+  'Empagliflozin':        'Boehringer Ingelheim / Eli Lilly (brand: Jardiance®)',
+  'Celecoxib':            'Various Generic Manufacturers (brand: Celebrex® by Pfizer)',
+  'Topiramate':           'Various Generic Manufacturers (brand: Topamax® by Janssen)',
+};
+
+const US_STATES = ['Select State','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','D.C.','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPLIANCE GAUNTLET — 4-Screen Legal Flow
+═══════════════════════════════════════════════════════════════ */
+const ComplianceCtx = { drug: null, channel: null, screen: 1, form: {} };
+
+function showComplianceGauntlet(drugName) {
+  ComplianceCtx.drug    = drugName;
+  ComplianceCtx.channel = null;
+  ComplianceCtx.screen  = 1;
+  ComplianceCtx.form    = {};
+  $('complianceGauntlet').style.display = 'flex';
+  document.body.classList.add('compliance-open');
+  renderComplianceScreen();
+}
+
+function closeCompliance() {
+  $('complianceGauntlet').style.display = 'none';
+  document.body.classList.remove('compliance-open');
+}
+
+function _stepDots(total, current) {
+  return '<div class="compliance-step-indicator">' +
+    Array.from({length: total}, (_,i) =>
+      '<div class="compliance-step-dot ' +
+      (i < current-1 ? 'done' : i === current-1 ? 'active' : '') + '"></div>'
+    ).join('') + '</div>';
+}
+
+function _getTCBox(drug) {
+  const mfr = DRUG_MFR[drug] || 'the applicable manufacturer';
+  return '<div class="compliance-tc-box">' +
+    '<h4>Card Eligibility</h4><ol>' +
+    '<li>You have been prescribed <strong>' + drug + '</strong> for an approved use consistent with FDA-approved product labeling;</li>' +
+    '<li>You agree that the Card is for self-paying (cash) patients only and that you will not seek or accept reimbursement for any out-of-pocket costs for <strong>' + drug + '</strong> purchased with the Card from any third-party payer, including private insurance or state or federal healthcare programs, nor apply those costs toward any deductible or true out-of-pocket requirements;</li>' +
+    '<li>You are a resident of the United States or Puerto Rico; and</li>' +
+    '<li>You are 18 years of age or older.</li>' +
+    '</ol>' +
+    '<h4>Card Terms and Conditions</h4>' +
+    '<p>You must have a valid prescription for <strong>' + drug + '</strong> for an approved use consistent with FDA-approved product labeling to use this savings card at participating pharmacies. Subject to VITAL\'s right to terminate, rescind, revoke, or amend card eligibility criteria and/or terms and conditions at VITAL\'s sole discretion, without notice, and for any reason. Card expires and savings end on 12/31/2026.</p>' +
+    '<h4>Additional Terms and Conditions</h4>' +
+    '<p>This Program and Card is for self-paying (cash) patients and operates outside of any health insurance program. You agree not to seek payment or accept reimbursement for any out-of-pocket costs for <strong>' + drug + '</strong> from any insurance plan, healthcare reimbursement account, or third-party payer — including any state or federal healthcare program. THIS CARD IS NOT INSURANCE. Card savings cannot be combined with any other program, discount, or coupon. Card benefits are non-transferable. Card void where prohibited by law.</p>' +
+    '<p style="font-style:italic;color:var(--text-disabled);font-size:11px">Manufactured by: ' + mfr + '. Distributed by VITAL Health Technologies. Questions? support@vitalrx.com</p>' +
+    '</div>';
+}
+
+function renderComplianceScreen() {
+  const drug = ComplianceCtx.drug;
+  const ch   = ComplianceCtx.channel;
+  const sc   = ComplianceCtx.screen;
+  const box  = $('complianceContent');
+  let html   = '';
+
+  if (sc === 1) {
+    // Screen 1: Eligibility
+    html = '<div class="compliance-header">' +
+      _stepDots(3, 1) +
+      '<div class="compliance-step-label">Section 1 of 3 · Eligibility Check</div>' +
+      '<div class="compliance-title">Which best describes you?</div>' +
+      '<div class="compliance-subtitle">Federal law requires this disclosure for <strong>' + drug + '</strong> savings programs.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<button class="compliance-channel-btn" onclick="complianceChoose(\'insured\')">' +
+        '<span class="compliance-channel-icon">🏢</span>' +
+        '<div>I am insured through my employer or have a private commercial insurance plan that covers <strong>' + drug + '</strong>.</div>' +
+      '</button>' +
+      '<button class="compliance-channel-btn danger" onclick="complianceChoose(\'govt\')">' +
+        '<span class="compliance-channel-icon">🏛️</span>' +
+        '<div>My prescription is paid for (partially or fully) by a state- or federally-funded program such as <strong>Medicare, Medicaid, Medigap, VA, or TRICARE®</strong>.</div>' +
+      '</button>' +
+      '<button class="compliance-channel-btn" onclick="complianceChoose(\'cash\')">' +
+        '<span class="compliance-channel-icon">💵</span>' +
+        '<div>I do <strong>not</strong> have insurance, want to pay cash, or my commercial insurance plan does <strong>not</strong> cover <strong>' + drug + '</strong>.</div>' +
+      '</button>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<p class="compliance-not-insurance">NOT INSURANCE · Governmental beneficiaries excluded · Offer expires 12/31/2026</p>' +
+      '</div>';
+
+  } else if (sc === 'govt') {
+    // Government hard stop
+    html = '<div class="compliance-header">' +
+      '<div class="compliance-title">Federal Law Exclusion</div>' +
+      '<div class="compliance-subtitle">Savings card codes cannot be provided to government beneficiaries.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<div class="compliance-hardstop">' +
+        '<div class="compliance-hardstop-icon">⚠️</div>' +
+        '<div class="compliance-hardstop-title">Government Beneficiaries Cannot Use This Offer</div>' +
+        '<div class="compliance-hardstop-text">Federal law (42 U.S.C. § 1320a-7b — Anti-Kickback Statute) prohibits individuals enrolled in Medicare, Medicaid, VA, TRICARE®, or any federally-funded program from using manufacturer savings cards or PBM discount programs for covered medications. Violation can result in federal penalties.<br><br><strong>You are still protected.</strong> VITAL will show you the lowest available <em>cash prices</em> from Cost Plus Drugs and other transparent sources — without the coupon codes that would create compliance risk.</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button class="compliance-btn-primary" onclick="closeCompliance(); navigateTo(\'search\'); setTimeout(function(){ triggerSearch(\'' + drug + '\'); }, 150);">Show Cash Prices for ' + drug + '</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=1; renderComplianceScreen()">← Back</button>' +
+      '</div>';
+
+  } else if (ch === 'insured' && sc === 2) {
+    // Commercial insured: qualified screen
+    html = '<div class="compliance-header">' +
+      _stepDots(3, 2) +
+      '<div class="compliance-step-label">Section 2 of 3 · Eligibility Confirmed</div>' +
+      '<div class="compliance-title">You may qualify for this offer!</div>' +
+      '<div class="compliance-subtitle">Governmental beneficiaries excluded. Terms apply. NOT INSURANCE.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<div class="compliance-qualified-box">' +
+        '<div class="compliance-qualified-title">✓ Commercial Insurance Pathway</div>' +
+        '<div class="compliance-qualified-text">You may be eligible for a self-pay option for <strong>' + drug + '</strong>. Savings subject to monthly and annual limits. Taxes and fees may apply. Card expires and savings end on <strong>12/31/2026</strong>.</div>' +
+      '</div>' +
+      _getTCBox(drug) +
+      '<div class="compliance-consent">' +
+        '<input type="checkbox" id="insuredConsent" onchange="document.getElementById(\'insuredNext\').disabled=!this.checked">' +
+        '<span class="compliance-consent-text">By checking this box, you agree that VITAL may collect, use, and share your personal information for the administration of the <strong>' + drug + '</strong> Savings Program in accordance with VITAL\'s Terms of Use and Privacy Policy.</span>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button id="insuredNext" class="compliance-btn-primary" disabled onclick="complianceCompleteInsured()">Get Offer →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=1; renderComplianceScreen()">← Back</button>' +
+      '<p class="compliance-not-insurance">NOT INSURANCE · Card eligibility and terms for ' + drug + ' apply · Offer expires 12/31/2026</p>' +
+      '</div>';
+
+  } else if (ch === 'cash' && sc === 2) {
+    // Cash: Registration form
+    const f = ComplianceCtx.form;
+    const stateOpts = US_STATES.map(function(s){ return '<option value="' + s + '"' + (f.state===s?' selected':'') + '>' + s + '</option>'; }).join('');
+    html = '<div class="compliance-header">' +
+      _stepDots(4, 2) +
+      '<div class="compliance-step-label">Section 2 of 4 · Registration</div>' +
+      '<div class="compliance-title">Register for savings</div>' +
+      '<div class="compliance-subtitle">Enter your details to receive your <strong>' + drug + '</strong> Self-Pay Savings Card.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<div class="compliance-form-row">' +
+        '<div class="compliance-form-field"><label>First Name *</label><input class="compliance-input" id="cf_first" type="text" placeholder="John" value="' + (f.first||'') + '"></div>' +
+        '<div class="compliance-form-field"><label>Last Name *</label><input class="compliance-input" id="cf_last" type="text" placeholder="Smith" value="' + (f.last||'') + '"></div>' +
+      '</div>' +
+      '<div class="compliance-form-field"><label>Date of Birth (MM/DD/YYYY) *</label><input class="compliance-input" id="cf_dob" type="text" placeholder="01/15/1985" value="' + (f.dob||'') + '"></div>' +
+      '<div class="compliance-form-field"><label>Address Line 1 *</label><input class="compliance-input" id="cf_addr1" type="text" placeholder="123 Main Street" value="' + (f.addr1||'') + '"></div>' +
+      '<div class="compliance-form-row">' +
+        '<div class="compliance-form-field"><label>City *</label><input class="compliance-input" id="cf_city" type="text" placeholder="Miami" value="' + (f.city||'') + '"></div>' +
+        '<div class="compliance-form-field"><label>State *</label><select class="compliance-input compliance-select" id="cf_state">' + stateOpts + '</select></div>' +
+      '</div>' +
+      '<div class="compliance-form-row">' +
+        '<div class="compliance-form-field"><label>Zip Code *</label><input class="compliance-input" id="cf_zip" type="text" placeholder="33101" value="' + (f.zip||'') + '"></div>' +
+        '<div class="compliance-form-field"><label>Mobile Phone *</label><input class="compliance-input" id="cf_phone" type="tel" placeholder="(305) 555-0100" value="' + (f.phone||'') + '"></div>' +
+      '</div>' +
+      '<div class="compliance-form-field"><label>Email Address *</label><input class="compliance-input" id="cf_email" type="email" placeholder="john@email.com" value="' + (f.email||'') + '"></div>' +
+      '<div class="compliance-consent">' +
+        '<input type="checkbox" id="cashConsent" ' + (f.consent?'checked':'') + '>' +
+        '<span class="compliance-consent-text">By checking this box, you agree that VITAL may collect, use, and share your personal information for the administration of the <strong>' + drug + '</strong> Self-Pay Savings Card Program in accordance with VITAL\'s Terms of Use and Privacy Policy.</span>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button class="compliance-btn-primary" onclick="complianceCashRegNext()">Next →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=1; renderComplianceScreen()">← Back</button>' +
+      '</div>';
+
+  } else if (ch === 'cash' && sc === 3) {
+    // Cash: T&C + e-signature
+    const f = ComplianceCtx.form;
+    html = '<div class="compliance-header">' +
+      _stepDots(4, 3) +
+      '<div class="compliance-step-label">Section 3 of 4 · Terms & Conditions</div>' +
+      '<div class="compliance-title">' + drug + ' Self-Pay Savings Card Program Terms</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      _getTCBox(drug) +
+      '<div class="compliance-esig-box">' +
+        '<div class="compliance-esig-title">Electronic Signature — Review & Approve</div>' +
+        '<p class="compliance-esig-note">By entering your name below, you are signing electronically. You confirm you have reviewed and agree to the Terms above and attest you are eligible to participate in this program.</p>' +
+        '<div class="compliance-esig-row">' +
+          '<div><label>First Name *</label><input class="compliance-input" id="sig_first" type="text" placeholder="John" value="' + (f.first||'') + '"></div>' +
+          '<div><label>Last Name *</label><input class="compliance-input" id="sig_last" type="text" placeholder="Smith" value="' + (f.last||'') + '"></div>' +
+        '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button class="compliance-btn-primary" onclick="complianceTCNext()">Next →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=2; renderComplianceScreen()">← Back</button>' +
+      '</div>';
+
+  } else if (ch === 'cash' && sc === 4) {
+    // Cash: HIPAA Authorization
+    const f = ComplianceCtx.form;
+    html = '<div class="compliance-header">' +
+      _stepDots(4, 4) +
+      '<div class="compliance-step-label">Section 4 of 4 · HIPAA Authorization</div>' +
+      '<div class="compliance-title">Patient HIPAA Authorization</div>' +
+      '<div class="compliance-subtitle">Authorize use of your protected health information to unlock your ' + drug + ' savings card.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<div class="compliance-tc-box">' +
+        '<p>You have selected VITAL to coordinate services related to your health and to provide information related to your <strong>' + drug + '</strong> prescription. In order for VITAL to offer these savings programs, VITAL may need to obtain or exchange your protected health information ("PHI") as defined under HIPAA.</p>' +
+        '<h4>PHI Includes:</h4>' +
+        '<p>Information about your health insurance or benefits; all relevant records about your treatment, including medication histories and prescriptions for <strong>' + drug + '</strong>; information about your payment for treatment; and whether you are staying on your medicine or treatment plan.</p>' +
+        '<h4>How Your PHI Will Be Used</h4>' +
+        '<p>Your PHI will be used to enroll you in, provide, and administer the <strong>' + drug + '</strong> Self-Pay Savings Program, including to: understand how much of your treatment is covered by insurance; help you find ways to afford such treatment; track the use of your VITAL savings card; contact you about VITAL programs; and measure program performance to make improvements.</p>' +
+        '<h4>Your Rights</h4>' +
+        '<p>You are not required to authorize sharing your PHI with VITAL to receive treatment from your healthcare providers. However, VITAL\'s savings programs may not be able to help you without your authorization. You may revoke this authorization at any time by emailing support@vitalrx.com. Revocation will not affect disclosures that occurred before VITAL received notice. This authorization remains in effect for the duration of your participation in the VITAL <strong>' + drug + '</strong> savings program.</p>' +
+        '<h4>AUTHORIZATION TO USE AND DISCLOSE PHI</h4>' +
+        '<p>I authorize my Health Care Entities to disclose my PHI and sensitive data for the purposes described in this HIPAA Authorization. This Authorization replaces any prior HIPAA Authorizations provided for this specific VITAL program.</p>' +
+      '</div>' +
+      '<div class="compliance-esig-box">' +
+        '<div class="compliance-esig-title">Electronic Signature — Submit</div>' +
+        '<p class="compliance-esig-note">By selecting "Submit & Reveal Card," you are signing this HIPAA Authorization electronically. You have read, understand, and agree to its terms. You are entitled to a copy of this signed Authorization.</p>' +
+        '<div class="compliance-esig-row">' +
+          '<div><label>First Name *</label><input class="compliance-input" id="hipaa_first" type="text" placeholder="John" value="' + (f.first||'') + '"></div>' +
+          '<div><label>Last Name *</label><input class="compliance-input" id="hipaa_last" type="text" placeholder="Smith" value="' + (f.last||'') + '"></div>' +
+        '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button class="compliance-btn-primary" onclick="complianceSubmit()">Submit & Reveal Card →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=3; renderComplianceScreen()">← Back</button>' +
+      '<p class="compliance-not-insurance">NOT INSURANCE · Card eligibility and terms for ' + drug + ' apply · Offer expires 12/31/2026</p>' +
+      '</div>';
+  }
+
+  box.innerHTML = html;
+  const modalBox = $('complianceGauntlet') && $('complianceGauntlet').querySelector('.compliance-box');
+  if (modalBox) modalBox.scrollTop = 0;
+}
+
+function complianceChoose(channel) {
+  ComplianceCtx.channel = channel;
+  ComplianceCtx.screen  = channel === 'govt' ? 'govt' : 2;
+  renderComplianceScreen();
+}
+
+function complianceCompleteInsured() {
+  const cb = document.getElementById('insuredConsent');
+  if (!cb || !cb.checked) return showToast('Please accept the terms to continue.', 'error');
+  _saveComplianceRecord('insured');
+  const drug = ComplianceCtx.drug;
+  closeCompliance();
+  navigateTo('search');
+  setTimeout(function(){ triggerSearch(drug); }, 150);
+  setTimeout(function(){ showToast(drug + ' savings unlocked.', 'success'); }, 400);
+}
+
+function complianceCashRegNext() {
+  const g = function(id){ return (document.getElementById(id)||{value:''}).value.trim(); };
+  const first = g('cf_first'), last = g('cf_last'), dob = g('cf_dob');
+  const addr1 = g('cf_addr1'), city = g('cf_city');
+  const state = (document.getElementById('cf_state')||{value:''}).value;
+  const zip   = g('cf_zip'),   phone = g('cf_phone'), email = g('cf_email');
+  const consent = (document.getElementById('cashConsent')||{}).checked;
+  if (!first || !last || !dob || !addr1 || !city || !state || state === 'Select State' || !zip || !phone || !email)
+    return showToast('Please fill in all required fields.', 'error');
+  if (!consent) return showToast('Please accept the consent to continue.', 'error');
+  ComplianceCtx.form = { first, last, dob, addr1, city, state, zip, phone, email, consent };
+  ComplianceCtx.screen = 3;
+  renderComplianceScreen();
+}
+
+function complianceTCNext() {
+  const first = (document.getElementById('sig_first')||{value:''}).value.trim();
+  const last  = (document.getElementById('sig_last')||{value:''}).value.trim();
+  const f = ComplianceCtx.form;
+  if (!first || !last) return showToast('Please enter your name as your electronic signature.', 'error');
+  if (first.toLowerCase() !== (f.first||'').toLowerCase() ||
+      last.toLowerCase()  !== (f.last||'').toLowerCase())
+    return showToast('Signature must match your registered name exactly.', 'error');
+  ComplianceCtx.screen = 4;
+  renderComplianceScreen();
+}
+
+function complianceSubmit() {
+  const first = (document.getElementById('hipaa_first')||{value:''}).value.trim();
+  const last  = (document.getElementById('hipaa_last')||{value:''}).value.trim();
+  const f = ComplianceCtx.form;
+  if (!first || !last) return showToast('Please enter your name to authorize.', 'error');
+  if (first.toLowerCase() !== (f.first||'').toLowerCase() ||
+      last.toLowerCase()  !== (f.last||'').toLowerCase())
+    return showToast('Signature must match your registered name exactly.', 'error');
+  _saveComplianceRecord('cash');
+  const drug = ComplianceCtx.drug;
+  closeCompliance();
+  navigateTo('search');
+  setTimeout(function(){ triggerSearch(drug); }, 150);
+  setTimeout(function(){ showToast(drug + ' card unlocked. Show codes at checkout.', 'success'); }, 450);
+}
+
+function _saveComplianceRecord(channel) {
+  const record = {
+    drug:      ComplianceCtx.drug,
+    channel:   channel,
+    timestamp: new Date().toISOString(),
+    first:     ComplianceCtx.form.first,
+    last:      ComplianceCtx.form.last,
+    dob:       ComplianceCtx.form.dob,
+    email:     ComplianceCtx.form.email,
+    phone:     ComplianceCtx.form.phone,
+    addr1:     ComplianceCtx.form.addr1,
+    city:      ComplianceCtx.form.city,
+    state:     ComplianceCtx.form.state,
+    zip:       ComplianceCtx.form.zip,
+  };
+  // Persist cleared state so codes remain visible this session
+  const cleared = JSON.parse(localStorage.getItem('vital_compliance') || '{}');
+  cleared[ComplianceCtx.drug] = { channel: channel, timestamp: record.timestamp };
+  localStorage.setItem('vital_compliance', JSON.stringify(cleared));
+  // TODO: Replace with live Firebase write →
+  // firebase.firestore().collection('legal_audit_trail').add({ ...record, ip: '(resolve server-side)' });
+  console.log('[VITAL Compliance Audit Trail]', record);
+}
+
+function isComplianceCleared(drugName) {
+  const cleared = JSON.parse(localStorage.getItem('vital_compliance') || '{}');
+  return !!cleared[drugName];
+}
+
+/* ═══════════════════════════════════════════════════════════════
    PRICE ACTION → 3D CARD FLIP
 ═══════════════════════════════════════════════════════════════ */
 /* Source themes: front card styling + back card content */
@@ -1481,10 +1856,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMedicationCards() {
   document.querySelectorAll('.medication-card[data-drug]').forEach(card => {
     card.style.cursor = 'pointer';
-    card.addEventListener('click', () => {
-      const drug = card.dataset.drug;
-      navigateTo('search');
-      setTimeout(() => triggerSearch(drug), 150);
+    card.addEventListener('click', function() {
+      showComplianceGauntlet(card.dataset.drug);
     });
   });
 }
