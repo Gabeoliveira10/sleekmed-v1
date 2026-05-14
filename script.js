@@ -1046,7 +1046,7 @@ const US_STATES = ['Select State','Alabama','Alaska','Arizona','Arkansas','Calif
 /* ═══════════════════════════════════════════════════════════════
    COMPLIANCE GAUNTLET — 4-Screen Legal Flow
 ═══════════════════════════════════════════════════════════════ */
-const ComplianceCtx = { drug: null, channel: null, screen: 1, form: {} };
+const ComplianceCtx = { drug: null, channel: null, screen: 1, form: {}, _pendingBtn: null };
 
 function showComplianceGauntlet(drugName) {
   ComplianceCtx.drug    = drugName;
@@ -1277,10 +1277,19 @@ function complianceCompleteInsured() {
   if (!cb || !cb.checked) return showToast('Please accept the terms to continue.', 'error');
   _saveComplianceRecord('insured');
   const drug = ComplianceCtx.drug;
+  const pendingBtn = ComplianceCtx._pendingBtn;
+  ComplianceCtx._pendingBtn = null;
   closeCompliance();
-  navigateTo('search');
-  setTimeout(function(){ triggerSearch(drug); }, 150);
-  setTimeout(function(){ showToast(drug + ' savings unlocked.', 'success'); }, 400);
+  if (pendingBtn) {
+    // Came from clicking "Use This Card" — replay the price action now that codes are unlocked
+    setTimeout(function(){ handlePriceAction(pendingBtn); }, 120);
+    setTimeout(function(){ showToast(drug + ' codes unlocked!', 'success'); }, 500);
+  } else {
+    // Came from a home-page medication card — navigate to Savings Finder
+    navigateTo('search');
+    setTimeout(function(){ triggerSearch(drug); }, 150);
+    setTimeout(function(){ showToast(drug + ' savings unlocked.', 'success'); }, 400);
+  }
 }
 
 function complianceCashRegNext() {
@@ -1320,10 +1329,19 @@ function complianceSubmit() {
     return showToast('Signature must match your registered name exactly.', 'error');
   _saveComplianceRecord('cash');
   const drug = ComplianceCtx.drug;
+  const pendingBtn = ComplianceCtx._pendingBtn;
+  ComplianceCtx._pendingBtn = null;
   closeCompliance();
-  navigateTo('search');
-  setTimeout(function(){ triggerSearch(drug); }, 150);
-  setTimeout(function(){ showToast(drug + ' card unlocked. Show codes at checkout.', 'success'); }, 450);
+  if (pendingBtn) {
+    // Came from clicking "Use This Card" — replay the price action now that codes are unlocked
+    setTimeout(function(){ handlePriceAction(pendingBtn); }, 120);
+    setTimeout(function(){ showToast(drug + ' card unlocked. Show codes at checkout.', 'success'); }, 500);
+  } else {
+    // Came from a home-page medication card
+    navigateTo('search');
+    setTimeout(function(){ triggerSearch(drug); }, 150);
+    setTimeout(function(){ showToast(drug + ' card unlocked. Show codes at checkout.', 'success'); }, 450);
+  }
 }
 
 function _saveComplianceRecord(channel) {
@@ -1428,6 +1446,13 @@ function handlePriceAction(btn) {
   const retail      = parseFloat(btn.dataset.retail);
   const theme       = SOURCE_THEMES[sourceId] || SOURCE_THEMES.fp;
 
+  // ── COMPLIANCE GATE: VITAL Direct codes are locked until eligibility is verified ──
+  if (sourceId === 'fp' && !isComplianceCleared(drug)) {
+    ComplianceCtx._pendingBtn = btn;
+    showComplianceGauntlet(drug);
+    return; // Do not reveal codes — stop here
+  }
+
   // Highlight selected price card
   $$('#priceComparisonGrid .price-card').forEach(c => {
     c.classList.remove('selected-card');
@@ -1452,13 +1477,20 @@ function handlePriceAction(btn) {
   $('flipDrug').textContent = `${drug} · ${variantLbl}`;
   document.querySelector('.flip-hint').style.color = theme.frontHintColor;
 
-  // Build dynamic back card
-  const codesHtml = theme.showCodes ? `
-    <div class="mini-card-codes">
-      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
-      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
-      <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
-    </div>` : `<div style="height:14px"></div>`;
+  // Build dynamic back card — codes only shown after compliance clearance
+  const cleared = isComplianceCleared(drug);
+  const codesHtml = theme.showCodes
+    ? (cleared
+        ? `<div class="mini-card-codes">
+            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
+            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
+            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
+          </div>`
+        : `<div class="mini-card-locked">
+            <div class="mini-card-lock-icon">🔒</div>
+            <div class="mini-card-lock-text">Verify eligibility to unlock codes</div>
+          </div>`)
+    : `<div style="height:14px"></div>`;
 
   const back = document.querySelector('.card-flip-back');
   back.style.background = theme.backBg;
