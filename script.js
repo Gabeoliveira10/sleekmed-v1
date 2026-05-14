@@ -1970,68 +1970,106 @@ function initMedicationCards() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BROWSE MEDICATIONS CATALOG
+   BROWSE MEDICATIONS CATALOG — Category drill-down
 ═══════════════════════════════════════════════════════════════ */
-function initBrowseCatalog() {
-  const grid    = $('browseMedGrid');
-  const filters = $('browseFilters');
-  if (!grid || !filters) return;
 
-  // Build unique sorted category list from DRUGS array
-  const cats = [...new Set(DRUGS.map(d => d.category))].sort();
+// Colour palette cycling per category
+const CAT_PALETTE = [
+  { bg: 'rgba(0,200,150,0.07)',   accent: '#00a878', border: 'rgba(0,200,150,0.22)' },
+  { bg: 'rgba(59,130,246,0.07)',  accent: '#2563eb', border: 'rgba(59,130,246,0.22)' },
+  { bg: 'rgba(217,119,6,0.07)',   accent: '#d97706', border: 'rgba(217,119,6,0.22)'  },
+  { bg: 'rgba(139,92,246,0.07)',  accent: '#7c3aed', border: 'rgba(139,92,246,0.22)' },
+  { bg: 'rgba(239,68,68,0.07)',   accent: '#dc2626', border: 'rgba(239,68,68,0.22)'  },
+  { bg: 'rgba(20,184,166,0.07)',  accent: '#0d9488', border: 'rgba(20,184,166,0.22)' },
+  { bg: 'rgba(245,158,11,0.07)',  accent: '#b45309', border: 'rgba(245,158,11,0.22)' },
+  { bg: 'rgba(236,72,153,0.07)',  accent: '#be185d', border: 'rgba(236,72,153,0.22)' },
+];
 
-  // Inject category filter buttons (after the "All" button that's in HTML)
-  cats.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'browse-filter-btn';
-    btn.dataset.filter = cat;
-    btn.textContent = cat;
-    filters.appendChild(btn);
+// Build category → drugs map once
+function buildCatMap() {
+  const map = {};
+  DRUGS.forEach(d => {
+    if (!map[d.category]) map[d.category] = [];
+    map[d.category].push(d);
   });
-
-  // Render all drug cards initially
-  renderBrowseGrid('all');
-
-  // Filter button click handler
-  filters.addEventListener('click', e => {
-    const btn = e.target.closest('.browse-filter-btn');
-    if (!btn) return;
-    filters.querySelectorAll('.browse-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderBrowseGrid(btn.dataset.filter);
-  });
+  return map;
 }
 
-function renderBrowseGrid(filter) {
-  const grid = $('browseMedGrid');
-  if (!grid) return;
+function initBrowseCatalog() {
+  if (!$('browseCatGrid')) return;
+  renderBrowseCategories();
+}
 
-  const list = filter === 'all' ? DRUGS : DRUGS.filter(d => d.category === filter);
+function renderBrowseCategories() {
+  const catGrid = $('browseCatGrid');
+  if (!catGrid) return;
 
-  grid.innerHTML = list.map(drug => {
-    // Grab lowest fairplay price from variants
-    const lowestPrice = Math.min(...drug.variants.map(v => v.fairplay));
+  const map  = buildCatMap();
+  const cats = Object.keys(map).sort();
+
+  catGrid.innerHTML = cats.map((cat, i) => {
+    const p     = CAT_PALETTE[i % CAT_PALETTE.length];
+    const count = map[cat].length;
     return `
-      <div class="browse-drug-card" onclick="handleBrowseDrugClick('${drug.name.replace(/'/g,"\\'")}')">
-        <div class="browse-drug-icon">${drug.icon || 'Rx'}</div>
-        <div class="browse-drug-name">${drug.name}</div>
-        <div class="browse-drug-category">${drug.category}</div>
-        <div class="browse-drug-price">From $${lowestPrice.toFixed(2)}</div>
-      </div>
-    `;
+      <div class="browse-cat-card"
+           style="--cat-bg:${p.bg};--cat-accent:${p.accent};--cat-border:${p.border}"
+           onclick="showBrowseDrugs('${cat.replace(/'/g,"\\'")}')">
+        <div class="browse-cat-dot"></div>
+        <div class="browse-cat-body">
+          <div class="browse-cat-name">${cat}</div>
+          <div class="browse-cat-count">${count} medication${count !== 1 ? 's' : ''}</div>
+        </div>
+        <svg class="browse-cat-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>`;
   }).join('');
+
+  $('browseCategoryView').style.display = '';
+  $('browseDrugView').style.display     = 'none';
+}
+
+function showBrowseDrugs(category) {
+  const map   = buildCatMap();
+  const drugs = (map[category] || []).sort((a, b) => a.name.localeCompare(b.name));
+
+  $('browseDrugHeading').textContent = category;
+
+  $('browseDrugList').innerHTML = drugs.map(drug => {
+    const low = Math.min(...drug.variants.map(v => v.fairplay));
+    return `
+      <div class="browse-drug-row" onclick="handleBrowseDrugClick('${drug.name.replace(/'/g,"\\'")}')">
+        <div class="browse-drug-row-icon">${drug.icon || 'Rx'}</div>
+        <div class="browse-drug-row-info">
+          <div class="browse-drug-row-name">${drug.name}</div>
+          <div class="browse-drug-row-sub">${drug.variants.length} variant${drug.variants.length !== 1 ? 's' : ''} available</div>
+        </div>
+        <div class="browse-drug-row-price">From $${low.toFixed(2)}</div>
+        <svg class="browse-drug-row-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>`;
+  }).join('');
+
+  $('browseCategoryView').style.display = 'none';
+  $('browseDrugView').style.display     = '';
+}
+
+function showBrowseCategories() {
+  $('browseCategoryView').style.display = '';
+  $('browseDrugView').style.display     = 'none';
 }
 
 function handleBrowseDrugClick(drugName) {
-  // Hide catalog, run search
-  const catalog = $('browseCatalog');
-  if (catalog) catalog.style.display = 'none';
+  hideBrowseCatalog();
   triggerSearch(drugName);
 }
 
 function showBrowseCatalog() {
   const catalog = $('browseCatalog');
   if (catalog) catalog.style.display = '';
+  // Always land back on category grid when re-opening
+  showBrowseCategories();
 }
 
 function hideBrowseCatalog() {

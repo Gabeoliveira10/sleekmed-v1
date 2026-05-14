@@ -394,11 +394,25 @@
 
         <!-- Browse Catalog (shown when no search is active) -->
         <div id="browseCatalog" class="browse-catalog">
-          <p class="browse-catalog-title">All Medications in Our Network</p>
-          <div class="browse-filters" id="browseFilters">
-            <button class="browse-filter-btn active" data-filter="all">All Medications</button>
+
+          <!-- Category grid (default view) -->
+          <div id="browseCategoryView">
+            <p class="browse-catalog-title">Browse by Category</p>
+            <div class="browse-cat-grid" id="browseCatGrid"></div>
           </div>
-          <div class="browse-med-grid" id="browseMedGrid"></div>
+
+          <!-- Drug list (shown after clicking a category) -->
+          <div id="browseDrugView" style="display:none">
+            <div class="browse-drug-header">
+              <button class="browse-back-btn" onclick="showBrowseCategories()">
+                <svg viewBox="0 0 20 20" fill="none" width="15" height="15"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                All Categories
+              </button>
+              <h3 class="browse-drug-heading" id="browseDrugHeading"></h3>
+            </div>
+            <div class="browse-drug-list" id="browseDrugList"></div>
+          </div>
+
         </div>
 
         <div class="search-results-panel" id="searchResultsPanel" style="display:none">

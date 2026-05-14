@@ -2372,103 +2372,163 @@ body.compliance-open { overflow: hidden; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BROWSE MEDICATIONS CATALOG
+   BROWSE MEDICATIONS CATALOG — Category drill-down
 ═══════════════════════════════════════════════════════════════ */
-.browse-catalog {
-  margin-top: 32px;
-}
+.browse-catalog { margin-top: 32px; }
+
 .browse-catalog-title {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin: 0 0 16px;
+  margin: 0 0 18px;
 }
-.browse-filters {
+
+/* ── Category card grid ─────────────────────────────────────── */
+.browse-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.browse-cat-card {
+  background: var(--cat-bg);
+  border: 1.5px solid var(--cat-border);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.18s var(--ease-satin), box-shadow 0.18s var(--ease-satin);
+  position: relative;
 }
-.browse-filter-btn {
-  padding: 7px 16px;
-  border-radius: var(--radius-pill);
-  border: 1.5px solid var(--border-muted);
+.browse-cat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+.browse-cat-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--cat-accent);
+  flex-shrink: 0;
+}
+.browse-cat-body { flex: 1; min-width: 0; }
+.browse-cat-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.browse-cat-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+.browse-cat-arrow {
+  flex-shrink: 0;
+  color: var(--cat-accent);
+  opacity: 0.7;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.browse-cat-card:hover .browse-cat-arrow { opacity: 1; transform: translateX(2px); }
+
+/* ── Drug list within a category ────────────────────────────── */
+.browse-drug-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.browse-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--bg-base);
+  border: 1.5px solid var(--border-muted);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
   font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.15s var(--ease-satin);
-  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
 }
-.browse-filter-btn:hover {
-  border-color: var(--brand-navy);
-  color: var(--brand-navy);
-  background: rgba(0,31,63,0.04);
+.browse-back-btn:hover { border-color: var(--brand-navy); color: var(--brand-navy); }
+.browse-drug-heading {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
 }
-.browse-filter-btn.active {
-  background: var(--brand-navy);
-  border-color: var(--brand-navy);
-  color: #ffffff;
-}
-.browse-med-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 14px;
-}
-.browse-drug-card {
-  background: var(--bg-base);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 18px 16px 14px;
-  cursor: pointer;
-  transition: border-color 0.2s var(--ease-satin), box-shadow 0.2s var(--ease-satin), transform 0.18s var(--ease-satin);
+.browse-drug-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.browse-drug-card:hover {
-  border-color: rgba(0,31,63,0.25);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  transform: translateY(-2px);
+.browse-drug-row {
+  background: var(--bg-base);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.18s var(--ease-satin), box-shadow 0.18s var(--ease-satin), transform 0.15s var(--ease-satin);
 }
-.browse-drug-icon {
-  width: 34px; height: 34px;
+.browse-drug-row:hover {
+  border-color: rgba(0,31,63,0.22);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  transform: translateX(3px);
+}
+.browse-drug-row-icon {
+  width: 36px; height: 36px;
   border-radius: var(--radius-sm);
   background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: 0.04em;
-  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
-.browse-drug-name {
-  font-size: 14px;
+.browse-drug-row-info { flex: 1; min-width: 0; }
+.browse-drug-row-name {
+  font-size: 14.5px;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.25;
 }
-.browse-drug-category {
-  font-size: 11.5px;
+.browse-drug-row-sub {
+  font-size: 12px;
   color: var(--text-muted);
-  font-weight: 500;
+  margin-top: 2px;
 }
-.browse-drug-price {
+.browse-drug-row-price {
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: #00C896;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: auto;
-  padding-top: 4px;
+  color: #00a878;
+  flex-shrink: 0;
 }
+.browse-drug-row-arrow {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  opacity: 0.5;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.browse-drug-row:hover .browse-drug-row-arrow { opacity: 1; transform: translateX(2px); }
 
 @media (max-width: 640px) {
-  .browse-med-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .browse-drug-card { padding: 14px 12px 11px; }
+  .browse-cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .browse-cat-card { padding: 14px 12px; gap: 10px; }
+  .browse-cat-name { font-size: 13px; }
+  .browse-drug-row-price { display: none; } /* price shown after tap on mobile */
 }
