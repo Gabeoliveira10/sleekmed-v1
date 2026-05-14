@@ -648,7 +648,15 @@ function updateAuthUI() {
     su.style.display = 'none';
     if (signInRow) signInRow.style.display = 'block';
   }
-  updateInsuranceNotice();
+  // Private sidebar links — only visible when logged in
+  const cabinetLink = $('cabinetSidebarLink');
+  const profileLink = $('profileSidebarLink');
+  const accountSection = $('accountSidebarSection');
+  const navProfile = $('navMyProfile');
+  if (cabinetLink) cabinetLink.style.display = loggedIn ? '' : 'none';
+  if (profileLink) profileLink.style.display = loggedIn ? '' : 'none';
+  if (accountSection) accountSection.style.display = loggedIn ? '' : 'none';
+  if (navProfile) navProfile.style.display = loggedIn ? '' : 'none';
 }
 
 function updateAdminSidebarVisibility() {
@@ -924,16 +932,72 @@ function renderSearchResults(drug) {
   updateInsuranceNotice();
 }
 
+/* ─── Direct deep-links per drug: GoodRx and Cost Plus ─────── */
+const DRUG_LINKS = {
+  'Metformin':          { goodrx: 'https://www.goodrx.com/metformin',        costplus: 'https://costplusdrugs.com/medications/metformin-hcl-tablet/' },
+  'Lisinopril':         { goodrx: 'https://www.goodrx.com/lisinopril',       costplus: 'https://costplusdrugs.com/medications/lisinopril-tablet/' },
+  'Atorvastatin':       { goodrx: 'https://www.goodrx.com/atorvastatin',     costplus: 'https://costplusdrugs.com/medications/atorvastatin-tablet/' },
+  'Ozempic':            { goodrx: 'https://www.goodrx.com/ozempic',          costplus: 'https://costplusdrugs.com' },
+  'Semaglutide':        { goodrx: 'https://www.goodrx.com/semaglutide',      costplus: 'https://costplusdrugs.com' },
+  'Tirzepatide':        { goodrx: 'https://www.goodrx.com/tirzepatide',      costplus: 'https://costplusdrugs.com' },
+  'Adderall':           { goodrx: 'https://www.goodrx.com/adderall',         costplus: 'https://costplusdrugs.com/medications/amphetamine-salt-combo-tablet/' },
+  'Lexapro':            { goodrx: 'https://www.goodrx.com/lexapro',          costplus: 'https://costplusdrugs.com/medications/escitalopram-tablet/' },
+  'Omeprazole':         { goodrx: 'https://www.goodrx.com/omeprazole',       costplus: 'https://costplusdrugs.com/medications/omeprazole-capsule/' },
+  'Sertraline':         { goodrx: 'https://www.goodrx.com/sertraline',       costplus: 'https://costplusdrugs.com/medications/sertraline-tablet/' },
+  'Amlodipine':         { goodrx: 'https://www.goodrx.com/amlodipine',       costplus: 'https://costplusdrugs.com/medications/amlodipine-tablet/' },
+  'Gabapentin':         { goodrx: 'https://www.goodrx.com/gabapentin',       costplus: 'https://costplusdrugs.com/medications/gabapentin-capsule/' },
+  'Losartan':           { goodrx: 'https://www.goodrx.com/losartan',         costplus: 'https://costplusdrugs.com/medications/losartan-tablet/' },
+  'Levothyroxine':      { goodrx: 'https://www.goodrx.com/levothyroxine',    costplus: 'https://costplusdrugs.com/medications/levothyroxine-tablet/' },
+  'Alprazolam':         { goodrx: 'https://www.goodrx.com/alprazolam',       costplus: 'https://costplusdrugs.com/medications/alprazolam-tablet/' },
+  'Bupropion':          { goodrx: 'https://www.goodrx.com/bupropion',        costplus: 'https://costplusdrugs.com/medications/bupropion-tablet/' },
+  'Pantoprazole':       { goodrx: 'https://www.goodrx.com/pantoprazole',     costplus: 'https://costplusdrugs.com/medications/pantoprazole-sodium-tablet/' },
+  'Furosemide':         { goodrx: 'https://www.goodrx.com/furosemide',       costplus: 'https://costplusdrugs.com/medications/furosemide-tablet/' },
+  'Trazodone':          { goodrx: 'https://www.goodrx.com/trazodone',        costplus: 'https://costplusdrugs.com/medications/trazodone-tablet/' },
+  'Clopidogrel':        { goodrx: 'https://www.goodrx.com/clopidogrel',      costplus: 'https://costplusdrugs.com/medications/clopidogrel-tablet/' },
+  'Rosuvastatin':       { goodrx: 'https://www.goodrx.com/rosuvastatin',     costplus: 'https://costplusdrugs.com/medications/rosuvastatin-tablet/' },
+  'Amoxicillin':        { goodrx: 'https://www.goodrx.com/amoxicillin',      costplus: 'https://costplusdrugs.com/medications/amoxicillin-capsule/' },
+  'Doxycycline':        { goodrx: 'https://www.goodrx.com/doxycycline',      costplus: 'https://costplusdrugs.com/medications/doxycycline-hyclate-capsule/' },
+  'Montelukast':        { goodrx: 'https://www.goodrx.com/montelukast',      costplus: 'https://costplusdrugs.com/medications/montelukast-tablet/' },
+  'Duloxetine':         { goodrx: 'https://www.goodrx.com/duloxetine',       costplus: 'https://costplusdrugs.com/medications/duloxetine-capsule/' },
+  'Clonazepam':         { goodrx: 'https://www.goodrx.com/clonazepam',       costplus: 'https://costplusdrugs.com/medications/clonazepam-tablet/' },
+  'Citalopram':         { goodrx: 'https://www.goodrx.com/citalopram',       costplus: 'https://costplusdrugs.com/medications/citalopram-tablet/' },
+  'Metoprolol':         { goodrx: 'https://www.goodrx.com/metoprolol',       costplus: 'https://costplusdrugs.com/medications/metoprolol-tartrate-tablet/' },
+  'Fluoxetine':         { goodrx: 'https://www.goodrx.com/fluoxetine',       costplus: 'https://costplusdrugs.com/medications/fluoxetine-capsule/' },
+  'Cyclobenzaprine':    { goodrx: 'https://www.goodrx.com/cyclobenzaprine',  costplus: 'https://costplusdrugs.com/medications/cyclobenzaprine-tablet/' },
+  'Hydrochlorothiazide':{ goodrx: 'https://www.goodrx.com/hydrochlorothiazide', costplus: 'https://costplusdrugs.com/medications/hydrochlorothiazide-tablet/' },
+  'Prednisone':         { goodrx: 'https://www.goodrx.com/prednisone',       costplus: 'https://costplusdrugs.com/medications/prednisone-tablet/' },
+  'Zolpidem':           { goodrx: 'https://www.goodrx.com/zolpidem',         costplus: 'https://costplusdrugs.com/medications/zolpidem-tablet/' },
+  'Warfarin':           { goodrx: 'https://www.goodrx.com/warfarin',         costplus: 'https://costplusdrugs.com/medications/warfarin-tablet/' },
+  'Tamsulosin':         { goodrx: 'https://www.goodrx.com/tamsulosin',       costplus: 'https://costplusdrugs.com/medications/tamsulosin-capsule/' },
+  'Methylphenidate':    { goodrx: 'https://www.goodrx.com/methylphenidate',  costplus: 'https://costplusdrugs.com/medications/methylphenidate-tablet/' },
+  'Carvedilol':         { goodrx: 'https://www.goodrx.com/carvedilol',       costplus: 'https://costplusdrugs.com/medications/carvedilol-tablet/' },
+  'Quetiapine':         { goodrx: 'https://www.goodrx.com/quetiapine',       costplus: 'https://costplusdrugs.com/medications/quetiapine-tablet/' },
+  'Aripiprazole':       { goodrx: 'https://www.goodrx.com/aripiprazole',     costplus: 'https://costplusdrugs.com/medications/aripiprazole-tablet/' },
+  'Venlafaxine':        { goodrx: 'https://www.goodrx.com/venlafaxine',      costplus: 'https://costplusdrugs.com/medications/venlafaxine-capsule/' },
+  'Lisinopril-HCTZ':    { goodrx: 'https://www.goodrx.com/lisinopril-hydrochlorothiazide', costplus: 'https://costplusdrugs.com/medications/lisinopril-hctz-tablet/' },
+  'Meloxicam':          { goodrx: 'https://www.goodrx.com/meloxicam',        costplus: 'https://costplusdrugs.com/medications/meloxicam-tablet/' },
+  'Spironolactone':     { goodrx: 'https://www.goodrx.com/spironolactone',   costplus: 'https://costplusdrugs.com/medications/spironolactone-tablet/' },
+  'Oxycodone':          { goodrx: 'https://www.goodrx.com/oxycodone',        costplus: 'https://costplusdrugs.com' },
+  'Tramadol':           { goodrx: 'https://www.goodrx.com/tramadol',         costplus: 'https://costplusdrugs.com/medications/tramadol-tablet/' },
+  'Insulin Glargine':   { goodrx: 'https://www.goodrx.com/insulin-glargine', costplus: 'https://costplusdrugs.com/medications/insulin-glargine-vial/' },
+  'Albuterol':          { goodrx: 'https://www.goodrx.com/albuterol',        costplus: 'https://costplusdrugs.com/medications/albuterol-sulfate-hfa-inhaler/' },
+  'Fluticasone':        { goodrx: 'https://www.goodrx.com/fluticasone',      costplus: 'https://costplusdrugs.com/medications/fluticasone-propionate-nasal-spray/' },
+  'Triamcinolone':      { goodrx: 'https://www.goodrx.com/triamcinolone',    costplus: 'https://costplusdrugs.com/medications/triamcinolone-acetonide-cream/' },
+  'Escitalopram':       { goodrx: 'https://www.goodrx.com/escitalopram',     costplus: 'https://costplusdrugs.com/medications/escitalopram-tablet/' },
+  'Linagliptin':        { goodrx: 'https://www.goodrx.com/linagliptin',      costplus: 'https://costplusdrugs.com' },
+  'Empagliflozin':      { goodrx: 'https://www.goodrx.com/empagliflozin',    costplus: 'https://costplusdrugs.com' },
+  'Celecoxib':          { goodrx: 'https://www.goodrx.com/celecoxib',        costplus: 'https://costplusdrugs.com/medications/celecoxib-capsule/' },
+  'Topiramate':         { goodrx: 'https://www.goodrx.com/topiramate',       costplus: 'https://costplusdrugs.com/medications/topiramate-tablet/' },
+};
+
 function renderPriceCards(variant, drugName) {
-  const ins = getInsuranceRecord();
-  const insLabel = (State.user && ins.carrier) ? `${ins.carrier} Co-pay` : 'Avg. Insurance Co-pay';
+  const links = DRUG_LINKS[drugName] || {};
 
   const prices = [
-    { id: 'fp',  source: 'VITAL Direct',       amount: variant.fairplay,  action: 'Use This Card',      isFP: true },
-    { id: 'ins', source: insLabel,             amount: variant.insurance, action: 'Use Your Insurance',  isFP: false },
-    { id: 'grx', source: 'GoodRx',             amount: variant.goodrx,    action: 'View on GoodRx',      isFP: false },
-    { id: 'cp',  source: 'Cost Plus Drugs',    amount: variant.costplus,  action: 'View on Cost Plus',   isFP: false },
-    { id: 'ret', source: 'Retail Cash',        amount: variant.retail,    action: 'Standard Retail',     isFP: false },
+    { id: 'fp',  source: 'VITAL Direct',    amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
+    { id: 'grx', source: 'GoodRx',          amount: variant.goodrx,   action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
+    { id: 'cp',  source: 'Cost Plus Drugs', amount: variant.costplus, action: 'View on Cost Plus', isFP: false, link: links.costplus || 'https://costplusdrugs.com' },
+    { id: 'ret', source: 'Retail Cash',     amount: variant.retail,   action: 'Standard Retail',   isFP: false, link: null },
   ];
 
   const bestAmount = Math.min(...prices.map(p => p.amount));
@@ -953,6 +1017,7 @@ function renderPriceCards(variant, drugName) {
           data-drug="${drugName}"
           data-variant="${variant.label}"
           data-retail="${variant.retail}"
+          ${p.link ? `data-link="${p.link}"` : ''}
         >${p.action}</button>
         ${p.isFP ? `<button class="btn-save-to-phone" onclick="showWalletComingSoon()">
           <svg viewBox="0 0 20 20" fill="none" width="13" height="13"><rect x="3" y="5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h14" stroke="currentColor" stroke-width="1.4"/><path d="M7 13h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -1520,6 +1585,12 @@ function handlePriceAction(btn) {
   card._flipBound && card.removeEventListener('click', card._flipBound);
   card._flipBound = () => card.classList.toggle('flipped');
   card.addEventListener('click', card._flipBound);
+
+  // Open external link for GoodRx and Cost Plus
+  const extLink = btn.dataset.link;
+  if (extLink && (sourceId === 'grx' || sourceId === 'cp')) {
+    setTimeout(function(){ window.open(extLink, '_blank', 'noopener'); }, 400);
+  }
 
   if (sourceId === 'fp' && !State.user) {
     showToast('Create a free account to save your card details.', 'success');

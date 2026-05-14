@@ -30,10 +30,10 @@
       </a>
       <nav class="top-nav" id="topNav">
         <a href="#" class="nav-link active" data-page="home">Home</a>
-        <a href="#" class="nav-link" data-page="search">Savings Finder</a>
-        <a href="#" class="nav-link" data-page="cabinet">Medicine Cabinet</a>
-        <a href="#" class="nav-link" data-page="card">Digital Card</a>
-        <a href="#" class="nav-link" data-page="vault">My Profile</a>
+        <a href="#" class="nav-link" data-page="search">Browse Medications</a>
+        <a href="#" class="nav-link" data-page="howitworks">How It Works</a>
+        <a href="#" class="nav-link" data-page="about">About Us</a>
+        <a href="#" class="nav-link" id="navMyProfile" data-page="vault" style="display:none">My Profile</a>
       </nav>
       <div class="header-actions">
         <button class="btn-ghost" id="btnSignIn">Sign In</button>
@@ -53,16 +53,14 @@
       <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
     <nav class="sidebar-nav">
-      <div class="sidebar-section-label">Core</div>
+      <div class="sidebar-section-label">Explore</div>
       <a href="#" class="sidebar-link active" data-page="home" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.4"/></svg>Home</a>
-      <a href="#" class="sidebar-link" data-page="search" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Savings Finder</a>
-      <a href="#" class="sidebar-link" data-page="cabinet" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 5V4a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4M8 11h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Medication List</a>
-      <a href="#" class="sidebar-link" data-page="howitworks" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 7v4l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>How It Works</a>
-      <div class="sidebar-section-label">Services</div>
-      <a href="#" class="sidebar-link" data-page="card" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 9h16" stroke="currentColor" stroke-width="1.4"/></svg>Digital Card</a>
+      <a href="#" class="sidebar-link" data-page="search" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Browse Medications</a>
+      <a href="#" class="sidebar-link" data-page="howitworks" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 7v4l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>How It Works &amp; Digital Card</a>
       <a href="#" class="sidebar-link coming-soon-link" data-page="telehealth" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.4"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Online Care<span class="badge-soon">Soon</span></a>
-      <div class="sidebar-section-label">Account</div>
-      <a href="#" class="sidebar-link" data-page="vault" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="12.5" r="1" fill="currentColor"/></svg>My Profile</a>
+      <div class="sidebar-section-label" id="accountSidebarSection" style="display:none">My Account</div>
+      <a href="#" class="sidebar-link" id="cabinetSidebarLink" data-page="cabinet" data-sidebar-link style="display:none"><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 5V4a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4M8 11h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Medicine Cabinet</a>
+      <a href="#" class="sidebar-link" id="profileSidebarLink" data-page="vault" data-sidebar-link style="display:none"><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="12.5" r="1" fill="currentColor"/></svg>My Profile</a>
       <div class="sidebar-section-label">Company</div>
       <a href="#" class="sidebar-link" data-page="about" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>About Us</a>
       <a href="#" class="sidebar-link" data-page="providers" data-sidebar-link><svg class="sidebar-icon" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>For Providers</a>
@@ -381,7 +379,7 @@
     <section class="page" id="page-search">
       <div class="page-inner">
         <div class="page-hero-small">
-          <div class="section-eyebrow">Savings Finder</div>
+          <div class="section-eyebrow">Browse Medications</div>
           <h1 class="page-title">Search Your Medication</h1>
           <p class="page-sub">Compare VITAL Direct, GoodRx, Cost Plus, Insurance Co-pay, and Retail — all in one place.</p>
           <div class="search-page-wrap">
@@ -397,9 +395,9 @@
         <div class="search-results-panel" id="searchResultsPanel" style="display:none">
           <div class="results-header">
             <h2 id="resultsTitle">Results</h2>
-            <div class="insurance-notice" id="insuranceNotice">
-              <span class="insurance-badge">ⓘ</span>
-              <span id="insuranceNoticeText">Showing national average insurance co-pay. <a href="#" data-page="vault">Add your insurance</a> for personalized estimates.</span>
+            <div class="price-intel-notice">
+              <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><path d="M10 2L2 7l8 5 8-5-8-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 13l8 5 8-5M2 10l8 5 8-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              <span><strong>VITAL is a Price Intelligence Platform.</strong> We provide cash and coupon price transparency — NOT Insurance. Always consult your provider.</span>
             </div>
           </div>
           <div class="variant-selector" id="variantSelector"></div>
