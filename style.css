@@ -148,7 +148,7 @@ p, span, a, li, td, th, label, button,
 ═══════════════════════════════════════════════════════════════ */
 .trust-bar {
   position: sticky;
-  top: 32px; /* sits below the 32px marquee */
+  top: 0;
   z-index: var(--z-trust);
   background: linear-gradient(90deg, rgba(0,229,197,0.07) 0%, rgba(0,230,118,0.04) 100%);
   border-bottom: 1px solid rgba(0,229,197,0.12);
@@ -190,7 +190,7 @@ p, span, a, li, td, th, label, button,
 ═══════════════════════════════════════════════════════════════ */
 .site-header {
   position: sticky;
-  top: 61px; /* 32px marquee + 29px trust bar */
+  top: 29px; /* sits below the 29px trust bar */
   z-index: var(--z-header);
   background: rgba(13,17,23,0.97);
   backdrop-filter: blur(20px);
@@ -1411,7 +1411,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 @media (max-width: 640px) {
   .trust-bar-inner { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; gap: 8px; }
   .trust-divider { display: none; }
-  .site-header { top: 28px; }
+  .site-header { top: 29px; }
   .hero { padding: 56px 16px 0; }
   .section-block { padding: 34px 16px; }
   .page-inner { padding: 30px 16px 60px; }
