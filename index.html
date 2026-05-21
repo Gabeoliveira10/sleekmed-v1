@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>VITAL — Prescription Intelligence Platform</title>
+  <title>AlethiaRx — Prescription Trading &amp; Clearing Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- MARKET MARQUEE TICKER -->
+  <div class="rx-marquee" aria-hidden="true">
+    <div class="rx-marquee-track">
+      <!-- set 1 -->
+      <span class="rx-marquee-item"><span class="tm-drug">LIPITOR (Atorvastatin)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$48.20</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $8.50</span><span class="tm-sep">|</span><span class="tm-save">Save 82%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">SYNTHROID (Levothyroxine)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$64.10</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $14.30</span><span class="tm-sep">|</span><span class="tm-save">Save 77%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">NEXIUM (Esomeprazole)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$244.50</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $29.10</span><span class="tm-sep">|</span><span class="tm-save">Save 88%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">AMBIEN (Zolpidem)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$38.90</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $6.20</span><span class="tm-sep">|</span><span class="tm-save">Save 84%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">CRESTOR (Rosuvastatin)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$89.00</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $11.40</span><span class="tm-sep">|</span><span class="tm-save">Save 87%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">OZEMPIC (Semaglutide)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$1,200</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $299</span><span class="tm-sep">|</span><span class="tm-save">Save 75%</span></span>
+      <!-- set 2 — identical copy for seamless loop -->
+      <span class="rx-marquee-item"><span class="tm-drug">LIPITOR (Atorvastatin)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$48.20</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $8.50</span><span class="tm-sep">|</span><span class="tm-save">Save 82%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">SYNTHROID (Levothyroxine)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$64.10</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $14.30</span><span class="tm-sep">|</span><span class="tm-save">Save 77%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">NEXIUM (Esomeprazole)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$244.50</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $29.10</span><span class="tm-sep">|</span><span class="tm-save">Save 88%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">AMBIEN (Zolpidem)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$38.90</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $6.20</span><span class="tm-sep">|</span><span class="tm-save">Save 84%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">CRESTOR (Rosuvastatin)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$89.00</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $11.40</span><span class="tm-sep">|</span><span class="tm-save">Save 87%</span></span>
+      <span class="rx-marquee-item"><span class="tm-drug">OZEMPIC (Semaglutide)</span><span class="tm-sep">·</span>Retail <span class="tm-retail">$1,200</span><span class="tm-arrow">➔</span><span class="tm-price">AlethiaRx $299</span><span class="tm-sep">|</span><span class="tm-save">Save 75%</span></span>
+    </div>
+  </div>
 
   <div class="trust-bar" id="trustBar">
     <div class="trust-bar-inner">
@@ -18,7 +38,7 @@
       <span class="trust-divider">|</span>
       <span class="trust-text">HIPAA-Compliant Data Handling</span>
       <span class="trust-divider">|</span>
-      <span class="trust-text">VITAL is NOT Insurance</span>
+      <span class="trust-text">AlethiaRx is NOT Insurance</span>
     </div>
   </div>
 
@@ -26,7 +46,7 @@
     <div class="header-inner">
       <a href="index.html" class="logo-block">
         <div class="logo-capsule"></div>
-        <span class="logo-text">VITAL</span>
+        <span class="logo-text">AlethiaRx</span>
       </a>
       <nav class="top-nav" id="topNav">
         <a href="#" class="nav-link active" data-page="home">Home</a>
@@ -48,7 +68,7 @@
     <div class="sidebar-header">
       <a href="index.html" class="logo-block">
         <div class="logo-capsule"></div>
-        <span class="logo-text">VITAL</span>
+        <span class="logo-text">AlethiaRx</span>
       </a>
       <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
@@ -93,16 +113,20 @@
         <div class="hero-content">
           <div class="hero-text-block">
             <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Prescription Price Intelligence Platform</div>
-            <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
-            <p class="hero-sub">VITAL compares VITAL Direct prices, manufacturer coupons, GoodRx, and Cost Plus Drugs side-by-side — so you never overpay at the pharmacy again.</p>
             <div class="hero-search-wrap">
               <div class="search-box" id="heroSearchBox">
-                <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#0057AD" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#0057AD" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#00e5c5" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#00e5c5" stroke-width="1.5" stroke-linecap="round"/></svg>
                 <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
                 <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
               </div>
               <div class="search-dropdown" id="heroSearchDropdown"></div>
             </div>
+            <div class="search-apex-subbar">
+              <span class="search-apex-bolt">⚡</span>
+              Real-Time Index Clearing Across: Mark Cuban Cost Plus &nbsp;·&nbsp; GoodRx &nbsp;·&nbsp; Manufacturer Programs &nbsp;·&nbsp; Direct Wholesale Links &nbsp;·&nbsp; 75,000+ Local Pharmacies
+            </div>
+            <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
+            <p class="hero-sub">AlethiaRx compares AlethiaRx Direct prices, manufacturer coupons, GoodRx, and Cost Plus Drugs side-by-side — so you never overpay at the pharmacy again.</p>
             <div class="hero-tags">
               <span class="hero-tag" data-search="Metformin">Metformin</span>
               <span class="hero-tag" data-search="Lisinopril">Lisinopril</span>
@@ -117,7 +141,7 @@
               <div class="hcp-eyebrow">Your Savings Card</div>
               <div class="hcp-logo">
                 <div class="logo-capsule" style="width:18px;height:32px;border-radius:9px;border-color:rgba(255,255,255,0.7);"></div>
-                <span>VITAL</span>
+                <span>AlethiaRx</span>
               </div>
               <div class="hcp-savings-line">Save up to <span class="hcp-highlight">80%</span> vs. retail</div>
               <div class="hcp-codes-row">
@@ -125,7 +149,7 @@
                 <div class="hcp-code"><div class="hcp-code-label">PCN</div><div class="hcp-code-val">FPLAY</div></div>
                 <div class="hcp-code"><div class="hcp-code-label">GROUP</div><div class="hcp-code-val">FP2026</div></div>
               </div>
-              <div class="hcp-network">75,000+ Partner Pharmacies · VITAL is NOT Insurance</div>
+              <div class="hcp-network">75,000+ Partner Pharmacies · AlethiaRx is NOT Insurance</div>
             </div>
           </div>
         </div>
@@ -189,7 +213,7 @@
               <div class="med-name">Ozempic (Semaglutide)</div>
               <div class="med-sub">Brand · GLP-1 / Diabetes</div>
               <div class="med-pricing">
-                <span class="med-price-green" style="font-size:17px;">VITAL Price: $299</span>
+                <span class="med-price-green" style="font-size:17px;">AlethiaRx: $299</span>
                 <span class="med-retail-anchor">Retail: $1,200</span>
               </div>
             </div>
@@ -203,7 +227,7 @@
               <div class="med-name">Tirzepatide (Zepbound)</div>
               <div class="med-sub">Brand · GLP-1 / Weight Loss</div>
               <div class="med-pricing">
-                <span class="med-price-green" style="font-size:17px;">VITAL Price: $399</span>
+                <span class="med-price-green" style="font-size:17px;">AlethiaRx: $399</span>
                 <span class="med-retail-anchor">Retail: $1,086</span>
               </div>
             </div>
@@ -211,14 +235,42 @@
         </div>
       </div>
 
-      <!-- How It Works — moved directly after Medications -->
+      <!-- How It Works — accordion -->
       <div class="section-block alt-bg" id="howItWorksHome">
-        <div class="section-header"><div class="section-eyebrow">Platform Logic</div><h2 class="section-title">How VITAL Works</h2></div>
-        <div class="hiw-steps">
-          <div class="hiw-step"><div class="hiw-step-num">1</div><h3>Search Your Medication</h3><p>Enter your drug name and select the exact dosage and quantity prescribed. Our engine retrieves live pricing from our 75,000+ partner network.</p></div>
-          <div class="hiw-step"><div class="hiw-step-num">2</div><h3>Compare All Prices</h3><p>View VITAL Direct, GoodRx, Cost Plus Drugs, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
-          <div class="hiw-step"><div class="hiw-step-num">3</div><h3>Get Your Digital Card</h3><p>Create a free account to generate your Digital Access Card — pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy.</p></div>
-          <div class="hiw-step"><div class="hiw-step-num">4</div><h3>Save Immediately</h3><p>The pharmacist applies the VITAL discount in real-time. Average savings: 80% below retail. No claims. No waiting. Pay cash and keep moving.</p></div>
+        <div class="section-header"><div class="section-eyebrow">Platform Logic</div><h2 class="section-title">How AlethiaRx Works</h2></div>
+        <div class="hiw-accordion">
+          <div class="hiw-acc-item">
+            <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+              <span class="hiw-acc-num">01</span>
+              <span class="hiw-acc-title">Search Your Medication</span>
+              <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hiw-acc-body"><p>Enter your drug name and select the exact dosage and quantity prescribed. Our engine retrieves live pricing from our 75,000+ partner network.</p></div>
+          </div>
+          <div class="hiw-acc-item">
+            <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+              <span class="hiw-acc-num">02</span>
+              <span class="hiw-acc-title">Compare All Prices</span>
+              <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hiw-acc-body"><p>View AlethiaRx Direct, GoodRx, Cost Plus Drugs, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
+          </div>
+          <div class="hiw-acc-item">
+            <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+              <span class="hiw-acc-num">03</span>
+              <span class="hiw-acc-title">Get Your Digital Card</span>
+              <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hiw-acc-body"><p>Create a free account to generate your Digital Access Card — pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy.</p></div>
+          </div>
+          <div class="hiw-acc-item">
+            <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+              <span class="hiw-acc-num">04</span>
+              <span class="hiw-acc-title">Save Immediately</span>
+              <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hiw-acc-body"><p>The pharmacist applies the AlethiaRx discount in real-time. Average savings: 80% below retail. No claims. No waiting. Pay cash and keep moving.</p></div>
+          </div>
         </div>
       </div>
 
@@ -251,8 +303,8 @@
           <div class="mission-content-row">
             <div class="mission-text-col">
               <div class="mission-statement">
-                <p>VITAL was born out of a gap in the system. While transitioning between insurance plans, I found myself at the pharmacy counter without coverage, facing an out-of-pocket bill for essential medication. When the system couldn't provide transparency on pricing, I looked elsewhere and discovered that a third-party code was significantly cheaper than the insurance I had been paying hundreds for every month.</p>
-                <p>That experience revealed a fundamental flaw in healthcare: the negotiated price isn't always the best price. I built VITAL to pull back the curtain, giving every patient the transparency they deserve and the tools to find the real price of their medication.</p>
+                <p>AlethiaRx was born out of a gap in the system. While transitioning between insurance plans, I found myself at the pharmacy counter without coverage, facing an out-of-pocket bill for essential medication. When the system couldn't provide transparency on pricing, I looked elsewhere and discovered that a third-party code was significantly cheaper than the insurance I had been paying hundreds for every month.</p>
+                <p>That experience revealed a fundamental flaw in healthcare: the negotiated price isn't always the best price. I built AlethiaRx to pull back the curtain, giving every patient the transparency they deserve and the tools to find the real price of their medication.</p>
                 <p class="mission-sig">— Gabriel Oliveira, Founder &amp; CEO</p>
               </div>
             </div>
@@ -268,7 +320,7 @@
         <div class="section-header">
           <div class="section-eyebrow">Clinical Transparency</div>
           <h2 class="section-title">Why You Overpay.</h2>
-          <p class="section-sub">The prescription pricing system has three systemic failures. VITAL solves all three.</p>
+          <p class="section-sub">The prescription pricing system has three systemic failures. AlethiaRx solves all three.</p>
         </div>
         <div class="overpay-grid">
           <div class="overpay-card">
@@ -290,39 +342,50 @@
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#f87171" stroke-width="1.6"/><path d="M12 7v5l3.5 3.5" stroke="#f87171" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>No Single Source of Truth</h3>
-            <p>GoodRx, Cost Plus, and retail pharmacies all quote different prices for the same drug. VITAL shows every source simultaneously — in one place, instantly — so the lowest price is obvious.</p>
+            <p>GoodRx, Cost Plus, and retail pharmacies all quote different prices for the same drug. AlethiaRx shows every source simultaneously — in one place, instantly — so the lowest price is obvious.</p>
           </div>
         </div>
       </div>
 
-      <!-- Price Gap Is Real — moved after Our Mission -->
-      <div class="section-block price-shock-section section-blue">
+      <!-- Market Audit Block -->
+      <div class="section-block price-shock-section">
         <div class="section-header">
-          <div class="section-eyebrow">Wholesale Savings Opportunity</div>
-          <h2 class="section-title">The Price Gap Is Real.</h2>
-          <p class="section-sub">One drug. Two very different prices. This is why VITAL exists.</p>
+          <div class="section-eyebrow">Market Gap Audit</div>
+          <h2 class="section-title">The Systemic Spread Is Real.</h2>
+          <p class="section-sub">One drug. Two radically different prices. This is why AlethiaRx exists.</p>
         </div>
-        <div class="price-shock-grid">
-          <div class="price-shock-card market-high">
-            <div class="ps-label">Average Pharmacy Cash Price</div>
-            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
-            <div class="ps-price">$1,086.37</div>
-            <div class="ps-source">Retail Pharmacy Average · May 2026</div>
-            <span class="ps-saves-badge" style="background:#dc2626;color:#ffffff;margin-top:14px;">YOU OVERPAY $687.37 HERE</span>
-          </div>
-          <div class="price-shock-divider"><div class="ps-vs">vs</div></div>
-          <div class="price-shock-card vital-floor">
-            <div class="ps-product-img-wrap">
-              <img src="IMAGES/tirzepatide.png" alt="Tirzepatide" class="ps-product-img" />
+        <div class="audit-wrap">
+          <div class="audit-block">
+            <!-- Left — retail receipt -->
+            <div class="audit-card audit-receipt">
+              <div class="audit-receipt-label">⊠ RETAIL CASH INDEX</div>
+              <div class="audit-receipt-drug">Tirzepatide 5mg · Monthly Supply</div>
+              <div class="audit-receipt-price">$1,086.37</div>
+              <div class="audit-receipt-source">Retail Pharmacy Average · May 2026</div>
+              <span class="audit-overpay-badge">YOU OVERPAY $687.37 HERE</span>
             </div>
-            <div class="ps-label">VITAL Discovery Floor (Direct)</div>
-            <div class="ps-drug">Tirzepatide 5mg · Monthly Supply</div>
-            <div class="ps-price">$399.00</div>
-            <div class="ps-source">VITAL Network Price · Verified Direct</div>
+            <!-- Center connector -->
+            <div class="audit-connector">
+              <div class="audit-badge">
+                <span class="audit-badge-label">Total Systemic Spread Cleared</span>
+                <span class="audit-badge-value">Save $687.37</span>
+              </div>
+              <span class="audit-arrow">→</span>
+            </div>
+            <!-- Right — AlethiaRx clearing rate -->
+            <div class="audit-card audit-clearing">
+              <div class="audit-clearing-label">✓ ALETHIA® OPTIMIZED CLEARING RATE</div>
+              <div class="audit-clearing-drug">Tirzepatide 5mg · Monthly Supply</div>
+              <div class="audit-clearing-price">$399.00</div>
+              <div class="audit-clearing-source">AlethiaRx Network Price · Verified Direct</div>
+            </div>
           </div>
-        </div>
-        <div class="price-shock-footer">
-          A <strong>$687.37 gap in pricing exists</strong> between retail cash price and the lowest available discount network price.
+          <!-- Trend bar -->
+          <div class="audit-trend">
+            <span class="audit-trend-lbl high">$1,086 Retail</span>
+            <div class="audit-trend-bar"><div class="audit-trend-fill"></div></div>
+            <span class="audit-trend-lbl low">$399 AlethiaRx</span>
+          </div>
         </div>
       </div>
 
@@ -330,8 +393,8 @@
       <div class="section-block alt-bg">
         <div class="section-header"><div class="section-eyebrow">Client Outcomes</div><h2 class="section-title">What Our Members Say</h2></div>
         <div class="testimonial-grid">
-          <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I was paying $180/month for Ozempic through my insurance. VITAL showed me a Cost Plus path at $89. That's $1,092 back in my pocket every year."</p><div class="testimonial-author"><div class="author-avatar">MR</div><div><strong>Maria R.</strong><span>Type 2 Diabetic, Austin TX</span></div></div></div>
-          <div class="testimonial-card"><div class="stars">★★★★★</div><p>"As someone uninsured for 18 months, the transparency VITAL provided was genuinely life-changing. I didn't know I could get Lisinopril for $3.50 until I searched here."</p><div class="testimonial-author"><div class="author-avatar">JK</div><div><strong>James K.</strong><span>Self-Employed, Denver CO</span></div></div></div>
+          <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I was paying $180/month for Ozempic through my insurance. AlethiaRx showed me a Cost Plus path at $89. That's $1,092 back in my pocket every year."</p><div class="testimonial-author"><div class="author-avatar">MR</div><div><strong>Maria R.</strong><span>Type 2 Diabetic, Austin TX</span></div></div></div>
+          <div class="testimonial-card"><div class="stars">★★★★★</div><p>"As someone uninsured for 18 months, the transparency AlethiaRx provided was genuinely life-changing. I didn't know I could get Lisinopril for $3.50 until I searched here."</p><div class="testimonial-author"><div class="author-avatar">JK</div><div><strong>James K.</strong><span>Self-Employed, Denver CO</span></div></div></div>
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I manage prescriptions for four family members. The Medicine Cabinet feature keeps everything organized, and the refill tracker alerts me before we run out."</p><div class="testimonial-author"><div class="author-avatar">SL</div><div><strong>Sandra L.</strong><span>Family Caregiver, Portland OR</span></div></div></div>
         </div>
       </div>
@@ -420,7 +483,7 @@
             <h2 id="resultsTitle">Results</h2>
             <div class="price-intel-notice">
               <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><path d="M10 2L2 7l8 5 8-5-8-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 13l8 5 8-5M2 10l8 5 8-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-              <span><strong>VITAL is a Price Intelligence Platform.</strong> We provide cash and coupon price transparency — NOT Insurance. Always consult your provider.</span>
+              <span><strong>AlethiaRx is a Price Intelligence Platform.</strong> We provide cash and coupon price transparency — NOT Insurance. Always consult your provider.</span>
             </div>
           </div>
           <div class="variant-selector" id="variantSelector"></div>
@@ -650,7 +713,7 @@
         <div class="hiw-card-cta">
           <div class="hiw-card-cta-inner">
             <div class="hiw-card-cta-text">
-              <h3>Your VITAL Digital Card</h3>
+              <h3>Your AlethiaRx Digital Card</h3>
               <p>Pre-loaded with your BIN, PCN, and Group codes. Show it at any of our 75,000+ partner pharmacies — no printing required.</p>
             </div>
             <button class="btn-primary" onclick="navigateTo('card')">Get Your Card</button>
@@ -667,20 +730,20 @@
           </button>
           <div class="hiw-disclosure-body">
             <h4>Our Pricing Engine</h4>
-            <p>VITAL's pricing engine aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
+            <p>AlethiaRx's pricing engine aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
 
-            <h4>The VITAL Direct Price</h4>
-            <p>Our "VITAL Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
-            <p><strong>Affiliate Disclosure:</strong> VITAL earns a small affiliate fee per claim ($2.50–$5.00) from our partner network. This fee is never passed to the consumer.</p>
+            <h4>The AlethiaRx Direct Price</h4>
+            <p>Our "AlethiaRx Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
+            <p><strong>Affiliate Disclosure:</strong> AlethiaRx earns a small affiliate fee per claim ($2.50–$5.00) from our partner network. This fee is never passed to the consumer.</p>
 
             <h4>HIPAA &amp; Data Security</h4>
-            <p>All personal data stored in your profile is encrypted client-side before storage. VITAL does not sell, share, or license your personal health information to any third party. VITAL is designed to align with HIPAA data handling best practices for consumer health applications.</p>
+            <p>All personal data stored in your profile is encrypted client-side before storage. AlethiaRx does not sell, share, or license your personal health information to any third party. AlethiaRx is designed to align with HIPAA data handling best practices for consumer health applications.</p>
 
             <h4>Eligibility &amp; Legal Compliance</h4>
-            <p>Federal law (42 U.S.C. § 1320a-7b) prohibits government beneficiaries (Medicare, Medicaid, VA, TRICARE) from using manufacturer savings cards. VITAL's eligibility check ensures compliance. Cash prices visible to all users without restriction.</p>
+            <p>Federal law (42 U.S.C. § 1320a-7b) prohibits government beneficiaries (Medicare, Medicaid, VA, TRICARE) from using manufacturer savings cards. AlethiaRx's eligibility check ensures compliance. Cash prices visible to all users without restriction.</p>
 
             <h4>NOT Insurance</h4>
-            <p>VITAL is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before starting, changing, or stopping any medication.</p>
+            <p>AlethiaRx is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before starting, changing, or stopping any medication.</p>
           </div>
         </div>
 
@@ -693,8 +756,8 @@
         <div class="cs-icon"><svg viewBox="0 0 64 64" fill="none" width="64" height="64"><circle cx="32" cy="32" r="30" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M20 32h24M32 20v24" stroke="#34d399" stroke-width="2" stroke-linecap="round"/></svg></div>
         <div class="section-eyebrow">Feature in Development</div>
         <h1 class="cs-title">Online Care</h1>
-        <p class="cs-sub">VITAL Online Care will connect you with board-certified physicians for same-day virtual consultations — with prescriptions sent directly to your preferred VITAL partner pharmacy.</p>
-        <div class="cs-features"><div class="cs-feature"><span class="cs-dot"></span>Same-day physician appointments</div><div class="cs-feature"><span class="cs-dot"></span>Electronic prescriptions to your pharmacy</div><div class="cs-feature"><span class="cs-dot"></span>Integrated with your VITAL profile</div><div class="cs-feature"><span class="cs-dot"></span>Transparent flat-fee pricing</div></div>
+        <p class="cs-sub">AlethiaRx Online Care will connect you with board-certified physicians for same-day virtual consultations — with prescriptions sent directly to your preferred AlethiaRx partner pharmacy.</p>
+        <div class="cs-features"><div class="cs-feature"><span class="cs-dot"></span>Same-day physician appointments</div><div class="cs-feature"><span class="cs-dot"></span>Electronic prescriptions to your pharmacy</div><div class="cs-feature"><span class="cs-dot"></span>Integrated with your AlethiaRx profile</div><div class="cs-feature"><span class="cs-dot"></span>Transparent flat-fee pricing</div></div>
         <div class="cs-eta"><div class="cs-eta-label">Estimated Launch</div><div class="cs-eta-date">Q3 2026</div></div>
         <button class="btn-primary" id="teleNotifyBtn">Notify Me When Live</button>
       </div>
@@ -703,11 +766,11 @@
     <!-- PAGE: ABOUT -->
     <section class="page" id="page-about">
       <div class="page-inner">
-        <div class="page-hero-small"><div class="section-eyebrow">Our Story</div><h1 class="page-title">About VITAL</h1></div>
+        <div class="page-hero-small"><div class="section-eyebrow">Our Story</div><h1 class="page-title">About AlethiaRx</h1></div>
         <div class="about-content">
-          <div class="about-mission"><h2>Our Mission</h2><p>VITAL is a prescription price intelligence platform built on a single belief: <em>every patient deserves to know what they're actually paying for, and why</em>. We aggregate pricing data from five channels and present it without bias, without markup, and without agenda.</p><p>We are a data company. We are not a pharmacy. We are not an insurance company. We are not your doctor.</p></div>
+          <div class="about-mission"><h2>Our Mission</h2><p>AlethiaRx is a prescription price intelligence platform built on a single belief: <em>every patient deserves to know what they're actually paying for, and why</em>. We aggregate pricing data from five channels and present it without bias, without markup, and without agenda.</p><p>We are a data company. We are not a pharmacy. We are not an insurance company. We are not your doctor.</p></div>
           <div class="about-values"><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Clinical Integrity</h3><p>We never recommend treatments. We present data. Every price, every disclaimer, every data source is clearly attributed.</p></div><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="9" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 9V7a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></div><h3>Radical Privacy</h3><p>Your health data is yours. We encrypt it locally, never sell it, and give you a one-click permanent purge at any time.</p></div><div class="value-card"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><h3>Fintech Precision</h3><p>We treat prescription pricing with the same rigor a Bloomberg terminal applies to bond yields. Real data. Real time. No rounding.</p></div></div>
-          <div class="about-legal"><h3>Legal Disclaimer</h3><p>VITAL is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary at point of sale. Always consult a licensed physician before starting, changing, or stopping any medication.</p></div>
+          <div class="about-legal"><h3>Legal Disclaimer</h3><p>AlethiaRx is a price aggregation and data display tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary at point of sale. Always consult a licensed physician before starting, changing, or stopping any medication.</p></div>
         </div>
       </div>
     </section>
@@ -743,7 +806,7 @@
         <div class="auth-gate" id="vaultAuthGate">
           <div class="auth-gate-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="10" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></div>
           <h3>Secure Authentication Required</h3>
-          <p>Access to the Security Vault requires a verified VITAL account.</p>
+          <p>Access to the Security Vault requires a verified AlethiaRx account.</p>
           <div class="auth-gate-actions"><button class="btn-primary" id="vaultSignInBtn">Sign In</button><button class="btn-ghost" id="vaultCreateBtn">Create Account</button></div>
         </div>
         <div class="vault-content" id="vaultContent" style="display:none">
@@ -790,7 +853,7 @@
               </div>
             </div>
           </div>
-          <div class="vault-lifecycle"><div class="lifecycle-card"><h4>Account Actions</h4><div class="lifecycle-actions"><button class="btn-ghost" id="signOutBtn">Sign Out of VITAL</button><button class="btn-danger" id="purgeBtn">Permanent Data Purge</button></div></div></div>
+          <div class="vault-lifecycle"><div class="lifecycle-card"><h4>Account Actions</h4><div class="lifecycle-actions"><button class="btn-ghost" id="signOutBtn">Sign Out of AlethiaRx</button><button class="btn-danger" id="purgeBtn">Permanent Data Purge</button></div></div></div>
         </div>
       </div>
     </section>
@@ -798,12 +861,12 @@
     <!-- PAGE: DIGITAL CARD -->
     <section class="page" id="page-card">
       <div class="page-inner">
-        <div class="page-hero-small"><div class="section-eyebrow">Digital Access Card</div><h1 class="page-title">Your VITAL Card</h1><p class="page-sub">Present this card at any of our 75,000+ partner pharmacies to apply your negotiated discount instantly.</p></div>
+        <div class="page-hero-small"><div class="section-eyebrow">Digital Access Card</div><h1 class="page-title">Your AlethiaRx Card</h1><p class="page-sub">Present this card at any of our 75,000+ partner pharmacies to apply your negotiated discount instantly.</p></div>
         <div class="card-wrap">
           <div class="digital-card" id="digitalCard">
             <div class="card-inner">
               <div class="card-header">
-                <div class="card-logo">VITAL</div>
+                <div class="card-logo">AlethiaRx</div>
                 <div class="card-chip">
                   <svg viewBox="0 0 32 24" fill="none" width="32" height="24">
                     <rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
@@ -820,14 +883,14 @@
                 <div class="card-code-item"><div class="card-code-label">MEMBER ID</div><div class="card-code-value" id="cardMemberID">—</div></div>
               </div>
               <div class="card-footer">
-                <div class="card-not-insurance">VITAL is NOT Insurance</div>
+                <div class="card-not-insurance">AlethiaRx is NOT Insurance</div>
               </div>
               <div class="card-shine"></div>
             </div>
           </div>
           <div class="card-instructions">
-            <h3>How to Use Your Universal VITAL ID</h3>
-            <ol class="card-steps"><li>Open your VITAL Digital Card on your phone.</li><li>Tell the pharmacist you have a discount card.</li><li>Show this card or provide the BIN/PCN/Group codes verbally.</li><li>The discount is applied instantly at checkout. No claims to file.</li></ol>
+            <h3>How to Use Your Universal AlethiaRx ID</h3>
+            <ol class="card-steps"><li>Open your AlethiaRx Digital Card on your phone.</li><li>Tell the pharmacist you have a discount card.</li><li>Show this card or provide the BIN/PCN/Group codes verbally.</li><li>The discount is applied instantly at checkout. No claims to file.</li></ol>
             <div class="card-insurance-note" id="cardInsuranceNote"><strong>Insurance on file:</strong> <span id="cardInsuranceCarrier">None — add in Security Vault for personalized estimates</span></div>
           </div>
         </div>
@@ -954,7 +1017,7 @@
     <div class="modal purge-modal">
       <div class="purge-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 21h20L12 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="17.5" r="0.75" fill="currentColor"/></svg></div>
       <h2>Permanent Data Purge</h2>
-      <p>This action will <strong>permanently delete</strong> all your VITAL data. This cannot be undone.</p>
+      <p>This action will <strong>permanently delete</strong> all your AlethiaRx data. This cannot be undone.</p>
       <p>Type <strong>DELETE</strong> to confirm:</p>
       <input type="text" id="purgeConfirmInput" class="vault-input" placeholder="Type DELETE" />
       <div class="modal-actions">
@@ -974,17 +1037,41 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-disclaimer"><strong>Medical Disclaimer:</strong> VITAL is a price aggregator and data tool. We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before making any medical decisions.</div>
-    <div class="footer-disclaimer footer-market-disclaimer"><strong>Estimated market intelligence based on retail averages and verified manufacturer-direct pricing as of May 2026. Actual pharmacy prices vary.</strong></div>
+    <div class="footer-disclosure-wrap">
+      <button class="footer-disclosure-btn" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+        <span>Technical Disclosures &amp; Systemic Insights</span>
+        <svg class="footer-disc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="footer-disclosure-panel">
+        <div class="footer-disc-content">
+          <div class="footer-disc-block">
+            <h4>Medical Disclaimer</h4>
+            <p><strong>AlethiaRx is a price aggregator and data tool.</strong> We are NOT health insurance providers, NOT doctors, and NOT medical practitioners. Prices shown are estimates and may vary. Always consult a licensed physician before making any medical decisions.</p>
+          </div>
+          <div class="footer-disc-block">
+            <h4>Pricing Engine</h4>
+            <p>AlethiaRx aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
+          </div>
+          <div class="footer-disc-block">
+            <h4>AlethiaRx Direct &amp; Affiliate Disclosure</h4>
+            <p>Our "AlethiaRx Direct" price is the negotiated rate available through our proprietary affiliate card. <strong>AlethiaRx earns a small affiliate fee per claim ($2.50–$5.00)</strong> from our partner network. This fee is never passed to the consumer.</p>
+          </div>
+          <div class="footer-disc-block">
+            <h4>HIPAA &amp; Legal Compliance</h4>
+            <p>All personal data is encrypted client-side. AlethiaRx does not sell your personal health information. Federal law (42 U.S.C. § 1320a-7b) prohibits government beneficiaries from using manufacturer savings cards. <strong>Estimated market intelligence based on retail averages and verified manufacturer-direct pricing as of May 2026. Actual pharmacy prices vary.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">VITAL</span></a>
+        <a href="index.html" class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">AlethiaRx</span></a>
         <p>Clinical Authority. Radical Transparency.<br/>Fintech Precision.</p>
-        <p class="footer-copy">© 2026 VITAL, Inc. All rights reserved.</p>
+        <p class="footer-copy">© 2026 AlethiaRx, Inc. All rights reserved.</p>
       </div>
       <div class="footer-links">
-        <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Savings Finder</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a><a href="#">Browse A-Z Index</a></div>
-        <div class="footer-col"><div class="footer-col-title">Company</div><a href="#" data-page="about">About Us</a><a href="#" data-page="providers">For Providers</a><a href="mailto:partners@vital.com">Partner Inquiries</a></div>
+        <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Browse Medications</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a></div>
+        <div class="footer-col"><div class="footer-col-title">Company</div><a href="#" data-page="about">About Us</a><a href="#" data-page="providers">For Providers</a><a href="mailto:partners@alethiarx.com">Partner Inquiries</a></div>
         <div class="footer-col"><div class="footer-col-title">Legal</div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">HIPAA Notice</a><a href="#">Affiliate Disclosure</a></div>
       </div>
     </div>

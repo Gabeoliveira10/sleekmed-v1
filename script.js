@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
-   VITAL — PRODUCTION SCRIPT v2
-   50-Drug Database · 3D Card Flip · Golden Record Insurance Engine
+   AlethiaRx — PRODUCTION SCRIPT v3
+   50-Drug Database · 3D Card Flip · Fintech Clearing Engine
 ═══════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -996,7 +996,7 @@ function renderPriceCards(variant, drugName) {
   const links = DRUG_LINKS[drugName] || {};
 
   const prices = [
-    { id: 'fp',  source: 'VITAL Direct',    amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
+    { id: 'fp',  source: 'AlethiaRx Direct', amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
     { id: 'grx', source: 'GoodRx',          amount: variant.goodrx,   action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
     { id: 'cp',  source: 'Cost Plus Drugs', amount: variant.costplus, action: 'View on Cost Plus', isFP: false, link: links.costplus || 'https://costplusdrugs.com' },
     { id: 'ret', source: 'Retail Cash',     amount: variant.retail,   action: 'Standard Retail',   isFP: false, link: null },
@@ -1148,10 +1148,10 @@ function _getTCBox(drug) {
     '<li>You are 18 years of age or older.</li>' +
     '</ol>' +
     '<h4>Card Terms and Conditions</h4>' +
-    '<p>You must have a valid prescription for <strong>' + drug + '</strong> for an approved use consistent with FDA-approved product labeling to use this savings card at participating pharmacies. Subject to VITAL\'s right to terminate, rescind, revoke, or amend card eligibility criteria and/or terms and conditions at VITAL\'s sole discretion, without notice, and for any reason. Card expires and savings end on 12/31/2026.</p>' +
+    '<p>You must have a valid prescription for <strong>' + drug + '</strong> for an approved use consistent with FDA-approved product labeling to use this savings card at participating pharmacies. Subject to AlethiaRx\'s right to terminate, rescind, revoke, or amend card eligibility criteria and/or terms and conditions at AlethiaRx\'s sole discretion, without notice, and for any reason. Card expires and savings end on 12/31/2026.</p>' +
     '<h4>Additional Terms and Conditions</h4>' +
     '<p>This Program and Card is for self-paying (cash) patients and operates outside of any health insurance program. You agree not to seek payment or accept reimbursement for any out-of-pocket costs for <strong>' + drug + '</strong> from any insurance plan, healthcare reimbursement account, or third-party payer — including any state or federal healthcare program. THIS CARD IS NOT INSURANCE. Card savings cannot be combined with any other program, discount, or coupon. Card benefits are non-transferable. Card void where prohibited by law.</p>' +
-    '<p style="font-style:italic;color:var(--text-disabled);font-size:11px">Manufactured by: ' + mfr + '. Distributed by VITAL Health Technologies. Questions? support@vitalrx.com</p>' +
+    '<p style="font-style:italic;color:var(--text-disabled);font-size:11px">Manufactured by: ' + mfr + '. Distributed by AlethiaRx Health Technologies. Questions? support@alethiarx.com</p>' +
     '</div>';
 }
 
@@ -1302,15 +1302,15 @@ function renderComplianceScreen() {
       '</div>' +
       '<div class="compliance-body">' +
       '<div class="compliance-tc-box">' +
-        '<p>You have selected VITAL to coordinate services related to your health and to provide information related to your <strong>' + drug + '</strong> prescription. In order for VITAL to offer these savings programs, VITAL may need to obtain or exchange your protected health information ("PHI") as defined under HIPAA.</p>' +
+        '<p>You have selected AlethiaRx to coordinate services related to your health and to provide information related to your <strong>' + drug + '</strong> prescription. In order for AlethiaRx to offer these savings programs, AlethiaRx may need to obtain or exchange your protected health information ("PHI") as defined under HIPAA.</p>' +
         '<h4>PHI Includes:</h4>' +
         '<p>Information about your health insurance or benefits; all relevant records about your treatment, including medication histories and prescriptions for <strong>' + drug + '</strong>; information about your payment for treatment; and whether you are staying on your medicine or treatment plan.</p>' +
         '<h4>How Your PHI Will Be Used</h4>' +
-        '<p>Your PHI will be used to enroll you in, provide, and administer the <strong>' + drug + '</strong> Self-Pay Savings Program, including to: understand how much of your treatment is covered by insurance; help you find ways to afford such treatment; track the use of your VITAL savings card; contact you about VITAL programs; and measure program performance to make improvements.</p>' +
+        '<p>Your PHI will be used to enroll you in, provide, and administer the <strong>' + drug + '</strong> Self-Pay Savings Program, including to: understand how much of your treatment is covered by insurance; help you find ways to afford such treatment; track the use of your AlethiaRx savings card; contact you about AlethiaRx programs; and measure program performance to make improvements.</p>' +
         '<h4>Your Rights</h4>' +
-        '<p>You are not required to authorize sharing your PHI with VITAL to receive treatment from your healthcare providers. However, VITAL\'s savings programs may not be able to help you without your authorization. You may revoke this authorization at any time by emailing support@vitalrx.com. Revocation will not affect disclosures that occurred before VITAL received notice. This authorization remains in effect for the duration of your participation in the VITAL <strong>' + drug + '</strong> savings program.</p>' +
+        '<p>You are not required to authorize sharing your PHI with AlethiaRx to receive treatment from your healthcare providers. However, AlethiaRx\'s savings programs may not be able to help you without your authorization. You may revoke this authorization at any time by emailing support@alethiarx.com. Revocation will not affect disclosures that occurred before AlethiaRx received notice. This authorization remains in effect for the duration of your participation in the AlethiaRx <strong>' + drug + '</strong> savings program.</p>' +
         '<h4>AUTHORIZATION TO USE AND DISCLOSE PHI</h4>' +
-        '<p>I authorize my Health Care Entities to disclose my PHI and sensitive data for the purposes described in this HIPAA Authorization. This Authorization replaces any prior HIPAA Authorizations provided for this specific VITAL program.</p>' +
+        '<p>I authorize my Health Care Entities to disclose my PHI and sensitive data for the purposes described in this HIPAA Authorization. This Authorization replaces any prior HIPAA Authorizations provided for this specific AlethiaRx program.</p>' +
       '</div>' +
       '<div class="compliance-esig-box">' +
         '<div class="compliance-esig-title">Electronic Signature — Submit</div>' +
@@ -1432,7 +1432,7 @@ function _saveComplianceRecord(channel) {
   localStorage.setItem('vital_compliance', JSON.stringify(cleared));
   // TODO: Replace with live Firebase write →
   // firebase.firestore().collection('legal_audit_trail').add({ ...record, ip: '(resolve server-side)' });
-  console.log('[VITAL Compliance Audit Trail]', record);
+  console.log('[AlethiaRx Compliance Audit Trail]', record);
 }
 
 function isComplianceCleared(drugName) {
@@ -1452,7 +1452,7 @@ const SOURCE_THEMES = {
     glowColor: '#00C896',
     backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
     backBorder: 'rgba(255,255,255,0.10)',
-    logoHtml: '<span style="color:#00C896;font-weight:800;font-size:16px;letter-spacing:-0.02em">VITAL</span>',
+    logoHtml: '<span style="color:#00e5c5;font-weight:800;font-size:16px;letter-spacing:-0.02em">AlethiaRx</span>',
     chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
     codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
     noteColor: 'rgba(255,255,255,0.4)', note: 'Show to pharmacist', showCodes: true,
@@ -1497,7 +1497,7 @@ const SOURCE_THEMES = {
     glowColor: '#00C896',
     backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
     backBorder: 'rgba(255,255,255,0.10)',
-    logoHtml: '<span style="color:#00C896;font-weight:800;font-size:16px;letter-spacing:-0.02em">VITAL</span>',
+    logoHtml: '<span style="color:#00e5c5;font-weight:800;font-size:16px;letter-spacing:-0.02em">AlethiaRx</span>',
     chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
     codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
     noteColor: 'rgba(255,255,255,0.35)', note: 'Standard retail — no discount applied', showCodes: false,
