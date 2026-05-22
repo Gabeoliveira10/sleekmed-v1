@@ -5,43 +5,43 @@
 
 /* ─── TOKENS ─────────────────────────────────────────────────── */
 :root {
-  /* Dark fintech base */
-  --bg-base:       #0d1117;
-  --bg-surface:    #161b22;
-  --bg-raised:     #1c2128;
-  --bg-overlay:    #21262d;
-  --bg-hover:      #2d333b;
-  --bg-active:     #373e47;
+  /* Light medical-tech base */
+  --bg-base:       #ffffff;
+  --bg-surface:    #f7f8fa;
+  --bg-raised:     #ffffff;
+  --bg-overlay:    #f0f2f5;
+  --bg-hover:      #f0f2f5;
+  --bg-active:     #e2e4e8;
 
-  --border-subtle: rgba(255,255,255,0.07);
-  --border-muted:  rgba(255,255,255,0.13);
-  --border-strong: rgba(255,255,255,0.26);
+  --border-subtle: rgba(0,0,0,0.08);
+  --border-muted:  rgba(0,0,0,0.14);
+  --border-strong: rgba(0,0,0,0.26);
 
-  /* Neon medical teal */
-  --mint:          #00e5c5;
-  --mint-dim:      #00b89c;
-  --mint-glow:     rgba(0,229,197,0.15);
-  --mint-glow-sm:  rgba(0,229,197,0.09);
+  /* Teal accent */
+  --mint:          #00a896;
+  --mint-dim:      #007f72;
+  --mint-glow:     rgba(0,168,150,0.15);
+  --mint-glow-sm:  rgba(0,168,150,0.09);
 
   /* Fintech green — optimal price accent */
-  --rx-green:      #00e676;
-  --rx-green-glow: rgba(0,230,118,0.15);
+  --rx-green:      #00c853;
+  --rx-green-glow: rgba(0,200,83,0.15);
 
   --brand-yellow:  #FFCD00;
   --brand-blue:    #0057AD;
   --brand-navy:    #001f3f;
 
-  --gold:          #f0b429;
-  --gold-glow:     rgba(240,180,41,0.12);
+  --gold:          #d97706;
+  --gold-glow:     rgba(217,119,6,0.10);
 
-  --red:           #f87171;
-  --purple:        #a78bfa;
-  --blue:          #60a5fa;
+  --red:           #dc2626;
+  --purple:        #7c3aed;
+  --blue:          #2563eb;
 
-  --text-primary:  #e6edf3;
-  --text-secondary:#8b949e;
-  --text-muted:    #6e7681;
-  --text-disabled: #3d444d;
+  --text-primary:  #111111;
+  --text-secondary:#374151;
+  --text-muted:    #6b7280;
+  --text-disabled: #9ca3af;
 
   --font-display:  'DM Serif Display', Georgia, serif;
   --font-sans:     'Lexend', system-ui, sans-serif;
@@ -2737,3 +2737,299 @@ body.compliance-open { overflow: hidden; }
 .footer-disclaimer { background: rgba(240,180,41,0.05); border-bottom-color: rgba(240,180,41,0.1); }
 .footer-market-disclaimer { background: rgba(255,255,255,0.02); border-bottom-color: var(--border-subtle); }
 .footer-market-disclaimer strong { color: var(--text-secondary); }
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE — Hardcoded dark value overrides
+   These win last because they sit at the bottom of the cascade.
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Body & scrollbars ──────────────────────────────────────── */
+body { background: #ffffff !important; color: #111111 !important; }
+::-webkit-scrollbar-track { background: #f0f0f0 !important; }
+::-webkit-scrollbar-thumb { background: #cccccc !important; }
+
+/* ── Header: was near-black glass, now clean white ─────────── */
+.site-header { background: rgba(255,255,255,0.97) !important; border-bottom: 1px solid rgba(0,0,0,0.09) !important; }
+
+/* ── Hero: was dark radial gradient ─────────────────────────── */
+.hero { background: #f8fafc !important; }
+.hero-bg-fx { background: none !important; }
+.hero-bg-photo { opacity: 0.04 !important; }
+
+/* ── Hero search box: keep white with blue border ────────────── */
+.hero .search-box { background: #ffffff !important; border: 2px solid #0057AD !important; }
+.search-input { color: #111111 !important; }
+.search-input::placeholder { color: #9ca3af !important; }
+
+/* ── Search apex subbar: was dark mono text ─────────────────── */
+.search-apex-subbar {
+  background: #eef4ff !important;
+  border: 1px solid rgba(0,87,173,0.15) !important;
+  color: #374151 !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+}
+
+/* ── Medication section: was #101822 ───────────────────────── */
+.medication-section { background: #f0f5fa !important; border-top-color: rgba(0,87,173,0.1) !important; border-bottom-color: rgba(0,87,173,0.1) !important; }
+
+/* ── Med card image well: was #1c2533 ──────────────────────── */
+.med-img-wrap { background: #f5f7fa !important; border-bottom-color: rgba(0,0,0,0.06) !important; }
+
+/* ── Med text & pricing ──────────────────────────────────────── */
+.med-name { color: #111111 !important; }
+.med-sub { color: #6b7280 !important; }
+.med-price-green { color: #00695c !important; }
+.med-vital-price { color: #00695c !important; }
+.med-retail-anchor { color: #9ca3af !important; }
+.med-as-low-as { color: #6b7280 !important; }
+
+/* ── Section alt-bg ─────────────────────────────────────────── */
+.section-block.alt-bg { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+
+/* ── Browse by health condition: was #0f1820 ───────────────── */
+.section-blue { background: #edf5f0 !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+.health-condition-card { background: #ffffff !important; border-color: rgba(0,0,0,0.10) !important; }
+.health-condition-card h3 { color: #111111 !important; }
+.health-condition-card p { color: #6b7280 !important; }
+
+/* ── Market Audit price cards ───────────────────────────────── */
+.price-shock-section { background: #f8fafc !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+.audit-receipt { background: rgba(220,38,38,0.04) !important; border-color: rgba(220,38,38,0.28) !important; }
+.audit-receipt-label { color: rgba(220,38,38,0.75) !important; }
+.audit-receipt-drug { color: #6b7280 !important; }
+.audit-receipt-price { color: #dc2626 !important; text-decoration-color: rgba(220,38,38,0.5) !important; }
+.audit-receipt-source { color: #9ca3af !important; }
+.audit-overpay-badge { background: rgba(220,38,38,0.08) !important; color: #dc2626 !important; border-color: rgba(220,38,38,0.2) !important; }
+.audit-connector { }
+.audit-badge { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.22) !important; }
+.audit-badge-value { color: #0057AD !important; font-size: 14px !important; }
+.audit-arrow { color: rgba(0,87,173,0.35) !important; }
+.audit-clearing { background: linear-gradient(135deg, rgba(0,168,130,0.08) 0%, #ffffff 100%) !important; border-color: rgba(0,168,130,0.28) !important; box-shadow: none !important; }
+.audit-clearing-label { color: #00695c !important; }
+.audit-clearing-drug { color: #6b7280 !important; }
+.audit-clearing-price { color: #00695c !important; font-weight: 700 !important; text-shadow: none !important; }
+.audit-clearing-source { color: #00695c !important; }
+
+/* ── Why You Overpay cards ─────────────────────────────────── */
+.overpay-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; }
+.overpay-card h3 { color: #111111 !important; }
+.overpay-card p { color: #374151 !important; }
+.overpay-icon-wrap { background: #f5f7fa !important; }
+
+/* ── Testimonials ───────────────────────────────────────────── */
+.testimonial-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.testimonial-card p { color: #374151 !important; }
+.testimonial-author strong { color: #111111 !important; }
+.testimonial-author span { color: #6b7280 !important; }
+.author-avatar { background: #f0f2f5 !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
+.stars { color: #d97706 !important; }
+
+/* ── Mission block: stays blue — keep text white ────────────── */
+.mission-blockquote { color: #ffffff !important; }
+.mission-statement p { color: rgba(255,255,255,0.88) !important; }
+.mission-sig { color: rgba(255,255,255,0.6) !important; }
+.mission-block .section-eyebrow { color: #FFCD00 !important; }
+
+/* ── Transparency pillars: stays yellow ─────────────────────── */
+.transparency-pillars { background: #FEDA00 !important; border-top: 1px solid rgba(0,31,63,0.15) !important; border-bottom: 2px solid rgba(0,31,63,0.15) !important; }
+.pillar-text { color: #001f3f !important; }
+
+/* ── HIW home accordion ─────────────────────────────────────── */
+.hiw-acc-item { border-bottom-color: rgba(0,0,0,0.08) !important; }
+.hiw-acc-item:first-child { border-top-color: rgba(0,0,0,0.08) !important; }
+.hiw-acc-toggle { background: transparent !important; }
+.hiw-acc-toggle:hover { background: rgba(0,0,0,0.02) !important; }
+.hiw-acc-title { color: #111111 !important; }
+.hiw-acc-num { color: #0057AD !important; }
+.hiw-acc-toggle.open .hiw-acc-num { color: #007a4d !important; }
+.hiw-acc-body p { color: #374151 !important; }
+
+/* ── How It Works page timeline ─────────────────────────────── */
+.hiw-tl-icon { background: #f7f8fa !important; border-color: rgba(0,0,0,0.12) !important; color: #0057AD !important; }
+.hiw-tl-line { background: rgba(0,0,0,0.1) !important; }
+.hiw-tl-num { color: #6b7280 !important; }
+.hiw-tl-title { color: #111111 !important; }
+.hiw-tl-text { color: #374151 !important; }
+.hiw-disclosure-toggle { background: #f7f8fa !important; color: #374151 !important; }
+.hiw-disclosure-toggle:hover { background: #f0f2f5 !important; }
+.hiw-disclosure-body { background: #ffffff !important; }
+.hiw-disclosure-body h4 { color: #6b7280 !important; }
+.hiw-disclosure-body p { color: #374151 !important; }
+
+/* ── Sidebar ────────────────────────────────────────────────── */
+.sidebar { background: #ffffff !important; border-right-color: rgba(0,0,0,0.08) !important; }
+.sidebar-header { border-bottom-color: rgba(0,0,0,0.08) !important; }
+.sidebar-section-label { color: #9ca3af !important; }
+.sidebar-link { color: #374151 !important; }
+.sidebar-link:hover { background: #f0f2f5 !important; color: #111111 !important; }
+.sidebar-link.active { color: #0057AD !important; background: rgba(0,87,173,0.06) !important; }
+.sidebar-link.active::before { background: #0057AD !important; }
+.sidebar-footer { border-top-color: rgba(0,0,0,0.08) !important; }
+.sidebar-username { color: #111111 !important; }
+.sidebar-email { color: #6b7280 !important; }
+.hamburger span { background: #374151 !important; }
+.sidebar-close { color: #6b7280 !important; }
+.sidebar-close:hover { background: #f0f2f5 !important; color: #111111 !important; }
+
+/* ── Nav links on light header ──────────────────────────────── */
+.nav-link { color: #374151 !important; }
+.nav-link:hover { color: #111111 !important; }
+.nav-link.active { color: #0057AD !important; }
+.btn-ghost { color: #374151 !important; border-color: rgba(0,0,0,0.18) !important; }
+.btn-ghost:hover { color: #111111 !important; border-color: rgba(0,0,0,0.3) !important; background: #f7f8fa !important; }
+
+/* ── Section titles & text ──────────────────────────────────── */
+.section-title { color: #111111 !important; }
+.section-sub { color: #374151 !important; }
+.page-title { color: #111111 !important; }
+.page-sub { color: #374151 !important; }
+
+/* ── Search page & dropdowns ────────────────────────────────── */
+.search-box { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; }
+.search-dropdown, .search-dropdown-attached { background: #ffffff !important; border-color: rgba(0,0,0,0.12) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important; }
+.dropdown-item { border-bottom-color: rgba(0,0,0,0.06) !important; }
+.dropdown-item:hover { background: #f7f8fa !important; }
+.dropdown-drug-name { color: #111111 !important; }
+.dropdown-drug-cat { color: #6b7280 !important; }
+.dropdown-drug-price { color: #0057AD !important; }
+
+/* ── Browse catalog ─────────────────────────────────────────── */
+.browse-cat-card { box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important; }
+.browse-cat-name { color: #111111 !important; }
+.browse-cat-count { color: #6b7280 !important; }
+.browse-drug-row { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.browse-drug-row:hover { border-color: rgba(0,87,173,0.2) !important; box-shadow: 0 4px 14px rgba(0,0,0,0.06) !important; }
+.browse-drug-row-icon { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; color: #374151 !important; }
+.browse-drug-row-name { color: #111111 !important; }
+.browse-drug-row-sub { color: #6b7280 !important; }
+.browse-drug-row-price { color: #00695c !important; }
+.browse-back-btn { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; color: #374151 !important; }
+.browse-back-btn:hover { border-color: #0057AD !important; color: #0057AD !important; }
+.browse-drug-heading { color: #111111 !important; }
+.browse-catalog-title { color: #6b7280 !important; }
+
+/* ── Price comparison cards (search results) ────────────────── */
+.price-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; }
+.price-source { color: #6b7280 !important; }
+.price-amount { color: #111111 !important; }
+.price-per-unit { color: #9ca3af !important; }
+.price-action { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
+.price-action:hover { background: #f0f2f5 !important; color: #111111 !important; }
+.price-card.best-price { border-color: rgba(0,87,173,0.3) !important; background: linear-gradient(135deg, rgba(0,87,173,0.04) 0%, #ffffff 100%) !important; }
+.price-card.best-price .price-amount { color: #0057AD !important; }
+.price-card.best-price .price-action { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.2) !important; color: #0057AD !important; }
+.price-card-badge { background: #FEDA00 !important; color: #001f3f !important; }
+.variant-btn { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
+.variant-btn:hover { border-color: rgba(0,0,0,0.2) !important; color: #111111 !important; }
+.variant-btn.active { background: rgba(0,87,173,0.07) !important; border-color: rgba(0,87,173,0.3) !important; color: #0057AD !important; }
+.price-intel-notice { background: #f0f5ff !important; border-color: rgba(0,87,173,0.14) !important; color: #374151 !important; }
+
+/* ── Flip card front ────────────────────────────────────────── */
+.card-flip-front { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; }
+.flip-source-label { color: #9ca3af !important; }
+.flip-drug { color: #374151 !important; }
+.flip-hint { color: #9ca3af !important; }
+
+/* ── Pharmacy finder ────────────────────────────────────────── */
+.pharmacy-finder { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.pharmacy-finder h3 { color: #111111 !important; }
+.pharmacy-item { border-bottom-color: rgba(0,0,0,0.07) !important; }
+.pharm-name { color: #111111 !important; }
+.pharm-dist { color: #9ca3af !important; }
+
+/* ── Profile / Vault ────────────────────────────────────────── */
+.vault-panel { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.vault-panel-header { background: #f7f8fa !important; border-bottom-color: rgba(0,0,0,0.08) !important; }
+.vault-panel-title { color: #111111 !important; }
+.vault-toggle-bar { border-bottom-color: rgba(0,0,0,0.07) !important; color: #374151 !important; }
+.vault-input { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; color: #111111 !important; }
+.vault-input:disabled { background: #f7f8fa !important; color: #9ca3af !important; }
+.vault-field label { color: #6b7280 !important; }
+.lifecycle-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.lifecycle-card h4 { color: #111111 !important; }
+.tracker-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.tracker-drug { color: #111111 !important; }
+
+/* ── Medicine cabinet ───────────────────────────────────────── */
+.add-med-drawer { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; }
+.drawer-header h4 { color: #111111 !important; }
+.med-item { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.filter-btn { border-color: rgba(0,0,0,0.12) !important; color: #374151 !important; }
+.filter-btn.active { background: rgba(0,87,173,0.07) !important; border-color: rgba(0,87,173,0.28) !important; color: #0057AD !important; }
+
+/* ── About / Providers pages ────────────────────────────────── */
+.value-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.value-card h3 { color: #111111 !important; }
+.value-card p { color: #374151 !important; }
+.about-legal { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.about-legal h3 { color: #111111 !important; }
+.about-legal p { color: #6b7280 !important; }
+.provider-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.provider-card h3 { color: #111111 !important; }
+.provider-card p { color: #374151 !important; }
+.provider-contact { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.provider-contact h3 { color: #111111 !important; }
+.provider-contact p { color: #374151 !important; }
+
+/* ── Modals ─────────────────────────────────────────────────── */
+.modal { background: #ffffff !important; border-color: rgba(0,0,0,0.12) !important; }
+.modal-close { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; color: #6b7280 !important; }
+.modal-close:hover { color: #111111 !important; }
+.auth-modal h2 { color: #111111 !important; }
+.modal-sub { color: #374151 !important; }
+.modal-field label { color: #6b7280 !important; }
+.modal-switch { color: #6b7280 !important; }
+
+/* ── Toast ──────────────────────────────────────────────────── */
+.toast { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; color: #111111 !important; box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.site-footer { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.09) !important; }
+.footer-brand p { color: #6b7280 !important; }
+.footer-copy { color: #9ca3af !important; }
+.footer-col-title { color: #9ca3af !important; }
+.footer-col a { color: #374151 !important; }
+.footer-col a:hover { color: #111111 !important; }
+.footer-disclosure-wrap { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.08) !important; }
+.footer-disclosure-btn { color: #6b7280 !important; }
+.footer-disclosure-btn:hover { color: #111111 !important; }
+.footer-disc-content { color: #6b7280 !important; }
+.footer-disc-block h4 { color: #9ca3af !important; }
+
+/* ── Admin portal ───────────────────────────────────────────── */
+.admin-login-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.08) !important; }
+.kpi-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.kpi-value { color: #111111 !important; }
+.kpi-label { color: #6b7280 !important; }
+.analytics-chart-wrap, .top-searches-wrap { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+.top-searches-table th { color: #9ca3af !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+.top-searches-table td { color: #374151 !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+.top-searches-table td:nth-child(2) { color: #111111 !important; }
+.calc-grid { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+
+/* ── Empty / auth gate states ───────────────────────────────── */
+.search-empty-state h3 { color: #111111 !important; }
+.search-empty-state p { color: #374151 !important; }
+.auth-gate h3 { color: #111111 !important; }
+.auth-gate p { color: #374151 !important; }
+.results-header h2 { color: #111111 !important; }
+
+/* ── Coming soon pages ──────────────────────────────────────── */
+.cs-title { color: #111111 !important; }
+.cs-sub { color: #374151 !important; }
+.cs-features { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
+.cs-feature { color: #374151 !important; }
+
+/* ── Hero tags ──────────────────────────────────────────────── */
+.hero-tag { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.2) !important; color: #0057AD !important; }
+.hero-tag:hover { background: rgba(0,87,173,0.12) !important; border-color: #0057AD !important; color: #001f3f !important; }
+
+/* ── Stat strip: stays yellow — keep navy text ──────────────── */
+.stat-num { color: #001f3f !important; }
+.stat-label { color: rgba(0,31,63,0.65) !important; }
+
+/* ── Section eyebrow labels ─────────────────────────────────── */
+.section-eyebrow { color: #0057AD !important; }
+.hero-eyebrow { color: #0057AD !important; }
+.eyebrow-dot { background: #0057AD !important; }
