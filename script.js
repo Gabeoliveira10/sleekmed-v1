@@ -503,14 +503,14 @@ function navigateTo(pageId) {
    SIDEBAR
 ═══════════════════════════════════════════════════════════════ */
 function openSidebar() {
-  $('sidebar').classList.add('open');
+  $('sidebar').classList.add('open', 'active');
   $('sidebarOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   document.body.classList.add('menu-open');
 }
 
 function closeSidebar() {
-  $('sidebar').classList.remove('open');
+  $('sidebar').classList.remove('open', 'active');
   $('sidebarOverlay').classList.remove('active');
   document.body.style.overflow = '';
   document.body.classList.remove('menu-open');
@@ -2013,12 +2013,31 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
   initSearch();
 
-  // Hero search active glow — focus/blur binding
+  // Hero search active glow — focus/blur binding (Gemini spec + legacy)
   const _heroInput = $('heroSearchInput');
   const _heroBox   = $('heroSearchBox');
   if (_heroInput && _heroBox) {
-    _heroInput.addEventListener('focus', () => _heroBox.classList.add('search-active'));
-    _heroInput.addEventListener('blur',  () => _heroBox.classList.remove('search-active'));
+    _heroInput.addEventListener('focus', () => {
+      _heroBox.classList.add('search-active');
+      _heroBox.classList.add('active-focus');
+    });
+    _heroInput.addEventListener('blur', () => {
+      _heroBox.classList.remove('search-active');
+      _heroBox.classList.remove('active-focus');
+    });
+  }
+
+  // Belt-and-suspenders sidebar bindings (Mac trackpad + iPhone touch)
+  const _menuTrigger = document.querySelector('.menu-trigger');
+  const _sidebarEl   = $('sidebar');
+  const _closeBtn    = $('sidebarClose');
+  if (_menuTrigger && _sidebarEl && !_menuTrigger._sbBound) {
+    _menuTrigger.addEventListener('click', (e) => { e.preventDefault(); openSidebar(); });
+    _menuTrigger._sbBound = true;
+  }
+  if (_closeBtn && _sidebarEl && !_closeBtn._sbBound) {
+    _closeBtn.addEventListener('click', (e) => { e.preventDefault(); closeSidebar(); });
+    _closeBtn._sbBound = true;
   }
 
   updateAuthUI();
