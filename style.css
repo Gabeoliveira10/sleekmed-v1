@@ -3307,30 +3307,60 @@ p { color: #4A5568; }
 .stat-label { color: rgba(255,255,255,0.72) !important; font-weight: 600 !important; font-size: 11px !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; }
 
 /* ── 6. Pricing matrix: uniform badges + aligned % + col gap ─ */
-/* Add visual gap between Retail and Rate columns via header */
+/* Widen the rate column so badge + pill never clip */
+.pricing-matrix-header { grid-template-columns: 50px 1fr 180px 120px 260px !important; }
+.pm-row { grid-template-columns: 50px 1fr 180px 120px 260px !important; }
+
+/* Visual separator between Retail and Rate */
 .pm-col-retail { padding-right: 0 !important; }
-.pm-col-rate { padding-left: 28px !important; border-left: 1px solid #E2E8F0 !important; }
-/* Uniform green badge: fixed width so all same size */
+.pm-col-rate { padding-left: 24px !important; border-left: 1px solid #E2E8F0 !important; }
+
+/* Badge: fixed height so all rows identical — nowrap prevents text wrapping */
 .pm-rate-badge {
-  min-width: 148px !important; max-width: 148px !important;
-  width: 148px !important;
+  min-width: 142px !important; max-width: 142px !important;
+  width: 142px !important;
+  height: 52px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
-/* Savings pill stays fixed width for vertical alignment */
+/* Prevent pharmacy name from wrapping and blowing the badge height */
+.pm-pharmacy-tag {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 130px !important;
+}
+
+/* Savings pill: fixed width so percentages align perfectly */
 .pm-savings-pill {
-  min-width: 64px !important; text-align: center !important;
+  min-width: 72px !important; max-width: 72px !important;
+  text-align: center !important; flex-shrink: 0 !important;
 }
-/* Row rate cell: grid so badge + pill always line up */
+
+/* Rate cell: two-column grid — badge | pill — never overflows */
 .pm-rate-cell {
   display: grid !important;
-  grid-template-columns: 148px auto !important;
+  grid-template-columns: 142px 72px !important;
   align-items: center !important;
-  gap: 10px !important;
-  padding-left: 28px !important;
+  gap: 12px !important;
+  padding-left: 24px !important;
 }
-/* Override mobile breakpoint to restore flex there */
+
+/* Mobile: revert to flex */
 @media (max-width: 640px) {
   .pm-rate-cell { display: flex !important; padding-left: 0 !important; }
-  .pm-rate-badge { min-width: unset !important; max-width: unset !important; width: auto !important; }
+  .pm-rate-badge {
+    min-width: unset !important; max-width: unset !important;
+    width: auto !important; height: auto !important;
+  }
+  .pm-savings-pill { min-width: unset !important; max-width: unset !important; }
+  .pm-pharmacy-tag { max-width: none !important; white-space: normal !important; }
+}
+
+/* Also fix tablet breakpoint column widths */
+@media (max-width: 900px) {
+  .pricing-matrix-header { grid-template-columns: 50px 1fr 120px 240px !important; }
+  .pm-row { grid-template-columns: 50px 1fr 120px 240px !important; }
 }
 
 /* ── 7. Transparency pillars: deep indigo (≠ savings card green) */
