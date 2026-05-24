@@ -1062,12 +1062,15 @@ function renderPricingMatrix() {
     const tag = PHARMACY_TAGS[i % PHARMACY_TAGS.length];
     const savings = item.retail - item.rate;
     const pct = Math.round((savings / item.retail) * 100);
+    const initial = item.drug.charAt(0).toUpperCase();
     return `
       <div class="pm-row" onclick="navigateTo('search'); setTimeout(() => triggerSearch('${item.drug}'), 120);">
+        <div class="pm-img-placeholder">${initial}</div>
         <div>
           <div class="pm-drug-name">${item.drug}</div>
           <div class="pm-drug-meta">${item.variant}</div>
         </div>
+        <div class="pm-desc">${item.desc || ''}</div>
         <div class="pm-retail">$${item.retail.toFixed(2)}</div>
         <div class="pm-rate-cell">
           <div class="pm-rate-badge">
@@ -1157,14 +1160,14 @@ const PHARMACY_TAGS = [
 ];
 
 const TRENDING_MATRIX = [
-  { drug: 'Tirzepatide',    variant: '5mg · Monthly Supply',    retail: 1086.37, rate: 399.00  },
-  { drug: 'Ozempic',        variant: '0.25–0.5mg · 1 pen',      retail: 935.00,  rate: 89.00   },
-  { drug: 'Semaglutide',    variant: 'Oral 14mg · 30 tabs',     retail: 1048.00, rate: 110.00  },
-  { drug: 'Adderall',       variant: '30mg XR · 30 caps',       retail: 284.00,  rate: 48.20   },
-  { drug: 'Lexapro',        variant: '20mg · 30 tabs',          retail: 148.00,  rate: 14.60   },
-  { drug: 'Atorvastatin',   variant: '40mg · 30 tabs',          retail: 94.00,   rate: 10.20   },
-  { drug: 'Metformin',      variant: '1000mg · 90 tabs',        retail: 118.00,  rate: 12.20   },
-  { drug: 'Duloxetine',     variant: '60mg · 90 caps',          retail: 368.00,  rate: 38.40   },
+  { drug: 'Tirzepatide',    variant: '5mg · Monthly Supply',    desc: 'GLP-1/GIP dual agonist · Weight management & Type 2 diabetes',  retail: 1086.37, rate: 399.00  },
+  { drug: 'Ozempic',        variant: '0.25–0.5mg · 1 pen',      desc: 'GLP-1 receptor agonist · Blood sugar control & weight loss',     retail: 935.00,  rate: 89.00   },
+  { drug: 'Semaglutide',    variant: 'Oral 14mg · 30 tabs',     desc: 'Oral GLP-1 agonist · Type 2 diabetes management',               retail: 1048.00, rate: 110.00  },
+  { drug: 'Adderall',       variant: '30mg XR · 30 caps',       desc: 'Mixed amphetamine salts · ADHD & narcolepsy treatment',         retail: 284.00,  rate: 48.20   },
+  { drug: 'Lexapro',        variant: '20mg · 30 tabs',          desc: 'SSRI antidepressant · Depression & generalized anxiety',        retail: 148.00,  rate: 14.60   },
+  { drug: 'Atorvastatin',   variant: '40mg · 30 tabs',          desc: 'Statin therapy · LDL cholesterol reduction',                    retail: 94.00,   rate: 10.20   },
+  { drug: 'Metformin',      variant: '1000mg · 90 tabs',        desc: 'Biguanide · First-line Type 2 diabetes management',             retail: 118.00,  rate: 12.20   },
+  { drug: 'Duloxetine',     variant: '60mg · 90 caps',          desc: 'SNRI antidepressant · Depression, anxiety & nerve pain',        retail: 368.00,  rate: 38.40   },
 ];
 
 const US_STATES = ['Select State','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','D.C.','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
