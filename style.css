@@ -3318,20 +3318,22 @@ p { color: #4A5568; }
 .pm-col-retail { padding-right: 0 !important; }
 .pm-col-rate { padding-left: 24px !important; border-left: 1px solid #E2E8F0 !important; }
 
-/* Badge: fixed height so all rows identical — nowrap prevents text wrapping */
+/* Badge: min-height so all rows have a base size; allow name to wrap naturally */
 .pm-rate-badge {
-  min-width: 142px !important; max-width: 142px !important;
-  width: 142px !important;
-  height: 52px !important;
+  min-width: 160px !important; max-width: 160px !important;
+  width: 160px !important;
+  min-height: 52px !important;
+  height: auto !important;
   flex-direction: column !important;
   justify-content: center !important;
 }
-/* Prevent pharmacy name from wrapping and blowing the badge height */
+/* Pharmacy name: wrap freely so full name + distance always shows */
 .pm-pharmacy-tag {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  max-width: 130px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  max-width: 148px !important;
+  line-height: 1.35 !important;
 }
 
 /* Savings pill: fixed width so percentages align perfectly */
@@ -3357,7 +3359,7 @@ p { color: #4A5568; }
     width: auto !important; height: auto !important;
   }
   .pm-savings-pill { min-width: unset !important; max-width: unset !important; }
-  .pm-pharmacy-tag { max-width: none !important; white-space: normal !important; }
+  .pm-pharmacy-tag { max-width: none !important; white-space: normal !important; overflow: visible !important; text-overflow: unset !important; }
 }
 
 /* Also fix tablet breakpoint column widths */
@@ -3529,11 +3531,12 @@ p { color: #4A5568; }
   .pm-rate-price { font-size: 15px !important; font-weight: 800 !important; }
   .pm-pharmacy-tag {
     font-size: 9.5px !important;
-    white-space: nowrap !important;
-    max-width: 110px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
     text-align: right !important;
+    line-height: 1.3 !important;
   }
   .pm-savings-pill {
     min-width: unset !important; max-width: unset !important;
