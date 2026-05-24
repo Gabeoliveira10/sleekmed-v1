@@ -3213,3 +3213,177 @@ p { color: #4A5568; }
   .pm-rate-badge { border: none !important; background: transparent !important; padding: 0; }
   .pm-rate-price { font-size: 14px !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   UI REFINEMENT PASS — June 2026
+   Hamburger always-on · Trust bar footer · Hero layout ·
+   Stats color · Badge uniformity · Pillar contrast · Brain SVG
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Hamburger always visible at all viewport widths ──── */
+.hamburger { display: flex !important; }
+
+/* ── 2. Trust bar: hidden at top, styled in footer ────────── */
+#trustBar { display: none !important; }
+.footer-trust-bar {
+  width: 100%; background: #1A202C;
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+  font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,0.65);
+  letter-spacing: 0.04em; font-family: var(--font-sans);
+}
+.footer-trust-bar .trust-pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #34D399; flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+.footer-trust-bar .trust-divider { color: rgba(255,255,255,0.25); }
+.footer-trust-bar span { color: rgba(255,255,255,0.65); }
+
+/* ── 3. Hero color: restored blue-teal ────────────────────── */
+.hero {
+  background: linear-gradient(-45deg, #1A202C, #2D3748, #1E3A8A, #065F46) !important;
+  background-size: 400% 400% !important;
+  animation: geminiLivingCanvas 12s ease infinite !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.hero-bg-fx { background: transparent !important; }
+
+/* ── 4. Hero search at top, directly below header ─────────── */
+.hero-search-top {
+  width: 100%; padding: 28px 24px 0;
+  max-width: 100%; box-sizing: border-box;
+  position: relative; z-index: 2;
+}
+.hero-search-top .hero-eyebrow {
+  color: rgba(255,255,255,0.65) !important;
+  margin-bottom: 14px;
+}
+.hero-search-top .hero-search-wrap {
+  max-width: 100% !important; width: 100% !important;
+  margin-bottom: 0 !important;
+}
+/* Hero content: headline/sub/tags pushed to lower hero */
+.hero-content {
+  flex: 1;
+  display: flex !important; align-items: center !important;
+  max-width: 100% !important; width: 100% !important;
+  padding: 28px 24px 56px !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+  text-align: center !important;
+}
+.hero-text-block {
+  max-width: 780px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+}
+.hero .hero-headline {
+  font-size: clamp(34px, 5.5vw, 66px) !important;
+  text-align: center !important;
+  margin-bottom: 18px !important;
+  margin-top: 0 !important;
+}
+.hero .hero-sub {
+  text-align: center !important;
+  max-width: 580px !important;
+  margin-left: auto !important; margin-right: auto !important;
+  margin-bottom: 28px !important;
+}
+.hero-tags { margin-top: -4px !important; justify-content: center !important; }
+
+/* ── 5. Stats container: bold blue-green gradient ─────────── */
+.stats-container {
+  background: linear-gradient(135deg, #1E3A8A 0%, #065F46 100%) !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(30,58,138,0.22), 0 2px 8px rgba(0,0,0,0.10) !important;
+}
+.stats-container .stat-item { border-right: 1px solid rgba(255,255,255,0.12); }
+.stats-container .stat-item:last-child { border-right: none !important; }
+.stat-num { color: #FFFFFF !important; font-size: 32px !important; }
+.stat-infinity { color: #34D399 !important; }
+.stat-label { color: rgba(255,255,255,0.72) !important; font-weight: 600 !important; font-size: 11px !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; }
+
+/* ── 6. Pricing matrix: uniform badges + aligned % + col gap ─ */
+/* Add visual gap between Retail and Rate columns via header */
+.pm-col-retail { padding-right: 0 !important; }
+.pm-col-rate { padding-left: 28px !important; border-left: 1px solid #E2E8F0 !important; }
+/* Uniform green badge: fixed width so all same size */
+.pm-rate-badge {
+  min-width: 148px !important; max-width: 148px !important;
+  width: 148px !important;
+}
+/* Savings pill stays fixed width for vertical alignment */
+.pm-savings-pill {
+  min-width: 64px !important; text-align: center !important;
+}
+/* Row rate cell: grid so badge + pill always line up */
+.pm-rate-cell {
+  display: grid !important;
+  grid-template-columns: 148px auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding-left: 28px !important;
+}
+/* Override mobile breakpoint to restore flex there */
+@media (max-width: 640px) {
+  .pm-rate-cell { display: flex !important; padding-left: 0 !important; }
+  .pm-rate-badge { min-width: unset !important; max-width: unset !important; width: auto !important; }
+}
+
+/* ── 7. Transparency pillars: deep indigo (≠ savings card green) */
+.transparency-pillars {
+  background: linear-gradient(135deg, #312E81 0%, #1E1B4B 100%) !important;
+  border-top: none !important; border-bottom: none !important;
+  padding: 24px 20px 28px !important;
+}
+.pillar-text { color: #FFFFFF !important; font-weight: 600 !important; }
+.pillar-icon { color: #A5B4FC !important; }
+.pillar-sep { background: rgba(255,255,255,0.18) !important; }
+
+/* ── 8. Savings card section: amber/gold gradient (distinct) ─ */
+.savings-card-feature {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%) !important;
+  border-top: 1px solid #FCD34D !important; border-bottom: 1px solid #F59E0B !important;
+}
+.savings-card-feature .section-eyebrow { color: #92400E !important; }
+.savings-card-feature .scf-title { color: #78350F !important; }
+.savings-card-feature .scf-desc { color: #92400E !important; }
+
+/* ── 9. Page section color variety ──────────────────────────── */
+/* Alt-bg testimonial section → warm slate */
+.section-block.alt-bg { background: #F1F5F9 !important; }
+/* Health conditions: blue tint background */
+.section-block.section-blue, .section-blue {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 100%) !important;
+  border-top: 1px solid #BFDBFE !important; border-bottom: 1px solid #BAE6FD !important;
+}
+.health-condition-card {
+  background: #FFFFFF !important; border-color: #BFDBFE !important;
+  box-shadow: 0 2px 12px rgba(59,130,246,0.08) !important;
+}
+.health-condition-card:hover {
+  border-color: #2B6CB0 !important;
+  box-shadow: 0 8px 28px rgba(43,108,176,0.14) !important;
+  transform: translateY(-2px);
+}
+/* Overpay cards: colored left border accent */
+.overpay-card {
+  border-left: 3px solid transparent !important;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s !important;
+}
+.overpay-card:nth-child(1) { border-left-color: #10B981 !important; }
+.overpay-card:nth-child(2) { border-left-color: #6366F1 !important; }
+.overpay-card:nth-child(3) { border-left-color: #EF4444 !important; }
+/* Market audit section: darker slate for contrast */
+.price-shock-section { background: #F8FAFC !important; }
+/* HIW steps section: soft blue band */
+.hiw-steps-section, .hiw-section { background: #F0F9FF !important; }
+
+/* ── 10. Footer trust bar responsive ─────────────────────── */
+@media (max-width: 640px) {
+  .footer-trust-bar { flex-direction: column; gap: 6px; text-align: center; padding: 14px 16px; }
+  .footer-trust-bar .trust-divider { display: none; }
+}
