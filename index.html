@@ -6,7 +6,7 @@
   <title>AlethiaRx — Prescription Trading &amp; Clearing Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -93,19 +93,13 @@
         <div class="hero-content">
           <div class="hero-text-block">
             <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Prescription Price Intelligence Platform</div>
-            <div class="hero-search-row">
-              <div class="hero-search-wrap">
-                <div class="search-box" id="heroSearchBox">
-                  <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#39D353" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#39D353" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
-                  <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
-                </div>
-                <div class="search-dropdown" id="heroSearchDropdown"></div>
+            <div class="hero-search-wrap">
+              <div class="search-box" id="heroSearchBox">
+                <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#2B6CB0" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#2B6CB0" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
+                <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
               </div>
-              <div class="zip-input-wrap">
-                <span class="zip-input-label">ZIP</span>
-                <input type="text" class="zip-input" id="heroZipInput" placeholder="32256" maxlength="5" inputmode="numeric" />
-              </div>
+              <div class="search-dropdown" id="heroSearchDropdown"></div>
             </div>
             <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
             <p class="hero-sub">AlethiaRx compares Direct Cash Prices and Third-Party Rates side-by-side based on your area — find your local code, show your pharmacist, and never overpay again.</p>
@@ -116,22 +110,6 @@
               <span class="hero-tag" data-search="Ozempic">Ozempic</span>
               <span class="hero-tag" data-search="Adderall">Adderall</span>
               <span class="hero-tag" data-search="Lexapro">Lexapro</span>
-            </div>
-          </div>
-          <div class="hero-visual-wrapper">
-            <div class="hero-card-placeholder">
-              <div class="hcp-eyebrow">Your Savings Card</div>
-              <div class="hcp-logo">
-                <div class="logo-capsule" style="width:18px;height:32px;border-radius:9px;border-color:rgba(255,255,255,0.7);"></div>
-                <span>AlethiaRx</span>
-              </div>
-              <div class="hcp-savings-line">Save up to <span class="hcp-highlight">80%</span> vs. retail</div>
-              <div class="hcp-codes-row">
-                <div class="hcp-code"><div class="hcp-code-label">BIN</div><div class="hcp-code-val">610524</div></div>
-                <div class="hcp-code"><div class="hcp-code-label">PCN</div><div class="hcp-code-val">FPLAY</div></div>
-                <div class="hcp-code"><div class="hcp-code-label">GROUP</div><div class="hcp-code-val">FP2026</div></div>
-              </div>
-              <div class="hcp-network">Verified Discount Network · AlethiaRx is NOT Insurance</div>
             </div>
           </div>
         </div>
@@ -267,6 +245,34 @@
               <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
             <div class="hiw-acc-body"><p>The pharmacist applies the AlethiaRx discount in real-time. Average savings: 80% below retail. No claims. No waiting. Pay cash and keep moving.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AlethiaRx Digital Savings Card Feature -->
+      <div class="section-block savings-card-feature">
+        <div class="savings-card-feature-inner">
+          <div class="scf-text-col">
+            <div class="section-eyebrow">Your Digital Savings Card</div>
+            <h2 class="scf-title">Free Access. Real Discounts.</h2>
+            <p class="scf-desc">Your AlethiaRx card is pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy — no printing, no paperwork, no waiting. Accepted at thousands of retail locations nationwide.</p>
+            <button class="btn-primary" onclick="navigateTo('card')">Get Your Card →</button>
+          </div>
+          <div class="scf-card-col">
+            <div class="hero-card-placeholder">
+              <div class="hcp-eyebrow">Your Savings Card</div>
+              <div class="hcp-logo">
+                <div class="logo-capsule" style="width:18px;height:32px;border-radius:9px;border-color:rgba(255,255,255,0.7);"></div>
+                <span>AlethiaRx</span>
+              </div>
+              <div class="hcp-savings-line">Save up to <span class="hcp-highlight">80%</span> vs. retail</div>
+              <div class="hcp-codes-row">
+                <div class="hcp-code"><div class="hcp-code-label">BIN</div><div class="hcp-code-val">610524</div></div>
+                <div class="hcp-code"><div class="hcp-code-label">PCN</div><div class="hcp-code-val">FPLAY</div></div>
+                <div class="hcp-code"><div class="hcp-code-label">GROUP</div><div class="hcp-code-val">FP2026</div></div>
+              </div>
+              <div class="hcp-network">Verified Discount Network · AlethiaRx is NOT Insurance</div>
+            </div>
           </div>
         </div>
       </div>

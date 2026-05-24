@@ -2009,9 +2009,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadState();
   bindEvents();
   initSearch();
-  // Zip input — refresh matrix on change
-  const zipEl = $('heroZipInput');
-  if (zipEl) zipEl.addEventListener('input', () => renderPricingMatrix());
   updateAuthUI();
   updateAdminSidebarVisibility();
   observeStats();
