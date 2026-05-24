@@ -490,7 +490,12 @@ function navigateTo(pageId) {
   $$('[data-sidebar-link]').forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
 
   closeSidebar();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Hard instant scroll to top — covers all browsers and scroll containers
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  // Safety reset after content renders
+  setTimeout(() => { document.documentElement.scrollTop = 0; document.body.scrollTop = 0; window.scrollTo(0, 0); }, 50);
 
   if (pageId === 'cabinet') renderCabinet();
   if (pageId === 'vault')   renderVault();
@@ -1508,16 +1513,16 @@ function isComplianceCleared(drugName) {
 /* Source themes: front card styling + back card content */
 const SOURCE_THEMES = {
   fp:  {
-    frontBg: 'linear-gradient(145deg,#0a0a0a 0%,#000 55%,#0d0d0d 100%)',
-    frontBorder: 'rgba(255,255,255,0.09)', frontPriceColor: '#00C896',
-    frontLabelColor: 'rgba(255,255,255,0.6)', frontHintColor: 'rgba(255,255,255,0.32)',
-    glowColor: '#00C896',
-    backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
-    backBorder: 'rgba(255,255,255,0.10)',
-    logoHtml: '<span style="color:#00e5c5;font-weight:800;font-size:16px;letter-spacing:-0.02em">Vital Rx</span>',
-    chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
-    codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
-    noteColor: 'rgba(255,255,255,0.4)', note: 'Show to pharmacist', showCodes: true,
+    frontBg: 'linear-gradient(145deg,#1E3A8A 0%,#1565C0 55%,#1a6eb5 100%)',
+    frontBorder: 'rgba(255,255,255,0.18)', frontPriceColor: '#FCD34D',
+    frontLabelColor: 'rgba(255,255,255,0.75)', frontHintColor: 'rgba(255,255,255,0.45)',
+    glowColor: '#3b82f6',
+    backBg: 'linear-gradient(145deg,#1E3A8A 0%,#1565C0 55%,#1a6eb5 100%)',
+    backBorder: 'rgba(255,255,255,0.18)',
+    logoHtml: '<span style="color:#ffffff;font-weight:800;font-size:16px;letter-spacing:-0.02em">Vital Rx</span>',
+    chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.6)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/></svg>',
+    codeColor: '#fff', labelColor: 'rgba(255,255,255,0.55)',
+    noteColor: 'rgba(255,255,255,0.55)', note: 'Show to pharmacist', showCodes: true,
   },
   ins: {
     frontBg: 'linear-gradient(135deg,#1a2f6b 0%,#0f1d45 100%)',
@@ -1553,13 +1558,13 @@ const SOURCE_THEMES = {
     noteColor: 'rgba(255,255,255,0.5)', note: "Mark Cuban's Cost Plus Drugs", showCodes: false,
   },
   ret: {
-    frontBg: 'linear-gradient(145deg,#0a0a0a 0%,#000 55%,#0d0d0d 100%)',
-    frontBorder: 'rgba(255,255,255,0.08)', frontPriceColor: '#fff',
+    frontBg: 'linear-gradient(145deg,#374151 0%,#1F2937 55%,#111827 100%)',
+    frontBorder: 'rgba(255,255,255,0.10)', frontPriceColor: '#fff',
     frontLabelColor: 'rgba(255,255,255,0.6)', frontHintColor: 'rgba(255,255,255,0.32)',
-    glowColor: '#00C896',
-    backBg: 'linear-gradient(145deg,#111 0%,#000 55%,#0d0d0d 100%)',
+    glowColor: '#6B7280',
+    backBg: 'linear-gradient(145deg,#374151 0%,#1F2937 55%,#111827 100%)',
     backBorder: 'rgba(255,255,255,0.10)',
-    logoHtml: '<span style="color:#00e5c5;font-weight:800;font-size:16px;letter-spacing:-0.02em">Vital Rx</span>',
+    logoHtml: '<span style="color:#D1FAE5;font-weight:800;font-size:16px;letter-spacing:-0.02em">Vital Rx</span>',
     chipHtml: '<svg viewBox="0 0 32 24" fill="none" width="26" height="19"><rect x="1" y="1" width="30" height="22" rx="3" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><rect x="8" y="5" width="16" height="14" rx="1.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/><path d="M8 10h16M8 14h16M16 5v14" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg>',
     codeColor: '#fff', labelColor: 'rgba(255,255,255,0.4)',
     noteColor: 'rgba(255,255,255,0.35)', note: 'Standard retail — no discount applied', showCodes: false,
