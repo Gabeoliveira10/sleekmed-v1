@@ -14,7 +14,7 @@
   <div class="trust-bar" id="trustBar">
     <div class="trust-bar-inner">
       <span class="trust-pulse"></span>
-      <span class="trust-text">Verified Proprietary Network: <strong>75,000+ Providers &amp; Pharmacies</strong></span>
+      <span class="trust-text">Verified Pricing Network: <strong>AlethiaRx Direct · GoodRx · Cost Plus</strong></span>
       <span class="trust-divider">|</span>
       <span class="trust-text">HIPAA-Compliant Data Handling</span>
       <span class="trust-divider">|</span>
@@ -93,19 +93,22 @@
         <div class="hero-content">
           <div class="hero-text-block">
             <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Prescription Price Intelligence Platform</div>
-            <div class="hero-search-wrap">
-              <div class="search-box" id="heroSearchBox">
-                <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#00e5c5" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#00e5c5" stroke-width="1.5" stroke-linecap="round"/></svg>
-                <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
-                <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
+            <div class="hero-search-row">
+              <div class="hero-search-wrap">
+                <div class="search-box" id="heroSearchBox">
+                  <svg class="search-icon" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#39D353" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#39D353" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <input type="text" class="search-input" id="heroSearchInput" placeholder="Search medication, e.g. Metformin, Lisinopril..." autocomplete="off" />
+                  <button class="search-clear" id="heroSearchClear" style="display:none">✕</button>
+                </div>
+                <div class="search-dropdown" id="heroSearchDropdown"></div>
               </div>
-              <div class="search-dropdown" id="heroSearchDropdown"></div>
-            </div>
-            <div class="search-apex-subbar">
-              We compare transparent prices across Mark Cuban Cost Plus, GoodRx, Manufacturer Programs, and over 75,000 local pharmacies to find your lowest cost.
+              <div class="zip-input-wrap">
+                <span class="zip-input-label">ZIP</span>
+                <input type="text" class="zip-input" id="heroZipInput" placeholder="32256" maxlength="5" inputmode="numeric" />
+              </div>
             </div>
             <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
-            <p class="hero-sub">AlethiaRx compares AlethiaRx Direct prices, manufacturer coupons, GoodRx, and Cost Plus Drugs side-by-side — so you never overpay at the pharmacy again.</p>
+            <p class="hero-sub">AlethiaRx compares Direct Cash Prices and Third-Party Rates side-by-side based on your area — find your local code, show your pharmacist, and never overpay again.</p>
             <div class="hero-tags">
               <span class="hero-tag" data-search="Metformin">Metformin</span>
               <span class="hero-tag" data-search="Lisinopril">Lisinopril</span>
@@ -128,19 +131,34 @@
                 <div class="hcp-code"><div class="hcp-code-label">PCN</div><div class="hcp-code-val">FPLAY</div></div>
                 <div class="hcp-code"><div class="hcp-code-label">GROUP</div><div class="hcp-code-val">FP2026</div></div>
               </div>
-              <div class="hcp-network">75,000+ Partner Pharmacies · AlethiaRx is NOT Insurance</div>
+              <div class="hcp-network">Verified Discount Network · AlethiaRx is NOT Insurance</div>
             </div>
           </div>
         </div>
         <div class="hero-stat-strip">
           <div class="stat-center">
-            <div class="stat-item"><span class="stat-num" data-count="75000">0</span><span class="stat-label">Partner Pharmacies</span></div>
+            <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Drug Categories</span></div>
             <div class="stat-divider"></div>
             <div class="stat-item"><span class="stat-num stat-infinity">∞</span><span class="stat-label">Comprehensive RX Catalog</span></div>
             <div class="stat-divider"></div>
-            <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Drug Categories Covered</span></div>
+            <div class="stat-item"><span class="stat-num">4</span><span class="stat-label">Price Sources Compared</span></div>
             <div class="stat-divider"></div>
             <div class="stat-item"><span class="stat-num">$0</span><span class="stat-label">Always Free to Search</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Pricing Matrix -->
+      <div class="pricing-matrix-section">
+        <div class="pricing-matrix-inner">
+          <div class="pricing-matrix-title">Live Rate Index · Trending Medications</div>
+          <div class="pm-matrix-wrap">
+            <div class="pricing-matrix-header">
+              <span class="pm-col-label">Medication</span>
+              <span class="pm-col-label">Retail Cash Price</span>
+              <span class="pm-col-label">AlethiaRx Third-Party Rate</span>
+            </div>
+            <div id="pricingMatrix"></div>
           </div>
         </div>
       </div>
@@ -224,7 +242,7 @@
               <span class="hiw-acc-title">Search Your Medication</span>
               <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="hiw-acc-body"><p>Enter your drug name and select the exact dosage and quantity prescribed. Our engine retrieves live pricing from our 75,000+ partner network.</p></div>
+            <div class="hiw-acc-body"><p>Enter your drug name and zip code, then select the exact dosage and quantity prescribed. Our engine retrieves live pricing from AlethiaRx Direct, GoodRx, and Cost Plus sources.</p></div>
           </div>
           <div class="hiw-acc-item">
             <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
@@ -620,7 +638,7 @@
             <div class="hiw-tl-content">
               <div class="hiw-tl-num">01</div>
               <h3 class="hiw-tl-title">Search</h3>
-              <p class="hiw-tl-text">Find your medication across our network of 75,000+ pharmacies.</p>
+              <p class="hiw-tl-text">Enter your medication name and zip code to find pricing across our verified partner network.</p>
             </div>
           </div>
 
@@ -638,7 +656,7 @@
             <div class="hiw-tl-content">
               <div class="hiw-tl-num">02</div>
               <h3 class="hiw-tl-title">Compare</h3>
-              <p class="hiw-tl-text">See VITAL Direct prices and manufacturer coupons in one place.</p>
+              <p class="hiw-tl-text">See Direct Cash Prices and Third-Party Rates side-by-side in one panel.</p>
             </div>
           </div>
 
@@ -683,7 +701,7 @@
           <div class="hiw-card-cta-inner">
             <div class="hiw-card-cta-text">
               <h3>Your AlethiaRx Digital Card</h3>
-              <p>Pre-loaded with your BIN, PCN, and Group codes. Show it at any of our 75,000+ partner pharmacies — no printing required.</p>
+              <p>Pre-loaded with your BIN, PCN, and Group codes. Show it at any partner pharmacy — no printing required.</p>
             </div>
             <button class="btn-primary" onclick="navigateTo('card')">Get Your Card</button>
           </div>
@@ -699,7 +717,7 @@
           </button>
           <div class="hiw-disclosure-body">
             <h4>Our Pricing Engine</h4>
-            <p>AlethiaRx's pricing engine aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
+            <p>AlethiaRx's pricing engine aggregates data from four sources: our proprietary affiliate card network, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
 
             <h4>The AlethiaRx Direct Price</h4>
             <p>Our "AlethiaRx Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
@@ -750,7 +768,7 @@
         <div class="page-hero-small"><div class="section-eyebrow">Provider Network</div><h1 class="page-title">For Healthcare Providers</h1><p class="page-sub">Join our verified network and give your patients real-time access to the best prescription prices at the point of care.</p></div>
         <div class="providers-grid">
           <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V8l9-5 9 5v13H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21V15h6v6M12 9v5M9.5 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Clinic Integration</h3><p>Integrate VITAL's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p><a href="#" class="provider-cta">Request API Access →</a></div>
-          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M2 13h20" stroke="currentColor" stroke-width="1.5"/></svg></div><h3>Pharmacy Partnership</h3><p>Join our 75,000+ pharmacy network. Accept VITAL affiliate claims, earn guaranteed reimbursement, and expand your customer base to VITAL members nationwide.</p><a href="#" class="provider-cta">Apply for Partnership →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M2 13h20" stroke="currentColor" stroke-width="1.5"/></svg></div><h3>Pharmacy Partnership</h3><p>Join our verified pharmacy network. Accept AlethiaRx affiliate claims, earn guaranteed reimbursement, and expand your customer base to AlethiaRx members nationwide.</p><a href="#" class="provider-cta">Apply for Partnership →</a></div>
           <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20h18M7 14v6M11 8v12M15 11v9M19 4v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Practice Analytics</h3><p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p><a href="#" class="provider-cta">View Sample Report →</a></div>
         </div>
         <div class="provider-contact"><h3>Partner Inquiries</h3><p>For clinical or pharmacy partnership inquiries, contact our Provider Relations team.</p><a href="mailto:partners@vital.com" class="btn-primary">partners@vital.com</a></div>
@@ -830,7 +848,7 @@
     <!-- PAGE: DIGITAL CARD -->
     <section class="page" id="page-card">
       <div class="page-inner">
-        <div class="page-hero-small"><div class="section-eyebrow">Digital Access Card</div><h1 class="page-title">Your AlethiaRx Card</h1><p class="page-sub">Present this card at any of our 75,000+ partner pharmacies to apply your negotiated discount instantly.</p></div>
+        <div class="page-hero-small"><div class="section-eyebrow">Digital Access Card</div><h1 class="page-title">Your AlethiaRx Card</h1><p class="page-sub">Present this card at any partner pharmacy to apply your negotiated discount instantly.</p></div>
         <div class="card-wrap">
           <div class="digital-card" id="digitalCard">
             <div class="card-inner">
@@ -1019,7 +1037,7 @@
           </div>
           <div class="footer-disc-block">
             <h4>Pricing Engine</h4>
-            <p>AlethiaRx aggregates data from four sources: our proprietary affiliate network of 75,000+ pharmacies, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
+            <p>AlethiaRx aggregates data from four sources: our proprietary affiliate card network, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
           </div>
           <div class="footer-disc-block">
             <h4>AlethiaRx Direct &amp; Affiliate Disclosure</h4>

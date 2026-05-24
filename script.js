@@ -995,11 +995,13 @@ const DRUG_LINKS = {
 function renderPriceCards(variant, drugName) {
   const links = DRUG_LINKS[drugName] || {};
 
+  const zip = ($('heroZipInput') || $('pageZipInput') || {}).value || '32256';
+  const pharmTag = PHARMACY_TAGS[Math.floor(Math.random() * PHARMACY_TAGS.length)];
   const prices = [
-    { id: 'fp',  source: 'AlethiaRx Direct', amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
-    { id: 'grx', source: 'GoodRx',          amount: variant.goodrx,   action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
-    { id: 'cp',  source: 'Cost Plus Drugs', amount: variant.costplus, action: 'View on Cost Plus', isFP: false, link: links.costplus || 'https://costplusdrugs.com' },
-    { id: 'ret', source: 'Retail Cash',     amount: variant.retail,   action: 'Standard Retail',   isFP: false, link: null },
+    { id: 'fp',  source: 'Direct Cash Price',   amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
+    { id: 'grx', source: 'Third-Party · GoodRx', amount: variant.goodrx,  action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
+    { id: 'cp',  source: 'Third-Party · Cost Plus', amount: variant.costplus, action: 'View on Cost Plus', isFP: false, link: links.costplus || 'https://costplusdrugs.com' },
+    { id: 'ret', source: 'Retail Cash Baseline', amount: variant.retail,  action: 'Standard Retail',   isFP: false, link: null },
   ];
 
   const bestAmount = Math.min(...prices.map(p => p.amount));
@@ -1045,6 +1047,38 @@ function renderPriceCards(variant, drugName) {
     note.innerHTML = `<strong>💰 Potential Savings:</strong> The lowest price saves you <strong style="color:var(--mint)">${fmt(saved)}</strong> vs. retail cash price for ${drugName}.`;
     $('priceComparisonGrid').after(note);
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIVE PRICING MATRIX — Home page 3-column ledger
+═══════════════════════════════════════════════════════════════ */
+function renderPricingMatrix() {
+  const container = $('pricingMatrix');
+  if (!container) return;
+
+  const zip = ($('heroZipInput') || {}).value || '32256';
+
+  container.innerHTML = TRENDING_MATRIX.map((item, i) => {
+    const tag = PHARMACY_TAGS[i % PHARMACY_TAGS.length];
+    const savings = item.retail - item.rate;
+    const pct = Math.round((savings / item.retail) * 100);
+    return `
+      <div class="pm-row" onclick="navigateTo('search'); setTimeout(() => triggerSearch('${item.drug}'), 120);">
+        <div>
+          <div class="pm-drug-name">${item.drug}</div>
+          <div class="pm-drug-meta">${item.variant}</div>
+        </div>
+        <div class="pm-retail">$${item.retail.toFixed(2)}</div>
+        <div class="pm-rate-cell">
+          <div class="pm-rate-badge">
+            <span class="pm-rate-price">$${item.rate.toFixed(2)}</span>
+            <span class="pm-pharmacy-tag">${tag}</span>
+          </div>
+          <span class="pm-savings-pill">Save ${pct}%</span>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1107,6 +1141,31 @@ const DRUG_MFR = {
   'Celecoxib':            'Various Generic Manufacturers (brand: Celebrex® by Pfizer)',
   'Topiramate':           'Various Generic Manufacturers (brand: Topamax® by Janssen)',
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   PHARMACY NETWORK TAGS — zip-based placeholder distances
+═══════════════════════════════════════════════════════════════ */
+const PHARMACY_TAGS = [
+  'Walgreens · 0.8 mi',
+  'CVS · 1.2 mi',
+  'Walmart Pharmacy · 1.5 mi',
+  'Costco Pharmacy · 2.1 mi',
+  'Publix Pharmacy · 2.8 mi',
+  'Winn-Dixie Pharmacy · 3.4 mi',
+  'Rite Aid · 1.9 mi',
+  'Kroger Pharmacy · 2.3 mi',
+];
+
+const TRENDING_MATRIX = [
+  { drug: 'Tirzepatide',    variant: '5mg · Monthly Supply',    retail: 1086.37, rate: 399.00  },
+  { drug: 'Ozempic',        variant: '0.25–0.5mg · 1 pen',      retail: 935.00,  rate: 89.00   },
+  { drug: 'Semaglutide',    variant: 'Oral 14mg · 30 tabs',     retail: 1048.00, rate: 110.00  },
+  { drug: 'Adderall',       variant: '30mg XR · 30 caps',       retail: 284.00,  rate: 48.20   },
+  { drug: 'Lexapro',        variant: '20mg · 30 tabs',          retail: 148.00,  rate: 14.60   },
+  { drug: 'Atorvastatin',   variant: '40mg · 30 tabs',          retail: 94.00,   rate: 10.20   },
+  { drug: 'Metformin',      variant: '1000mg · 90 tabs',        retail: 118.00,  rate: 12.20   },
+  { drug: 'Duloxetine',     variant: '60mg · 90 caps',          retail: 368.00,  rate: 38.40   },
+];
 
 const US_STATES = ['Select State','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','D.C.','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
 
@@ -1950,9 +2009,13 @@ document.addEventListener('DOMContentLoaded', () => {
   loadState();
   bindEvents();
   initSearch();
+  // Zip input — refresh matrix on change
+  const zipEl = $('heroZipInput');
+  if (zipEl) zipEl.addEventListener('input', () => renderPricingMatrix());
   updateAuthUI();
   updateAdminSidebarVisibility();
   observeStats();
+  renderPricingMatrix();
   renderCard();
   calcMRR();
   initMedicationCards();

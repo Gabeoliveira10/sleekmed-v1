@@ -5,43 +5,43 @@
 
 /* ─── TOKENS ─────────────────────────────────────────────────── */
 :root {
-  /* Light medical-tech base */
-  --bg-base:       #ffffff;
-  --bg-surface:    #f7f8fa;
-  --bg-raised:     #ffffff;
-  --bg-overlay:    #f0f2f5;
-  --bg-hover:      #f0f2f5;
-  --bg-active:     #e2e4e8;
+  /* Dark terminal base */
+  --bg-base:       #0D1117;
+  --bg-surface:    #161B22;
+  --bg-raised:     #1C2128;
+  --bg-overlay:    #21262D;
+  --bg-hover:      #2D333B;
+  --bg-active:     #373E47;
 
-  --border-subtle: rgba(0,0,0,0.08);
-  --border-muted:  rgba(0,0,0,0.14);
-  --border-strong: rgba(0,0,0,0.26);
+  --border-subtle: #30363D;
+  --border-muted:  #484F58;
+  --border-strong: #6E7681;
 
-  /* Teal accent */
-  --mint:          #00a896;
-  --mint-dim:      #007f72;
-  --mint-glow:     rgba(0,168,150,0.15);
-  --mint-glow-sm:  rgba(0,168,150,0.09);
+  /* Neon emerald — primary accent */
+  --mint:          #39D353;
+  --mint-dim:      #2EA043;
+  --mint-glow:     rgba(57,211,83,0.18);
+  --mint-glow-sm:  rgba(57,211,83,0.10);
 
-  /* Fintech green — optimal price accent */
-  --rx-green:      #00c853;
-  --rx-green-glow: rgba(0,200,83,0.15);
+  /* Secondary green */
+  --rx-green:      #39D353;
+  --rx-green-glow: rgba(57,211,83,0.15);
 
   --brand-yellow:  #FFCD00;
-  --brand-blue:    #0057AD;
-  --brand-navy:    #001f3f;
+  --brand-blue:    #58A6FF;
+  --brand-navy:    #0D1117;
 
-  --gold:          #d97706;
-  --gold-glow:     rgba(217,119,6,0.10);
+  --gold:          #E3B341;
+  --gold-glow:     rgba(227,179,65,0.12);
 
-  --red:           #dc2626;
-  --purple:        #7c3aed;
-  --blue:          #2563eb;
+  --red:           #F85149;
+  --purple:        #BC8CFF;
+  --blue:          #58A6FF;
 
-  --text-primary:  #111111;
-  --text-secondary:#374151;
-  --text-muted:    #6b7280;
-  --text-disabled: #9ca3af;
+  --text-primary:  #F0F6FC;
+  --text-secondary:#C9D1D9;
+  --text-muted:    #8B949E;
+  --text-disabled: #484F58;
 
   --font-display:  'DM Serif Display', Georgia, serif;
   --font-sans:     'Lexend', system-ui, sans-serif;
@@ -2739,297 +2739,394 @@ body.compliance-open { overflow: hidden; }
 .footer-market-disclaimer strong { color: var(--text-secondary); }
 
 /* ═══════════════════════════════════════════════════════════════
-   LIGHT MODE — Hardcoded dark value overrides
-   These win last because they sit at the bottom of the cascade.
+   DARK TERMINAL — specific fixes for hardcoded values
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── Body & scrollbars ──────────────────────────────────────── */
-body { background: #ffffff !important; color: #111111 !important; }
-::-webkit-scrollbar-track { background: #f0f0f0 !important; }
-::-webkit-scrollbar-thumb { background: #cccccc !important; }
+body { background: #0D1117; color: #F0F6FC; }
+::-webkit-scrollbar-track { background: #0D1117; }
+::-webkit-scrollbar-thumb { background: #30363D; border-radius: 99px; }
 
-/* ── Header: was near-black glass, now clean white ─────────── */
-.site-header { background: rgba(255,255,255,0.97) !important; border-bottom: 1px solid rgba(0,0,0,0.09) !important; }
-
-/* ── Hero: was dark radial gradient ─────────────────────────── */
-.hero { background: #f8fafc !important; }
-.hero-bg-fx { background: none !important; }
+.site-header { background: rgba(13,17,23,0.97) !important; border-bottom: 1px solid #30363D !important; }
+.hero { background: radial-gradient(ellipse at 70% 30%, #0f1f18 0%, #0D1117 70%) !important; }
+.hero-bg-fx { background:
+  radial-gradient(ellipse 50% 60% at 20% 50%, rgba(57,211,83,0.04) 0%, transparent 70%),
+  radial-gradient(ellipse 40% 40% at 80% 20%, rgba(88,166,255,0.05) 0%, transparent 70%) !important; }
 .hero-bg-photo { opacity: 0.04 !important; }
 
-/* ── Hero search box: keep white with blue border ────────────── */
-.hero .search-box { background: #ffffff !important; border: 2px solid #0057AD !important; }
-.search-input { color: #111111 !important; }
-.search-input::placeholder { color: #9ca3af !important; }
+/* Force all text to bright silver/white on dark bg */
+h1, h2, h3, h4, h5, h6 { color: #F0F6FC; }
+p { color: #C9D1D9; }
+.hero-headline { color: #F0F6FC !important; }
+.hero-headline em { color: #39D353 !important; }
+.hero-sub { color: #C9D1D9 !important; }
+.hero-eyebrow { color: #39D353 !important; }
+.eyebrow-dot { background: #39D353 !important; }
+.section-eyebrow { color: #39D353 !important; }
+.section-title { color: #F0F6FC !important; }
+.section-sub { color: #C9D1D9 !important; }
+.page-title { color: #F0F6FC !important; }
+.page-sub { color: #C9D1D9 !important; }
 
-/* ── Search apex subbar: was dark mono text ─────────────────── */
-.search-apex-subbar {
-  background: #eef4ff !important;
-  border: 1px solid rgba(0,87,173,0.15) !important;
-  color: #374151 !important;
-  font-family: var(--font-sans) !important;
-  font-size: 12.5px !important;
-}
+/* Nav & header */
+.nav-link { color: #8B949E !important; }
+.nav-link:hover { color: #F0F6FC !important; }
+.nav-link.active { color: #39D353 !important; }
+.logo-text { color: #F0F6FC !important; }
+.hamburger span { background: #8B949E !important; }
+.btn-ghost { color: #C9D1D9 !important; border-color: #30363D !important; background: transparent !important; }
+.btn-ghost:hover { color: #F0F6FC !important; border-color: #484F58 !important; background: #21262D !important; }
+.btn-primary { background: #39D353 !important; color: #0D1117 !important; }
+.btn-primary:hover { background: #2EA043 !important; }
 
-/* ── Medication section: was #101822 ───────────────────────── */
-.medication-section { background: #f0f5fa !important; border-top-color: rgba(0,87,173,0.1) !important; border-bottom-color: rgba(0,87,173,0.1) !important; }
+/* Trust bar */
+.trust-bar { background: linear-gradient(90deg, rgba(57,211,83,0.07) 0%, rgba(88,166,255,0.04) 100%) !important; border-bottom-color: rgba(57,211,83,0.12) !important; }
+.trust-text { color: #8B949E !important; }
+.trust-text strong { color: #39D353 !important; }
+.trust-divider { color: #30363D !important; }
 
-/* ── Med card image well: was #1c2533 ──────────────────────── */
-.med-img-wrap { background: #f5f7fa !important; border-bottom-color: rgba(0,0,0,0.06) !important; }
+/* Sidebar */
+.sidebar { background: #161B22 !important; border-right-color: #30363D !important; }
+.sidebar-header { border-bottom-color: #30363D !important; }
+.sidebar-section-label { color: #484F58 !important; }
+.sidebar-link { color: #8B949E !important; }
+.sidebar-link:hover { background: #1C2128 !important; color: #F0F6FC !important; }
+.sidebar-link.active { color: #39D353 !important; background: rgba(57,211,83,0.08) !important; }
+.sidebar-link.active::before { background: #39D353 !important; }
+.sidebar-footer { border-top-color: #30363D !important; }
+.sidebar-username { color: #F0F6FC !important; }
+.sidebar-email { color: #8B949E !important; }
+.sidebar-close { color: #8B949E !important; }
 
-/* ── Med text & pricing ──────────────────────────────────────── */
-.med-name { color: #111111 !important; }
-.med-sub { color: #6b7280 !important; }
-.med-price-green { color: #00695c !important; }
-.med-vital-price { color: #00695c !important; }
-.med-retail-anchor { color: #9ca3af !important; }
-.med-as-low-as { color: #6b7280 !important; }
+/* Medication section */
+.medication-section { background: #161B22 !important; border-top-color: rgba(57,211,83,0.1) !important; border-bottom-color: rgba(57,211,83,0.1) !important; }
+.med-img-wrap { background: #1C2128 !important; border-bottom-color: #30363D !important; }
+.med-name { color: #F0F6FC !important; }
+.med-sub { color: #8B949E !important; }
+.med-price-green { color: #39D353 !important; }
+.med-vital-price { color: #39D353 !important; }
+.med-retail-anchor { color: #484F58 !important; }
+.med-as-low-as { color: #8B949E !important; }
 
-/* ── Section alt-bg ─────────────────────────────────────────── */
-.section-block.alt-bg { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+/* Section alt-bg */
+.section-block.alt-bg { background: #161B22 !important; border-top-color: #30363D !important; border-bottom-color: #30363D !important; }
+.section-blue { background: #0f1a14 !important; border-top-color: #30363D !important; border-bottom-color: #30363D !important; }
 
-/* ── Browse by health condition: was #0f1820 ───────────────── */
-.section-blue { background: #edf5f0 !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
-.health-condition-card { background: #ffffff !important; border-color: rgba(0,0,0,0.10) !important; }
-.health-condition-card h3 { color: #111111 !important; }
-.health-condition-card p { color: #6b7280 !important; }
+/* Health condition cards */
+.health-condition-card { background: #1C2128 !important; border-color: #30363D !important; }
+.health-condition-card h3 { color: #F0F6FC !important; }
+.health-condition-card p { color: #8B949E !important; }
 
-/* ── Market Audit price cards ───────────────────────────────── */
-.price-shock-section { background: #f8fafc !important; border-top-color: rgba(0,0,0,0.07) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
-.audit-receipt { background: rgba(220,38,38,0.04) !important; border-color: rgba(220,38,38,0.28) !important; }
-.audit-receipt-label { color: rgba(220,38,38,0.75) !important; }
-.audit-receipt-drug { color: #6b7280 !important; }
-.audit-receipt-price { color: #dc2626 !important; text-decoration-color: rgba(220,38,38,0.5) !important; }
-.audit-receipt-source { color: #9ca3af !important; }
-.audit-overpay-badge { background: rgba(220,38,38,0.08) !important; color: #dc2626 !important; border-color: rgba(220,38,38,0.2) !important; }
-.audit-connector { }
-.audit-badge { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.22) !important; }
-.audit-badge-value { color: #0057AD !important; font-size: 14px !important; }
-.audit-arrow { color: rgba(0,87,173,0.35) !important; }
-.audit-clearing { background: linear-gradient(135deg, rgba(0,168,130,0.08) 0%, #ffffff 100%) !important; border-color: rgba(0,168,130,0.28) !important; box-shadow: none !important; }
-.audit-clearing-label { color: #00695c !important; }
-.audit-clearing-drug { color: #6b7280 !important; }
-.audit-clearing-price { color: #00695c !important; font-weight: 700 !important; text-shadow: none !important; }
-.audit-clearing-source { color: #00695c !important; }
+/* Why overpay cards */
+.overpay-card { background: #161B22 !important; border-color: #30363D !important; }
+.overpay-card h3 { color: #F0F6FC !important; }
+.overpay-card p { color: #C9D1D9 !important; }
+.overpay-icon-wrap { background: #1C2128 !important; }
 
-/* ── Why You Overpay cards ─────────────────────────────────── */
-.overpay-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; }
-.overpay-card h3 { color: #111111 !important; }
-.overpay-card p { color: #374151 !important; }
-.overpay-icon-wrap { background: #f5f7fa !important; }
-
-/* ── Testimonials ───────────────────────────────────────────── */
-.testimonial-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.testimonial-card p { color: #374151 !important; }
-.testimonial-author strong { color: #111111 !important; }
-.testimonial-author span { color: #6b7280 !important; }
-.author-avatar { background: #f0f2f5 !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
-.stars { color: #d97706 !important; }
-
-/* ── Mission block: stays blue — keep text white ────────────── */
+/* Mission block — keeps blue bg, text stays white */
 .mission-blockquote { color: #ffffff !important; }
 .mission-statement p { color: rgba(255,255,255,0.88) !important; }
 .mission-sig { color: rgba(255,255,255,0.6) !important; }
 .mission-block .section-eyebrow { color: #FFCD00 !important; }
 
-/* ── Transparency pillars: stays yellow ─────────────────────── */
-.transparency-pillars { background: #FEDA00 !important; border-top: 1px solid rgba(0,31,63,0.15) !important; border-bottom: 2px solid rgba(0,31,63,0.15) !important; }
-.pillar-text { color: #001f3f !important; }
+/* Transparency pillars — stays yellow */
+.transparency-pillars { background: #FEDA00 !important; border-top: 1px solid rgba(0,31,63,0.2) !important; border-bottom: 2px solid rgba(0,31,63,0.2) !important; }
 
-/* ── HIW home accordion ─────────────────────────────────────── */
-.hiw-acc-item { border-bottom-color: rgba(0,0,0,0.08) !important; }
-.hiw-acc-item:first-child { border-top-color: rgba(0,0,0,0.08) !important; }
-.hiw-acc-toggle { background: transparent !important; }
-.hiw-acc-toggle:hover { background: rgba(0,0,0,0.02) !important; }
-.hiw-acc-title { color: #111111 !important; }
-.hiw-acc-num { color: #0057AD !important; }
-.hiw-acc-toggle.open .hiw-acc-num { color: #007a4d !important; }
-.hiw-acc-body p { color: #374151 !important; }
+/* Testimonials */
+.testimonial-card { background: #1C2128 !important; border-color: #30363D !important; }
+.testimonial-card p { color: #C9D1D9 !important; }
+.testimonial-author strong { color: #F0F6FC !important; }
+.testimonial-author span { color: #8B949E !important; }
+.author-avatar { background: #21262D !important; border-color: #30363D !important; color: #8B949E !important; }
+.stars { color: #E3B341 !important; }
 
-/* ── How It Works page timeline ─────────────────────────────── */
-.hiw-tl-icon { background: #f7f8fa !important; border-color: rgba(0,0,0,0.12) !important; color: #0057AD !important; }
-.hiw-tl-line { background: rgba(0,0,0,0.1) !important; }
-.hiw-tl-num { color: #6b7280 !important; }
-.hiw-tl-title { color: #111111 !important; }
-.hiw-tl-text { color: #374151 !important; }
-.hiw-disclosure-toggle { background: #f7f8fa !important; color: #374151 !important; }
-.hiw-disclosure-toggle:hover { background: #f0f2f5 !important; }
-.hiw-disclosure-body { background: #ffffff !important; }
-.hiw-disclosure-body h4 { color: #6b7280 !important; }
-.hiw-disclosure-body p { color: #374151 !important; }
+/* Price shock / audit */
+.price-shock-section { background: #161B22 !important; border-top-color: #30363D !important; border-bottom-color: #30363D !important; }
+.audit-receipt { background: rgba(248,81,73,0.05) !important; border-color: rgba(248,81,73,0.3) !important; }
+.audit-receipt-label { color: rgba(248,81,73,0.8) !important; }
+.audit-receipt-drug { color: #8B949E !important; }
+.audit-receipt-price { color: #F85149 !important; }
+.audit-receipt-source { color: #484F58 !important; }
+.audit-overpay-badge { background: rgba(248,81,73,0.1) !important; color: #F85149 !important; border-color: rgba(248,81,73,0.22) !important; }
+.audit-badge { background: rgba(57,211,83,0.08) !important; border-color: rgba(57,211,83,0.3) !important; }
+.audit-badge-value { color: #39D353 !important; font-size: 14px !important; }
+.audit-arrow { color: rgba(57,211,83,0.5) !important; }
+.audit-clearing { background: linear-gradient(135deg, rgba(57,211,83,0.07) 0%, #1C2128 100%) !important; border-color: rgba(57,211,83,0.28) !important; }
+.audit-clearing-label { color: #39D353 !important; }
+.audit-clearing-drug { color: #8B949E !important; }
+.audit-clearing-price { color: #39D353 !important; font-weight: 700 !important; text-shadow: 0 0 30px rgba(57,211,83,0.3) !important; }
+.audit-clearing-source { color: #39D353 !important; }
 
-/* ── Sidebar ────────────────────────────────────────────────── */
-.sidebar { background: #ffffff !important; border-right-color: rgba(0,0,0,0.08) !important; }
-.sidebar-header { border-bottom-color: rgba(0,0,0,0.08) !important; }
-.sidebar-section-label { color: #9ca3af !important; }
-.sidebar-link { color: #374151 !important; }
-.sidebar-link:hover { background: #f0f2f5 !important; color: #111111 !important; }
-.sidebar-link.active { color: #0057AD !important; background: rgba(0,87,173,0.06) !important; }
-.sidebar-link.active::before { background: #0057AD !important; }
-.sidebar-footer { border-top-color: rgba(0,0,0,0.08) !important; }
-.sidebar-username { color: #111111 !important; }
-.sidebar-email { color: #6b7280 !important; }
-.hamburger span { background: #374151 !important; }
-.sidebar-close { color: #6b7280 !important; }
-.sidebar-close:hover { background: #f0f2f5 !important; color: #111111 !important; }
+/* Search boxes */
+.search-box { background: #1C2128 !important; border-color: #30363D !important; }
+.search-box:focus-within { border-color: #39D353 !important; box-shadow: 0 0 0 3px rgba(57,211,83,0.1) !important; }
+.hero .search-box { background: #1C2128 !important; border: 2px solid #30363D !important; }
+.hero .search-box:focus-within { border-color: #39D353 !important; }
+.search-input { color: #F0F6FC !important; }
+.search-input::placeholder { color: #484F58 !important; }
+.search-dropdown, .search-dropdown-attached { background: #21262D !important; border-color: #30363D !important; box-shadow: 0 16px 48px rgba(0,0,0,0.5) !important; }
+.dropdown-item { border-bottom-color: #30363D !important; }
+.dropdown-item:hover { background: #2D333B !important; }
+.dropdown-drug-name { color: #F0F6FC !important; }
+.dropdown-drug-cat { color: #8B949E !important; }
+.dropdown-drug-price { color: #39D353 !important; }
 
-/* ── Nav links on light header ──────────────────────────────── */
-.nav-link { color: #374151 !important; }
-.nav-link:hover { color: #111111 !important; }
-.nav-link.active { color: #0057AD !important; }
-.btn-ghost { color: #374151 !important; border-color: rgba(0,0,0,0.18) !important; }
-.btn-ghost:hover { color: #111111 !important; border-color: rgba(0,0,0,0.3) !important; background: #f7f8fa !important; }
+/* Hero tags */
+.hero-tag { background: rgba(57,211,83,0.07) !important; border-color: rgba(57,211,83,0.22) !important; color: #39D353 !important; }
+.hero-tag:hover { background: rgba(57,211,83,0.15) !important; border-color: #39D353 !important; color: #F0F6FC !important; }
 
-/* ── Section titles & text ──────────────────────────────────── */
-.section-title { color: #111111 !important; }
-.section-sub { color: #374151 !important; }
-.page-title { color: #111111 !important; }
-.page-sub { color: #374151 !important; }
-
-/* ── Search page & dropdowns ────────────────────────────────── */
-.search-box { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; }
-.search-dropdown, .search-dropdown-attached { background: #ffffff !important; border-color: rgba(0,0,0,0.12) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important; }
-.dropdown-item { border-bottom-color: rgba(0,0,0,0.06) !important; }
-.dropdown-item:hover { background: #f7f8fa !important; }
-.dropdown-drug-name { color: #111111 !important; }
-.dropdown-drug-cat { color: #6b7280 !important; }
-.dropdown-drug-price { color: #0057AD !important; }
-
-/* ── Browse catalog ─────────────────────────────────────────── */
-.browse-cat-card { box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important; }
-.browse-cat-name { color: #111111 !important; }
-.browse-cat-count { color: #6b7280 !important; }
-.browse-drug-row { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.browse-drug-row:hover { border-color: rgba(0,87,173,0.2) !important; box-shadow: 0 4px 14px rgba(0,0,0,0.06) !important; }
-.browse-drug-row-icon { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; color: #374151 !important; }
-.browse-drug-row-name { color: #111111 !important; }
-.browse-drug-row-sub { color: #6b7280 !important; }
-.browse-drug-row-price { color: #00695c !important; }
-.browse-back-btn { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; color: #374151 !important; }
-.browse-back-btn:hover { border-color: #0057AD !important; color: #0057AD !important; }
-.browse-drug-heading { color: #111111 !important; }
-.browse-catalog-title { color: #6b7280 !important; }
-
-/* ── Price comparison cards (search results) ────────────────── */
-.price-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; }
-.price-source { color: #6b7280 !important; }
-.price-amount { color: #111111 !important; }
-.price-per-unit { color: #9ca3af !important; }
-.price-action { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
-.price-action:hover { background: #f0f2f5 !important; color: #111111 !important; }
-.price-card.best-price { border-color: rgba(0,87,173,0.3) !important; background: linear-gradient(135deg, rgba(0,87,173,0.04) 0%, #ffffff 100%) !important; }
-.price-card.best-price .price-amount { color: #0057AD !important; }
-.price-card.best-price .price-action { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.2) !important; color: #0057AD !important; }
-.price-card-badge { background: #FEDA00 !important; color: #001f3f !important; }
-.variant-btn { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; color: #374151 !important; }
-.variant-btn:hover { border-color: rgba(0,0,0,0.2) !important; color: #111111 !important; }
-.variant-btn.active { background: rgba(0,87,173,0.07) !important; border-color: rgba(0,87,173,0.3) !important; color: #0057AD !important; }
-.price-intel-notice { background: #f0f5ff !important; border-color: rgba(0,87,173,0.14) !important; color: #374151 !important; }
-
-/* ── Flip card front ────────────────────────────────────────── */
-.card-flip-front { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; }
-.flip-source-label { color: #9ca3af !important; }
-.flip-drug { color: #374151 !important; }
-.flip-hint { color: #9ca3af !important; }
-
-/* ── Pharmacy finder ────────────────────────────────────────── */
-.pharmacy-finder { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.pharmacy-finder h3 { color: #111111 !important; }
-.pharmacy-item { border-bottom-color: rgba(0,0,0,0.07) !important; }
-.pharm-name { color: #111111 !important; }
-.pharm-dist { color: #9ca3af !important; }
-
-/* ── Profile / Vault ────────────────────────────────────────── */
-.vault-panel { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.vault-panel-header { background: #f7f8fa !important; border-bottom-color: rgba(0,0,0,0.08) !important; }
-.vault-panel-title { color: #111111 !important; }
-.vault-toggle-bar { border-bottom-color: rgba(0,0,0,0.07) !important; color: #374151 !important; }
-.vault-input { background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important; color: #111111 !important; }
-.vault-input:disabled { background: #f7f8fa !important; color: #9ca3af !important; }
-.vault-field label { color: #6b7280 !important; }
-.lifecycle-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.lifecycle-card h4 { color: #111111 !important; }
-.tracker-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.tracker-drug { color: #111111 !important; }
-
-/* ── Medicine cabinet ───────────────────────────────────────── */
-.add-med-drawer { background: #f7f8fa !important; border-color: rgba(0,0,0,0.1) !important; }
-.drawer-header h4 { color: #111111 !important; }
-.med-item { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.filter-btn { border-color: rgba(0,0,0,0.12) !important; color: #374151 !important; }
-.filter-btn.active { background: rgba(0,87,173,0.07) !important; border-color: rgba(0,87,173,0.28) !important; color: #0057AD !important; }
-
-/* ── About / Providers pages ────────────────────────────────── */
-.value-card { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.value-card h3 { color: #111111 !important; }
-.value-card p { color: #374151 !important; }
-.about-legal { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.about-legal h3 { color: #111111 !important; }
-.about-legal p { color: #6b7280 !important; }
-.provider-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.provider-card h3 { color: #111111 !important; }
-.provider-card p { color: #374151 !important; }
-.provider-contact { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.provider-contact h3 { color: #111111 !important; }
-.provider-contact p { color: #374151 !important; }
-
-/* ── Modals ─────────────────────────────────────────────────── */
-.modal { background: #ffffff !important; border-color: rgba(0,0,0,0.12) !important; }
-.modal-close { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; color: #6b7280 !important; }
-.modal-close:hover { color: #111111 !important; }
-.auth-modal h2 { color: #111111 !important; }
-.modal-sub { color: #374151 !important; }
-.modal-field label { color: #6b7280 !important; }
-.modal-switch { color: #6b7280 !important; }
-
-/* ── Toast ──────────────────────────────────────────────────── */
-.toast { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; color: #111111 !important; box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important; }
-
-/* ── Footer ─────────────────────────────────────────────────── */
-.site-footer { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.09) !important; }
-.footer-brand p { color: #6b7280 !important; }
-.footer-copy { color: #9ca3af !important; }
-.footer-col-title { color: #9ca3af !important; }
-.footer-col a { color: #374151 !important; }
-.footer-col a:hover { color: #111111 !important; }
-.footer-disclosure-wrap { background: #f7f8fa !important; border-top-color: rgba(0,0,0,0.08) !important; }
-.footer-disclosure-btn { color: #6b7280 !important; }
-.footer-disclosure-btn:hover { color: #111111 !important; }
-.footer-disc-content { color: #6b7280 !important; }
-.footer-disc-block h4 { color: #9ca3af !important; }
-
-/* ── Admin portal ───────────────────────────────────────────── */
-.admin-login-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.08) !important; }
-.kpi-card { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.kpi-value { color: #111111 !important; }
-.kpi-label { color: #6b7280 !important; }
-.analytics-chart-wrap, .top-searches-wrap { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-.top-searches-table th { color: #9ca3af !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
-.top-searches-table td { color: #374151 !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
-.top-searches-table td:nth-child(2) { color: #111111 !important; }
-.calc-grid { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
-
-/* ── Empty / auth gate states ───────────────────────────────── */
-.search-empty-state h3 { color: #111111 !important; }
-.search-empty-state p { color: #374151 !important; }
-.auth-gate h3 { color: #111111 !important; }
-.auth-gate p { color: #374151 !important; }
-.results-header h2 { color: #111111 !important; }
-
-/* ── Coming soon pages ──────────────────────────────────────── */
-.cs-title { color: #111111 !important; }
-.cs-sub { color: #374151 !important; }
-.cs-features { background: #f7f8fa !important; border-color: rgba(0,0,0,0.08) !important; }
-.cs-feature { color: #374151 !important; }
-
-/* ── Hero tags ──────────────────────────────────────────────── */
-.hero-tag { background: rgba(0,87,173,0.06) !important; border-color: rgba(0,87,173,0.2) !important; color: #0057AD !important; }
-.hero-tag:hover { background: rgba(0,87,173,0.12) !important; border-color: #0057AD !important; color: #001f3f !important; }
-
-/* ── Stat strip: stays yellow — keep navy text ──────────────── */
+/* Stat strip */
+.hero-stat-strip { background: #FEDA00 !important; }
 .stat-num { color: #001f3f !important; }
 .stat-label { color: rgba(0,31,63,0.65) !important; }
 
-/* ── Section eyebrow labels ─────────────────────────────────── */
-.section-eyebrow { color: #0057AD !important; }
-.hero-eyebrow { color: #0057AD !important; }
-.eyebrow-dot { background: #0057AD !important; }
+/* Price comparison */
+.price-card { background: #161B22 !important; border-color: #30363D !important; }
+.price-source { color: #8B949E !important; }
+.price-amount { color: #F0F6FC !important; }
+.price-per-unit { color: #484F58 !important; }
+.price-action { background: #1C2128 !important; border-color: #30363D !important; color: #8B949E !important; }
+.price-action:hover { background: #21262D !important; color: #F0F6FC !important; }
+.price-card.best-price { border-color: rgba(57,211,83,0.4) !important; background: linear-gradient(135deg, rgba(57,211,83,0.07) 0%, #161B22 100%) !important; }
+.price-card.best-price .price-amount { color: #39D353 !important; }
+.price-card.best-price .price-action { background: rgba(57,211,83,0.09) !important; border-color: rgba(57,211,83,0.28) !important; color: #39D353 !important; }
+.price-card-badge { background: #FEDA00 !important; color: #001f3f !important; }
+.variant-btn { background: #1C2128 !important; border-color: #30363D !important; color: #8B949E !important; }
+.variant-btn:hover { border-color: #484F58 !important; color: #C9D1D9 !important; }
+.variant-btn.active { background: rgba(57,211,83,0.09) !important; border-color: rgba(57,211,83,0.35) !important; color: #39D353 !important; }
+.price-intel-notice { background: rgba(57,211,83,0.05) !important; border-color: rgba(57,211,83,0.14) !important; color: #8B949E !important; }
+
+/* Browse catalog */
+.browse-cat-name { color: #F0F6FC !important; }
+.browse-cat-count { color: #8B949E !important; }
+.browse-drug-row { background: #161B22 !important; border-color: #30363D !important; }
+.browse-drug-row:hover { border-color: rgba(57,211,83,0.3) !important; }
+.browse-drug-row-icon { background: #1C2128 !important; border-color: #30363D !important; color: #8B949E !important; }
+.browse-drug-row-name { color: #F0F6FC !important; }
+.browse-drug-row-sub { color: #8B949E !important; }
+.browse-drug-row-price { color: #39D353 !important; }
+.browse-back-btn { background: #161B22 !important; border-color: #30363D !important; color: #8B949E !important; }
+.browse-back-btn:hover { border-color: #39D353 !important; color: #39D353 !important; }
+.browse-drug-heading { color: #F0F6FC !important; }
+.browse-catalog-title { color: #484F58 !important; }
+
+/* Vault / Profile */
+.vault-panel { background: #161B22 !important; border-color: #30363D !important; }
+.vault-panel-header { background: #1C2128 !important; border-bottom-color: #30363D !important; }
+.vault-panel-title { color: #F0F6FC !important; }
+.vault-input { background: #1C2128 !important; border-color: #30363D !important; color: #F0F6FC !important; }
+.vault-input:disabled { background: #161B22 !important; color: #484F58 !important; }
+.vault-field label { color: #8B949E !important; }
+
+/* Modals */
+.modal { background: #161B22 !important; border-color: #30363D !important; }
+.modal-close { background: #1C2128 !important; border-color: #30363D !important; color: #8B949E !important; }
+.auth-modal h2 { color: #F0F6FC !important; }
+.modal-sub { color: #C9D1D9 !important; }
+.modal-field label { color: #8B949E !important; }
+.modal-switch { color: #8B949E !important; }
+
+/* Footer */
+.site-footer { background: #161B22 !important; border-top-color: #30363D !important; }
+.footer-brand p { color: #8B949E !important; }
+.footer-copy { color: #484F58 !important; }
+.footer-col-title { color: #484F58 !important; }
+.footer-col a { color: #8B949E !important; }
+.footer-col a:hover { color: #F0F6FC !important; }
+.footer-disclosure-wrap { background: #161B22 !important; border-top-color: #30363D !important; }
+.footer-disclosure-btn { color: #484F58 !important; }
+.footer-disclosure-btn:hover { color: #C9D1D9 !important; }
+
+/* HIW accordion */
+.hiw-acc-toggle { background: transparent !important; }
+.hiw-acc-toggle:hover { background: rgba(255,255,255,0.02) !important; }
+.hiw-acc-title { color: #F0F6FC !important; }
+.hiw-acc-num { color: #39D353 !important; }
+.hiw-acc-item { border-bottom-color: #30363D !important; }
+.hiw-acc-item:first-child { border-top-color: #30363D !important; }
+.hiw-acc-body p { color: #C9D1D9 !important; }
+
+/* HOW IT WORKS page */
+.hiw-tl-icon { background: #1C2128 !important; border-color: #30363D !important; color: #39D353 !important; }
+.hiw-tl-line { background: #30363D !important; }
+.hiw-tl-num { color: #484F58 !important; }
+.hiw-tl-title { color: #F0F6FC !important; }
+.hiw-tl-text { color: #C9D1D9 !important; }
+.hiw-disclosure-toggle { background: #1C2128 !important; color: #8B949E !important; }
+.hiw-disclosure-body { background: #161B22 !important; }
+.hiw-disclosure-body p { color: #8B949E !important; }
+
+/* About pages */
+.value-card { background: #1C2128 !important; border-color: #30363D !important; }
+.value-card h3 { color: #F0F6FC !important; }
+.value-card p { color: #C9D1D9 !important; }
+.about-legal { background: #1C2128 !important; border-color: #30363D !important; }
+.about-legal p { color: #8B949E !important; }
+.provider-card { background: #161B22 !important; border-color: #30363D !important; }
+.provider-card h3 { color: #F0F6FC !important; }
+.provider-card p { color: #C9D1D9 !important; }
+.provider-contact { background: #161B22 !important; border-color: #30363D !important; }
+.provider-contact h3 { color: #F0F6FC !important; }
+
+/* Toast */
+.toast { background: #21262D !important; border-color: #30363D !important; color: #F0F6FC !important; }
+
+/* Coming soon pages */
+.cs-title { color: #F0F6FC !important; }
+.cs-sub { color: #C9D1D9 !important; }
+.cs-features { background: #161B22 !important; border-color: #30363D !important; }
+.cs-feature { color: #C9D1D9 !important; }
+
+/* Empty states */
+.search-empty-state h3 { color: #F0F6FC !important; }
+.search-empty-state p { color: #8B949E !important; }
+.auth-gate h3 { color: #F0F6FC !important; }
+.auth-gate p { color: #C9D1D9 !important; }
+.results-header h2 { color: #F0F6FC !important; }
+.tracker-drug { color: #F0F6FC !important; }
+.med-name { color: #F0F6FC !important; }
+.med-item { background: #161B22 !important; border-color: #30363D !important; }
+.add-med-drawer { background: #1C2128 !important; border-color: #30363D !important; }
+
+/* ── ZIP code input ──────────────────────────────────────────── */
+.zip-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 2px solid #30363D;
+  border-radius: var(--radius-lg);
+  background: #1C2128;
+  overflow: hidden;
+  height: var(--input-h);
+  transition: border-color 0.25s var(--ease-satin);
+  flex-shrink: 0;
+  width: 140px;
+}
+.zip-input-wrap:focus-within { border-color: #39D353; box-shadow: 0 0 0 3px rgba(57,211,83,0.1); }
+.zip-input-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #484F58;
+  padding: 0 10px 0 13px; white-space: nowrap; flex-shrink: 0;
+}
+.zip-input {
+  border: none; background: transparent; outline: none;
+  color: #F0F6FC; font-family: var(--font-mono);
+  font-size: 14px; font-weight: 500; width: 60px;
+  padding: 0 10px 0 0; height: 100%;
+  letter-spacing: 0.08em;
+}
+.zip-input::placeholder { color: #484F58; }
+.hero-search-row {
+  display: flex; align-items: center; gap: 10px;
+  max-width: 680px; margin-bottom: 20px;
+}
+.hero-search-row .hero-search-wrap { flex: 1; margin-bottom: 0; }
+.hero-search-row .search-dropdown { top: 100%; width: 100%; }
+
+/* ── Live Pricing Matrix ──────────────────────────────────────── */
+.pricing-matrix-section {
+  background: #0D1117;
+  padding: 0 20px 48px;
+}
+.pricing-matrix-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.pricing-matrix-header {
+  display: grid;
+  grid-template-columns: 1fr 200px 260px;
+  gap: 0;
+  padding: 10px 18px;
+  border-bottom: 1px solid #30363D;
+  margin-bottom: 0;
+}
+.pm-col-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #484F58;
+  font-family: var(--font-mono);
+}
+.pricing-matrix-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #39D353;
+  font-family: var(--font-mono);
+  margin-bottom: 16px; margin-top: 28px;
+  display: flex; align-items: center; gap: 8px;
+}
+.pricing-matrix-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #39D353;
+  animation: pulse 2s ease-in-out infinite;
+}
+.pm-row {
+  display: grid;
+  grid-template-columns: 1fr 200px 260px;
+  gap: 0;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #30363D;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-satin);
+}
+.pm-row:hover { background: #161B22; }
+.pm-row:last-child { border-bottom: none; }
+.pm-drug-name {
+  font-size: 14px; font-weight: 600; color: #F0F6FC;
+  margin-bottom: 3px;
+  font-family: var(--font-sans);
+}
+.pm-drug-meta {
+  font-size: 11.5px; color: #484F58; font-family: var(--font-mono);
+}
+.pm-retail {
+  font-family: var(--font-mono);
+  font-size: 15px; font-weight: 500;
+  color: #6E7681;
+  text-decoration: line-through;
+  text-decoration-color: rgba(248,81,73,0.45);
+}
+.pm-rate-cell { display: flex; align-items: center; gap: 10px; }
+.pm-rate-badge {
+  display: inline-flex; flex-direction: column;
+  align-items: flex-start; gap: 2px;
+  background: rgba(57,211,83,0.08);
+  border: 1.5px solid rgba(57,211,83,0.28);
+  border-radius: var(--radius-md);
+  padding: 7px 13px;
+  min-width: 110px;
+}
+.pm-rate-price {
+  font-family: var(--font-mono);
+  font-size: 16px; font-weight: 700;
+  color: #39D353; letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.pm-pharmacy-tag {
+  font-size: 10px; color: #8B949E;
+  font-family: var(--font-mono); letter-spacing: 0.02em;
+}
+.pm-savings-pill {
+  font-size: 10px; font-weight: 700;
+  color: #0D1117; background: #39D353;
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  letter-spacing: 0.04em; white-space: nowrap;
+  flex-shrink: 0;
+}
+.pm-matrix-wrap {
+  border: 1px solid #30363D;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #161B22;
+}
+@media (max-width: 640px) {
+  .pricing-matrix-header { grid-template-columns: 1fr 120px; }
+  .pm-col-label:last-child { display: none; }
+  .pm-row { grid-template-columns: 1fr 120px; }
+  .pm-rate-cell { display: none; }
+  .pm-retail { display: none; }
+  .pm-rate-badge { border: none; background: transparent; padding: 0; }
+  .pm-rate-price { font-size: 14px; }
+  .hero-search-row { flex-direction: column; align-items: stretch; }
+  .zip-input-wrap { width: 100%; }
+}
