@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   AlethiaRx — DESIGN SYSTEM
+   Vital Rx — DESIGN SYSTEM
    style.css — Fintech Terminal Edition
 ═══════════════════════════════════════════════════════════════ */
 
@@ -3416,4 +3416,142 @@ p { color: #4A5568; }
 @media (max-width: 640px) {
   .footer-trust-bar { flex-direction: column; gap: 6px; text-align: center; padding: 14px 16px; }
   .footer-trust-bar .trust-divider { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   iPHONE-FIRST COMPREHENSIVE PASS
+   Targets iPhone 14/15/16 (390–430px) and all small screens
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Header: slim on mobile, hide desktop nav buttons ─────── */
+@media (max-width: 640px) {
+  .site-header { top: 0 !important; padding: 0 !important; }
+  .header-inner { padding: 0 14px !important; height: 56px !important; min-height: 56px !important; }
+  /* Hide Sign In + Get Started on mobile — use sidebar instead */
+  #btnSignIn, #btnJoin { display: none !important; }
+  .logo-text { font-size: 17px !important; }
+}
+
+/* ── Hero: tighter vertical rhythm on mobile ──────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 0 !important; }
+  .hero-search-top { padding: 18px 14px 0 !important; }
+  .hero-search-top .hero-eyebrow { font-size: 9px !important; margin-bottom: 10px !important; }
+  .hero .search-box { height: 50px !important; border-radius: 14px !important; }
+  .hero-content { padding: 20px 14px 40px !important; }
+  .hero .hero-headline { font-size: clamp(28px, 8.5vw, 38px) !important; line-height: 1.2 !important; margin-bottom: 14px !important; }
+  .hero .hero-sub { font-size: 14px !important; margin-bottom: 20px !important; }
+  .hero-tags { gap: 6px !important; flex-wrap: wrap !important; }
+  .hero-tag { font-size: 12px !important; padding: 6px 12px !important; }
+}
+
+/* ── Stats: compact single-column on mobile ───────────────── */
+@media (max-width: 640px) {
+  .stats-section { padding: 0 14px !important; }
+  .stats-container {
+    grid-template-columns: repeat(3, 1fr) !important;
+    margin: 16px auto !important;
+    padding: 16px 12px !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+  .stats-container .stat-item {
+    padding: 8px 4px !important;
+    border-right: 1px solid rgba(255,255,255,0.12) !important;
+  }
+  .stat-num { font-size: 22px !important; }
+  .stat-label { font-size: 9px !important; }
+}
+
+/* ── Pricing matrix: full iPhone redesign ─────────────────── */
+@media (max-width: 640px) {
+  .pricing-matrix-section { padding: 16px 12px 28px !important; }
+  .pricing-matrix-title { font-size: 10px !important; margin-top: 0 !important; margin-bottom: 12px !important; }
+
+  /* Hide the column header row — not needed in card layout */
+  .pricing-matrix-header { display: none !important; }
+
+  /* Each row: flex, icon left | name center | price right */
+  .pm-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 14px 12px !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Icon */
+  .pm-img-placeholder {
+    width: 36px !important; height: 36px !important;
+    font-size: 13px !important; flex-shrink: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  /* Drug name + variant: flex 1 */
+  .pm-row > div:nth-child(2) {
+    flex: 1 !important; min-width: 0 !important;
+  }
+  .pm-drug-name { font-size: 13px !important; margin-bottom: 1px !important; }
+  .pm-drug-meta {
+    font-size: 10.5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Description + Retail: hidden on mobile */
+  .pm-desc { display: none !important; }
+  .pm-retail { display: none !important; }
+
+  /* Rate cell: stacked right column, no grid */
+  .pm-rate-cell {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 4px !important;
+    padding-left: 0 !important;
+    flex-shrink: 0 !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Badge: transparent shell, just show price + pharmacy */
+  .pm-rate-badge {
+    min-width: unset !important; max-width: unset !important;
+    width: auto !important; height: auto !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+  .pm-rate-price { font-size: 15px !important; font-weight: 800 !important; }
+  .pm-pharmacy-tag {
+    font-size: 9.5px !important;
+    white-space: nowrap !important;
+    max-width: 110px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-align: right !important;
+  }
+  .pm-savings-pill {
+    min-width: unset !important; max-width: unset !important;
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+    align-self: flex-end !important;
+  }
+}
+
+/* ── General section padding on mobile ───────────────────── */
+@media (max-width: 640px) {
+  .section-block { padding: 28px 14px !important; }
+  .section-title { font-size: clamp(20px, 6vw, 28px) !important; }
+  .section-sub { font-size: 13.5px !important; }
+  .testimonial-grid { grid-template-columns: 1fr !important; }
+  .savings-card-feature-inner { padding: 0 !important; }
+  .hiw-steps { grid-template-columns: 1fr !important; }
+  /* Overpay cards: full width */
+  .overpay-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .overpay-card { padding: 24px 18px !important; }
+  /* Mission */
+  .mission-inner { padding: 0 !important; }
+  .mission-blockquote { font-size: clamp(20px, 6.5vw, 28px) !important; }
 }
