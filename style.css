@@ -2775,33 +2775,52 @@ body { background: #F4F6F8 !important; color: #1A202C !important; }
 .sidebar-close { color: #64748B !important; }
 
 /* ─────────────────────────────────────────────────────────────
-   HERO — light gradient
+   LIVING CANVAS HERO — animated dark gradient (Google Gemini)
 ───────────────────────────────────────────────────────────── */
-.hero { background: linear-gradient(135deg, #EFF6FF 0%, #F4F6F8 55%, #F0FFF4 100%) !important; }
-.hero-bg-fx { background:
-  radial-gradient(ellipse 50% 60% at 20% 50%, rgba(43,108,176,0.04) 0%, transparent 70%),
-  radial-gradient(ellipse 40% 40% at 80% 20%, rgba(46,125,50,0.03) 0%, transparent 70%) !important; }
-.hero-bg-photo { opacity: 0.02 !important; }
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
+.hero {
+  background: linear-gradient(-45deg, #1A202C, #2D3748, #1E3A8A, #065F46) !important;
+  background-size: 400% 400% !important;
+  animation: gradientMove 12s ease infinite !important;
+}
+.hero-bg-fx { background: transparent !important; }
+.hero-bg-photo { opacity: 0.04 !important; mix-blend-mode: overlay !important; }
+
+/* All page text stays dark on light canvas */
 h1, h2, h3, h4, h5, h6 { color: #1A202C; }
 p { color: #4A5568; }
-.hero-headline { color: #1A202C !important; }
-.hero-headline em { color: #2E7D32 !important; }
-.hero-sub { color: #4A5568 !important; }
-.hero-eyebrow { color: #2B6CB0 !important; }
-.eyebrow-dot { background: #2B6CB0 !important; }
 
-/* Hero tags */
-.hero-tag { background: rgba(43,108,176,0.07) !important; border-color: rgba(43,108,176,0.2) !important; color: #2B6CB0 !important; }
-.hero-tag:hover { background: rgba(43,108,176,0.14) !important; border-color: #2B6CB0 !important; color: #1A202C !important; }
+/* Hero text — white on dark animated bg */
+.hero .hero-headline { color: #FFFFFF !important; text-shadow: 0 2px 20px rgba(0,0,0,0.3) !important; }
+.hero .hero-headline em { color: #34D399 !important; }
+.hero .hero-sub { color: rgba(255,255,255,0.80) !important; }
+.hero .hero-eyebrow { color: rgba(255,255,255,0.65) !important; }
+.hero .eyebrow-dot { background: #34D399 !important; }
+
+/* Hero tags — translucent white pills on dark bg */
+.hero-tag { background: rgba(255,255,255,0.10) !important; border-color: rgba(255,255,255,0.20) !important; color: rgba(255,255,255,0.88) !important; }
+.hero-tag:hover { background: rgba(255,255,255,0.18) !important; border-color: rgba(255,255,255,0.38) !important; color: #FFFFFF !important; }
 
 /* ─────────────────────────────────────────────────────────────
    SEARCH BOXES
 ───────────────────────────────────────────────────────────── */
 .search-box { background: #FFFFFF !important; border: 1.5px solid #CBD5E1 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important; }
 .search-box:focus-within { border-color: #2B6CB0 !important; box-shadow: 0 0 0 3px rgba(43,108,176,0.12), 0 4px 12px rgba(0,0,0,0.05) !important; }
-.hero .search-box { background: #FFFFFF !important; border: 2px solid #2B6CB0 !important; box-shadow: 0 2px 16px rgba(43,108,176,0.1) !important; }
-.hero .search-box:focus-within { border-color: #2563EB !important; box-shadow: 0 0 0 3px rgba(43,108,176,0.15), 0 4px 20px rgba(43,108,176,0.12) !important; }
+.hero .search-box { background: rgba(255,255,255,0.97) !important; border: 2px solid rgba(255,255,255,0.22) !important; box-shadow: 0 4px 28px rgba(0,0,0,0.30) !important; }
+.hero .search-box:focus-within { border-color: rgba(52,211,153,0.65) !important; box-shadow: 0 0 20px rgba(46,204,113,0.5), 0 4px 28px rgba(0,0,0,0.25) !important; }
+.hero .search-box.search-active { border-color: rgba(52,211,153,0.65) !important; box-shadow: 0 0 20px rgba(46,204,113,0.5), 0 4px 28px rgba(0,0,0,0.25) !important; }
+
+/* ─── Active search glow (JS-toggled class) ───────────────── */
+.search-active {
+  border-color: rgba(46,204,113,0.70) !important;
+  box-shadow: 0 0 20px rgba(46,204,113,0.50) !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
 .search-input { color: #1A202C !important; }
 .search-input::placeholder { color: #94A3B8 !important; }
 .search-dropdown, .search-dropdown-attached { background: #FFFFFF !important; border: 1px solid #E2E8F0 !important; box-shadow: 0 12px 40px rgba(0,0,0,0.10) !important; }

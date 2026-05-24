@@ -2009,6 +2009,15 @@ document.addEventListener('DOMContentLoaded', () => {
   loadState();
   bindEvents();
   initSearch();
+
+  // Hero search active glow — focus/blur binding
+  const _heroInput = $('heroSearchInput');
+  const _heroBox   = $('heroSearchBox');
+  if (_heroInput && _heroBox) {
+    _heroInput.addEventListener('focus', () => _heroBox.classList.add('search-active'));
+    _heroInput.addEventListener('blur',  () => _heroBox.classList.remove('search-active'));
+  }
+
   updateAuthUI();
   updateAdminSidebarVisibility();
   observeStats();
