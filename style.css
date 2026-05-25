@@ -3646,3 +3646,47 @@ p { color: #4A5568; }
   font-weight: 700;
   color: #1E3A8A;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   DEAD SPACE REDUCTION — tighten all section gaps
+───────────────────────────────────────────────────────────── */
+/* Base section padding: 78px → 40px */
+.section-block { padding: 40px 20px !important; }
+
+/* Stats strip: no vertical gap */
+.stats-section { padding: 0 !important; }
+.stats-container { margin: 0 auto !important; border-radius: 0 !important; }
+
+/* Pricing matrix */
+.pricing-matrix-section { padding: 24px 20px 32px !important; }
+
+/* Transparency pillars */
+.transparency-pillars { padding: 18px 20px 20px !important; }
+
+/* Hero */
+.hero { padding-bottom: 0 !important; }
+.hero-content { padding-bottom: 32px !important; }
+
+/* Page section separators */
+.section-block + .section-block { margin-top: 0 !important; }
+
+/* Health conditions grid */
+.health-conditions-section { padding-top: 32px !important; padding-bottom: 32px !important; }
+
+/* Mission block */
+.mission-section { padding: 36px 20px !important; }
+
+/* Savings card feature */
+.savings-card-feature { padding: 36px 20px !important; }
+
+/* Overpay section */
+.overpay-section { padding: 36px 20px !important; }
+
+/* Footer trust bar */
+.footer-trust-bar { padding: 8px 24px !important; }
+
+@media (max-width: 640px) {
+  .section-block { padding: 24px 14px !important; }
+  .pricing-matrix-section { padding: 14px 12px 20px !important; }
+  .transparency-pillars { padding: 14px !important; }
+}
