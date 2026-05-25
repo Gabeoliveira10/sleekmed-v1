@@ -3375,13 +3375,13 @@ p { color: #4A5568; }
 
 /* ── 7. Transparency pillars: deep indigo (≠ savings card green) */
 .transparency-pillars {
-  background: linear-gradient(135deg, #1E3A8A 0%, #065F46 100%) !important;
+  background: #0F172A !important;
   border-top: none !important; border-bottom: none !important;
   padding: 24px 20px 28px !important;
 }
 .pillar-text { color: #FFFFFF !important; font-weight: 600 !important; }
-.pillar-icon { color: rgba(255,255,255,0.85) !important; }
-.pillar-sep { background: rgba(255,255,255,0.18) !important; }
+.pillar-icon { color: rgba(255,255,255,0.75) !important; }
+.pillar-sep { background: rgba(255,255,255,0.14) !important; }
 
 /* ── 8. Savings card section: amber/gold gradient (distinct) ─ */
 .savings-card-feature {
