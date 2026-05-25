@@ -190,7 +190,7 @@ p, span, a, li, td, th, label, button,
 ═══════════════════════════════════════════════════════════════ */
 .site-header {
   position: sticky;
-  top: 29px; /* sits below the 29px trust bar */
+  top: 0; /* trust bar removed — header sits flush at top */
   z-index: var(--z-header);
   background: rgba(13,17,23,0.97);
   backdrop-filter: blur(20px);
@@ -2994,6 +2994,11 @@ p { color: #4A5568; }
   font-size: 15px; font-weight: 700; color: #2B6CB0 !important;
   font-family: var(--font-sans) !important; flex-shrink: 0;
   user-select: none;
+}
+.pm-drug-img {
+  width: 40px; height: 40px; border-radius: 10px;
+  object-fit: contain; flex-shrink: 0;
+  background: #ffffff; border: 1.5px solid #DBEAFE;
 }
 .pm-drug-name { font-size: 14px; font-weight: 600; color: #1A202C !important; margin-bottom: 3px; font-family: var(--font-sans) !important; }
 .pm-drug-meta { font-size: 11.5px; color: #64748B !important; font-family: var(--font-sans) !important; }

@@ -1068,9 +1068,12 @@ function renderPricingMatrix() {
     const savings = item.retail - item.rate;
     const pct = Math.round((savings / item.retail) * 100);
     const initial = item.drug.charAt(0).toUpperCase();
+    const iconHtml = item.img
+      ? `<img src="${item.img}" alt="${item.drug}" class="pm-drug-img" />`
+      : `<div class="pm-img-placeholder">${initial}</div>`;
     return `
       <div class="pm-row" onclick="navigateTo('search'); setTimeout(() => triggerSearch('${item.drug}'), 120);">
-        <div class="pm-img-placeholder">${initial}</div>
+        ${iconHtml}
         <div>
           <div class="pm-drug-name">${item.drug}</div>
           <div class="pm-drug-meta">${item.variant}</div>
@@ -1165,8 +1168,8 @@ const PHARMACY_TAGS = [
 ];
 
 const TRENDING_MATRIX = [
-  { drug: 'Tirzepatide',    variant: '5mg · Monthly Supply',    desc: 'GLP-1/GIP dual agonist · Weight management & Type 2 diabetes',  retail: 1086.37, rate: 399.00  },
-  { drug: 'Ozempic',        variant: '0.25–0.5mg · 1 pen',      desc: 'GLP-1 receptor agonist · Blood sugar control & weight loss',     retail: 935.00,  rate: 89.00   },
+  { drug: 'Tirzepatide',    variant: '5mg · Monthly Supply',    desc: 'GLP-1/GIP dual agonist · Weight management & Type 2 diabetes',  retail: 1086.37, rate: 399.00,  img: 'IMAGES/tirzepatide.png' },
+  { drug: 'Ozempic',        variant: '0.25–0.5mg · 1 pen',      desc: 'GLP-1 receptor agonist · Blood sugar control & weight loss',     retail: 935.00,  rate: 89.00,   img: 'IMAGES/ozempic.png'    },
   { drug: 'Semaglutide',    variant: 'Oral 14mg · 30 tabs',     desc: 'Oral GLP-1 agonist · Type 2 diabetes management',               retail: 1048.00, rate: 110.00  },
   { drug: 'Adderall',       variant: '30mg XR · 30 caps',       desc: 'Mixed amphetamine salts · ADHD & narcolepsy treatment',         retail: 284.00,  rate: 48.20   },
   { drug: 'Lexapro',        variant: '20mg · 30 tabs',          desc: 'SSRI antidepressant · Depression & generalized anxiety',        retail: 148.00,  rate: 14.60   },
