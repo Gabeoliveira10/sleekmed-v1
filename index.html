@@ -149,6 +149,21 @@
         </div>
       </div>
 
+      <!-- Price Bar Chart -->
+      <div class="section-block price-chart-section">
+        <div class="section-header">
+          <div class="section-eyebrow">Visual Price Index</div>
+          <h2 class="section-title">Retail vs. Vital Rx Rate</h2>
+          <p class="section-sub">8 of the most searched medications — how far apart the prices really are.</p>
+        </div>
+        <div id="priceBarChart" class="price-bar-chart">
+          <div class="pbc-legend">
+            <span class="pbc-legend-dot pbc-dot-retail"></span><span>Retail Cash Price</span>
+            <span class="pbc-legend-dot pbc-dot-vital"></span><span>Vital Rx Rate</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ① Essential Medications — first child below hero -->
       <div class="section-block medication-section">
         <div class="section-header">
@@ -355,38 +370,78 @@
         </div>
       </div>
 
-      <!-- Market Audit Block -->
-      <div class="section-block price-shock-section">
+      <!-- Side-by-Side Receipt Comparison -->
+      <div class="section-block receipt-section">
         <div class="section-header">
           <div class="section-eyebrow">Market Gap Audit</div>
-          <h2 class="section-title">The Systemic Spread Is Real.</h2>
-          <p class="section-sub">One drug. Two radically different prices. This is why Vital Rx exists.</p>
+          <h2 class="section-title">Same Drug. Same Pharmacy. Two Very Different Bills.</h2>
+          <p class="section-sub">This is what happens with — and without — Vital Rx.</p>
         </div>
-        <div class="audit-wrap">
-          <div class="audit-block">
-            <!-- Left — retail receipt -->
-            <div class="audit-card audit-receipt">
-              <div class="audit-receipt-label">⊠ RETAIL CASH INDEX</div>
-              <div class="audit-receipt-drug">Tirzepatide 5mg · Monthly Supply</div>
-              <div class="audit-receipt-price">$1,086.37</div>
-              <div class="audit-receipt-source">Retail Pharmacy Average · May 2026</div>
-              <span class="audit-overpay-badge">YOU OVERPAY $687.37 HERE</span>
+        <div class="receipt-compare-wrap">
+
+          <!-- LEFT: Old retail receipt -->
+          <div class="receipt-paper receipt-old">
+            <div class="receipt-perf-top"></div>
+            <div class="receipt-body">
+              <div class="receipt-store">WALGREENS PHARMACY #4821</div>
+              <div class="receipt-addr">3901 San Pablo Rd S · Jacksonville, FL</div>
+              <div class="receipt-date">Date: 05/25/2026 · 2:14 PM</div>
+              <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-rx-label">PRESCRIPTION</div>
+              <div class="receipt-drug-name">Tirzepatide 5mg/0.5mL</div>
+              <div class="receipt-detail">Qty: 4 pens · Monthly Supply</div>
+              <div class="receipt-detail">NDC: 00002-1433-80</div>
+              <div class="receipt-detail">DAW: 0 · Refills: 2</div>
+              <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-line"><span>Drug Cost</span><span>$1,086.37</span></div>
+              <div class="receipt-line"><span>Insurance Applied</span><span>$0.00</span></div>
+              <div class="receipt-line"><span>Discount Applied</span><span>$0.00</span></div>
+              <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-line receipt-total-line"><span>YOUR TOTAL</span><span class="receipt-scary-price">$1,086.37</span></div>
+              <div class="receipt-footnote">* Lower prices may be available. Ask your pharmacist.</div>
             </div>
-            <!-- Center connector -->
-            <div class="audit-connector">
-              <div class="audit-badge">
-                <span class="audit-badge-value">You Save $687.37</span>
-              </div>
-              <span class="audit-arrow">→</span>
-            </div>
-            <!-- Right — Vital Rx clearing rate -->
-            <div class="audit-card audit-clearing">
-              <div class="audit-clearing-label">✓ ALETHIA® OPTIMIZED CLEARING RATE</div>
-              <div class="audit-clearing-drug">Tirzepatide 5mg · Monthly Supply</div>
-              <div class="audit-clearing-price">$399.00</div>
-              <div class="audit-clearing-source">Vital Rx Network Price · Verified Direct</div>
-            </div>
+            <div class="receipt-perf-bottom"></div>
+            <div class="receipt-old-badge">⚠ YOU OVERPAID $687.37</div>
           </div>
+
+          <!-- CENTER: vs + savings callout -->
+          <div class="receipt-vs-col">
+            <div class="receipt-vs-circle">vs</div>
+            <div class="receipt-savings-callout">
+              <div class="receipt-savings-amount">$687.37</div>
+              <div class="receipt-savings-label">saved with Vital Rx</div>
+              <div class="receipt-savings-pct">63% less</div>
+            </div>
+            <svg class="receipt-arrow-right" viewBox="0 0 24 24" fill="none" width="32" height="32">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- RIGHT: Vital Rx receipt -->
+          <div class="receipt-paper receipt-new">
+            <div class="receipt-perf-top receipt-perf-green"></div>
+            <div class="receipt-body">
+              <div class="receipt-store receipt-store-vital">💊 VITAL RX · VERIFIED RATE</div>
+              <div class="receipt-addr">Walgreens Pharmacy · Jacksonville, FL</div>
+              <div class="receipt-date">Date: 05/25/2026 · 2:14 PM</div>
+              <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-rx-label receipt-rx-label-green">PRESCRIPTION</div>
+              <div class="receipt-drug-name">Tirzepatide 5mg/0.5mL</div>
+              <div class="receipt-detail">Qty: 4 pens · Monthly Supply</div>
+              <div class="receipt-detail">BIN: 610524 · PCN: FPLAY</div>
+              <div class="receipt-detail">GROUP: FP2026 · Verified Direct</div>
+              <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-line"><span>Network Rate</span><span>$399.00</span></div>
+              <div class="receipt-line receipt-line-green"><span>You Saved</span><span>$687.37</span></div>
+              <div class="receipt-line"><span>Insurance Applied</span><span>N/A</span></div>
+              <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
+              <div class="receipt-line receipt-total-line"><span>YOUR TOTAL</span><span class="receipt-good-price">$399.00</span></div>
+              <div class="receipt-footnote receipt-footnote-green">✓ Lowest verified rate · Vital Rx Network</div>
+            </div>
+            <div class="receipt-perf-bottom receipt-perf-green"></div>
+            <div class="receipt-new-badge">✓ LOWEST VERIFIED RATE</div>
+          </div>
+
         </div>
       </div>
 

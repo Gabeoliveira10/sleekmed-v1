@@ -1144,6 +1144,36 @@ function renderPriceCards(variant, drugName) {
 /* ═══════════════════════════════════════════════════════════════
    LIVE PRICING MATRIX — Home page 3-column ledger
 ═══════════════════════════════════════════════════════════════ */
+function renderPriceBarChart() {
+  const container = $('priceBarChart');
+  if (!container) return;
+  const maxPrice = Math.max(...TRENDING_MATRIX.map(d => d.retail));
+  const legend = container.querySelector('.pbc-legend');
+  const rows = TRENDING_MATRIX.map(item => {
+    const retailPct = (item.retail / maxPrice) * 100;
+    const ratePct   = (item.rate   / maxPrice) * 100;
+    const savings   = Math.round((item.retail - item.rate) / item.retail * 100);
+    return `
+      <div class="pbc-row">
+        <div class="pbc-label">${item.drug}</div>
+        <div class="pbc-bars">
+          <div class="pbc-bar-track">
+            <div class="pbc-bar pbc-retail" style="width:${retailPct}%">
+              <span class="pbc-bar-val">$${item.retail % 1 === 0 ? item.retail.toFixed(0) : item.retail.toFixed(0)}</span>
+            </div>
+          </div>
+          <div class="pbc-bar-track">
+            <div class="pbc-bar pbc-vital" style="width:${ratePct}%">
+              <span class="pbc-bar-val">$${item.rate % 1 === 0 ? item.rate.toFixed(0) : item.rate.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="pbc-save-badge">Save ${savings}%</div>
+      </div>`;
+  }).join('');
+  container.innerHTML = (legend ? legend.outerHTML : '') + rows;
+}
+
 function renderPricingMatrix() {
   const container = $('pricingMatrix');
   if (!container) return;
@@ -2140,6 +2170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAdminSidebarVisibility();
   observeStats();
   renderPricingMatrix();
+  renderPriceBarChart();
   renderCard();
   calcMRR();
   initMedicationCards();
