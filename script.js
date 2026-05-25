@@ -806,11 +806,12 @@ function initSearch() {
     });
   });
 
-  // Health condition cards
+  // Health condition cards — skip browse catalog, go straight to results
   $$('.health-condition-card[data-condition]').forEach(card => {
     card.addEventListener('click', () => {
       navigateTo('search');
-      setTimeout(() => triggerSearch(card.dataset.condition), 150);
+      hideBrowseCatalog();
+      triggerSearch(card.dataset.condition);
     });
   });
 
@@ -914,12 +915,93 @@ function triggerSearch(name) {
   setTimeout(() => renderSearchResults(drug), 700);
 }
 
+/* ── Prescription detail helpers ─────────────────────────────── */
+function parseVariantParts(label) {
+  const parts = label.split('·').map(s => s.trim());
+  const dosage = parts[0] || '';
+  const rest   = parts[1] || '';
+  const m = rest.match(/^(\d+)\s*(.+)$/);
+  return { dosage, qty: m ? m[1] : rest, formRaw: m ? m[2].toLowerCase().trim() : '' };
+}
+function formDisplayName(formRaw) {
+  if (!formRaw) return 'Tablet';
+  if (formRaw.includes('tab'))         return 'Tablet';
+  if (formRaw.includes('cap'))         return 'Capsule';
+  if (formRaw.includes('pen'))         return 'Pen (Injection)';
+  if (formRaw.includes('inhaler'))     return 'Inhaler';
+  if (formRaw.includes('spray'))       return 'Nasal Spray';
+  if (formRaw.includes('cream'))       return 'Topical Cream';
+  if (formRaw.includes('patch'))       return 'Patch';
+  if (formRaw.includes('suspension'))  return 'Oral Suspension';
+  if (formRaw.includes('film'))        return 'Film';
+  if (formRaw.includes('supply'))      return 'Monthly Supply';
+  return formRaw.charAt(0).toUpperCase() + formRaw.slice(1);
+}
+
 function renderSearchResults(drug) {
   $('searchResultsPanel').style.display = 'block';
   $('searchEmptyState').style.display   = 'none';
   $('resultsTitle').textContent = `${drug.name} — Price Comparison`;
 
-  // Variant selector
+  // ── Prescription detail dropdowns ──────────────────────────
+  const parsed  = drug.variants.map((v, i) => ({ ...parseVariantParts(v.label), idx: i }));
+  const forms   = [...new Set(parsed.map(p => formDisplayName(p.formRaw)))];
+  const dosages = [...new Set(parsed.map(p => p.dosage).filter(Boolean))];
+  const qtys    = [...new Set(parsed.map(p => p.qty).filter(Boolean))];
+  const formUnit = forms[0] || 'Tablet';
+
+  const rxPanel = $('rxOptionsPanel');
+  if (rxPanel) {
+    rxPanel.innerHTML = `
+      <div class="rx-options-title">Prescription Details</div>
+      <div class="rx-options-grid">
+        <div class="rx-option-group">
+          <label class="rx-option-label">Medication Type</label>
+          <select class="rx-option-select" id="rxOptType">
+            <option value="generic">Generic</option>
+            <option value="brand">Brand Name</option>
+          </select>
+        </div>
+        <div class="rx-option-group">
+          <label class="rx-option-label">Form</label>
+          <select class="rx-option-select" id="rxOptForm">
+            ${forms.map(f => `<option value="${f}">${f}</option>`).join('')}
+          </select>
+        </div>
+        <div class="rx-option-group">
+          <label class="rx-option-label">Dosage</label>
+          <select class="rx-option-select" id="rxOptDosage">
+            ${dosages.map(d => `<option value="${d}">${d}</option>`).join('')}
+          </select>
+        </div>
+        <div class="rx-option-group">
+          <label class="rx-option-label">Quantity</label>
+          <select class="rx-option-select" id="rxOptQty">
+            ${qtys.map(q => `<option value="${q}">${q} ${formUnit.toLowerCase()}s</option>`).join('')}
+          </select>
+        </div>
+      </div>`;
+
+    // Wire dropdowns → pick matching variant
+    function syncVariantFromSelects() {
+      const selDosage = $('rxOptDosage').value;
+      const selQty    = $('rxOptQty').value;
+      const match = parsed.find(p => p.dosage === selDosage && p.qty === selQty) || parsed[0];
+      State.currentVariant = drug.variants[match.idx];
+      // Sync variant pill buttons
+      document.querySelectorAll('#variantSelector .variant-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === match.idx);
+      });
+      hideCardFlip();
+      renderPriceCards(State.currentVariant, drug.name);
+    }
+    ['rxOptDosage','rxOptQty','rxOptForm','rxOptType'].forEach(id => {
+      const el = $(id);
+      if (el) el.addEventListener('change', syncVariantFromSelects);
+    });
+  }
+
+  // Variant pill selector (kept for quick switching, syncs with dropdowns)
   const vs = $('variantSelector');
   vs.innerHTML = drug.variants.map((v, i) => `
     <button class="variant-btn ${i === 0 ? 'active' : ''}" data-index="${i}">${v.label}</button>
@@ -929,7 +1011,12 @@ function renderSearchResults(drug) {
     btn.addEventListener('click', () => {
       vs.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      State.currentVariant = drug.variants[parseInt(btn.dataset.index)];
+      const idx = parseInt(btn.dataset.index);
+      State.currentVariant = drug.variants[idx];
+      // Sync dropdowns to match
+      const p = parsed[idx];
+      if ($('rxOptDosage')) $('rxOptDosage').value = p.dosage;
+      if ($('rxOptQty'))    $('rxOptQty').value    = p.qty;
       hideCardFlip();
       renderPriceCards(State.currentVariant, drug.name);
     });
@@ -1003,10 +1090,10 @@ function renderPriceCards(variant, drugName) {
   const zip = ($('heroZipInput') || $('pageZipInput') || {}).value || '32256';
   const pharmTag = PHARMACY_TAGS[Math.floor(Math.random() * PHARMACY_TAGS.length)];
   const prices = [
-    { id: 'fp',  source: 'Direct Cash Price',   amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
+    { id: 'fp',  source: 'Vital Rx',              amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
     { id: 'grx', source: 'Third-Party · GoodRx', amount: variant.goodrx,  action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
     { id: 'cp',  source: 'Third-Party · Cost Plus', amount: variant.costplus, action: 'View on Cost Plus', isFP: false, link: links.costplus || 'https://costplusdrugs.com' },
-    { id: 'ret', source: 'Retail Cash Baseline', amount: variant.retail,  action: 'Standard Retail',   isFP: false, link: null },
+    { id: 'ret', source: 'Direct Cash Price',     amount: variant.retail,  action: 'Standard Retail',   isFP: false, link: null },
   ];
 
   const bestAmount = Math.min(...prices.map(p => p.amount));
@@ -1016,7 +1103,7 @@ function renderPriceCards(variant, drugName) {
     return `
       <div class="price-card ${isBest ? 'best-price' : ''}">
         ${isBest ? '<div class="price-card-badge">Lowest Price</div>' : ''}
-        <div class="price-source">${p.source}</div>
+        <div class="price-source">${p.id === 'fp' ? '<span class="price-source-vital">💊 Vital Rx</span>' : p.source}</div>
         <div class="price-amount">${fmt(p.amount)}</div>
         <div class="price-per-unit">${variant.label}</div>
         <button class="price-action"
@@ -1539,15 +1626,15 @@ const SOURCE_THEMES = {
     noteColor: 'rgba(255,255,255,0.45)', note: 'Present insurance card at checkout', showCodes: true,
   },
   grx: {
-    frontBg: 'linear-gradient(135deg,#006B68 0%,#004D4A 100%)',
-    frontBorder: 'rgba(0,210,190,0.2)', frontPriceColor: '#fff',
-    frontLabelColor: 'rgba(255,255,255,0.75)', frontHintColor: 'rgba(255,255,255,0.45)',
-    glowColor: '#00B5AD',
-    backBg: 'linear-gradient(135deg,#007A77 0%,#005956 100%)',
-    backBorder: 'rgba(0,210,190,0.18)',
-    logoHtml: '<span style="color:#fff;font-weight:800;font-size:16px">GoodRx</span>',
-    chipHtml: '', codeColor: '#fff', labelColor: 'rgba(255,255,255,0.55)',
-    noteColor: 'rgba(255,255,255,0.5)', note: 'Use your GoodRx coupon at checkout', showCodes: false,
+    frontBg: 'linear-gradient(135deg,#D97706 0%,#B45309 100%)',
+    frontBorder: 'rgba(255,255,255,0.2)', frontPriceColor: '#ffffff',
+    frontLabelColor: 'rgba(255,255,255,0.85)', frontHintColor: 'rgba(255,255,255,0.55)',
+    glowColor: '#F59E0B',
+    backBg: 'linear-gradient(135deg,#F59E0B 0%,#B45309 100%)',
+    backBorder: 'rgba(255,255,255,0.2)',
+    logoHtml: '<span style="color:#ffffff;font-weight:800;font-size:16px">GoodRx</span>',
+    chipHtml: '', codeColor: '#ffffff', labelColor: 'rgba(255,255,255,0.65)',
+    noteColor: 'rgba(255,255,255,0.65)', note: 'Use your GoodRx coupon at checkout', showCodes: false,
   },
   cp:  {
     frontBg: 'linear-gradient(135deg,#003d9e 0%,#001f5e 100%)',
@@ -1600,7 +1687,7 @@ function handlePriceAction(btn) {
   selectedCard.style.setProperty('--card-glow', theme.glowColor);
 
   const ins   = getInsuranceRecord();
-  const name  = State.vault['vf-name'] || (State.user && State.user.name) || 'MEMBER';
+  const name  = State.vault['vf-name'] || (State.user && State.user.name && State.user.name !== 'admin' ? State.user.name : null) || 'MEMBER';
   const saved = retail - price;
 
   // Style the front card dynamically
@@ -1612,6 +1699,7 @@ function handlePriceAction(btn) {
   $('flipPrice').style.color = theme.frontPriceColor;
   $('flipPrice').textContent = fmt(price);
   $('flipDrug').textContent = `${drug} · ${variantLbl}`;
+  $('flipDrug').style.color = 'rgba(255,255,255,0.8)';
   document.querySelector('.flip-hint').style.color = theme.frontHintColor;
 
   // Build dynamic back card — codes only shown after compliance clearance
@@ -2074,14 +2162,14 @@ function initMedicationCards() {
 
 // Colour palette cycling per category
 const CAT_PALETTE = [
-  { bg: 'rgba(0,200,150,0.07)',   accent: '#00a878', border: 'rgba(0,200,150,0.22)' },
-  { bg: 'rgba(59,130,246,0.07)',  accent: '#2563eb', border: 'rgba(59,130,246,0.22)' },
-  { bg: 'rgba(217,119,6,0.07)',   accent: '#d97706', border: 'rgba(217,119,6,0.22)'  },
-  { bg: 'rgba(139,92,246,0.07)',  accent: '#7c3aed', border: 'rgba(139,92,246,0.22)' },
-  { bg: 'rgba(239,68,68,0.07)',   accent: '#dc2626', border: 'rgba(239,68,68,0.22)'  },
-  { bg: 'rgba(20,184,166,0.07)',  accent: '#0d9488', border: 'rgba(20,184,166,0.22)' },
-  { bg: 'rgba(245,158,11,0.07)',  accent: '#b45309', border: 'rgba(245,158,11,0.22)' },
-  { bg: 'rgba(236,72,153,0.07)',  accent: '#be185d', border: 'rgba(236,72,153,0.22)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
+  { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
 ];
 
 // Build category → drugs map once
@@ -2141,7 +2229,7 @@ function showBrowseDrugs(category) {
         <div class="browse-drug-row-icon">${drug.icon || 'Rx'}</div>
         <div class="browse-drug-row-info">
           <div class="browse-drug-row-name">${drug.name}</div>
-          <div class="browse-drug-row-sub">${drug.variants.length} variant${drug.variants.length !== 1 ? 's' : ''} available</div>
+          <div class="browse-drug-row-sub">${drug.variants.length} dosage${drug.variants.length !== 1 ? 's' : ''} available</div>
         </div>
         <div class="browse-drug-row-price">From $${low.toFixed(2)}</div>
         <svg class="browse-drug-row-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
