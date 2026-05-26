@@ -3654,7 +3654,7 @@ p { color: #4A5568; }
 .section-block { padding: 40px 20px !important; }
 
 /* Stats strip: no vertical gap */
-.stats-section { padding: 0 !important; }
+.stats-section { padding: 0 !important; margin-top: 32px !important; }
 .stats-container { margin: 0 auto !important; border-radius: 0 !important; }
 
 /* Pricing matrix */
