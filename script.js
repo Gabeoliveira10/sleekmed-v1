@@ -2173,7 +2173,7 @@ function _hscPopulate(idx) {
   const retEl   = document.getElementById('hscRetailPrice');
   const saveEl  = document.getElementById('hscSaveAmt');
   const dots    = document.querySelectorAll('#hscDots .hsc-dot');
-  if (nameEl)  nameEl.textContent  = d.drug + ' · ' + d.variant;
+  if (nameEl)  { nameEl.textContent = d.drug + ' · ' + d.variant; nameEl.dataset.hscDrug = d.drug; }
   if (vitalEl) vitalEl.textContent = _hscFmt(d.vital);
   if (grxEl)   grxEl.textContent   = _hscFmt(d.goodrx);
   if (cpEl)    cpEl.textContent    = _hscFmt(d.costplus);
@@ -2312,7 +2312,19 @@ function initHeroShowcase() {
     hscHeader.appendChild(btn);
   }
 
-  // ── 3. First slide ───────────────────────────────────────────
+  // ── 3. Clickable drug name → navigate to that drug's results ─
+  const _hscNameEl = document.getElementById('hscDrugName');
+  if (_hscNameEl && !_hscNameEl._hscClickBound) {
+    _hscNameEl._hscClickBound = true;
+    _hscNameEl.classList.add('hsc-drug-name-link');
+    _hscNameEl.setAttribute('title', 'View pricing details');
+    _hscNameEl.addEventListener('click', () => {
+      const drug = _hscNameEl.dataset.hscDrug;
+      if (drug) { navigateTo('search'); triggerSearch(drug); }
+    });
+  }
+
+  // ── 4. First slide ───────────────────────────────────────────
   _hscPopulate(0);
   _hscIdx = 0;
   _hscProgressRestart();

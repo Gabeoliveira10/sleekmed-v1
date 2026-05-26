@@ -3864,13 +3864,13 @@ p { color: #4A5568; }
 ══════════════════════════════════════════════════════════════ */
 .hero-showcase {
   flex-shrink: 0 !important;
-  width: 310px !important;
+  width: 365px !important;
   background: rgba(255,255,255,0.09) !important;
   backdrop-filter: blur(22px) !important;
   -webkit-backdrop-filter: blur(22px) !important;
   border: 1px solid rgba(255,255,255,0.18) !important;
   border-radius: 22px !important;
-  padding: 20px 20px 18px !important;
+  padding: 22px 22px 20px !important;
   box-shadow: 0 12px 48px rgba(0,0,0,0.32), 0 0 0 1px rgba(255,255,255,0.06) !important;
 }
 
@@ -4131,3 +4131,23 @@ p { color: #4A5568; }
   justify-content: flex-end;
   margin-right: 6px;
 }
+
+/* ── Showcase: clickable drug name ──────────────────────────── */
+.hsc-drug-name-link {
+  cursor: pointer !important;
+  display: inline-block;
+  transition: color 0.2s, opacity 0.2s !important;
+}
+.hsc-drug-name-link:hover {
+  color: #4ADE80 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+}
+.hsc-drug-name-link:active { opacity: 0.75; }
+
+/* Slightly larger row text now card is wider */
+.hsc-source-name { font-size: 14px !important; }
+.hsc-price       { font-size: 15px !important; }
+.hsc-vital-price { font-size: 17px !important; }
+.hsc-save-amt    { font-size: 20px !important; }
