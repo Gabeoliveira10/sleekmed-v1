@@ -2134,6 +2134,72 @@ function bindEvents() {
 /* ═══════════════════════════════════════════════════════════════
    BOOT
 ═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   HERO SHOWCASE — Rotating live price comparison card
+═══════════════════════════════════════════════════════════════ */
+const HERO_SHOWCASE_DATA = [
+  { drug: 'Ozempic',     variant: '0.5mg · 1 pen',        vital: 89.00,  goodrx: 842.00, costplus: null,   retail: 935.00  },
+  { drug: 'Tirzepatide', variant: '5mg · Monthly Supply',  vital: 399.00, goodrx: 985.00, costplus: null,   retail: 1086.37 },
+  { drug: 'Adderall',    variant: '30mg XR · 30 caps',     vital: 48.20,  goodrx: 62.00,  costplus: 52.00,  retail: 284.00  },
+  { drug: 'Lexapro',     variant: '20mg · 30 tabs',        vital: 14.60,  goodrx: 35.00,  costplus: 18.00,  retail: 148.00  },
+];
+
+let _hscIdx   = 0;
+let _hscTimer = null;
+
+function _hscFmt(v) { return v != null ? '$' + v.toFixed(2) : '—'; }
+
+function updateHeroShowcase(idx) {
+  const d = HERO_SHOWCASE_DATA[idx];
+  const nameEl  = document.getElementById('hscDrugName');
+  const vitalEl = document.getElementById('hscVitalPrice');
+  const grxEl   = document.getElementById('hscGrxPrice');
+  const cpEl    = document.getElementById('hscCpPrice');
+  const retEl   = document.getElementById('hscRetailPrice');
+  const saveEl  = document.getElementById('hscSaveAmt');
+  const dots    = document.querySelectorAll('#hscDots .hsc-dot');
+
+  if (nameEl)  nameEl.textContent  = d.drug + ' · ' + d.variant;
+  if (vitalEl) vitalEl.textContent = _hscFmt(d.vital);
+  if (grxEl)   grxEl.textContent   = _hscFmt(d.goodrx);
+  if (cpEl)    cpEl.textContent    = _hscFmt(d.costplus);
+  if (retEl)   retEl.textContent   = _hscFmt(d.retail);
+  if (saveEl)  saveEl.textContent  = '$' + (d.retail - d.vital).toFixed(2);
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+}
+
+function fadeHeroShowcase(idx) {
+  const nameEl = document.getElementById('hscDrugName');
+  const rows   = document.getElementById('hscRows');
+  const footer = document.querySelector('#heroShowcase .hsc-footer');
+  [nameEl, rows, footer].forEach(el => { if (el) el.style.opacity = '0'; });
+  setTimeout(() => {
+    updateHeroShowcase(idx);
+    [nameEl, rows, footer].forEach(el => { if (el) el.style.opacity = '1'; });
+  }, 280);
+}
+
+function initHeroShowcase() {
+  const showcase = document.getElementById('heroShowcase');
+  if (!showcase) return;
+  updateHeroShowcase(0);
+  _hscTimer = setInterval(() => {
+    _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
+    fadeHeroShowcase(_hscIdx);
+  }, 5000);
+  document.querySelectorAll('#hscDots .hsc-dot').forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      clearInterval(_hscTimer);
+      _hscIdx = i;
+      fadeHeroShowcase(i);
+      _hscTimer = setInterval(() => {
+        _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
+        fadeHeroShowcase(_hscIdx);
+      }, 5000);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
   bindEvents();
@@ -2171,6 +2237,7 @@ document.addEventListener('DOMContentLoaded', () => {
   observeStats();
   renderPricingMatrix();
   renderPriceBarChart();
+  initHeroShowcase();
   renderCard();
   calcMRR();
   initMedicationCards();

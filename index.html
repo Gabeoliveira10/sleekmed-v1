@@ -97,11 +97,11 @@
           </div>
         </div>
 
-        <!-- Headline + subtitle pushed lower -->
+        <!-- Headline + price showcase -->
         <div class="hero-content">
           <div class="hero-text-block">
             <h1 class="hero-headline">Pay the <em>Real</em> Price<br/>for Your Medication.</h1>
-            <p class="hero-sub">Vital Rx compares Direct Cash Prices and Third-Party Rates side-by-side based on your area — find your local code, show your pharmacist, and never overpay again.</p>
+            <p class="hero-sub">We compare every source — Vital Rx, GoodRx, Cost Plus, and retail — so you always pay the lowest price. Nothing hidden.</p>
             <div class="hero-tags">
               <span class="hero-tag" data-search="Metformin">Metformin</span>
               <span class="hero-tag" data-search="Lisinopril">Lisinopril</span>
@@ -111,6 +111,59 @@
               <span class="hero-tag" data-search="Lexapro">Lexapro</span>
             </div>
           </div>
+
+          <!-- Live price comparison showcase -->
+          <div class="hero-showcase" id="heroShowcase">
+            <div class="hsc-header">
+              <div class="hsc-label">Live Price Comparison</div>
+              <div class="hsc-dots" id="hscDots">
+                <span class="hsc-dot active"></span>
+                <span class="hsc-dot"></span>
+                <span class="hsc-dot"></span>
+                <span class="hsc-dot"></span>
+              </div>
+            </div>
+            <div class="hsc-drug-name" id="hscDrugName">Ozempic · 0.5mg · 1 pen</div>
+            <div class="hsc-rows" id="hscRows">
+              <div class="hsc-row hsc-vital-row">
+                <div class="hsc-row-left">
+                  <span class="hsc-source-dot hsc-dot-vital"></span>
+                  <span class="hsc-source-name">💊 Vital Rx</span>
+                </div>
+                <div class="hsc-row-right">
+                  <span class="hsc-price hsc-vital-price" id="hscVitalPrice">$89.00</span>
+                  <span class="hsc-lowest-badge">LOWEST ✓</span>
+                </div>
+              </div>
+              <div class="hsc-row">
+                <div class="hsc-row-left">
+                  <span class="hsc-source-dot hsc-dot-grx"></span>
+                  <span class="hsc-source-name">GoodRx</span>
+                </div>
+                <span class="hsc-price" id="hscGrxPrice">$842.00</span>
+              </div>
+              <div class="hsc-row">
+                <div class="hsc-row-left">
+                  <span class="hsc-source-dot hsc-dot-cp"></span>
+                  <span class="hsc-source-name">Cost Plus</span>
+                </div>
+                <span class="hsc-price" id="hscCpPrice">—</span>
+              </div>
+              <div class="hsc-row hsc-retail-row">
+                <div class="hsc-row-left">
+                  <span class="hsc-source-dot hsc-dot-ret"></span>
+                  <span class="hsc-source-name">Retail Cash</span>
+                </div>
+                <span class="hsc-price hsc-retail-price" id="hscRetailPrice">$935.00</span>
+              </div>
+            </div>
+            <div class="hsc-footer">
+              <span class="hsc-save-label">You save</span>
+              <span class="hsc-save-amt" id="hscSaveAmt">$846.00</span>
+              <span class="hsc-save-label">vs. retail with Vital Rx</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
