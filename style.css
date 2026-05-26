@@ -4077,3 +4077,57 @@ p { color: #4A5568; }
   .hsc-vital-price { font-size: 16px !important; }
   .hsc-save-amt { font-size: 18px !important; }
 }
+
+/* ── Hero Showcase: pause button + paused state ─────────────── */
+.hsc-pause-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.hsc-pause-btn:hover,
+.hsc-pause-btn:active {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.4);
+}
+.hsc-pause-btn.hsc-paused-state {
+  background: rgba(74,222,128,0.18);
+  border-color: rgba(74,222,128,0.45);
+  color: #4ADE80;
+}
+
+/* Paused: dim the progress bar so it's obvious */
+.hsc-is-paused .hsc-progress-bar {
+  opacity: 0.35 !important;
+}
+/* Paused: label shows PAUSED */
+.hsc-is-paused .hsc-label::after {
+  content: ' · PAUSED';
+  color: rgba(255,255,255,0.35);
+}
+
+/* Align header: label — dots — pause btn, all in a row */
+.hsc-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+.hsc-dots {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  justify-content: flex-end;
+  margin-right: 6px;
+}

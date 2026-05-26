@@ -2136,6 +2136,7 @@ function bindEvents() {
 ═══════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════════
    HERO SHOWCASE — Rotating live price comparison card
+   Features: pause/play, swipe gestures, progress bar, dot nav
 ═══════════════════════════════════════════════════════════════ */
 const HERO_SHOWCASE_DATA = [
   { drug: 'Ozempic',     variant: '0.5mg · 1 pen',        vital: 89.00,  goodrx: 842.00, costplus: null,   retail: 935.00  },
@@ -2144,12 +2145,23 @@ const HERO_SHOWCASE_DATA = [
   { drug: 'Lexapro',     variant: '20mg · 30 tabs',        vital: 14.60,  goodrx: 35.00,  costplus: 18.00,  retail: 148.00  },
 ];
 
-const HSC_INTERVAL = 8000; // ms per slide — long enough to read comfortably
-let _hscIdx   = 0;
-let _hscTimer = null;
-let _hscBusy  = false;     // prevent double-fire during transition
+const HSC_INTERVAL = 9000; // 9s per slide — comfortable reading time
+let _hscIdx      = 0;
+let _hscTimer    = null;
+let _hscBusy     = false;
+let _hscPaused   = false;
+let _hscTouchX   = null;
+let _hscTouchY   = null;
 
 function _hscFmt(v) { return v != null ? '$' + v.toFixed(2) : '—'; }
+
+/* SVG icons for pause / play buttons */
+function _hscPauseIcon() {
+  return '<svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="0" y="0" width="3.5" height="13" rx="1.5" fill="currentColor"/><rect x="7.5" y="0" width="3.5" height="13" rx="1.5" fill="currentColor"/></svg>';
+}
+function _hscPlayIcon() {
+  return '<svg width="12" height="13" viewBox="0 0 12 13" fill="none"><path d="M1 1.5l10 5-10 5V1.5z" fill="currentColor"/></svg>';
+}
 
 /* Fill all DOM elements for slide idx */
 function _hscPopulate(idx) {
@@ -2170,10 +2182,10 @@ function _hscPopulate(idx) {
   dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
 }
 
-/* Restart the progress bar */
+/* Progress bar — restart sweep */
 function _hscProgressRestart() {
   const bar = document.getElementById('hscProgressBar');
-  if (!bar) return;
+  if (!bar || _hscPaused) return;
   bar.style.transition = 'none';
   bar.style.width = '0%';
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2182,87 +2194,158 @@ function _hscProgressRestart() {
   }));
 }
 
-/* Slide-out-up → swap content → slide-in-from-below */
-function _hscTransition(idx) {
+/* Progress bar — freeze at current position */
+function _hscProgressFreeze() {
+  const bar = document.getElementById('hscProgressBar');
+  if (!bar) return;
+  const computed = parseFloat(getComputedStyle(bar).width);
+  const trackW   = parseFloat(getComputedStyle(bar.parentElement).width) || 1;
+  const pct      = Math.min(100, (computed / trackW) * 100);
+  bar.style.transition = 'none';
+  bar.style.width = pct + '%';
+}
+
+/* Slide-out-up → swap → slide-in-from-below */
+function _hscTransition(idx, dir) {
   if (_hscBusy) return;
   _hscBusy = true;
+  const outY = (dir === 'prev') ? '10px' : '-10px';
+  const inY  = (dir === 'prev') ? '-14px' : '14px';
 
   const nameEl = document.getElementById('hscDrugName');
   const rows   = document.getElementById('hscRows');
   const footer = document.querySelector('#heroShowcase .hsc-footer');
   const els    = [nameEl, rows, footer].filter(Boolean);
 
-  // Phase 1: slide up + fade out
   els.forEach(el => {
-    el.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-    el.style.opacity   = '0';
-    el.style.transform = 'translateY(-10px)';
+    el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    el.style.opacity    = '0';
+    el.style.transform  = `translateY(${outY})`;
   });
 
   setTimeout(() => {
-    // Swap content
     _hscPopulate(idx);
-
-    // Phase 2: jump to below-baseline, then slide in
     els.forEach(el => {
       el.style.transition = 'none';
-      el.style.transform  = 'translateY(14px)';
+      el.style.transform  = `translateY(${inY})`;
       el.style.opacity    = '0';
     });
     requestAnimationFrame(() => requestAnimationFrame(() => {
       els.forEach(el => {
-        el.style.transition = 'opacity 0.38s ease, transform 0.38s ease';
+        el.style.transition = 'opacity 0.36s ease, transform 0.36s ease';
         el.style.opacity    = '1';
         el.style.transform  = 'translateY(0)';
       });
-      _hscProgressRestart();
+      if (!_hscPaused) _hscProgressRestart();
       _hscBusy = false;
     }));
-  }, 240);
+  }, 220);
 }
 
-/* Restart the auto-cycle timer */
+/* Navigate forward/back */
+function _hscNext() {
+  _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
+  _hscTransition(_hscIdx, 'next');
+  if (!_hscPaused) _hscStartTimer();
+}
+function _hscPrev() {
+  _hscIdx = (_hscIdx - 1 + HERO_SHOWCASE_DATA.length) % HERO_SHOWCASE_DATA.length;
+  _hscTransition(_hscIdx, 'prev');
+  if (!_hscPaused) _hscStartTimer();
+}
+
+/* Timer */
 function _hscStartTimer() {
   clearInterval(_hscTimer);
-  _hscTimer = setInterval(() => {
-    _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
-    _hscTransition(_hscIdx);
-  }, HSC_INTERVAL);
+  _hscTimer = setInterval(_hscNext, HSC_INTERVAL);
 }
 
+/* Pause / play */
+function _hscPause() {
+  if (_hscPaused) return;
+  _hscPaused = true;
+  clearInterval(_hscTimer);
+  _hscProgressFreeze();
+  const btn = document.getElementById('hscPauseBtn');
+  if (btn) { btn.innerHTML = _hscPlayIcon(); btn.title = 'Resume'; btn.classList.add('hsc-paused-state'); }
+  const showcase = document.getElementById('heroShowcase');
+  if (showcase) showcase.classList.add('hsc-is-paused');
+}
+function _hscPlay() {
+  if (!_hscPaused) return;
+  _hscPaused = false;
+  _hscProgressRestart();
+  _hscStartTimer();
+  const btn = document.getElementById('hscPauseBtn');
+  if (btn) { btn.innerHTML = _hscPauseIcon(); btn.title = 'Pause'; btn.classList.remove('hsc-paused-state'); }
+  const showcase = document.getElementById('heroShowcase');
+  if (showcase) showcase.classList.remove('hsc-is-paused');
+}
+function _hscTogglePause() { _hscPaused ? _hscPlay() : _hscPause(); }
+
+/* Init */
 function initHeroShowcase() {
   const showcase = document.getElementById('heroShowcase');
-  if (!showcase) return;
+  if (!showcase || showcase._hscInit) return;
+  showcase._hscInit = true;
 
-  // Inject thin progress bar at the top of the card
+  // ── 1. Progress bar ──────────────────────────────────────────
   if (!document.getElementById('hscProgressBar')) {
     const track = document.createElement('div');
-    track.id        = 'hscProgressTrack';
-    track.className = 'hsc-progress-track';
+    track.id = 'hscProgressTrack'; track.className = 'hsc-progress-track';
     const bar = document.createElement('div');
-    bar.id        = 'hscProgressBar';
-    bar.className = 'hsc-progress-bar';
+    bar.id = 'hscProgressBar'; bar.className = 'hsc-progress-bar';
     track.appendChild(bar);
     showcase.insertBefore(track, showcase.firstChild);
   }
 
-  // Show first slide instantly, then start timer
+  // ── 2. Pause button (injected into .hsc-header) ──────────────
+  const hscHeader = showcase.querySelector('.hsc-header');
+  if (hscHeader && !document.getElementById('hscPauseBtn')) {
+    const btn = document.createElement('button');
+    btn.id        = 'hscPauseBtn';
+    btn.className = 'hsc-pause-btn';
+    btn.innerHTML = _hscPauseIcon();
+    btn.title     = 'Pause';
+    btn.setAttribute('aria-label', 'Pause slideshow');
+    btn.addEventListener('click', e => { e.stopPropagation(); _hscTogglePause(); });
+    hscHeader.appendChild(btn);
+  }
+
+  // ── 3. First slide ───────────────────────────────────────────
   _hscPopulate(0);
   _hscIdx = 0;
   _hscProgressRestart();
   _hscStartTimer();
 
-  // Dot click — jump to that slide and restart timer
+  // ── 4. Dot clicks ────────────────────────────────────────────
   document.querySelectorAll('#hscDots .hsc-dot').forEach((dot, i) => {
     if (dot._hscBound) return;
     dot._hscBound = true;
     dot.addEventListener('click', () => {
       if (i === _hscIdx) return;
+      const dir = i > _hscIdx ? 'next' : 'prev';
       _hscIdx = i;
-      _hscTransition(i);
-      _hscStartTimer();
+      _hscTransition(i, dir);
+      if (!_hscPaused) _hscStartTimer();
     });
   });
+
+  // ── 5. Swipe gestures (iPhone / touch) ───────────────────────
+  showcase.addEventListener('touchstart', e => {
+    _hscTouchX = e.touches[0].clientX;
+    _hscTouchY = e.touches[0].clientY;
+  }, { passive: true });
+
+  showcase.addEventListener('touchend', e => {
+    if (_hscTouchX === null) return;
+    const dx = e.changedTouches[0].clientX - _hscTouchX;
+    const dy = e.changedTouches[0].clientY - _hscTouchY;
+    _hscTouchX = null; _hscTouchY = null;
+    // Only register horizontal swipe (ignore scrolling)
+    if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+    if (dx < 0) _hscNext(); else _hscPrev();
+  }, { passive: true });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
