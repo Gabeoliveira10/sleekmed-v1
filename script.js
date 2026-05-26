@@ -2144,12 +2144,15 @@ const HERO_SHOWCASE_DATA = [
   { drug: 'Lexapro',     variant: '20mg · 30 tabs',        vital: 14.60,  goodrx: 35.00,  costplus: 18.00,  retail: 148.00  },
 ];
 
+const HSC_INTERVAL = 8000; // ms per slide — long enough to read comfortably
 let _hscIdx   = 0;
 let _hscTimer = null;
+let _hscBusy  = false;     // prevent double-fire during transition
 
 function _hscFmt(v) { return v != null ? '$' + v.toFixed(2) : '—'; }
 
-function updateHeroShowcase(idx) {
+/* Fill all DOM elements for slide idx */
+function _hscPopulate(idx) {
   const d = HERO_SHOWCASE_DATA[idx];
   const nameEl  = document.getElementById('hscDrugName');
   const vitalEl = document.getElementById('hscVitalPrice');
@@ -2158,7 +2161,6 @@ function updateHeroShowcase(idx) {
   const retEl   = document.getElementById('hscRetailPrice');
   const saveEl  = document.getElementById('hscSaveAmt');
   const dots    = document.querySelectorAll('#hscDots .hsc-dot');
-
   if (nameEl)  nameEl.textContent  = d.drug + ' · ' + d.variant;
   if (vitalEl) vitalEl.textContent = _hscFmt(d.vital);
   if (grxEl)   grxEl.textContent   = _hscFmt(d.goodrx);
@@ -2168,34 +2170,97 @@ function updateHeroShowcase(idx) {
   dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
 }
 
-function fadeHeroShowcase(idx) {
+/* Restart the progress bar */
+function _hscProgressRestart() {
+  const bar = document.getElementById('hscProgressBar');
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bar.style.transition = `width ${HSC_INTERVAL}ms linear`;
+    bar.style.width = '100%';
+  }));
+}
+
+/* Slide-out-up → swap content → slide-in-from-below */
+function _hscTransition(idx) {
+  if (_hscBusy) return;
+  _hscBusy = true;
+
   const nameEl = document.getElementById('hscDrugName');
   const rows   = document.getElementById('hscRows');
   const footer = document.querySelector('#heroShowcase .hsc-footer');
-  [nameEl, rows, footer].forEach(el => { if (el) el.style.opacity = '0'; });
+  const els    = [nameEl, rows, footer].filter(Boolean);
+
+  // Phase 1: slide up + fade out
+  els.forEach(el => {
+    el.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+    el.style.opacity   = '0';
+    el.style.transform = 'translateY(-10px)';
+  });
+
   setTimeout(() => {
-    updateHeroShowcase(idx);
-    [nameEl, rows, footer].forEach(el => { if (el) el.style.opacity = '1'; });
-  }, 280);
+    // Swap content
+    _hscPopulate(idx);
+
+    // Phase 2: jump to below-baseline, then slide in
+    els.forEach(el => {
+      el.style.transition = 'none';
+      el.style.transform  = 'translateY(14px)';
+      el.style.opacity    = '0';
+    });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      els.forEach(el => {
+        el.style.transition = 'opacity 0.38s ease, transform 0.38s ease';
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+      });
+      _hscProgressRestart();
+      _hscBusy = false;
+    }));
+  }, 240);
+}
+
+/* Restart the auto-cycle timer */
+function _hscStartTimer() {
+  clearInterval(_hscTimer);
+  _hscTimer = setInterval(() => {
+    _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
+    _hscTransition(_hscIdx);
+  }, HSC_INTERVAL);
 }
 
 function initHeroShowcase() {
   const showcase = document.getElementById('heroShowcase');
   if (!showcase) return;
-  updateHeroShowcase(0);
-  _hscTimer = setInterval(() => {
-    _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
-    fadeHeroShowcase(_hscIdx);
-  }, 5000);
+
+  // Inject thin progress bar at the top of the card
+  if (!document.getElementById('hscProgressBar')) {
+    const track = document.createElement('div');
+    track.id        = 'hscProgressTrack';
+    track.className = 'hsc-progress-track';
+    const bar = document.createElement('div');
+    bar.id        = 'hscProgressBar';
+    bar.className = 'hsc-progress-bar';
+    track.appendChild(bar);
+    showcase.insertBefore(track, showcase.firstChild);
+  }
+
+  // Show first slide instantly, then start timer
+  _hscPopulate(0);
+  _hscIdx = 0;
+  _hscProgressRestart();
+  _hscStartTimer();
+
+  // Dot click — jump to that slide and restart timer
   document.querySelectorAll('#hscDots .hsc-dot').forEach((dot, i) => {
+    if (dot._hscBound) return;
+    dot._hscBound = true;
     dot.addEventListener('click', () => {
-      clearInterval(_hscTimer);
+      if (i === _hscIdx) return;
       _hscIdx = i;
-      fadeHeroShowcase(i);
-      _hscTimer = setInterval(() => {
-        _hscIdx = (_hscIdx + 1) % HERO_SHOWCASE_DATA.length;
-        fadeHeroShowcase(_hscIdx);
-      }, 5000);
+      _hscTransition(i);
+      _hscStartTimer();
     });
   });
 }

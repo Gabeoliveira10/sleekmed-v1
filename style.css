@@ -4019,3 +4019,61 @@ p { color: #4A5568; }
     max-width: 380px !important;
   }
 }
+
+/* ── Hero Showcase: progress bar + transition polish ─────── */
+.hsc-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.hsc-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4ADE80 0%, #2563EB 100%);
+  border-radius: 3px;
+  will-change: width;
+}
+
+/* Smooth transition on animated content */
+#hscDrugName, #hscRows, #heroShowcase .hsc-footer {
+  will-change: opacity, transform;
+}
+
+/* Pulse glow on the Vital Rx highlight row */
+@keyframes hscVitalPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.30); }
+  60%  { box-shadow: 0 0 0 6px rgba(74,222,128,0.00); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.00); }
+}
+.hsc-vital-row {
+  animation: hscVitalPulse 3s ease-in-out infinite !important;
+}
+
+/* Dot active: wider pill instead of just bigger circle */
+.hsc-dot.active {
+  background: #4ADE80 !important;
+  width: 18px !important;
+  border-radius: 4px !important;
+  transform: none !important;
+  transition: width 0.3s ease, background 0.25s !important;
+}
+.hsc-dot {
+  transition: width 0.3s ease, background 0.25s !important;
+}
+
+/* Mobile: card fills width, comfortable padding */
+@media (max-width: 860px) {
+  .hero-showcase {
+    width: calc(100% - 0px) !important;
+    max-width: 420px !important;
+    padding: 16px 18px 16px !important;
+  }
+  .hsc-drug-name { font-size: 15px !important; }
+  .hsc-source-name { font-size: 13px !important; }
+  .hsc-price { font-size: 14px !important; }
+  .hsc-vital-price { font-size: 16px !important; }
+  .hsc-save-amt { font-size: 18px !important; }
+}
