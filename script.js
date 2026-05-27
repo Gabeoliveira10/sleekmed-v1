@@ -2430,24 +2430,52 @@ document.addEventListener('DOMContentLoaded', () => {
   initBrowseCatalog();
   navigateTo('home');
 
-  // ── In-app ← Back button — uses our own navStack, not history ─
+  // ── Smart back: understands page AND sub-view state ──────────
+  function goBack() {
+    const activePage = (document.querySelector('.page.active') || {}).id || '';
+    const currentPage = activePage.replace('page-', '');
+
+    // ── Within Browse / Search: step back through sub-views ────
+    if (currentPage === 'search') {
+      const catalog  = $('browseCatalog');
+      const drugView = $('browseDrugView');
+
+      const catalogHidden = !catalog || catalog.style.display === 'none';
+      const drugViewOpen  = drugView  && drugView.style.display  !== 'none';
+
+      if (catalogHidden) {
+        // We're in search results → back to category grid
+        showBrowseCatalog();
+        showBrowseCategories();
+        return;
+      }
+      if (drugViewOpen) {
+        // We're in a category's drug list (e.g. ADHD) → back to categories
+        showBrowseCategories();
+        return;
+      }
+      // We're at the top of browse → back to home
+      _navStack = [];
+      navigateTo('home', true);
+      return;
+    }
+
+    // ── All other pages: pop the navStack ──────────────────────
+    if (_navStack.length > 0) _navStack.pop();
+    const prev = _navStack.length > 0 ? _navStack[_navStack.length - 1] : 'home';
+    if (prev === 'home') _navStack = [];
+    navigateTo(prev, true);
+  }
+
   const _backBtn = document.getElementById('btnBackNav');
   if (_backBtn && !_backBtn._bound) {
     _backBtn._bound = true;
-    _backBtn.addEventListener('click', () => {
-      _navStack.pop();                                        // remove current page
-      const prev = _navStack.length > 0
-        ? _navStack[_navStack.length - 1]
-        : 'home';
-      if (prev === 'home') _navStack = [];                   // clean reset
-      navigateTo(prev, true);                                // _skipStack=true so we don't re-push
-    });
+    _backBtn.addEventListener('click', goBack);
   }
 
-  // ── Safari native back (popstate) — sync our stack too ───────
+  // ── Safari native back (popstate) ─────────────────────────────
   window.addEventListener('popstate', e => {
     const pageId = (e.state && e.state.page) || 'home';
-    // Rebuild stack to match where browser thinks we are
     if (pageId === 'home') {
       _navStack = [];
     } else {
