@@ -481,10 +481,21 @@ const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(Stat
 /* ═══════════════════════════════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════════════════════════════ */
-/* ── In-app navigation stack (works in PWA + Safari) ─────────
-   Never relies on history.back() — owns its own page stack so
-   the ← Back button always knows exactly where to go.          */
-let _navStack = []; // empty = we are on home
+/* ── Navigation stack + history helpers ──────────────────────
+   _navStack  → in-app back button (PWA + all browsers)
+   history    → Safari native swipe-back
+   _noHist    → suppresses history writes during restoration    */
+let _navStack = [];
+let _noHist   = false; // when true, sub-view fns skip pushState
+
+function _hpush(state, url) {
+  if (_noHist) return;
+  try { history.pushState(state, '', url); } catch(e) {}
+}
+function _hreplace(state, url) {
+  if (_noHist) return;
+  try { history.replaceState(state, '', url); } catch(e) {}
+}
 
 function navigateTo(pageId, _skipStack) {
   $$('.page').forEach(p => p.classList.remove('active'));
@@ -513,12 +524,10 @@ function navigateTo(pageId, _skipStack) {
     } else if (_navStack[_navStack.length - 1] !== pageId) {
       _navStack.push(pageId);                          // avoid duplicate
     }
-    // Also push browser history so Safari native back works too
-    try {
-      pageId === 'home'
-        ? history.replaceState({ page: 'home' }, '', location.href.split('#')[0])
-        : history.pushState({ page: pageId }, '', '#' + pageId);
-    } catch(e) {}
+    // Also push browser history so Safari native swipe-back works
+    pageId === 'home'
+      ? _hreplace({ page: 'home' }, location.href.split('#')[0])
+      : _hpush({ page: pageId }, '#' + pageId);
   }
 
   // ── Show/hide back button based on stack depth ────────────────
@@ -2430,41 +2439,40 @@ document.addEventListener('DOMContentLoaded', () => {
   initBrowseCatalog();
   navigateTo('home');
 
-  // ── Smart back: understands page AND sub-view state ──────────
+  // ── Smart back: steps through sub-views, never skips ─────────
   function goBack() {
-    const activePage = (document.querySelector('.page.active') || {}).id || '';
+    _noHist = true; // don't push new history entries while restoring
+    const activePage  = (document.querySelector('.page.active') || {}).id || '';
     const currentPage = activePage.replace('page-', '');
 
-    // ── Within Browse / Search: step back through sub-views ────
     if (currentPage === 'search') {
       const catalog  = $('browseCatalog');
       const drugView = $('browseDrugView');
-
       const catalogHidden = !catalog || catalog.style.display === 'none';
-      const drugViewOpen  = drugView  && drugView.style.display  !== 'none';
+      const drugViewOpen  = drugView && drugView.style.display !== 'none';
 
       if (catalogHidden) {
-        // We're in search results → back to category grid
+        // Results → back to category grid
         showBrowseCatalog();
         showBrowseCategories();
-        return;
+        _noHist = false; return;
       }
       if (drugViewOpen) {
-        // We're in a category's drug list (e.g. ADHD) → back to categories
+        // Drug list (e.g. ADHD) → back to categories
         showBrowseCategories();
-        return;
+        _noHist = false; return;
       }
-      // We're at the top of browse → back to home
+      // Category grid → back to home
       _navStack = [];
       navigateTo('home', true);
-      return;
+      _noHist = false; return;
     }
 
-    // ── All other pages: pop the navStack ──────────────────────
     if (_navStack.length > 0) _navStack.pop();
     const prev = _navStack.length > 0 ? _navStack[_navStack.length - 1] : 'home';
     if (prev === 'home') _navStack = [];
     navigateTo(prev, true);
+    _noHist = false;
   }
 
   const _backBtn = document.getElementById('btnBackNav');
@@ -2473,16 +2481,36 @@ document.addEventListener('DOMContentLoaded', () => {
     _backBtn.addEventListener('click', goBack);
   }
 
-  // ── Safari native back (popstate) ─────────────────────────────
+  // ── Safari swipe-back (popstate): restore exact sub-view ──────
   window.addEventListener('popstate', e => {
-    const pageId = (e.state && e.state.page) || 'home';
-    if (pageId === 'home') {
-      _navStack = [];
-    } else {
+    const state  = e.state || {};
+    const pageId = state.page || 'home';
+    _noHist = true; // suppress history writes during restoration
+
+    if (pageId === 'search') {
+      navigateTo('search', true);
+      if (state.sub === 'drugs' && state.cat) {
+        showBrowseCatalog();
+        showBrowseDrugs(state.cat);         // restores the ADHD / category drug list
+      } else if (state.sub === 'results' && state.drug) {
+        hideBrowseCatalog();
+        triggerSearch(state.drug);          // restores the price results view
+      } else {
+        showBrowseCatalog();
+        showBrowseCategories();             // restores the top category grid
+      }
+      const idx = _navStack.lastIndexOf('search');
+      _navStack = idx >= 0 ? _navStack.slice(0, idx + 1) : ['search'];
+      _noHist = false; return;
+    }
+
+    if (pageId === 'home') _navStack = [];
+    else {
       const idx = _navStack.lastIndexOf(pageId);
       _navStack = idx >= 0 ? _navStack.slice(0, idx + 1) : [pageId];
     }
     navigateTo(pageId, true);
+    _noHist = false;
   });
 });
 
@@ -2579,16 +2607,22 @@ function showBrowseDrugs(category) {
 
   $('browseCategoryView').style.display = 'none';
   $('browseDrugView').style.display     = '';
+  // Push sub-view state so Safari swipe-back can restore this level
+  _hpush({ page: 'search', sub: 'drugs', cat: category }, '#browse');
 }
 
 function showBrowseCategories() {
   $('browseCategoryView').style.display = '';
   $('browseDrugView').style.display     = 'none';
+  // Replace (not push) — categories is the base of browse, not a new forward step
+  _hreplace({ page: 'search', sub: 'cats' }, '#browse');
 }
 
 function handleBrowseDrugClick(drugName) {
   hideBrowseCatalog();
   triggerSearch(drugName);
+  // Push so swipe-back from results returns to drug list
+  _hpush({ page: 'search', sub: 'results', drug: drugName }, '#results');
 }
 
 function showBrowseCatalog() {
