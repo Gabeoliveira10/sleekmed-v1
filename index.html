@@ -114,6 +114,8 @@
 
           <!-- Live price comparison showcase -->
           <div class="hero-showcase" id="heroShowcase">
+
+            <!-- Header: label + dots (pause btn injected by JS) -->
             <div class="hsc-header">
               <div class="hsc-label">Live Price Comparison</div>
               <div class="hsc-dots" id="hscDots">
@@ -123,45 +125,69 @@
                 <span class="hsc-dot"></span>
               </div>
             </div>
-            <div class="hsc-drug-name" id="hscDrugName">Ozempic · 0.5mg · 1 pen</div>
+
+            <!-- Drug visual: image + name + variant (animated as one block) -->
+            <div class="hsc-drug-hero" id="hscDrugHero">
+              <div class="hsc-drug-img-wrap">
+                <img id="hscDrugImg" src="IMAGES/ozempic.png" alt="Ozempic" class="hsc-drug-img" />
+              </div>
+              <div class="hsc-drug-meta">
+                <div class="hsc-drug-name hsc-drug-name-link" id="hscDrugName" title="View pricing details">Ozempic</div>
+                <div class="hsc-drug-variant" id="hscDrugVariant">0.5mg · 1 pen</div>
+              </div>
+            </div>
+
+            <!-- Price rows -->
             <div class="hsc-rows" id="hscRows">
+
+              <!-- Vital Rx — hero row, always wins -->
               <div class="hsc-row hsc-vital-row">
                 <div class="hsc-row-left">
                   <span class="hsc-source-dot hsc-dot-vital"></span>
-                  <span class="hsc-source-name">💊 Vital Rx</span>
+                  <span class="hsc-source-name hsc-name-vital">💊 Vital Rx</span>
                 </div>
                 <div class="hsc-row-right">
                   <span class="hsc-price hsc-vital-price" id="hscVitalPrice">$89.00</span>
-                  <span class="hsc-lowest-badge">LOWEST ✓</span>
+                  <span class="hsc-best-badge">BEST PRICE ✓</span>
                 </div>
               </div>
-              <div class="hsc-row">
+
+              <!-- GoodRx — amber brand color -->
+              <div class="hsc-row hsc-grx-row">
                 <div class="hsc-row-left">
                   <span class="hsc-source-dot hsc-dot-grx"></span>
-                  <span class="hsc-source-name">GoodRx</span>
+                  <span class="hsc-source-name hsc-name-grx">GoodRx</span>
                 </div>
-                <span class="hsc-price" id="hscGrxPrice">$842.00</span>
+                <span class="hsc-price hsc-grx-price" id="hscGrxPrice">$842.00</span>
               </div>
-              <div class="hsc-row">
+
+              <!-- Cost Plus Drugs — blue brand -->
+              <div class="hsc-row hsc-cp-row">
                 <div class="hsc-row-left">
                   <span class="hsc-source-dot hsc-dot-cp"></span>
-                  <span class="hsc-source-name">Cost Plus</span>
+                  <span class="hsc-source-name hsc-name-cp">Cost Plus Drugs</span>
                 </div>
-                <span class="hsc-price" id="hscCpPrice">—</span>
+                <span class="hsc-price hsc-cp-price" id="hscCpPrice">—</span>
               </div>
+
+              <!-- Retail Pharmacy — red, clearly the worst -->
               <div class="hsc-row hsc-retail-row">
                 <div class="hsc-row-left">
                   <span class="hsc-source-dot hsc-dot-ret"></span>
-                  <span class="hsc-source-name">Retail Cash</span>
+                  <span class="hsc-source-name hsc-name-ret">Retail Pharmacy</span>
                 </div>
                 <span class="hsc-price hsc-retail-price" id="hscRetailPrice">$935.00</span>
               </div>
+
             </div>
+
+            <!-- Savings footer -->
             <div class="hsc-footer">
               <span class="hsc-save-label">You save</span>
               <span class="hsc-save-amt" id="hscSaveAmt">$846.00</span>
               <span class="hsc-save-label">vs. retail with Vital Rx</span>
             </div>
+
           </div>
 
         </div>

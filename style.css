@@ -4194,3 +4194,172 @@ p { color: #4A5568; }
   text-transform: lowercase;
   line-height: 1;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO SHOWCASE — Full Visual Redesign
+   Bigger card · Drug image · Brand colors · Vital Rx dominant
+══════════════════════════════════════════════════════════════ */
+
+/* Card: wider, more padding */
+.hero-showcase {
+  width: 440px !important;
+  padding: 20px 22px 20px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.08) !important;
+}
+
+/* ── Drug hero: image + name block ─────────────────────────── */
+.hsc-drug-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  margin-bottom: 12px;
+  will-change: opacity, transform;
+}
+.hsc-drug-img-wrap {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+  padding: 6px;
+  overflow: hidden;
+}
+.hsc-drug-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.hsc-drug-meta {
+  flex: 1;
+  min-width: 0;
+}
+.hsc-drug-name {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  line-height: 1.15 !important;
+  margin-bottom: 4px !important;
+  transition: none !important;
+}
+.hsc-drug-name.hsc-drug-name-link {
+  cursor: pointer;
+}
+.hsc-drug-name.hsc-drug-name-link:hover {
+  color: #4ADE80 !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.hsc-drug-variant {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.52);
+  line-height: 1.3;
+}
+
+/* ── Price rows ─────────────────────────────────────────────── */
+.hsc-rows { gap: 4px !important; }
+.hsc-row  { padding: 10px 12px !important; border-radius: 11px !important; }
+
+/* Vital Rx — owns the room */
+.hsc-vital-row {
+  background: rgba(74,222,128,0.13) !important;
+  border: 1.5px solid rgba(74,222,128,0.38) !important;
+  padding: 13px 14px !important;
+  margin-bottom: 6px !important;
+}
+.hsc-name-vital {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+}
+.hsc-vital-price {
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  color: #4ADE80 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1 !important;
+}
+.hsc-best-badge {
+  font-size: 9px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+  background: #4ADE80 !important;
+  color: #052e16 !important;
+  border-radius: 20px !important;
+  padding: 4px 9px !important;
+  white-space: nowrap !important;
+  border: none !important;
+}
+
+/* GoodRx — amber brand color */
+.hsc-grx-row { background: rgba(245,158,11,0.07) !important; }
+.hsc-name-grx {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #FBBF24 !important;
+}
+.hsc-dot-grx { background: #F59E0B !important; width: 10px !important; height: 10px !important; }
+.hsc-grx-price { font-size: 16px !important; color: rgba(255,255,255,0.78) !important; }
+
+/* Cost Plus Drugs — blue brand */
+.hsc-cp-row { background: rgba(96,165,250,0.07) !important; }
+.hsc-name-cp {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #93C5FD !important;
+}
+.hsc-dot-cp { background: #60A5FA !important; width: 10px !important; height: 10px !important; }
+.hsc-cp-price { font-size: 16px !important; color: rgba(255,255,255,0.78) !important; }
+
+/* Retail Pharmacy — clearly the bad option */
+.hsc-retail-row {
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
+  margin-top: 4px !important;
+  background: rgba(248,113,113,0.06) !important;
+}
+.hsc-name-ret {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #FCA5A5 !important;
+}
+.hsc-dot-ret { background: #F87171 !important; width: 10px !important; height: 10px !important; }
+.hsc-retail-price {
+  font-size: 16px !important;
+  color: #F87171 !important;
+  text-decoration: line-through !important;
+  text-decoration-color: rgba(248,113,113,0.55) !important;
+}
+
+/* Source dots: slightly bigger overall */
+.hsc-source-dot { width: 10px !important; height: 10px !important; }
+
+/* Savings footer: more impact */
+.hsc-footer {
+  margin-top: 12px !important;
+  padding: 13px 14px !important;
+  border-radius: 13px !important;
+  background: rgba(37,99,235,0.25) !important;
+  border: 1px solid rgba(37,99,235,0.40) !important;
+}
+.hsc-save-amt { font-size: 22px !important; font-weight: 900 !important; }
+.hsc-save-label { font-size: 12px !important; }
+
+/* Mobile adjustments for bigger card */
+@media (max-width: 860px) {
+  .hero-showcase {
+    width: 100% !important;
+    max-width: 440px !important;
+    padding: 18px 18px 18px !important;
+  }
+  .hsc-drug-img-wrap { width: 68px !important; height: 68px !important; }
+  .hsc-drug-name { font-size: 18px !important; }
+  .hsc-vital-price { font-size: 24px !important; }
+}

@@ -2139,10 +2139,10 @@ function bindEvents() {
    Features: pause/play, swipe gestures, progress bar, dot nav
 ═══════════════════════════════════════════════════════════════ */
 const HERO_SHOWCASE_DATA = [
-  { drug: 'Ozempic',     variant: '0.5mg · 1 pen',        vital: 89.00,  goodrx: 842.00, costplus: null,   retail: 935.00  },
-  { drug: 'Tirzepatide', variant: '5mg · Monthly Supply',  vital: 399.00, goodrx: 985.00, costplus: null,   retail: 1086.37 },
-  { drug: 'Adderall',    variant: '30mg XR · 30 caps',     vital: 48.20,  goodrx: 62.00,  costplus: 52.00,  retail: 284.00  },
-  { drug: 'Lexapro',     variant: '20mg · 30 tabs',        vital: 14.60,  goodrx: 35.00,  costplus: 18.00,  retail: 148.00  },
+  { drug: 'Ozempic',     variant: '0.5mg · 1 pen',        vital: 89.00,  goodrx: 842.00, costplus: null,   retail: 935.00,  img: 'IMAGES/ozempic.png'     },
+  { drug: 'Tirzepatide', variant: '5mg · Monthly Supply',  vital: 399.00, goodrx: 985.00, costplus: null,   retail: 1086.37, img: 'IMAGES/tirzepatide.png' },
+  { drug: 'Adderall',    variant: '30mg XR · 30 caps',     vital: 48.20,  goodrx: 62.00,  costplus: 52.00,  retail: 284.00,  img: 'IMAGES/Adderall.png'    },
+  { drug: 'Lexapro',     variant: '20mg · 30 tabs',        vital: 14.60,  goodrx: 35.00,  costplus: 18.00,  retail: 148.00,  img: 'IMAGES/Lexapro.png'     },
 ];
 
 const HSC_INTERVAL = 9000; // 9s per slide — comfortable reading time
@@ -2165,20 +2165,24 @@ function _hscPlayIcon() {
 
 /* Fill all DOM elements for slide idx */
 function _hscPopulate(idx) {
-  const d = HERO_SHOWCASE_DATA[idx];
-  const nameEl  = document.getElementById('hscDrugName');
-  const vitalEl = document.getElementById('hscVitalPrice');
-  const grxEl   = document.getElementById('hscGrxPrice');
-  const cpEl    = document.getElementById('hscCpPrice');
-  const retEl   = document.getElementById('hscRetailPrice');
-  const saveEl  = document.getElementById('hscSaveAmt');
-  const dots    = document.querySelectorAll('#hscDots .hsc-dot');
-  if (nameEl)  { nameEl.textContent = d.drug + ' · ' + d.variant; nameEl.dataset.hscDrug = d.drug; }
-  if (vitalEl) vitalEl.textContent = _hscFmt(d.vital);
-  if (grxEl)   grxEl.textContent   = _hscFmt(d.goodrx);
-  if (cpEl)    cpEl.textContent    = _hscFmt(d.costplus);
-  if (retEl)   retEl.textContent   = _hscFmt(d.retail);
-  if (saveEl)  saveEl.textContent  = '$' + (d.retail - d.vital).toFixed(2);
+  const d         = HERO_SHOWCASE_DATA[idx];
+  const nameEl    = document.getElementById('hscDrugName');
+  const variantEl = document.getElementById('hscDrugVariant');
+  const imgEl     = document.getElementById('hscDrugImg');
+  const vitalEl   = document.getElementById('hscVitalPrice');
+  const grxEl     = document.getElementById('hscGrxPrice');
+  const cpEl      = document.getElementById('hscCpPrice');
+  const retEl     = document.getElementById('hscRetailPrice');
+  const saveEl    = document.getElementById('hscSaveAmt');
+  const dots      = document.querySelectorAll('#hscDots .hsc-dot');
+  if (nameEl)    { nameEl.textContent = d.drug; nameEl.dataset.hscDrug = d.drug; }
+  if (variantEl) variantEl.textContent = d.variant;
+  if (imgEl)     { imgEl.src = d.img; imgEl.alt = d.drug; }
+  if (vitalEl)   vitalEl.textContent = _hscFmt(d.vital);
+  if (grxEl)     grxEl.textContent   = _hscFmt(d.goodrx);
+  if (cpEl)      cpEl.textContent    = _hscFmt(d.costplus);
+  if (retEl)     retEl.textContent   = _hscFmt(d.retail);
+  if (saveEl)    saveEl.textContent  = '$' + (d.retail - d.vital).toFixed(2);
   dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
 }
 
@@ -2212,10 +2216,10 @@ function _hscTransition(idx, dir) {
   const outY = (dir === 'prev') ? '10px' : '-10px';
   const inY  = (dir === 'prev') ? '-14px' : '14px';
 
-  const nameEl = document.getElementById('hscDrugName');
+  const heroEl = document.getElementById('hscDrugHero');
   const rows   = document.getElementById('hscRows');
   const footer = document.querySelector('#heroShowcase .hsc-footer');
-  const els    = [nameEl, rows, footer].filter(Boolean);
+  const els    = [heroEl, rows, footer].filter(Boolean);
 
   els.forEach(el => {
     el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
