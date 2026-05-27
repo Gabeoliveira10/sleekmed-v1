@@ -4363,3 +4363,125 @@ p { color: #4A5568; }
   .hsc-drug-name { font-size: 18px !important; }
   .hsc-vital-price { font-size: 24px !important; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO SHOWCASE — Maturity polish: muted palette, no emoji,
+   tabular numbers, outline badge, restrained brand colors
+══════════════════════════════════════════════════════════════ */
+
+/* Card: slightly more opaque/dark for a premium feel */
+.hero-showcase {
+  background: rgba(8,18,38,0.72) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+
+/* Vital Rx row: subdued green tint, not neon */
+.hsc-vital-row {
+  background: rgba(52,211,153,0.08) !important;
+  border: 1px solid rgba(52,211,153,0.22) !important;
+  animation: none !important;
+}
+
+/* Vital Rx name: clean white, weight 700 not 800 */
+.hsc-name-vital {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Vital Rx price: white — size does the talking, not color */
+.hsc-vital-price {
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1 !important;
+}
+
+/* "Lowest ✓" badge: thin outline only, no filled pill */
+.hsc-best-badge {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  color: #34D399 !important;
+  background: transparent !important;
+  border: 1px solid rgba(52,211,153,0.38) !important;
+  border-radius: 5px !important;
+  padding: 3px 8px !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+}
+
+/* Green dot stays as the only green accent on that row */
+.hsc-dot-vital { background: #34D399 !important; }
+
+/* GoodRx: darker amber, more readable, weight 600 */
+.hsc-grx-row { background: rgba(180,83,9,0.06) !important; }
+.hsc-name-grx {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #D97706 !important;
+}
+.hsc-dot-grx { background: #D97706 !important; }
+.hsc-grx-price {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.65) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Cost Plus: muted blue, weight 600 */
+.hsc-cp-row { background: rgba(59,130,246,0.05) !important; }
+.hsc-name-cp {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #7DD3FC !important;
+}
+.hsc-dot-cp { background: #60A5FA !important; }
+.hsc-cp-price {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.65) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Retail: muted red, no strikethrough — just clearly higher */
+.hsc-retail-row {
+  background: rgba(185,28,28,0.05) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+.hsc-name-ret {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #FCA5A5 !important;
+}
+.hsc-dot-ret { background: #F87171 !important; }
+.hsc-retail-price {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #F87171 !important;
+  text-decoration: none !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Drug name: slightly smaller, refined */
+.hsc-drug-name {
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Savings footer: less intense blue */
+.hsc-footer {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+}
+.hsc-save-amt {
+  font-size: 21px !important;
+  font-weight: 800 !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: -0.02em !important;
+}
+.hsc-save-label { color: rgba(255,255,255,0.45) !important; font-size: 11px !important; }
