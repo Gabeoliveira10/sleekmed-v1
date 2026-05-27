@@ -4485,3 +4485,32 @@ p { color: #4A5568; }
   letter-spacing: -0.02em !important;
 }
 .hsc-save-label { color: rgba(255,255,255,0.45) !important; font-size: 11px !important; }
+
+/* ── In-app back button ──────────────────────────────────────── */
+.btn-back-nav {
+  display: none; /* JS sets to flex when not on home */
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px 0 8px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s, border-color 0.18s;
+  -webkit-tap-highlight-color: transparent;
+  margin-right: 8px;
+}
+.btn-back-nav:hover  { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.28); }
+.btn-back-nav:active { background: rgba(255,255,255,0.20); }
+.btn-back-label { line-height: 1; }
+
+/* On very small screens, hide the "Back" text and keep just the arrow */
+@media (max-width: 380px) {
+  .btn-back-label { display: none; }
+  .btn-back-nav   { padding: 0 8px; min-width: 36px; justify-content: center; }
+}

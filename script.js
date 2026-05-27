@@ -481,7 +481,7 @@ const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(Stat
 /* ═══════════════════════════════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════════════════════════════ */
-function navigateTo(pageId) {
+function navigateTo(pageId, _fromPopState) {
   $$('.page').forEach(p => p.classList.remove('active'));
   const target = $(`page-${pageId}`);
   if (target) target.classList.add('active');
@@ -502,6 +502,20 @@ function navigateTo(pageId) {
   if (pageId === 'card')    renderCard();
   if (pageId === 'admin')   initAdmin();
   if (pageId === 'search')  showBrowseCatalog();
+
+  // ── History API: makes Safari + PWA back button/swipe work ──
+  if (!_fromPopState) {
+    if (pageId === 'home') {
+      // Home cleans the URL — no hash, replaces so pressing back exits app naturally
+      history.replaceState({ page: 'home' }, '', location.href.split('#')[0]);
+    } else {
+      history.pushState({ page: pageId }, '', '#' + pageId);
+    }
+  }
+
+  // ── In-app back button: hidden on home, visible everywhere else ──
+  const _backBtn = document.getElementById('btnBackNav');
+  if (_backBtn) _backBtn.style.display = pageId === 'home' ? 'none' : 'flex';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2407,6 +2421,24 @@ document.addEventListener('DOMContentLoaded', () => {
   initMedicationCards();
   initBrowseCatalog();
   navigateTo('home');
+
+  // ── Browser back / PWA swipe-back → restore correct page ────
+  window.addEventListener('popstate', e => {
+    const pageId = (e.state && e.state.page) || 'home';
+    navigateTo(pageId, true); // true = skip pushState to avoid loop
+  });
+
+  // ── In-app back button click ─────────────────────────────────
+  const _backBtn = document.getElementById('btnBackNav');
+  if (_backBtn) {
+    _backBtn.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        history.back(); // triggers popstate → navigateTo
+      } else {
+        navigateTo('home');
+      }
+    });
+  }
 });
 
 function initMedicationCards() {
