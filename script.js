@@ -481,7 +481,12 @@ const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(Stat
 /* ═══════════════════════════════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════════════════════════════ */
-function navigateTo(pageId, _fromPopState) {
+/* ── In-app navigation stack (works in PWA + Safari) ─────────
+   Never relies on history.back() — owns its own page stack so
+   the ← Back button always knows exactly where to go.          */
+let _navStack = []; // empty = we are on home
+
+function navigateTo(pageId, _skipStack) {
   $$('.page').forEach(p => p.classList.remove('active'));
   const target = $(`page-${pageId}`);
   if (target) target.classList.add('active');
@@ -490,11 +495,9 @@ function navigateTo(pageId, _fromPopState) {
   $$('[data-sidebar-link]').forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
 
   closeSidebar();
-  // Hard instant scroll to top — covers all browsers and scroll containers
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: 'instant' });
-  // Safety reset after content renders
   setTimeout(() => { document.documentElement.scrollTop = 0; document.body.scrollTop = 0; window.scrollTo(0, 0); }, 50);
 
   if (pageId === 'cabinet') renderCabinet();
@@ -503,19 +506,24 @@ function navigateTo(pageId, _fromPopState) {
   if (pageId === 'admin')   initAdmin();
   if (pageId === 'search')  showBrowseCatalog();
 
-  // ── History API: makes Safari + PWA back button/swipe work ──
-  if (!_fromPopState) {
+  // ── Update our own nav stack ──────────────────────────────────
+  if (!_skipStack) {
     if (pageId === 'home') {
-      // Home cleans the URL — no hash, replaces so pressing back exits app naturally
-      history.replaceState({ page: 'home' }, '', location.href.split('#')[0]);
-    } else {
-      history.pushState({ page: pageId }, '', '#' + pageId);
+      _navStack = [];                                  // reset on home
+    } else if (_navStack[_navStack.length - 1] !== pageId) {
+      _navStack.push(pageId);                          // avoid duplicate
     }
+    // Also push browser history so Safari native back works too
+    try {
+      pageId === 'home'
+        ? history.replaceState({ page: 'home' }, '', location.href.split('#')[0])
+        : history.pushState({ page: pageId }, '', '#' + pageId);
+    } catch(e) {}
   }
 
-  // ── In-app back button: hidden on home, visible everywhere else ──
-  const _backBtn = document.getElementById('btnBackNav');
-  if (_backBtn) _backBtn.style.display = pageId === 'home' ? 'none' : 'flex';
+  // ── Show/hide back button based on stack depth ────────────────
+  const _bb = document.getElementById('btnBackNav');
+  if (_bb) _bb.style.display = _navStack.length > 0 ? 'flex' : 'none';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2422,23 +2430,32 @@ document.addEventListener('DOMContentLoaded', () => {
   initBrowseCatalog();
   navigateTo('home');
 
-  // ── Browser back / PWA swipe-back → restore correct page ────
-  window.addEventListener('popstate', e => {
-    const pageId = (e.state && e.state.page) || 'home';
-    navigateTo(pageId, true); // true = skip pushState to avoid loop
-  });
-
-  // ── In-app back button click ─────────────────────────────────
+  // ── In-app ← Back button — uses our own navStack, not history ─
   const _backBtn = document.getElementById('btnBackNav');
-  if (_backBtn) {
+  if (_backBtn && !_backBtn._bound) {
+    _backBtn._bound = true;
     _backBtn.addEventListener('click', () => {
-      if (window.history.length > 1) {
-        history.back(); // triggers popstate → navigateTo
-      } else {
-        navigateTo('home');
-      }
+      _navStack.pop();                                        // remove current page
+      const prev = _navStack.length > 0
+        ? _navStack[_navStack.length - 1]
+        : 'home';
+      if (prev === 'home') _navStack = [];                   // clean reset
+      navigateTo(prev, true);                                // _skipStack=true so we don't re-push
     });
   }
+
+  // ── Safari native back (popstate) — sync our stack too ───────
+  window.addEventListener('popstate', e => {
+    const pageId = (e.state && e.state.page) || 'home';
+    // Rebuild stack to match where browser thinks we are
+    if (pageId === 'home') {
+      _navStack = [];
+    } else {
+      const idx = _navStack.lastIndexOf(pageId);
+      _navStack = idx >= 0 ? _navStack.slice(0, idx + 1) : [pageId];
+    }
+    navigateTo(pageId, true);
+  });
 });
 
 function initMedicationCards() {

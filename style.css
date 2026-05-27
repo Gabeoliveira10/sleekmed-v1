@@ -4514,3 +4514,34 @@ p { color: #4A5568; }
   .btn-back-label { display: none; }
   .btn-back-nav   { padding: 0 8px; min-width: 36px; justify-content: center; }
 }
+
+/* ── Back button: v2 — larger, clearer, thumb-friendly ──────── */
+.btn-back-nav {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px 0 10px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,0.22) !important;
+  background: rgba(255,255,255,0.10) !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  margin-right: 10px;
+  letter-spacing: 0.01em;
+}
+.btn-back-nav:hover,
+.btn-back-nav:active { background: rgba(255,255,255,0.20) !important; }
+.btn-back-nav svg { flex-shrink: 0; }
+
+/* Tiny screens: icon only */
+@media (max-width: 360px) {
+  .btn-back-label { display: none !important; }
+  .btn-back-nav   { padding: 0 10px !important; }
+}
