@@ -2597,6 +2597,12 @@ function renderBrowseCategories() {
   $('browseDrugView').style.display     = 'none';
 }
 
+function _scrollTop() {
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 function showBrowseDrugs(category) {
   const map   = buildCatMap();
   const drugs = (map[category] || []).sort((a, b) => a.name.localeCompare(b.name));
@@ -2621,6 +2627,7 @@ function showBrowseDrugs(category) {
 
   $('browseCategoryView').style.display = 'none';
   $('browseDrugView').style.display     = '';
+  _scrollTop();
   // Push sub-view state so Safari swipe-back can restore this level
   _hpush({ page: 'search', sub: 'drugs', cat: category }, '#browse');
 }
@@ -2628,6 +2635,7 @@ function showBrowseDrugs(category) {
 function showBrowseCategories() {
   $('browseCategoryView').style.display = '';
   $('browseDrugView').style.display     = 'none';
+  _scrollTop();
   // Replace (not push) — categories is the base of browse, not a new forward step
   _hreplace({ page: 'search', sub: 'cats' }, '#browse');
 }
@@ -2639,6 +2647,7 @@ function handleBrowseDrugClick(drugName) {
   if (lbl) lbl.textContent = _lastBrowseCat || 'Browse Medications';
   hideBrowseCatalog();
   triggerSearch(drugName);
+  _scrollTop();
   // Push so swipe-back from results returns to drug list
   _hpush({ page: 'search', sub: 'results', drug: drugName }, '#results');
 }
@@ -2652,6 +2661,7 @@ function goBackFromResults() {
   } else {
     showBrowseCategories();
   }
+  _scrollTop();
   _noHist = false;
 }
 
