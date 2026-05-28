@@ -1087,8 +1087,8 @@
             <div class="admin-login-logo"><div class="logo-capsule" style="display:inline-block;vertical-align:middle;margin-right:8px"></div> VITAL Partner Portal</div>
             <div class="admin-login-label">Restricted Admin Access</div>
             <div class="admin-field"><label>Email</label><input type="text" inputmode="email" id="adminEmail" class="vault-input" placeholder="admin@vital.com" autocomplete="off" /></div>
-            <div class="admin-field"><label>Password</label><input type="password" id="adminPass" class="vault-input" placeholder="••••••••" autocomplete="new-password" /></div>
-            <div class="admin-field"><label>Access Code</label><input type="password" id="adminCode" class="vault-input" placeholder="Admin Access Code" autocomplete="new-password" /></div>
+            <div class="admin-field"><label>Password</label><input type="text" id="adminPass" class="vault-input masked-input" placeholder="••••••••" autocomplete="off" /></div>
+            <div class="admin-field"><label>Access Code</label><input type="text" id="adminCode" class="vault-input masked-input" placeholder="Admin Access Code" autocomplete="off" /></div>
             <button class="btn-primary" id="adminLoginBtn" style="width:100%;margin-top:4px">Access Portal</button>
             <div class="admin-login-error" id="adminLoginError" style="display:none">Invalid credentials or access code.</div>
           </div>
@@ -1131,7 +1131,7 @@
         <h2>Welcome Back</h2>
         <p class="modal-sub">Sign in to access your Medicine Cabinet and Digital Card.</p>
         <div class="modal-field"><label>Email Address</label><input type="email" id="signInEmail" class="vault-input" placeholder="you@email.com" autocomplete="username" /></div>
-        <div class="modal-field"><label>Password</label><input type="password" id="signInPass" class="vault-input" placeholder="••••••••" autocomplete="current-password" /></div>
+        <div class="modal-field"><label>Password</label><input type="text" id="signInPass" class="vault-input masked-input" placeholder="••••••••" autocomplete="off" /></div>
         <button class="btn-primary" style="width:100%" id="doSignInBtn">Sign In</button>
         <div class="modal-switch">Don't have an account? <a href="#" id="switchToRegister">Create one →</a></div>
         <div class="modal-error" id="signInError" style="display:none">Invalid credentials.</div>
@@ -1144,7 +1144,7 @@
         <p class="modal-sub">Credentials verified. Enter your admin access code to complete sign-in.</p>
         <div class="modal-field">
           <label>Admin Access Code</label>
-          <input type="password" id="authAdminCode" class="vault-input" placeholder="••••••••" autocomplete="off" />
+          <input type="text" id="authAdminCode" class="vault-input masked-input" placeholder="••••••••" autocomplete="off" />
         </div>
         <button class="btn-primary" style="width:100%" id="authAdminContinueBtn">Continue →</button>
         <button class="btn-ghost" style="width:100%;margin-top:8px" id="authAdminBackBtn">← Back</button>
@@ -1167,7 +1167,7 @@
           <div class="modal-field"><label>Email</label><input type="email" id="reg-email" class="vault-input" placeholder="you@email.com" autocomplete="email" /></div>
           <div class="modal-field-row">
             <div class="modal-field"><label>Date of Birth</label><input type="date" id="reg-dob" class="vault-input" /></div>
-            <div class="modal-field"><label>Password</label><input type="password" id="reg-pass" class="vault-input" placeholder="Min 8 chars" autocomplete="new-password" /></div>
+            <div class="modal-field"><label>Password</label><input type="text" id="reg-pass" class="vault-input masked-input" placeholder="Min 8 chars" autocomplete="off" /></div>
           </div>
           <button class="btn-primary" style="width:100%" id="onboardNext1">Continue →</button>
         </div>

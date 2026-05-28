@@ -4572,6 +4572,16 @@ p { color: #4A5568; }
 }
 .results-back-btn svg { flex-shrink: 0; opacity: 0.75; }
 
+/* Masked text input — looks like type=password but iOS won't autofill */
+.masked-input {
+  -webkit-text-security: disc;
+  text-security: disc;
+}
+.masked-input::placeholder {
+  -webkit-text-security: none;
+  text-security: none;
+}
+
 /* Pharmacy network note */
 .pharmacy-network-note {
   font-size: 12px;
