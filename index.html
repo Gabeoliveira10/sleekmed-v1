@@ -3,7 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vital Rx — Prescription Trading &amp; Clearing Desk</title>
+  <title>Vital Rx — Free Prescription Price Comparison</title>
+
+  <!-- PWA / Home Screen -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Vital Rx" />
+  <link rel="apple-touch-icon" href="IMAGES/icon-192.png" />
+  <link rel="icon" type="image/png" href="IMAGES/icon-192.png" />
+
+  <!-- SEO -->
+  <meta name="description" content="Search and compare prescription drug prices across Vital Rx, GoodRx, Cost Plus Drugs, and retail pharmacies — completely free, no account needed." />
+
+  <!-- Social / Open Graph -->
+  <meta property="og:title" content="Vital Rx — Free Prescription Price Comparison" />
+  <meta property="og:description" content="Find the real price of your medication. Compare Vital Rx, GoodRx, Cost Plus Drugs, and retail — all in one place, completely free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://gabeoliveira10.github.io/sleekmed-v1/" />
+  <meta property="og:image" content="https://gabeoliveira10.github.io/sleekmed-v1/IMAGES/og-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vital Rx — Free Prescription Price Comparison" />
+  <meta name="twitter:description" content="Find the real price of your medication. Compare all sources for free." />
+  <meta name="twitter:image" content="https://gabeoliveira10.github.io/sleekmed-v1/IMAGES/og-preview.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -15,11 +39,11 @@
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo-block">
+      <a href="#" class="logo-block" onclick="navigateTo('home'); closeSidebar(); return false;">
         <div class="logo-capsule"></div>
         <span class="logo-text">Vital Rx</span>
       </a>
-      <button class="sidebar-close" id="sidebarClose" id="sidebar-close-btn">✕</button>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
     <nav class="sidebar-nav">
       <div class="sidebar-section-label">Explore</div>
@@ -64,7 +88,7 @@
         </svg>
         <span class="btn-back-label">Back</span>
       </button>
-      <a href="index.html" class="logo-block">
+      <a href="#" class="logo-block" onclick="navigateTo('home'); return false;">
         <div class="logo-capsule"></div>
         <span class="logo-text">Vital Rx</span>
       </a>
@@ -205,7 +229,7 @@
         <div class="stats-container">
           <div class="stat-item">
             <span class="stat-num">50+</span>
-            <span class="stat-label">Drug Categories</span>
+            <span class="stat-label">Medications</span>
           </div>
           <div class="stat-item">
             <span class="stat-num stat-infinity">∞</span>
@@ -476,7 +500,7 @@
               <div class="receipt-footnote">* Lower prices may be available. Ask your pharmacist.</div>
             </div>
             <div class="receipt-perf-bottom"></div>
-            <div class="receipt-old-badge">⚠ YOU OVERPAID $687.37</div>
+            <div class="receipt-old-badge">YOU OVERPAID $687.37</div>
           </div>
 
           <!-- CENTER: vs + savings callout -->
@@ -496,7 +520,7 @@
           <div class="receipt-paper receipt-new">
             <div class="receipt-perf-top receipt-perf-green"></div>
             <div class="receipt-body">
-              <div class="receipt-store receipt-store-vital">💊 VITAL RX · VERIFIED RATE</div>
+              <div class="receipt-store receipt-store-vital">VITAL RX · VERIFIED RATE</div>
               <div class="receipt-addr">Walgreens Pharmacy · Jacksonville, FL</div>
               <div class="receipt-date">Date: 05/25/2026 · 2:14 PM</div>
               <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
@@ -522,7 +546,7 @@
 
       <!-- Testimonials -->
       <div class="section-block alt-bg">
-        <div class="section-header"><div class="section-eyebrow">Client Outcomes</div><h2 class="section-title">What Our Members Say</h2></div>
+        <div class="section-header"><div class="section-eyebrow">Real Outcomes</div><h2 class="section-title">What People Are Saying</h2></div>
         <div class="testimonial-grid">
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"I was paying $180/month for Ozempic through my insurance. Vital Rx showed me a Cost Plus path at $89. That's $1,092 back in my pocket every year."</p><div class="testimonial-author"><div class="author-avatar">MR</div><div><strong>Maria R.</strong><span>Type 2 Diabetic, Austin TX</span></div></div></div>
           <div class="testimonial-card"><div class="stars">★★★★★</div><p>"As someone uninsured for 18 months, the transparency Vital Rx provided was genuinely life-changing. I didn't know I could get Lisinopril for $3.50 until I searched here."</p><div class="testimonial-author"><div class="author-avatar">JK</div><div><strong>James K.</strong><span>Self-Employed, Denver CO</span></div></div></div>
@@ -674,12 +698,13 @@
           </div>
 
           <div class="pharmacy-finder">
-            <h3>Nearby Partner Pharmacies</h3>
+            <h3>Partner Pharmacy Network</h3>
+            <p class="pharmacy-network-note">Vital Rx rates are accepted at these major chains nationwide.</p>
             <div class="pharmacy-list">
-              <div class="pharmacy-item"><div class="pharm-name">CVS Pharmacy</div><div class="pharm-dist">0.3 mi</div><div class="pharm-status open">Open</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Walgreens</div><div class="pharm-dist">0.7 mi</div><div class="pharm-status open">Open</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Walmart Pharmacy</div><div class="pharm-dist">1.2 mi</div><div class="pharm-status open">Open</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Rite Aid</div><div class="pharm-dist">1.8 mi</div><div class="pharm-status closed">Closed</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">CVS Pharmacy</div><div class="pharm-status open">Accepted</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Walgreens</div><div class="pharm-status open">Accepted</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Walmart Pharmacy</div><div class="pharm-status open">Accepted</div></div>
+              <div class="pharmacy-item"><div class="pharm-name">Rite Aid</div><div class="pharm-status open">Accepted</div></div>
             </div>
           </div>
         </div>
@@ -1231,7 +1256,7 @@
     </div>
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="logo-block"><div class="logo-capsule sm"></div><span class="logo-text sm">Vital Rx</span></a>
+        <a href="#" class="logo-block" onclick="navigateTo('home'); return false;"><div class="logo-capsule sm"></div><span class="logo-text sm">Vital Rx</span></a>
         <p>Clinical Authority. Radical Transparency.<br/>Fintech Precision.</p>
         <p class="footer-copy">© 2026 Vital Rx, Inc. All rights reserved.</p>
       </div>

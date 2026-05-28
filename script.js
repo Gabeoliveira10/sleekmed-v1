@@ -68,6 +68,15 @@ const DRUGS = [
     ]
   },
   {
+    name: "Tirzepatide", category: "Diabetes / Weight", icon: "Rx",
+    variants: [
+      { label: "2.5mg · Monthly Supply",  fairplay: 299.00, insurance: 420.00, goodrx: 750.00,  costplus: null, retail: 876.00  },
+      { label: "5mg · Monthly Supply",    fairplay: 399.00, insurance: 560.00, goodrx: 985.00,  costplus: null, retail: 1086.37 },
+      { label: "7.5mg · Monthly Supply",  fairplay: 449.00, insurance: 620.00, goodrx: 1082.00, costplus: null, retail: 1196.00 },
+      { label: "10mg · Monthly Supply",   fairplay: 499.00, insurance: 720.00, goodrx: 1198.00, costplus: null, retail: 1348.00 },
+    ]
+  },
+  {
     name: "Adderall", category: "ADHD", icon: "Rx",
     variants: [
       { label: "10mg IR · 30 tabs",  fairplay: 28.40, insurance: 55.00,  goodrx: 42.00,  costplus: 24.50, retail: 178.00 },
@@ -1391,15 +1400,15 @@ function renderComplianceScreen() {
       '</div>' +
       '<div class="compliance-body">' +
       '<button class="compliance-channel-btn" onclick="complianceChoose(\'insured\')">' +
-        '<span class="compliance-channel-icon">🏢</span>' +
+        '<span class="compliance-channel-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="6" width="16" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 6V4a1 1 0 011-1h6a1 1 0 011 1v2" stroke="currentColor" stroke-width="1.5"/><path d="M8 11h6M8 14h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>' +
         '<div>I am insured through my employer or have a private commercial insurance plan that covers <strong>' + drug + '</strong>.</div>' +
       '</button>' +
       '<button class="compliance-channel-btn danger" onclick="complianceChoose(\'govt\')">' +
-        '<span class="compliance-channel-icon">🏛️</span>' +
+        '<span class="compliance-channel-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l8 3v7c0 5-4 8-8 9-4-1-8-4-8-9V5l8-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 11l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
         '<div>My prescription is paid for (partially or fully) by a state- or federally-funded program such as <strong>Medicare, Medicaid, Medigap, VA, or TRICARE®</strong>.</div>' +
       '</button>' +
       '<button class="compliance-channel-btn" onclick="complianceChoose(\'cash\')">' +
-        '<span class="compliance-channel-icon">💵</span>' +
+        '<span class="compliance-channel-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 5.5v11M8.5 8.5h3.5a2 2 0 010 4h-2a2 2 0 000 4H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>' +
         '<div>I do <strong>not</strong> have insurance, want to pay cash, or my commercial insurance plan does <strong>not</strong> cover <strong>' + drug + '</strong>.</div>' +
       '</button>' +
       '</div>' +
@@ -1415,7 +1424,7 @@ function renderComplianceScreen() {
       '</div>' +
       '<div class="compliance-body">' +
       '<div class="compliance-hardstop">' +
-        '<div class="compliance-hardstop-icon">⚠️</div>' +
+        '<div class="compliance-hardstop-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 6L42 42H6L24 6z" stroke="#F87171" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="#F87171" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="35.5" r="1.8" fill="#F87171"/></svg></div>' +
         '<div class="compliance-hardstop-title">Government Beneficiaries Cannot Use This Offer</div>' +
         '<div class="compliance-hardstop-text">Federal law (42 U.S.C. § 1320a-7b — Anti-Kickback Statute) prohibits individuals enrolled in Medicare, Medicaid, VA, TRICARE®, or any federally-funded program from using manufacturer savings cards or PBM discount programs for covered medications. Violation can result in federal penalties.<br><br><strong>You are still protected.</strong> VITAL will show you the lowest available <em>cash prices</em> from Cost Plus Drugs and other transparent sources — without the coupon codes that would create compliance risk.</div>' +
       '</div>' +

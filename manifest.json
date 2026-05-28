@@ -1,0 +1,25 @@
+{
+  "name": "Vital Rx",
+  "short_name": "Vital Rx",
+  "description": "Free prescription price comparison. Search Vital Rx, GoodRx, Cost Plus, and retail all at once.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "IMAGES/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "IMAGES/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

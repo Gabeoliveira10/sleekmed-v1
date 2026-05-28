@@ -4571,3 +4571,11 @@ p { color: #4A5568; }
   color: #ffffff;
 }
 .results-back-btn svg { flex-shrink: 0; opacity: 0.75; }
+
+/* Pharmacy network note */
+.pharmacy-network-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: -4px 0 12px;
+  line-height: 1.4;
+}
