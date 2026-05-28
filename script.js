@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
-   Vital Rx — PRODUCTION SCRIPT v3
-   50-Drug Database · 3D Card Flip · Fintech Clearing Engine
+   Vital Rx — PRODUCTION SCRIPT v4
+   Local DB · API-Ready DataAdapter · 3D Card Flip · Fintech Engine
+   DataAdapter layer: flip API_CONFIG.USE_LOCAL_DB = false to go live
 ═══════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -438,6 +439,208 @@ const DRUGS = [
   },
 ];
 
+/* ═══════════════════════════════════════════════════════════════
+   API CONFIGURATION
+   ─────────────────────────────────────────────────────────────
+   Flip USE_LOCAL_DB to false once a live API endpoint is wired.
+   All search + lookup routes through DataAdapter functions below
+   so zero JS changes are needed when APIs go live.
+═══════════════════════════════════════════════════════════════ */
+const API_CONFIG = {
+  // ── Feature flags ──────────────────────────────────────────
+  USE_LOCAL_DB:  true,    // false → use live APIs for drug lookup
+  USE_GOODRX:    false,   // true  → pull live GoodRx prices
+  USE_OPENFDA:   false,   // true  → supplement with OpenFDA catalog
+
+  // ── Endpoint templates ─────────────────────────────────────
+  // Replace placeholders with real values when APIs are approved
+  ENDPOINTS: {
+    // 70k-drug catalog (RxNorm / OpenFDA)
+    // GET /drug/ndc.json?search=brand_name:"QUERY"&limit=20
+    OPENFDA_SEARCH:   'https://api.fda.gov/drug/ndc.json',
+    OPENFDA_LABEL:    'https://api.fda.gov/drug/label.json',
+
+    // GoodRx (apply at developer.goodrx.com)
+    // Requires HMAC-SHA256 signed requests
+    GOODRX_SEARCH:    'https://api.goodrx.com/v3/search',
+    GOODRX_COMPARE:   'https://api.goodrx.com/v3/drug/info',
+
+    // Your own pricing proxy (Cloudflare Worker / Lambda)
+    // Keeps API keys server-side, adds CORS headers
+    VITAL_PROXY:      'https://api.vitalrx.com/v1',
+  },
+
+  // ── API keys (set at deploy time, never commit real keys) ──
+  KEYS: {
+    GOODRX_PUBLIC:    '',   // Your GoodRx public key
+    GOODRX_SECRET:    '',   // Your GoodRx secret (proxy only)
+    OPENFDA:          '',   // OpenFDA key (rate-limit boost)
+  },
+
+  // ── Search behavior ────────────────────────────────────────
+  SEARCH_DEBOUNCE_MS: 300,   // Debounce for live API calls
+  MAX_DROPDOWN_ITEMS:   8,   // Max suggestions in typeahead
+  MAX_CATALOG_ITEMS:   20,   // Max results from catalog fetch
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA ADAPTER LAYER
+   ─────────────────────────────────────────────────────────────
+   All drug lookups go through these functions.
+   • searchDrugCatalog(query)  → array of drug suggestions
+   • lookupDrugByName(name)    → single drug object (or null)
+   • normalizeFDADrug(fdaHit)  → converts OpenFDA hit to Vital Rx format
+   • normalizeGoodRxPrices(rx) → converts GoodRx response to variant prices
+═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Search the drug catalog by name / category.
+ * Currently synchronous (local array). Will become async fetch
+ * when USE_LOCAL_DB is false.
+ *
+ * @param  {string} query
+ * @returns {Array}  array of drug objects in Vital Rx internal format
+ */
+function searchDrugCatalog(query) {
+  const q = (query || '').trim().toLowerCase();
+  if (!q) return [];
+
+  if (API_CONFIG.USE_LOCAL_DB) {
+    return DRUGS.filter(d =>
+      d.name.toLowerCase().includes(q) ||
+      d.category.toLowerCase().includes(q)
+    );
+  }
+
+  // ── Live API path (wired when USE_LOCAL_DB = false) ────────
+  // Returns a Promise; callers must handle async.
+  // searchDrugCatalogAsync(query) is the async wrapper below.
+  console.warn('[Vital Rx] Live catalog API not yet configured.');
+  return [];
+}
+
+/**
+ * Async wrapper for searchDrugCatalog — used by typeahead once
+ * USE_LOCAL_DB is false and live API keys are in place.
+ *
+ * @param  {string} query
+ * @returns {Promise<Array>}
+ */
+async function searchDrugCatalogAsync(query) {
+  if (API_CONFIG.USE_LOCAL_DB) {
+    return searchDrugCatalog(query);
+  }
+
+  try {
+    if (API_CONFIG.USE_OPENFDA) {
+      const url = new URL(API_CONFIG.ENDPOINTS.OPENFDA_SEARCH);
+      url.searchParams.set('search', `brand_name:"${query}"+generic_name:"${query}"`);
+      url.searchParams.set('limit', API_CONFIG.MAX_CATALOG_ITEMS);
+      if (API_CONFIG.KEYS.OPENFDA) url.searchParams.set('api_key', API_CONFIG.KEYS.OPENFDA);
+
+      const res  = await fetch(url.toString());
+      const json = await res.json();
+      const hits = (json.results || []);
+      return hits.map(normalizeFDADrug).filter(Boolean);
+    }
+  } catch (err) {
+    console.error('[Vital Rx] Catalog API error:', err);
+  }
+
+  // Fall back to local on any API failure
+  return searchDrugCatalog(query);
+}
+
+/**
+ * Look up a single drug by exact name.
+ * Returns the drug object (Vital Rx format) or null.
+ *
+ * @param  {string} name
+ * @returns {object|null}
+ */
+function lookupDrugByName(name) {
+  return DRUGS.find(d => d.name.toLowerCase() === name.toLowerCase()) || null;
+}
+
+/**
+ * Convert a single OpenFDA NDC record into Vital Rx internal format.
+ * Called for each hit returned by the /drug/ndc.json endpoint.
+ *
+ * OpenFDA fields used:
+ *   brand_name, generic_name, product_type, route[], dosage_form,
+ *   active_ingredients[{ name, strength }], pharm_class_cs[]
+ *
+ * @param  {object} fdaHit  Raw result from OpenFDA NDC API
+ * @returns {object|null}   Vital Rx drug object, or null if unusable
+ */
+function normalizeFDADrug(fdaHit) {
+  if (!fdaHit) return null;
+
+  const name = fdaHit.brand_name || fdaHit.generic_name || '';
+  if (!name) return null;
+
+  // Build category from pharm_class or route
+  const pharmClass = (fdaHit.pharm_class_cs || [])[0] || '';
+  const category   = pharmClass || fdaHit.route?.[0] || 'General';
+
+  // Build variant label from active_ingredients + dosage_form
+  const ingredients = fdaHit.active_ingredients || [];
+  const strength    = ingredients.map(i => i.strength).filter(Boolean).join(' / ');
+  const form        = fdaHit.dosage_form || '';
+  const label       = [strength, form].filter(Boolean).join(' · ') || 'Standard';
+
+  return {
+    name,
+    generic:  fdaHit.generic_name || '',
+    category,
+    icon:     'Rx',
+    ndc:      fdaHit.product_ndc || '',
+    source:   'openfda',           // flag: came from live API
+    variants: [
+      {
+        label,
+        // Prices will be filled by GoodRx lookup — null until then
+        fairplay:  null,
+        insurance: null,
+        goodrx:    null,
+        costplus:  null,
+        retail:    null,
+      }
+    ]
+  };
+}
+
+/**
+ * Map a GoodRx /v3/drug/info response onto a drug's variants array.
+ * Call this after lookupDrugByName() to enrich an existing drug object.
+ *
+ * GoodRx response shape (simplified):
+ *  { name, slug, prices: [{ form, dosage, quantity, price, pharmacy }] }
+ *
+ * @param  {object} goodRxResponse  Raw GoodRx API response
+ * @param  {object} drug            Existing Vital Rx drug object to enrich
+ * @returns {object} Enriched drug object with live GoodRx prices
+ */
+function normalizeGoodRxPrices(goodRxResponse, drug) {
+  if (!goodRxResponse?.prices?.length) return drug;
+
+  const enriched = { ...drug };
+  enriched.variants = goodRxResponse.prices.map(p => {
+    const qty     = p.quantity ? `${p.quantity} ${p.form || ''}`.trim() : p.form || '';
+    const label   = [p.dosage, qty].filter(Boolean).join(' · ');
+    return {
+      label:     label || 'Standard',
+      fairplay:  null,           // Vital Rx direct — set separately
+      insurance: null,           // Varies per plan
+      goodrx:    p.price ?? null,
+      costplus:  null,           // Fetched from costplusdrugs.com if available
+      retail:    null,           // Retail AWP lookup
+    };
+  });
+
+  return enriched;
+}
+
 /* ─── UTILS ──────────────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
@@ -873,7 +1076,8 @@ function setupSearchBox(input, dropdown, clearBtn, context) {
     const q = input.value.trim();
     if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
     if (q.length < 1) { dropdown.classList.remove('open'); return; }
-    const results = DRUGS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()) || d.category.toLowerCase().includes(q.toLowerCase()));
+    // Route through DataAdapter — handles both local DB and future live API
+    const results = searchDrugCatalog(q);
     renderDropdown(dropdown, results, context, input);
   });
 
@@ -942,7 +1146,7 @@ function showSearchSkeletons() {
 }
 
 function triggerSearch(name) {
-  const drug = DRUGS.find(d => d.name.toLowerCase() === name.toLowerCase());
+  const drug = lookupDrugByName(name);   // DataAdapter — swap to API when ready
   if (!drug) return;
 
   State.currentDrug    = drug;
@@ -1910,7 +2114,7 @@ function setupDrawerSearch() {
   input.addEventListener('input', () => {
     const q = input.value.trim();
     if (q.length < 1) { dropdown.classList.remove('open'); $('drawerVariantSelect').style.display = 'none'; return; }
-    const results = DRUGS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()));
+    const results = searchDrugCatalog(q);   // DataAdapter
 
     dropdown.innerHTML = results.slice(0, 8).map(d => `
       <div class="dropdown-item" data-name="${d.name}">
@@ -1923,7 +2127,7 @@ function setupDrawerSearch() {
 
     dropdown.querySelectorAll('.dropdown-item[data-name]').forEach(item => {
       item.addEventListener('click', () => {
-        const drug = DRUGS.find(d => d.name === item.dataset.name);
+        const drug = lookupDrugByName(item.dataset.name);   // DataAdapter
         if (!drug) return;
         State.drawerDrug = drug;
         input.value = drug.name;
@@ -2553,7 +2757,9 @@ const CAT_PALETTE = [
   { bg: 'rgba(37,99,235,0.07)', accent: '#2563EB', border: 'rgba(37,99,235,0.18)' },
 ];
 
-// Build category → drugs map once
+// Build category → drugs map from local database.
+// TODO (API phase): replace with an async fetchCategories() call
+// that pulls distinct categories from the live catalog endpoint.
 function buildCatMap() {
   const map = {};
   DRUGS.forEach(d => {
