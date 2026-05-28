@@ -959,12 +959,36 @@ function loadState() {
     if (u) State.user = JSON.parse(u);
     if (v) State.vault = JSON.parse(v);
     if (c) State.cabinet = JSON.parse(c);
+
+    // ── Admin portal — persists across refreshes ─────────────
+    if (localStorage.getItem('fp_admin') === '1') {
+      State.adminLoggedIn = true;
+    }
+
+    // ── User "Remember Me" — if not remembered, clear on load ─
+    // If the user did NOT check Remember Me, their session was
+    // saved to sessionStorage instead. Re-hydrate from there.
+    const rememberMe = localStorage.getItem('fp_remember_me') === '1';
+    if (!rememberMe && !State.user) {
+      try {
+        const su = sessionStorage.getItem('fp_session_user');
+        if (su) State.user = JSON.parse(su);
+      } catch(_) {}
+    }
   } catch(e) {}
 }
 
-const saveUser    = () => localStorage.setItem('fp_user',    JSON.stringify(State.user));
+const saveUser    = () => {
+  localStorage.setItem('fp_user', JSON.stringify(State.user));
+  // Also keep session copy for non-remember-me sessions
+  try { sessionStorage.setItem('fp_session_user', JSON.stringify(State.user)); } catch(_) {}
+};
 const saveVault   = () => localStorage.setItem('fp_vault',   JSON.stringify(State.vault));
 const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(State.cabinet));
+const saveAdminState = (loggedIn) => {
+  if (loggedIn) localStorage.setItem('fp_admin', '1');
+  else          localStorage.removeItem('fp_admin');
+};
 
 /* ═══════════════════════════════════════════════════════════════
    NAVIGATION
@@ -1058,6 +1082,9 @@ function showSignInView() {
   $('authRegisterView').style.display = 'none';
   $('authAdminCodeView').style.display = 'none';
   $('signInError').style.display = 'none';
+  // Pre-check Remember Me if user had it on before
+  const cb = $('rememberMeCheck');
+  if (cb) cb.checked = localStorage.getItem('fp_remember_me') === '1';
 }
 
 function showAdminCodeView() {
@@ -1073,6 +1100,7 @@ function doAdminCodeVerify() {
   const code = $('authAdminCode').value.trim();
   if (code === 'ADMIN888') {
     State.adminLoggedIn = true;
+    saveAdminState(true);                               // persist across refreshes
     State.user = { name: 'admin', email: 'admin@vital.com', avatar: 'A' };
     saveUser();
     closeAuthModal();
@@ -1119,7 +1147,18 @@ function doSignIn(email, password) {
   // Regular sign-in
   const name = State.vault['vf-name'] || e.split('@')[0];
   State.user = { name, email: e, avatar: name[0].toUpperCase() };
-  saveUser();
+
+  // ── Remember Me logic ─────────────────────────────────────
+  const rememberChecked = ($('rememberMeCheck') || {}).checked;
+  if (rememberChecked) {
+    localStorage.setItem('fp_remember_me', '1');
+    saveUser();   // persists to localStorage across sessions
+  } else {
+    localStorage.removeItem('fp_remember_me');
+    localStorage.removeItem('fp_user');   // don't persist to localStorage
+    try { sessionStorage.setItem('fp_session_user', JSON.stringify(State.user)); } catch(_) {}
+  }
+
   closeAuthModal();
   updateAuthUI();
   showToast(`Welcome back, ${name.split(' ')[0]}!`);
@@ -2511,6 +2550,8 @@ function doAdminLogin() {
 
   if (email === 'admin@vital.com' && pass === 'ADMIN2026888' && code === 'ADMIN888') {
     State.adminLoggedIn = true;
+    saveAdminState(true);                             // persist across refreshes
+    updateAdminSidebarVisibility();
     $('adminLoginGate').style.display = 'none';
     $('adminDashboard').style.display = 'block';
     $('adminLoginError').style.display = 'none';
@@ -2635,7 +2676,12 @@ function bindEvents() {
   // Admin
   $('adminLoginBtn').addEventListener('click', doAdminLogin);
   $('adminCode').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
-  $('adminLogoutBtn').addEventListener('click', () => { State.adminLoggedIn = false; initAdmin(); });
+  $('adminLogoutBtn').addEventListener('click', () => {
+    State.adminLoggedIn = false;
+    saveAdminState(false);        // clear persisted admin session
+    updateAdminSidebarVisibility();
+    initAdmin();
+  });
   $('claimsSlider').addEventListener('input', calcMRR);
   $$('.fee-btn').forEach(btn => {
     btn.addEventListener('click', () => {
