@@ -381,14 +381,14 @@ const DRUGS = [
     ]
   },
   {
-    name: "Albuterol", category: "Asthma / COPD", icon: "💨",
+    name: "Albuterol", category: "Asthma / COPD", icon: "Rx",
     variants: [
       { label: "90mcg · 1 inhaler",    fairplay: 18.40, insurance: 38.00, goodrx: 28.00, costplus: 14.80, retail: 82.00 },
       { label: "Nebulizer 2.5mg/3mL · 25", fairplay: 12.60, insurance: 28.00, goodrx: 19.40, costplus: 10.20, retail: 58.00 },
     ]
   },
   {
-    name: "Fluticasone", category: "Allergy / Asthma", icon: "💨",
+    name: "Fluticasone", category: "Allergy / Asthma", icon: "Rx",
     variants: [
       { label: "50mcg nasal spray",     fairplay: 12.20, insurance: 26.00, goodrx: 18.40, costplus: 9.80,  retail: 62.00 },
       { label: "110mcg · 1 inhaler",    fairplay: 28.40, insurance: 56.00, goodrx: 42.00, costplus: 22.80, retail: 148.00 },
@@ -831,12 +831,12 @@ function _onLocationReady() {
    Renders the pharmacy list in search results with save buttons.
 ═══════════════════════════════════════════════════════════════ */
 const PARTNER_PHARMACIES = [
-  { name: 'CVS Pharmacy',       icon: '🏪', chains: ['CVS']       },
-  { name: 'Walgreens',          icon: '🏪', chains: ['Walgreens'] },
-  { name: 'Walmart Pharmacy',   icon: '🛒', chains: ['Walmart']   },
-  { name: 'Rite Aid',           icon: '🏪', chains: ['Rite Aid']  },
-  { name: 'Kroger Pharmacy',    icon: '🏪', chains: ['Kroger']    },
-  { name: 'Costco Pharmacy',    icon: '🏪', chains: ['Costco']    },
+  { name: 'CVS Pharmacy',       icon: 'Rx', chains: ['CVS']       },
+  { name: 'Walgreens',          icon: 'Rx', chains: ['Walgreens'] },
+  { name: 'Walmart Pharmacy',   icon: 'Rx', chains: ['Walmart']   },
+  { name: 'Rite Aid',           icon: 'Rx', chains: ['Rite Aid']  },
+  { name: 'Kroger Pharmacy',    icon: 'Rx', chains: ['Kroger']    },
+  { name: 'Costco Pharmacy',    icon: 'Rx', chains: ['Costco']    },
 ];
 
 function getPreferredPharmacy() {
@@ -916,7 +916,7 @@ function maybeShowVitalRxNudge(sourceId, drug) {
   if (!vitalPrice || !clickedPrice || vitalPrice >= clickedPrice) return;
   // Vital Rx is cheaper — nudge
   setTimeout(() => {
-    showToast(`💡 Your Vital Rx card saves ${fmt(clickedPrice - vitalPrice)} more — already in your account`, 'nudge');
+    showToast(`Your Vital Rx card saves ${fmt(clickedPrice - vitalPrice)} more — already in your account`, 'nudge');
   }, 600);
 }
 
@@ -1139,7 +1139,7 @@ function doAdminCodeVerify() {
     closeAuthModal();
     updateAuthUI();
     updateAdminSidebarVisibility();
-    showToast('Welcome to the Partner Portal, Admin. 🔐');
+    showToast('Welcome to the Partner Portal, Admin.');
   } else {
     $('authAdminCodeError').style.display = 'block';
     $('authAdminCode').value = '';
@@ -1702,7 +1702,7 @@ function renderPriceCards(variant, drugName) {
     return `
       <div class="price-card ${isBest ? 'best-price' : ''}">
         ${isBest ? '<div class="price-card-badge">Lowest Price</div>' : ''}
-        <div class="price-source">${p.id === 'fp' ? '<span class="price-source-vital">💊 Vital Rx</span>' : p.source}</div>
+        <div class="price-source">${p.id === 'fp' ? '<span class="price-source-vital">Vital Rx</span>' : p.source}</div>
         <div class="price-amount">${fmt(p.amount)}</div>
         <div class="price-per-unit">${variant.label}</div>
         <button class="price-action"
@@ -1735,7 +1735,7 @@ function renderPriceCards(variant, drugName) {
     const note = document.createElement('div');
     note.className = 'detail-callout savings-note';
     note.style.marginBottom = '24px';
-    note.innerHTML = `<strong>💰 Potential Savings:</strong> The lowest price saves you <strong style="color:var(--mint)">${fmt(saved)}</strong> vs. retail cash price for ${drugName}.`;
+    note.innerHTML = `<strong>Potential Savings:</strong> The lowest price saves you <strong style="color:var(--mint)">${fmt(saved)}</strong> vs. retail cash price for ${drugName}.`;
     $('priceComparisonGrid').after(note);
   }
 }
@@ -2418,7 +2418,7 @@ function handlePriceAction(btn) {
             <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
           </div>`
         : `<div class="mini-card-locked">
-            <div class="mini-card-lock-icon">🔒</div>
+            <div class="mini-card-lock-icon">Locked</div>
             <div class="mini-card-lock-text">Verify eligibility to unlock codes</div>
           </div>`)
     : `<div style="height:14px"></div>`;
@@ -2519,7 +2519,7 @@ function renderCabinet() {
 
   list.innerHTML = State.cabinet.map(med => `
     <div class="med-item" data-id="${med.id}">
-      <div class="med-icon">${med.icon || '💊'}</div>
+      <div class="med-icon">${med.icon || 'Rx'}</div>
       <div class="med-info">
         <div class="med-name-row">
           <span class="med-name">${med.name}</span>
@@ -3415,7 +3415,7 @@ function exportCardDownload() {
   </div>
   <div class="instr">Present this card to your pharmacist <em>before</em> they process your prescription. Say: <strong>"I have a Vital Rx discount card."</strong></div>
   <div class="note">This is not insurance &nbsp;·&nbsp; Free to use at 70,000+ pharmacies<br>vitalrx.com &nbsp;·&nbsp; support@vitalrx.com</div>
-  <button class="print-btn" onclick="window.print()">🖨️ Print this card</button>
+  <button class="print-btn" onclick="window.print()">Print this card</button>
 </div>
 </body></html>`;
 

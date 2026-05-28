@@ -647,7 +647,10 @@
     <section class="page" id="page-search">
       <div class="page-inner">
         <div class="page-hero-small">
-          <div class="section-eyebrow">Browse Medications</div>
+          <div class="section-eyebrow eyebrow-browse-link" onclick="resetSearchPage()" title="Back to categories" style="cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+            <svg viewBox="0 0 20 20" fill="none" width="12" height="12"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Browse Medications
+          </div>
           <h1 class="page-title">Search Your Medication</h1>
           <p class="page-sub">Search any medication and compare Vital Rx Partner Rate, GoodRx, Cost Plus Drugs, and Retail Cash — all in one place.</p>
           <div class="search-page-wrap">
@@ -1477,7 +1480,7 @@
   <!-- SMS MODAL -->
   <div id="smsModal" class="sms-modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="smsModalTitle">
     <div class="sms-modal-box">
-      <p class="sms-modal-title" id="smsModalTitle">📱 Text Card to Your Phone</p>
+      <p class="sms-modal-title" id="smsModalTitle">Text Card to Your Phone</p>
       <p class="sms-modal-sub">Enter your mobile number and we'll open a pre-filled text message with your discount codes.</p>
       <div class="sms-phone-row">
         <input class="sms-phone-input" id="smsPhoneInput" type="tel" placeholder="(555) 000-0000" inputmode="numeric"

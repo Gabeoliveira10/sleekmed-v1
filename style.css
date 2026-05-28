@@ -706,6 +706,7 @@ a.logo-block { text-decoration: none; color: inherit; }
 
 .section-header { max-width: 1100px; margin: 0 auto 48px; text-align: center; }
 .section-eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mint); margin-bottom: 12px; }
+.eyebrow-browse-link:hover { opacity: 0.75; text-decoration: underline; text-underline-offset: 3px; }
 .section-title { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 14px; }
 .section-sub { font-size: 16px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
 
@@ -1392,7 +1393,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .hamburger { display: flex; }
   /* Logo fills remaining space so it stays left; hamburger stays right */
   .header-left { flex: 1; }
-  .header-actions { margin-left: 0; }
+  .header-actions { margin-left: 0 !important; }
   /* Tighter gap so back button sits close to logo */
   .header-inner { gap: 10px; }
   /* Hero: stack text over card on tablet */
@@ -3161,6 +3162,15 @@ p { color: #4A5568; }
 .price-intel-notice { background: #EFF6FF !important; border: 1px solid #BFDBFE !important; color: #4A5568 !important; }
 
 /* ─────────────────────────────────────────────────────────────
+   CARD FLIP FRONT — high-contrast legibility
+───────────────────────────────────────────────────────────── */
+.card-flip-front { background: #1E3A8A !important; border-color: rgba(255,255,255,0.15) !important; }
+.flip-source-label { color: rgba(255,255,255,0.75) !important; }
+.flip-price { color: #FFFFFF !important; font-weight: 700 !important; }
+.flip-drug { color: rgba(255,255,255,0.85) !important; }
+.flip-hint { color: rgba(255,255,255,0.60) !important; }
+
+/* ─────────────────────────────────────────────────────────────
    BROWSE CATALOG
 ───────────────────────────────────────────────────────────── */
 .browse-cat-name { color: #1A202C !important; }
@@ -3171,10 +3181,14 @@ p { color: #4A5568; }
 .browse-drug-row-name { color: #1A202C !important; }
 .browse-drug-row-sub { color: #64748B !important; }
 .browse-drug-row-price { color: #2B6CB0 !important; font-family: var(--font-sans) !important; }
-.browse-back-btn { background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #4A5568 !important; }
-.browse-back-btn:hover { border-color: #2B6CB0 !important; color: #2B6CB0 !important; }
+.browse-back-btn { background: #2B6CB0 !important; border-color: #2B6CB0 !important; color: #FFFFFF !important; font-weight: 700 !important; }
+.browse-back-btn:hover { background: #1E3A8A !important; border-color: #1E3A8A !important; color: #FFFFFF !important; }
 .browse-drug-heading { color: #1A202C !important; }
 .browse-catalog-title { color: #64748B !important; }
+/* Results back btn — override dark-theme ghost style for light theme */
+.results-back-btn { background: #2B6CB0 !important; border-color: #2B6CB0 !important; color: #FFFFFF !important; font-weight: 700 !important; }
+.results-back-btn:hover, .results-back-btn:active { background: #1E3A8A !important; border-color: #1E3A8A !important; color: #FFFFFF !important; }
+.results-back-btn svg { opacity: 1 !important; stroke: #FFFFFF; }
 
 /* ─────────────────────────────────────────────────────────────
    VAULT / PROFILE
@@ -4817,12 +4831,12 @@ p { color: #4A5568; }
 }
 .flip-export-btn:active { transform: scale(0.96); }
 .flip-export-btn svg { flex-shrink: 0; opacity: 1; }
-.flip-export-btn.export-download { border-color: rgba(0,200,150,0.5);  background: rgba(0,200,150,0.14);  color: #fff; }
-.flip-export-btn.export-print    { border-color: rgba(96,165,250,0.5); background: rgba(96,165,250,0.14); color: #fff; }
-.flip-export-btn.export-sms      { border-color: rgba(167,139,250,0.5);background: rgba(167,139,250,0.14);color: #fff; }
-.flip-export-btn.export-download:hover { background: rgba(0,200,150,0.28);  border-color: #00C896; }
-.flip-export-btn.export-print:hover    { background: rgba(96,165,250,0.28); border-color: #60A5FA; }
-.flip-export-btn.export-sms:hover      { background: rgba(167,139,250,0.28);border-color: #A78BFA; }
+.flip-export-btn.export-download { border-color: #059669; background: #059669; color: #fff; font-weight: 700; }
+.flip-export-btn.export-print    { border-color: #2563EB; background: #2563EB; color: #fff; font-weight: 700; }
+.flip-export-btn.export-sms      { border-color: #7C3AED; background: #7C3AED; color: #fff; font-weight: 700; }
+.flip-export-btn.export-download:hover { background: #047857; border-color: #047857; }
+.flip-export-btn.export-print:hover    { background: #1D4ED8; border-color: #1D4ED8; }
+.flip-export-btn.export-sms:hover      { background: #6D28D9; border-color: #6D28D9; }
 
 /* ── SMS Phone Modal ──────────────────────────────────────── */
 .sms-modal-overlay {
