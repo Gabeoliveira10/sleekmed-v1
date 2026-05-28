@@ -1905,7 +1905,7 @@ function _stepDots(total, current) {
 
 function _getTCBox(drug) {
   const mfr = DRUG_MFR[drug] || 'the applicable manufacturer';
-  return '<div class="compliance-tc-box">' +
+  return '<div class="compliance-tc-box" id="compTCScroll">' +
     '<h4>Card Eligibility</h4><ol>' +
     '<li>You have been prescribed <strong>' + drug + '</strong> for an approved use consistent with FDA-approved product labeling;</li>' +
     '<li>You agree that the Card is for self-paying (cash) patients only and that you will not seek or accept reimbursement for any out-of-pocket costs for <strong>' + drug + '</strong> purchased with the Card from any third-party payer, including private insurance or state or federal healthcare programs, nor apply those costs toward any deductible or true out-of-pocket requirements;</li>' +
@@ -1917,7 +1917,69 @@ function _getTCBox(drug) {
     '<h4>Additional Terms and Conditions</h4>' +
     '<p>This Program and Card is for self-paying (cash) patients and operates outside of any health insurance program. You agree not to seek payment or accept reimbursement for any out-of-pocket costs for <strong>' + drug + '</strong> from any insurance plan, healthcare reimbursement account, or third-party payer — including any state or federal healthcare program. THIS CARD IS NOT INSURANCE. Card savings cannot be combined with any other program, discount, or coupon. Card benefits are non-transferable. Card void where prohibited by law.</p>' +
     '<p style="font-style:italic;color:var(--text-disabled);font-size:11px">Manufactured by: ' + mfr + '. Distributed by Vital Rx Health Technologies. Questions? support@vitalrx.com</p>' +
+    '<div class="tc-scroll-nudge" id="tcScrollNudge">↓ Scroll to read all terms</div>' +
     '</div>';
+}
+
+/* ── Scroll-to-read gate ─────────────────────────────────────
+   Locks checkboxId and/or btnId until the #compTCScroll box
+   has been scrolled to its bottom. Auto-unlocks if content
+   is shorter than the max-height (no scroll needed).          */
+function _initTCScrollGate(checkboxId, btnId) {
+  // Small defer so innerHTML is painted before we measure heights
+  setTimeout(function () {
+    const tcBox  = document.getElementById('compTCScroll');
+    const nudge  = document.getElementById('tcScrollNudge');
+    if (!tcBox) return;
+
+    const cb  = checkboxId ? document.getElementById(checkboxId) : null;
+    const btn = btnId      ? document.getElementById(btnId)      : null;
+
+    // Apply locked styling
+    function lock() {
+      if (cb) {
+        cb.disabled = true;
+        const row = cb.closest('.compliance-consent');
+        if (row) row.classList.add('compliance-gate-locked');
+      }
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.add('compliance-gate-locked');
+      }
+    }
+
+    function unlock() {
+      if (cb) {
+        cb.disabled = false;
+        const row = cb.closest('.compliance-consent');
+        if (row) row.classList.remove('compliance-gate-locked');
+      }
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('compliance-gate-locked');
+      }
+      if (nudge) nudge.classList.add('tc-read');
+      tcBox.removeEventListener('scroll', onScroll);
+    }
+
+    function isAtBottom() {
+      return tcBox.scrollTop + tcBox.clientHeight >= tcBox.scrollHeight - 28;
+    }
+
+    function onScroll() {
+      if (isAtBottom()) unlock();
+    }
+
+    lock();
+
+    // Auto-unlock if content doesn't overflow (nothing to scroll)
+    if (isAtBottom()) {
+      unlock();
+      return;
+    }
+
+    tcBox.addEventListener('scroll', onScroll, { passive: true });
+  }, 40);
 }
 
 function renderComplianceScreen() {
@@ -2052,7 +2114,7 @@ function renderComplianceScreen() {
       '</div>' +
       '</div>' +
       '<div class="compliance-footer">' +
-      '<button class="compliance-btn-primary" onclick="complianceTCNext()">Next →</button>' +
+      '<button id="cashTCNextBtn" class="compliance-btn-primary" onclick="complianceTCNext()">Next →</button>' +
       '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=2; renderComplianceScreen()">← Back</button>' +
       '</div>';
 
@@ -2066,7 +2128,7 @@ function renderComplianceScreen() {
       '<div class="compliance-subtitle">Authorize use of your protected health information to unlock your ' + drug + ' savings card.</div>' +
       '</div>' +
       '<div class="compliance-body">' +
-      '<div class="compliance-tc-box">' +
+      '<div class="compliance-tc-box" id="compTCScroll">' +
         '<p>You have selected Vital Rx to coordinate services related to your health and to provide information related to your <strong>' + drug + '</strong> prescription. In order for Vital Rx to offer these savings programs, Vital Rx may need to obtain or exchange your protected health information ("PHI") as defined under HIPAA.</p>' +
         '<h4>PHI Includes:</h4>' +
         '<p>Information about your health insurance or benefits; all relevant records about your treatment, including medication histories and prescriptions for <strong>' + drug + '</strong>; information about your payment for treatment; and whether you are staying on your medicine or treatment plan.</p>' +
@@ -2076,6 +2138,7 @@ function renderComplianceScreen() {
         '<p>You are not required to authorize sharing your PHI with Vital Rx to receive treatment from your healthcare providers. However, Vital Rx\'s savings programs may not be able to help you without your authorization. You may revoke this authorization at any time by emailing support@vitalrx.com. Revocation will not affect disclosures that occurred before Vital Rx received notice. This authorization remains in effect for the duration of your participation in the Vital Rx <strong>' + drug + '</strong> savings program.</p>' +
         '<h4>AUTHORIZATION TO USE AND DISCLOSE PHI</h4>' +
         '<p>I authorize my Health Care Entities to disclose my PHI and sensitive data for the purposes described in this HIPAA Authorization. This Authorization replaces any prior HIPAA Authorizations provided for this specific Vital Rx program.</p>' +
+        '<div class="tc-scroll-nudge" id="tcScrollNudge">↓ Scroll to read all terms</div>' +
       '</div>' +
       '<div class="compliance-esig-box">' +
         '<div class="compliance-esig-title">Electronic Signature — Submit</div>' +
@@ -2087,7 +2150,7 @@ function renderComplianceScreen() {
       '</div>' +
       '</div>' +
       '<div class="compliance-footer">' +
-      '<button class="compliance-btn-primary" onclick="complianceSubmit()">Submit & Reveal Card →</button>' +
+      '<button id="hipaaSubmitBtn" class="compliance-btn-primary" onclick="complianceSubmit()">Submit & Reveal Card →</button>' +
       '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=3; renderComplianceScreen()">← Back</button>' +
       '<p class="compliance-not-insurance">NOT INSURANCE · Card eligibility and terms for ' + drug + ' apply · Offer expires 12/31/2026</p>' +
       '</div>';
@@ -2096,6 +2159,15 @@ function renderComplianceScreen() {
   box.innerHTML = html;
   const modalBox = $('complianceGauntlet') && $('complianceGauntlet').querySelector('.compliance-box');
   if (modalBox) modalBox.scrollTop = 0;
+
+  // ── Scroll-to-read gate: unlock controls only after TC box is fully scrolled ──
+  if (ch === 'insured' && sc === 2) {
+    _initTCScrollGate('insuredConsent', null);   // checkbox controls button via onchange
+  } else if (ch === 'cash' && sc === 3) {
+    _initTCScrollGate(null, 'cashTCNextBtn');
+  } else if (ch === 'cash' && sc === 4) {
+    _initTCScrollGate(null, 'hipaaSubmitBtn');
+  }
 }
 
 function complianceChoose(channel) {
