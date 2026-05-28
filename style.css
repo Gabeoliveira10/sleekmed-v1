@@ -218,6 +218,14 @@ body.menu-open .trust-bar {
   gap: 28px;
 }
 
+/* Header left group — back button + logo always anchored together */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 /* Logo */
 .logo-block { display: flex; align-items: center; gap: 9px; flex-shrink: 0; cursor: pointer; }
 .logo-mark { display: flex; align-items: center; justify-content: center; }
@@ -4533,7 +4541,7 @@ p { color: #4A5568; }
   flex-shrink: 0;
   transition: background 0.15s;
   -webkit-tap-highlight-color: transparent;
-  margin-right: 10px;
+  margin-right: 0;
   letter-spacing: 0.01em;
 }
 .btn-back-nav:hover,
