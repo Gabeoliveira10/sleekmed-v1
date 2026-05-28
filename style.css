@@ -2912,9 +2912,24 @@ p { color: #4A5568; }
 .hero .hero-eyebrow { color: rgba(255,255,255,0.65) !important; }
 .hero .eyebrow-dot { background: #34D399 !important; }
 
-/* Hero tags — translucent white pills on dark bg */
-.hero-tag { background: rgba(255,255,255,0.10) !important; border-color: rgba(255,255,255,0.20) !important; color: rgba(255,255,255,0.88) !important; }
-.hero-tag:hover { background: rgba(255,255,255,0.18) !important; border-color: rgba(255,255,255,0.38) !important; color: #FFFFFF !important; }
+/* Hero tags — translucent white pills (dark hero bg only) */
+.hero .hero-tag { background: rgba(255,255,255,0.10) !important; border-color: rgba(255,255,255,0.20) !important; color: rgba(255,255,255,0.88) !important; }
+.hero .hero-tag:hover { background: rgba(255,255,255,0.18) !important; border-color: rgba(255,255,255,0.38) !important; color: #FFFFFF !important; }
+
+/* Popular tags in search empty state — dark text on light bg */
+.search-empty-state .hero-tag,
+.popular-tags .hero-tag {
+  background: rgba(43,108,176,0.08) !important;
+  border-color: rgba(43,108,176,0.22) !important;
+  color: #2B6CB0 !important;
+  font-weight: 600 !important;
+}
+.search-empty-state .hero-tag:hover,
+.popular-tags .hero-tag:hover {
+  background: rgba(43,108,176,0.16) !important;
+  border-color: rgba(43,108,176,0.45) !important;
+  color: #1A365D !important;
+}
 
 /* ─────────────────────────────────────────────────────────────
    SEARCH BOXES

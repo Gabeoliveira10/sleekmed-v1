@@ -1034,6 +1034,29 @@ function navigateTo(pageId, _skipStack) {
   if (pageId === 'admin')   initAdmin();
   if (pageId === 'search')  showBrowseCatalog();
 
+  // ── Clear search bar whenever leaving the search page ─────────
+  if (pageId !== 'search') {
+    const psi = $('pageSearchInput');
+    if (psi && psi.value) {
+      psi.value = '';
+      // Trigger input event so dropdown clears and results reset
+      psi.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    // Also reset results panel back to empty state
+    resetSearchPage();
+  }
+  // Clear hero search bar when navigating away from home
+  if (pageId !== 'home') {
+    const hsi = $('heroSearchInput');
+    if (hsi && hsi.value) {
+      hsi.value = '';
+      const hd = $('heroSearchDropdown');
+      if (hd) hd.innerHTML = '';
+      const hc = $('heroSearchClear');
+      if (hc) hc.style.display = 'none';
+    }
+  }
+
   // ── Update our own nav stack ──────────────────────────────────
   if (!_skipStack) {
     if (pageId === 'home') {
