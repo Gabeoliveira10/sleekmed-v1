@@ -641,6 +641,281 @@ function normalizeGoodRxPrices(goodRxResponse, drug) {
   return enriched;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   FIREBASE CONFIGURATION SCAFFOLD
+   ─────────────────────────────────────────────────────────────
+   1. Go to console.firebase.google.com → create a project
+   2. Add a Web app → copy the config values below
+   3. Uncomment the Firebase SDK lines in index.html
+   4. Set FIREBASE_ENABLED = true
+   All auth / Firestore calls below check this flag before running.
+═══════════════════════════════════════════════════════════════ */
+const FIREBASE_ENABLED = false;   // ← flip to true after setup
+
+const FIREBASE_CONFIG = {
+  apiKey:            '',           // from Firebase console
+  authDomain:        '',
+  projectId:         '',
+  storageBucket:     '',
+  messagingSenderId: '',
+  appId:             '',
+  measurementId:     '',           // for Analytics
+};
+
+/** Initialize Firebase once on page load — safe no-op if disabled */
+function initFirebase() {
+  if (!FIREBASE_ENABLED) return;
+  if (typeof firebase === 'undefined') {
+    console.warn('[Vital Rx] Firebase SDK not loaded — add CDN scripts to index.html');
+    return;
+  }
+  if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+  console.log('[Vital Rx] Firebase initialized ✓');
+}
+
+/**
+ * Write a user record to Firestore on sign-in / registration.
+ * Stores: uid, email, displayName, createdAt, lastSeen, ipCity (from LocationService).
+ */
+async function syncUserToFirestore(user) {
+  if (!FIREBASE_ENABLED || typeof firebase === 'undefined') return;
+  try {
+    await firebase.firestore().collection('users').doc(user.uid).set({
+      email:       user.email,
+      displayName: user.displayName || '',
+      lastSeen:    firebase.firestore.FieldValue.serverTimestamp(),
+      ipCity:      LocationService.city || '',
+      ipCountry:   LocationService.country || '',
+    }, { merge: true });
+  } catch (err) {
+    console.error('[Vital Rx] Firestore user sync error:', err);
+  }
+}
+
+/**
+ * Log a compliance event to Firestore audit trail.
+ * Called from the existing compliance cleared handler.
+ */
+async function logComplianceEvent(record) {
+  if (!FIREBASE_ENABLED || typeof firebase === 'undefined') return;
+  try {
+    await firebase.firestore().collection('compliance_audit').add({
+      ...record,
+      ipCity:    LocationService.city || '',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  } catch (err) {
+    console.error('[Vital Rx] Compliance log error:', err);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOCATION SERVICE
+   ─────────────────────────────────────────────────────────────
+   Two-stage location detection:
+     Stage 1 — IP geolocation (silent, no permission needed)
+               Uses ipapi.co free tier (~45k req/month)
+     Stage 2 — Browser GPS (precise, user permission prompt)
+               Only triggered when user clicks "Find Near Me"
+
+   Detected location is stored in LocationService.* and State.
+   Pharmacy list is re-rendered whenever location updates.
+═══════════════════════════════════════════════════════════════ */
+const LocationService = {
+  lat:     null,
+  lng:     null,
+  city:    '',
+  state:   '',
+  country: '',
+  zip:     '',
+  source:  '',   // 'ip' | 'gps'
+  ready:   false,
+};
+
+/** Silent IP geolocation on page load — no permission needed */
+async function detectLocationByIP() {
+  try {
+    const res  = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
+    const data = await res.json();
+    if (data.city) {
+      LocationService.lat     = data.latitude;
+      LocationService.lng     = data.longitude;
+      LocationService.city    = data.city;
+      LocationService.state   = data.region_code || data.region || '';
+      LocationService.country = data.country_name || '';
+      LocationService.zip     = data.postal || '';
+      LocationService.source  = 'ip';
+      LocationService.ready   = true;
+      State.userLocation      = { ...LocationService };
+      _onLocationReady();
+    }
+  } catch (_) {
+    // Silently fail — location is optional, never block the user
+  }
+}
+
+/** Precise GPS location — called when user clicks "Find Near Me" */
+function requestUserLocation() {
+  const btn      = document.getElementById('pharmLocateBtn');
+  const btnText  = document.getElementById('pharmLocateText');
+  if (btnText) btnText.textContent = 'Locating…';
+  if (!navigator.geolocation) {
+    showToast('Location not supported in this browser', 'error');
+    if (btnText) btnText.textContent = 'Find Near Me';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    async pos => {
+      LocationService.lat    = pos.coords.latitude;
+      LocationService.lng    = pos.coords.longitude;
+      LocationService.source = 'gps';
+      // Reverse-geocode with ipapi
+      try {
+        const res  = await fetch(`https://ipapi.co/${LocationService.lat},${LocationService.lng}/json/`);
+        const data = await res.json();
+        if (data.city) {
+          LocationService.city  = data.city;
+          LocationService.state = data.region_code || '';
+          LocationService.zip   = data.postal || '';
+        }
+      } catch (_) {}
+      LocationService.ready = true;
+      State.userLocation    = { ...LocationService };
+      if (btn) btn.classList.add('located');
+      if (btnText) btnText.textContent = LocationService.city || 'Located';
+      _onLocationReady();
+    },
+    err => {
+      console.warn('[Vital Rx] GPS denied:', err.message);
+      showToast('Enable location access to see nearby pharmacies', 'info');
+      if (btnText) btnText.textContent = 'Find Near Me';
+    },
+    { timeout: 8000, enableHighAccuracy: false }
+  );
+}
+
+/** Called whenever location becomes available (IP or GPS) */
+function _onLocationReady() {
+  // Update pharmacy list with location context
+  initPharmacyList();
+  // Show location pill
+  const pill    = document.getElementById('pharmLocationPill');
+  const cityEl  = document.getElementById('pharmLocationCity');
+  const noteEl  = document.getElementById('pharmNetworkNote');
+  if (pill && cityEl) {
+    const label = [LocationService.city, LocationService.state].filter(Boolean).join(', ');
+    cityEl.textContent = label || 'Your area';
+    pill.style.display = 'inline-flex';
+  }
+  if (noteEl && LocationService.city) {
+    noteEl.textContent = `Vital Rx is accepted at these chains near ${LocationService.city}.`;
+  }
+  // Pre-fill zip in search inputs
+  if (LocationService.zip) {
+    ['heroZipInput','pageZipInput'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.value) el.value = LocationService.zip;
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHARMACY PREFERENCE MODULE
+   ─────────────────────────────────────────────────────────────
+   Lets users save their preferred pharmacy chain.
+   Stored in localStorage (synced to Firestore when Firebase live).
+   Renders the pharmacy list in search results with save buttons.
+═══════════════════════════════════════════════════════════════ */
+const PARTNER_PHARMACIES = [
+  { name: 'CVS Pharmacy',       icon: '🏪', chains: ['CVS']       },
+  { name: 'Walgreens',          icon: '🏪', chains: ['Walgreens'] },
+  { name: 'Walmart Pharmacy',   icon: '🛒', chains: ['Walmart']   },
+  { name: 'Rite Aid',           icon: '🏪', chains: ['Rite Aid']  },
+  { name: 'Kroger Pharmacy',    icon: '🏪', chains: ['Kroger']    },
+  { name: 'Costco Pharmacy',    icon: '🏪', chains: ['Costco']    },
+];
+
+function getPreferredPharmacy() {
+  return localStorage.getItem('vital_preferred_pharmacy') || null;
+}
+
+function savePreferredPharmacy(name) {
+  localStorage.setItem('vital_preferred_pharmacy', name);
+  // Firebase sync when live
+  if (FIREBASE_ENABLED && State.user) {
+    firebase.firestore().collection('users').doc(State.user.uid)
+      .update({ preferredPharmacy: name }).catch(() => {});
+  }
+  showToast(`✓ ${name} saved as your pharmacy`, 'success');
+  initPharmacyList();   // Re-render to update star state
+}
+
+/** Render the pharmacy list inside #pharmList */
+function initPharmacyList() {
+  const list = document.getElementById('pharmList');
+  if (!list) return;
+  const preferred = getPreferredPharmacy();
+
+  list.innerHTML = PARTNER_PHARMACIES.map(p => {
+    const isSaved = preferred === p.name;
+    const distLabel = LocationService.ready && LocationService.source === 'gps'
+      ? '<span class="pharm-dist">Near you</span>'
+      : '';
+    return `
+      <div class="pharmacy-item ${isSaved ? 'pharm-item-preferred' : ''}">
+        <div class="pharm-name">${p.name}</div>
+        ${distLabel}
+        <div class="pharm-status open">Accepted</div>
+        <button class="pharm-save-btn ${isSaved ? 'saved' : ''}"
+          onclick="savePreferredPharmacy('${p.name}')"
+          title="${isSaved ? 'Your saved pharmacy' : 'Save as my pharmacy'}">
+          ${isSaved ? '★ Saved' : '☆ Save'}
+        </button>
+      </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COUPON SOURCE TRACKER + VITAL RX NUDGE
+   ─────────────────────────────────────────────────────────────
+   Tracks which coupon source the user last clicked.
+   If a logged-in user clicks a third-party source (GoodRx, etc.)
+   while a Vital Rx card is cheaper, shows a helpful nudge.
+═══════════════════════════════════════════════════════════════ */
+function trackCouponSource(sourceId, drugName) {
+  const record = { sourceId, drugName, ts: Date.now() };
+  localStorage.setItem('vital_last_coupon_source', JSON.stringify(record));
+  // Firebase sync when live
+  if (FIREBASE_ENABLED && State.user) {
+    firebase.firestore().collection('users').doc(State.user.uid)
+      .update({ lastCouponSource: record }).catch(() => {});
+  }
+}
+
+function getLastCouponSource() {
+  try { return JSON.parse(localStorage.getItem('vital_last_coupon_source')); }
+  catch (_) { return null; }
+}
+
+/**
+ * Show a gentle nudge when a logged-in user clicks a third-party
+ * coupon source when a Vital Rx rate is available and cheaper.
+ */
+function maybeShowVitalRxNudge(sourceId, drug) {
+  if (sourceId === 'fp' || sourceId === 'ret') return;   // No nudge for Vital Rx itself or retail
+  if (!State.user) return;                               // Only for signed-in users
+  // Check if Vital Rx price exists and wins
+  const drugObj = lookupDrugByName(drug);
+  if (!drugObj || !State.currentVariant) return;
+  const vitalPrice = State.currentVariant.fairplay;
+  const clickedPrice = sourceId === 'grx' ? State.currentVariant.goodrx : State.currentVariant.costplus;
+  if (!vitalPrice || !clickedPrice || vitalPrice >= clickedPrice) return;
+  // Vital Rx is cheaper — nudge
+  setTimeout(() => {
+    showToast(`💡 Your Vital Rx card saves ${fmt(clickedPrice - vitalPrice)} more — already in your account`, 'nudge');
+  }, 600);
+}
+
 /* ─── UTILS ──────────────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
@@ -649,9 +924,10 @@ const fmt = n => '$' + Number(n).toFixed(2);
 function showToast(msg, type = 'success') {
   const t = $('toast');
   t.textContent = msg;
-  t.className = `toast ${type} show`;
+  // 'nudge' type gets a blue info styling
+  t.className = `toast ${type === 'nudge' ? 'info toast-nudge' : type} show`;
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => { t.className = 'toast'; }, 3200);
+  t._timer = setTimeout(() => { t.className = 'toast'; }, type === 'nudge' ? 5000 : 3200);
 }
 
 function showWalletComingSoon() {
@@ -1945,6 +2221,10 @@ function handlePriceAction(btn) {
   const retail      = parseFloat(btn.dataset.retail);
   const theme       = SOURCE_THEMES[sourceId] || SOURCE_THEMES.fp;
 
+  // ── Track coupon source + show Vital Rx nudge if applicable ──
+  trackCouponSource(sourceId, drug);
+  maybeShowVitalRxNudge(sourceId, drug);
+
   // ── COMPLIANCE GATE: VITAL Direct codes are locked until eligibility is verified ──
   if (sourceId === 'fp' && !isComplianceCleared(drug)) {
     ComplianceCtx._pendingBtn = btn;
@@ -2561,7 +2841,7 @@ function initHeroShowcase() {
     hscHeader.appendChild(btn);
   }
 
-  // ── 3. Clickable drug name → navigate to that drug's results ─
+  // ── 3. Clickable drug name AND image → navigate to that drug's results ─
   const _hscNameEl = document.getElementById('hscDrugName');
   if (_hscNameEl && !_hscNameEl._hscClickBound) {
     _hscNameEl._hscClickBound = true;
@@ -2570,6 +2850,20 @@ function initHeroShowcase() {
     _hscNameEl.addEventListener('click', () => {
       const drug = _hscNameEl.dataset.hscDrug;
       if (drug) { navigateTo('search'); triggerSearch(drug); }
+    });
+  }
+  const _hscImgWrap = document.querySelector('#hscDrugHero .hsc-drug-img-wrap');
+  if (_hscImgWrap && !_hscImgWrap._hscClickBound) {
+    _hscImgWrap._hscClickBound = true;
+    _hscImgWrap.setAttribute('title', 'View pricing details');
+    _hscImgWrap.setAttribute('role', 'button');
+    _hscImgWrap.setAttribute('tabindex', '0');
+    _hscImgWrap.addEventListener('click', () => {
+      const drug = _hscNameEl ? _hscNameEl.dataset.hscDrug : null;
+      if (drug) { navigateTo('search'); triggerSearch(drug); }
+    });
+    _hscImgWrap.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') _hscImgWrap.click();
     });
   }
 
@@ -2652,6 +2946,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initMedicationCards();
   initBrowseCatalog();
   navigateTo('home');
+
+  // ── Firebase + Location + Pharmacy init ──────────────────
+  initFirebase();
+  initPharmacyList();               // Renders pharmacy list immediately with save buttons
+  detectLocationByIP();             // Silently enriches list with city label (no popup)
 
   // ── Smart back: steps through sub-views, never skips ─────────
   function goBack() {

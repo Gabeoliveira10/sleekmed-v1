@@ -490,16 +490,14 @@
               <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
               <div class="receipt-rx-label">PRESCRIPTION</div>
               <div class="receipt-drug-name">Tirzepatide 5mg/0.5mL</div>
-              <div class="receipt-detail">Qty: 4 pens · Monthly Supply</div>
-              <div class="receipt-detail">NDC: 00002-1433-80</div>
-              <div class="receipt-detail">DAW: 0 · Refills: 2</div>
+              <div class="receipt-detail">Qty: 4 pens &nbsp;·&nbsp; Monthly Supply</div>
               <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
               <div class="receipt-line"><span>Drug Cost</span><span>$1,086.37</span></div>
               <div class="receipt-line"><span>Insurance Applied</span><span>$0.00</span></div>
               <div class="receipt-line"><span>Discount Applied</span><span>$0.00</span></div>
               <div class="receipt-divider">- - - - - - - - - - - - - - - - - - -</div>
               <div class="receipt-line receipt-total-line"><span>YOUR TOTAL</span><span class="receipt-scary-price">$1,086.37</span></div>
-              <div class="receipt-footnote">* Lower prices may be available. Ask your pharmacist.</div>
+              <div class="receipt-footnote">Lower prices may be available — compare before you pay.</div>
             </div>
             <div class="receipt-perf-bottom"></div>
             <div class="receipt-old-badge">YOU OVERPAID $687.37</div>
@@ -522,22 +520,21 @@
           <div class="receipt-paper receipt-new">
             <div class="receipt-perf-top receipt-perf-green"></div>
             <div class="receipt-body">
-              <div class="receipt-store receipt-store-vital">VITAL RX · VERIFIED RATE</div>
+              <div class="receipt-store receipt-store-vital">VITAL RX · PARTNER DISCOUNT</div>
               <div class="receipt-addr">Walgreens Pharmacy · Jacksonville, FL</div>
               <div class="receipt-date">Date: 05/25/2026 · 2:14 PM</div>
               <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
               <div class="receipt-rx-label receipt-rx-label-green">PRESCRIPTION</div>
               <div class="receipt-drug-name">Tirzepatide 5mg/0.5mL</div>
-              <div class="receipt-detail">Qty: 4 pens · Monthly Supply</div>
-              <div class="receipt-detail">BIN: 610524 · PCN: FPLAY</div>
-              <div class="receipt-detail">GROUP: FP2026 · Verified Direct</div>
+              <div class="receipt-detail">Qty: 4 pens &nbsp;·&nbsp; Monthly Supply</div>
+              <div class="receipt-detail-highlight">Vital Rx Discount Card Applied</div>
               <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
-              <div class="receipt-line"><span>Network Rate</span><span>$399.00</span></div>
-              <div class="receipt-line receipt-line-green"><span>You Saved</span><span>$687.37</span></div>
-              <div class="receipt-line"><span>Insurance Applied</span><span>N/A</span></div>
+              <div class="receipt-line"><span>Partner Rate</span><span>$399.00</span></div>
+              <div class="receipt-line receipt-line-green"><span>You Saved</span><span class="receipt-savings-strong">$687.37</span></div>
+              <div class="receipt-line"><span>Insurance</span><span>Not Required</span></div>
               <div class="receipt-divider receipt-divider-green">- - - - - - - - - - - - - - - - - - -</div>
               <div class="receipt-line receipt-total-line"><span>YOUR TOTAL</span><span class="receipt-good-price">$399.00</span></div>
-              <div class="receipt-footnote receipt-footnote-green">✓ Lowest verified rate · Vital Rx Network</div>
+              <div class="receipt-footnote receipt-footnote-green">✓ Show this card at the pharmacy counter to apply discount</div>
             </div>
             <div class="receipt-perf-bottom receipt-perf-green"></div>
             <div class="receipt-new-badge">✓ LOWEST VERIFIED RATE</div>
@@ -728,13 +725,20 @@
           </div>
 
           <div class="pharmacy-finder">
-            <h3>Partner Pharmacy Network</h3>
-            <p class="pharmacy-network-note">Vital Rx rates are accepted at these major chains nationwide.</p>
-            <div class="pharmacy-list">
-              <div class="pharmacy-item"><div class="pharm-name">CVS Pharmacy</div><div class="pharm-status open">Accepted</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Walgreens</div><div class="pharm-status open">Accepted</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Walmart Pharmacy</div><div class="pharm-status open">Accepted</div></div>
-              <div class="pharmacy-item"><div class="pharm-name">Rite Aid</div><div class="pharm-status open">Accepted</div></div>
+            <div class="pharm-finder-header">
+              <h3>Partner Pharmacy Network</h3>
+              <button class="pharm-locate-btn" id="pharmLocateBtn" onclick="requestUserLocation()">
+                <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><circle cx="10" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5"/></svg>
+                <span id="pharmLocateText">Find Near Me</span>
+              </button>
+            </div>
+            <p class="pharmacy-network-note" id="pharmNetworkNote">Vital Rx rates are accepted at these major chains nationwide.</p>
+            <div id="pharmLocationPill" class="pharm-location-pill" style="display:none">
+              <svg viewBox="0 0 16 16" fill="none" width="12" height="12"><circle cx="8" cy="6" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1a5 5 0 015 5c0 3.5-5 9-5 9S3 9.5 3 6a5 5 0 015-5z" stroke="currentColor" stroke-width="1.3"/></svg>
+              <span id="pharmLocationCity">Detecting…</span>
+            </div>
+            <div class="pharmacy-list" id="pharmList">
+              <!-- populated by initPharmacyList() in script.js -->
             </div>
           </div>
         </div>
@@ -1398,6 +1402,16 @@
     </div>
   </div>
 
+  <!--
+    ═══════════════════════════════════════════════════════════
+    FIREBASE SDK — uncomment once your Firebase project is live
+    Replace the config values inside script.js (FIREBASE_CONFIG)
+    ═══════════════════════════════════════════════════════════
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+  -->
   <script src="script.js"></script>
 </body>
 </html>

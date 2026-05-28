@@ -870,15 +870,40 @@ a.logo-block { text-decoration: none; color: inherit; }
 
 /* Pharmacy Finder */
 .pharmacy-finder { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 32px; }
-.pharmacy-finder h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+.pharm-finder-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.pharmacy-finder h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 0; }
+.pharm-locate-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: 20px; border: 1px solid var(--border-subtle);
+  background: transparent; color: var(--text-muted); font-size: 11.5px; font-weight: 600;
+  cursor: pointer; transition: all 0.18s;
+}
+.pharm-locate-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.08); }
+.pharm-locate-btn.located { border-color: var(--mint); color: var(--mint); }
+.pharm-location-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(52,211,153,0.10); color: var(--mint);
+  border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 600;
+  margin-bottom: 10px;
+}
 .pharmacy-list { display: flex; flex-direction: column; }
-.pharmacy-item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border-subtle); }
+.pharmacy-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border-subtle); }
 .pharmacy-item:last-child { border-bottom: none; }
 .pharm-name { font-size: 13.5px; font-weight: 500; color: var(--text-primary); flex: 1; }
-.pharm-dist { font-size: 12px; color: var(--text-muted); font-family: var(--font-sans); }
+.pharm-dist { font-size: 11.5px; color: var(--text-muted); font-family: var(--font-sans); }
 .pharm-status { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-pill); }
 .pharm-status.open { background: rgba(52,211,153,0.10); color: var(--mint); }
 .pharm-status.closed { background: rgba(248,113,113,0.10); color: var(--red); }
+.pharm-save-btn {
+  background: transparent; border: 1px solid var(--border-subtle); border-radius: 8px;
+  color: var(--text-muted); font-size: 11px; padding: 3px 8px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.pharm-save-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pharm-save-btn.saved { border-color: var(--mint); color: var(--mint); background: rgba(52,211,153,0.07); }
+.pharm-item-preferred { background: rgba(52,211,153,0.05); border-radius: 8px; padding-left: 8px; margin-left: -8px; }
+/* Coupon source nudge toast variant */
+.toast-nudge { background: rgba(59,130,246,0.18) !important; border: 1px solid rgba(59,130,246,0.35) !important; color: #93C5FD !important; }
 
 /* Empty State */
 .search-empty-state { text-align: center; padding: 80px 20px; }
@@ -3777,14 +3802,14 @@ p { color: #4A5568; }
 .receipt-paper {
   flex: 1; max-width: 320px; position: relative;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 12px; line-height: 1.7;
+  font-size: 13px; line-height: 1.75;
   filter: drop-shadow(0 4px 20px rgba(0,0,0,0.1));
 }
 .receipt-body {
   background: #FFFEF5;
-  padding: 20px 22px 16px;
+  padding: 22px 24px 18px;
 }
-.receipt-new .receipt-body { background: #F0FFF4; }
+.receipt-new .receipt-body { background: #E8FFF2; }
 
 /* Perforated edges */
 .receipt-perf-top, .receipt-perf-bottom {
@@ -3793,36 +3818,47 @@ p { color: #4A5568; }
   mask-size: 14px 14px; mask-repeat: repeat-x;
 }
 .receipt-new .receipt-perf-top,
-.receipt-new .receipt-perf-bottom { background: #F0FFF4; }
+.receipt-new .receipt-perf-bottom { background: #E8FFF2; }
 .receipt-perf-bottom {
   mask-position: 0 bottom;
   transform: scaleY(-1);
 }
 .receipt-store {
-  font-weight: 700; font-size: 11.5px; text-align: center;
-  letter-spacing: 0.06em; color: #1A202C; margin-bottom: 2px;
+  font-weight: 700; font-size: 12.5px; text-align: center;
+  letter-spacing: 0.06em; color: #1A202C; margin-bottom: 3px;
 }
-.receipt-store-vital { color: #166534; }
+.receipt-store-vital { color: #14532D; }
 .receipt-addr, .receipt-date {
-  font-size: 10.5px; text-align: center; color: #64748B; line-height: 1.5;
+  font-size: 11.5px; text-align: center; color: #374151; line-height: 1.6;
 }
-.receipt-divider { color: #94A3B8; font-size: 10px; letter-spacing: 0.02em; margin: 8px 0; }
-.receipt-divider-green { color: #86EFAC; }
+.receipt-divider { color: #94A3B8; font-size: 11px; letter-spacing: 0.02em; margin: 10px 0; }
+.receipt-divider-green { color: #4ADE80; }
 .receipt-rx-label {
-  font-weight: 700; font-size: 10px; letter-spacing: 0.12em; color: #64748B; margin-bottom: 4px;
+  font-weight: 700; font-size: 11px; letter-spacing: 0.12em; color: #374151; margin-bottom: 5px;
 }
-.receipt-rx-label-green { color: #166534; }
-.receipt-drug-name { font-weight: 700; font-size: 13px; color: #1A202C; margin-bottom: 2px; }
-.receipt-detail { font-size: 10.5px; color: #64748B; }
+.receipt-rx-label-green { color: #14532D; }
+.receipt-drug-name { font-weight: 700; font-size: 14px; color: #111827; margin-bottom: 3px; }
+.receipt-detail { font-size: 12px; color: #374151; }
+.receipt-detail-highlight {
+  font-size: 12px; font-weight: 700; color: #166534;
+  background: rgba(22,101,52,0.10); border-radius: 4px;
+  padding: 2px 6px; display: inline-block; margin: 2px 0;
+}
 .receipt-line {
   display: flex; justify-content: space-between; align-items: center;
-  font-size: 11.5px; color: #374151; padding: 1px 0;
+  font-size: 12.5px; color: #111827; padding: 2px 0;
 }
-.receipt-line-green span:last-child { color: #16A34A; font-weight: 700; }
-.receipt-total-line { font-weight: 700; font-size: 13px; color: #1A202C; margin-top: 4px; }
-.receipt-scary-price { color: #DC2626; font-size: 16px; }
-.receipt-good-price  { color: #16A34A; font-size: 16px; }
-.receipt-footnote { font-size: 9.5px; color: #94A3B8; text-align: center; margin-top: 10px; font-style: italic; }
+.receipt-line-green span:last-child { color: #15803D; font-weight: 700; }
+.receipt-savings-strong { color: #15803D; font-weight: 800; font-size: 15px; }
+.receipt-total-line { font-weight: 700; font-size: 14px; color: #111827; margin-top: 6px; }
+.receipt-scary-price { color: #DC2626; font-size: 17px; font-weight: 800; }
+.receipt-good-price  { color: #15803D; font-size: 17px; font-weight: 800; }
+.receipt-footnote { font-size: 10.5px; color: #374151; text-align: center; margin-top: 12px; font-style: italic; }
+/* Green receipt text overrides for better contrast */
+.receipt-new .receipt-addr, .receipt-new .receipt-date { color: #166534; }
+.receipt-new .receipt-detail { color: #15803D; }
+.receipt-new .receipt-line { color: #14532D; }
+.receipt-new .receipt-footnote { color: #166534; font-style: normal; font-weight: 600; }
 .receipt-footnote-green { color: #4ADE80; }
 
 /* Overpay / verified badges */
@@ -4241,7 +4277,14 @@ p { color: #4A5568; }
   box-shadow: 0 6px 20px rgba(0,0,0,0.28);
   padding: 6px;
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+.hsc-drug-img-wrap:hover {
+  transform: scale(1.07);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.38);
+}
+.hsc-drug-img-wrap:active { transform: scale(0.97); }
 .hsc-drug-img {
   width: 100%;
   height: 100%;
