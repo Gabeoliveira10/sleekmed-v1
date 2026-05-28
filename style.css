@@ -1352,7 +1352,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 .toast { position: fixed; bottom: 26px; right: 26px; z-index: var(--z-toast); background: var(--bg-overlay); border: 1px solid var(--border-muted); border-radius: var(--radius-md); padding: 12px 20px; font-size: 13.5px; color: var(--text-primary); box-shadow: 0 8px 32px rgba(0,0,0,0.4); transform: translateY(80px); opacity: 0; transition: all 0.35s var(--ease-slide); pointer-events: none; max-width: 320px; }
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast.success { border-color: rgba(52,211,153,0.35); }
-.toast.error { border-color: rgba(248,113,113,0.35); }
+.toast.error   { border-color: rgba(248,113,113,0.35); }
+.toast.info    { border-color: rgba(99,179,237,0.35); color: #93C5FD; }
 
 /* ═══════════════════════════════════════════════════════════════
    FOOTER

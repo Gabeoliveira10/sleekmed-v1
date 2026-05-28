@@ -735,7 +735,11 @@ const LocationService = {
 /** Silent IP geolocation on page load — no permission needed */
 async function detectLocationByIP() {
   try {
-    const res  = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
+    // Use AbortController instead of AbortSignal.timeout() for Safari < 16 compatibility
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), 4000);
+    const res  = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
     if (data.city) {
       LocationService.lat     = data.latitude;
@@ -1189,9 +1193,17 @@ function doRegister() {
 }
 
 function signOut() {
-  State.user = null;
+  State.user         = null;
+  State.adminLoggedIn = false;
+
+  // Clear all persisted session data
   localStorage.removeItem('fp_user');
+  localStorage.removeItem('fp_remember_me');
+  localStorage.removeItem('fp_admin');
+  try { sessionStorage.removeItem('fp_session_user'); } catch(_) {}
+
   updateAuthUI();
+  updateAdminSidebarVisibility();
   navigateTo('home');
   showToast('You have been signed out.');
 }
@@ -1271,7 +1283,7 @@ function renderVault() {
   $('vaultContent').style.display  = loggedIn ? 'block' : 'none';
   if (!loggedIn) return;
 
-  const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
+  const fields = ['vf-name','vf-dob','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
   fields.forEach(id => {
     const el = $(id);
     if (el) el.value = State.vault[id] || '';
@@ -1281,7 +1293,7 @@ function renderVault() {
 }
 
 function setVaultLocked(locked) {
-  const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
+  const fields = ['vf-name','vf-dob','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
   fields.forEach(id => { const el = $(id); if (el) el.disabled = locked; });
 
   const dot = document.querySelector('.vault-status-dot');
@@ -1297,7 +1309,7 @@ function setVaultLocked(locked) {
 }
 
 function saveVaultData() {
-  const fields = ['vf-name','vf-dob','vf-dl','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
+  const fields = ['vf-name','vf-dob','vf-carrier','vf-member','vf-group','vf-bin','vf-pcn','vf-plan','vf-doctor','vf-zip'];
   fields.forEach(id => { const el = $(id); if (el) State.vault[id] = el.value; });
   saveVault();
 
@@ -1647,8 +1659,6 @@ const DRUG_LINKS = {
 function renderPriceCards(variant, drugName) {
   const links = DRUG_LINKS[drugName] || {};
 
-  const zip = ($('heroZipInput') || $('pageZipInput') || {}).value || '32256';
-  const pharmTag = PHARMACY_TAGS[Math.floor(Math.random() * PHARMACY_TAGS.length)];
   const prices = [
     { id: 'fp',  source: 'Vital Rx',              amount: variant.fairplay, action: 'Use This Card',    isFP: true,  link: null },
     { id: 'grx', source: 'Third-Party · GoodRx', amount: variant.goodrx,  action: 'View on GoodRx',   isFP: false, link: links.goodrx  || 'https://www.goodrx.com/' + encodeURIComponent(drugName.toLowerCase()) },
@@ -1738,10 +1748,12 @@ function renderPricingMatrix() {
   const container = $('pricingMatrix');
   if (!container) return;
 
-  const zip = ($('heroZipInput') || {}).value || '32256';
-
   container.innerHTML = TRENDING_MATRIX.map((item, i) => {
-    const tag = PHARMACY_TAGS[i % PHARMACY_TAGS.length];
+    const chainName = PHARMACY_TAGS[i % PHARMACY_TAGS.length];
+    // Show "Near you" only when real GPS location is confirmed — never fake distances
+    const tag = LocationService.ready && LocationService.source === 'gps'
+      ? chainName + ' · Near you'
+      : chainName;
     const savings = item.retail - item.rate;
     const pct = Math.round((savings / item.retail) * 100);
     const initial = item.drug.charAt(0).toUpperCase();
@@ -1834,14 +1846,14 @@ const DRUG_MFR = {
    PHARMACY NETWORK TAGS — zip-based placeholder distances
 ═══════════════════════════════════════════════════════════════ */
 const PHARMACY_TAGS = [
-  'Walgreens · 0.8 mi',
-  'CVS · 1.2 mi',
-  'Walmart Pharmacy · 1.5 mi',
-  'Costco Pharmacy · 2.1 mi',
-  'Publix Pharmacy · 2.8 mi',
-  'Winn-Dixie Pharmacy · 3.4 mi',
-  'Rite Aid · 1.9 mi',
-  'Kroger Pharmacy · 2.3 mi',
+  'Walgreens',
+  'CVS Pharmacy',
+  'Walmart Pharmacy',
+  'Costco Pharmacy',
+  'Publix Pharmacy',
+  'Winn-Dixie Pharmacy',
+  'Rite Aid',
+  'Kroger Pharmacy',
 ];
 
 const TRENDING_MATRIX = [
@@ -2177,9 +2189,8 @@ function _saveComplianceRecord(channel) {
   const cleared = JSON.parse(localStorage.getItem('vital_compliance') || '{}');
   cleared[ComplianceCtx.drug] = { channel: channel, timestamp: record.timestamp };
   localStorage.setItem('vital_compliance', JSON.stringify(cleared));
-  // TODO: Replace with live Firebase write →
-  // firebase.firestore().collection('legal_audit_trail').add({ ...record, ip: '(resolve server-side)' });
-  console.log('[Vital Rx Compliance Audit Trail]', record);
+  // Firebase write — active once FIREBASE_ENABLED = true
+  logComplianceEvent(record);
 }
 
 function isComplianceCleared(drugName) {

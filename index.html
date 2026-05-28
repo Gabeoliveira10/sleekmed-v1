@@ -230,12 +230,12 @@
       <div class="stats-section">
         <div class="stats-container">
           <div class="stat-item">
-            <span class="stat-num">50+</span>
-            <span class="stat-label">Medications</span>
+            <span class="stat-num">70k+</span>
+            <span class="stat-label">Medications (API Launch)</span>
           </div>
           <div class="stat-item">
-            <span class="stat-num stat-infinity">∞</span>
-            <span class="stat-label">Expansive Search Catalog</span>
+            <span class="stat-num">4</span>
+            <span class="stat-label">Price Sources Compared</span>
           </div>
           <div class="stat-item">
             <span class="stat-num">$0</span>
@@ -344,7 +344,7 @@
               <span class="hiw-acc-title">Search Your Medication</span>
               <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="hiw-acc-body"><p>Enter your drug name and zip code, then select the exact dosage and quantity prescribed. Our engine retrieves live pricing from Vital Rx Direct, GoodRx, and Cost Plus sources.</p></div>
+            <div class="hiw-acc-body"><p>Enter your drug name and zip code, then select the exact dosage and quantity prescribed. Our engine retrieves live pricing from Vital Rx Partner Rate, GoodRx, and Cost Plus sources.</p></div>
           </div>
           <div class="hiw-acc-item">
             <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
@@ -352,7 +352,7 @@
               <span class="hiw-acc-title">Compare All Prices</span>
               <svg class="hiw-acc-chevron" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="hiw-acc-body"><p>View Vital Rx Direct, GoodRx, Cost Plus Drugs, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
+            <div class="hiw-acc-body"><p>View Vital Rx Partner Rate, GoodRx, Cost Plus Drugs, and Retail Cash — side by side, in one panel. No account required for cash prices.</p></div>
           </div>
           <div class="hiw-acc-item">
             <button class="hiw-acc-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
@@ -746,7 +746,7 @@
         <div class="search-empty-state" id="searchEmptyState">
           <div class="empty-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="24" cy="24" rx="14" ry="8" stroke="currentColor" stroke-width="2" transform="rotate(45 24 24)"/><line x1="14.1" y1="14.1" x2="33.9" y2="33.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
           <h3>Search any medication to compare prices</h3>
-          <p>Our database covers 50+ drugs with live pricing from our verified partner network.</p>
+          <p>Our catalog covers 50+ curated medications today — expanding to 70,000+ via live API. Search any name to see real prices.</p>
           <div class="popular-list">
             <div class="popular-label">Most Searched Today</div>
             <div class="popular-tags" id="popularTagsSearch"></div>
@@ -948,8 +948,8 @@
             <h4>Our Pricing Engine</h4>
             <p>Vital Rx's pricing engine aggregates data from four sources: our proprietary affiliate card network, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
 
-            <h4>The Vital Rx Direct Price</h4>
-            <p>Our "Vital Rx Direct" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
+            <h4>The Vital Rx Partner Rate</h4>
+            <p>Our "Vital Rx Partner Rate" price is the negotiated rate available through our proprietary affiliate card. When you present your Digital Card at a partner pharmacy, our BIN/PCN routing code is applied at the point of sale and the negotiated price is honored immediately.</p>
             <p><strong>Affiliate Disclosure:</strong> Vital Rx earns a small affiliate fee per claim ($2.50–$5.00) from our partner network. This fee is never passed to the consumer.</p>
 
             <h4>HIPAA &amp; Data Security</h4>
@@ -999,7 +999,7 @@
         <div class="cs-icon"><svg viewBox="0 0 64 64" fill="none" width="64" height="64"><circle cx="32" cy="32" r="30" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M20 32h24M32 20v24" stroke="#34d399" stroke-width="2" stroke-linecap="round"/></svg></div>
         <div class="section-eyebrow">Feature in Development</div>
         <h1 class="cs-title">Online Care</h1>
-        <p class="cs-sub">Vital Rx Online Care will connect you with board-certified physicians for same-day virtual consultations — with prescriptions sent directly to your preferred Vital Rx partner pharmacy.</p>
+        <p class="cs-sub">Vital Rx Online Care will connect you with board-certified physicians for same-day virtual consultations — with electronic prescriptions forwarded to your preferred partner pharmacy for pickup.</p>
         <div class="cs-features"><div class="cs-feature"><span class="cs-dot"></span>Same-day physician appointments</div><div class="cs-feature"><span class="cs-dot"></span>Electronic prescriptions to your pharmacy</div><div class="cs-feature"><span class="cs-dot"></span>Integrated with your Vital Rx profile</div><div class="cs-feature"><span class="cs-dot"></span>Transparent flat-fee pricing</div></div>
         <div class="cs-eta"><div class="cs-eta-label">Estimated Launch</div><div class="cs-eta-date">Q3 2026</div></div>
         <button class="btn-primary" id="teleNotifyBtn">Notify Me When Live</button>
@@ -1051,11 +1051,11 @@
       <div class="page-inner">
         <div class="page-hero-small"><div class="section-eyebrow">Provider Network</div><h1 class="page-title">For Healthcare Providers</h1><p class="page-sub">Join our verified network and give your patients real-time access to the best prescription prices at the point of care.</p></div>
         <div class="providers-grid">
-          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V8l9-5 9 5v13H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21V15h6v6M12 9v5M9.5 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Clinic Integration</h3><p>Integrate VITAL's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p><a href="#" class="provider-cta">Request API Access →</a></div>
-          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M2 13h20" stroke="currentColor" stroke-width="1.5"/></svg></div><h3>Pharmacy Partnership</h3><p>Join our verified pharmacy network. Accept Vital Rx affiliate claims, earn guaranteed reimbursement, and expand your customer base to Vital Rx members nationwide.</p><a href="#" class="provider-cta">Apply for Partnership →</a></div>
-          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20h18M7 14v6M11 8v12M15 11v9M19 4v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Practice Analytics</h3><p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p><a href="#" class="provider-cta">View Sample Report →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V8l9-5 9 5v13H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21V15h6v6M12 9v5M9.5 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Clinic Integration</h3><p>Integrate VITAL's price lookup API directly into your EHR workflow. When prescribing, see cash and insurance price estimates before the patient leaves the office.</p><a href="mailto:partners@vitalrx.com?subject=API%20Access%20Request" class="provider-cta">Request API Access →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M2 13h20" stroke="currentColor" stroke-width="1.5"/></svg></div><h3>Pharmacy Partnership</h3><p>Join our verified pharmacy network. Accept Vital Rx affiliate claims, earn guaranteed reimbursement, and expand your customer base to Vital Rx members nationwide.</p><a href="mailto:partners@vitalrx.com?subject=Pharmacy%20Partnership%20Inquiry" class="provider-cta">Apply for Partnership →</a></div>
+          <div class="provider-card"><div class="provider-card-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20h18M7 14v6M11 8v12M15 11v9M19 4v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Practice Analytics</h3><p>Access aggregated, de-identified prescribing trend data for your region. Understand which drugs your patients are struggling to afford and why.</p><a href="mailto:partners@vitalrx.com?subject=Practice%20Analytics%20Inquiry" class="provider-cta">View Sample Report →</a></div>
         </div>
-        <div class="provider-contact"><h3>Partner Inquiries</h3><p>For clinical or pharmacy partnership inquiries, contact our Provider Relations team.</p><a href="mailto:partners@vital.com" class="btn-primary">partners@vital.com</a></div>
+        <div class="provider-contact"><h3>Partner Inquiries</h3><p>For clinical or pharmacy partnership inquiries, contact our Provider Relations team.</p><a href="mailto:partners@vitalrx.com" class="btn-primary">partners@vitalrx.com</a></div>
       </div>
     </section>
 
@@ -1066,7 +1066,7 @@
         <div class="section-eyebrow">Feature in Development</div>
         <h1 class="cs-title">Live Support</h1>
         <p class="cs-sub">Our Support center is currently in development. For urgent inquiries, please email us directly.</p>
-        <a href="mailto:support@vital.com" class="btn-primary">support@vital.com</a>
+        <a href="mailto:support@vitalrx.com" class="btn-primary">support@vitalrx.com</a>
       </div>
     </section>
 
@@ -1378,8 +1378,8 @@
             <p>Vital Rx aggregates data from four sources: our proprietary affiliate card network, the GoodRx pricing API, Mark Cuban's Cost Plus Drug Company, and retail cash prices. Prices are estimates and may vary at the point of sale.</p>
           </div>
           <div class="footer-disc-block">
-            <h4>Vital Rx Direct &amp; Affiliate Disclosure</h4>
-            <p>Our "Vital Rx Direct" price is the negotiated rate available through our proprietary affiliate card. <strong>Vital Rx earns a small affiliate fee per claim ($2.50–$5.00)</strong> from our partner network. This fee is never passed to the consumer.</p>
+            <h4>Vital Rx Partner Rate &amp; Affiliate Disclosure</h4>
+            <p>Our "Vital Rx Partner Rate" price is the negotiated rate available through our proprietary affiliate card. <strong>Vital Rx earns a small affiliate fee per claim ($2.50–$5.00)</strong> from our partner network. This fee is never passed to the consumer.</p>
           </div>
           <div class="footer-disc-block">
             <h4>HIPAA &amp; Legal Compliance</h4>
@@ -1397,7 +1397,7 @@
       <div class="footer-links">
         <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Browse Medications</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a></div>
         <div class="footer-col"><div class="footer-col-title">Company</div><a href="#" data-page="about">About Us</a><a href="#" data-page="providers">For Providers</a><a href="mailto:partners@vitalrx.com">Partner Inquiries</a></div>
-        <div class="footer-col"><div class="footer-col-title">Legal</div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">HIPAA Notice</a><a href="#">Affiliate Disclosure</a></div>
+        <div class="footer-col"><div class="footer-col-title">Legal</div><a href="#" onclick="showToast('Privacy Policy — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">Privacy Policy</a><a href="#" onclick="showToast('Terms of Service — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">Terms of Service</a><a href="#" onclick="showToast('HIPAA Notice — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">HIPAA Notice</a><a href="#" onclick="showToast('Affiliate Disclosure available in Technical Disclosures below', 'info'); return false;">Affiliate Disclosure</a></div>
       </div>
     </div>
   </footer>
