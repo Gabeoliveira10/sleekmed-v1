@@ -4670,3 +4670,282 @@ p { color: #4A5568; }
   margin: -4px 0 12px;
   line-height: 1.4;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY — WCAG 2.1 AA
+═══════════════════════════════════════════════════════════════ */
+
+/* Skip navigation link (keyboard-only) */
+.skip-link {
+  position: fixed;
+  top: -120px;
+  left: 16px;
+  z-index: 99999;
+  background: #00E676;
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  transition: top 0.18s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Keyboard focus ring — visible only for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #00E676 !important;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Flip card keyboard focus */
+.card-flip-card:focus-visible {
+  outline: 2px solid #00E676 !important;
+  outline-offset: 6px;
+  border-radius: 18px;
+}
+
+/* ── Reduced Motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card-flip-card { transition: none !important; }
+  .card-flip-card.flipped { transform: rotateY(180deg) !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD FLIP — EXPORT ACTIONS (Download · Print · Text to Phone)
+═══════════════════════════════════════════════════════════════ */
+.flip-export-row {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.flip-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.82);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-body, 'Lexend', sans-serif);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.flip-export-btn:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.24);
+  color: #fff;
+}
+.flip-export-btn:active { transform: scale(0.96); }
+.flip-export-btn svg { flex-shrink: 0; opacity: 0.8; }
+.flip-export-btn.export-download:hover { border-color: #00C896; color: #00C896; }
+.flip-export-btn.export-print:hover    { border-color: #60A5FA; color: #60A5FA; }
+.flip-export-btn.export-sms:hover      { border-color: #A78BFA; color: #A78BFA; }
+
+/* ── SMS Phone Modal ──────────────────────────────────────── */
+.sms-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  z-index: 9500;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn 0.18s ease;
+}
+.sms-modal-box {
+  background: #161d2f;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 22px 22px 0 0;
+  padding: 28px 24px calc(32px + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+  max-width: 480px;
+}
+.sms-modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.sms-modal-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.sms-phone-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.sms-phone-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+}
+.sms-phone-input::placeholder { color: rgba(255,255,255,0.28); }
+.sms-phone-input:focus { border-color: #A78BFA; }
+.sms-send-btn {
+  background: #A78BFA;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: filter 0.15s;
+  white-space: nowrap;
+}
+.sms-send-btn:hover { filter: brightness(1.12); }
+.sms-cancel-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.sms-cancel-link:hover { color: rgba(255,255,255,0.65); }
+.sms-disclaimer {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* ── Printable Card (hidden on screen, revealed by @media print) ── */
+#printableCard {
+  display: none;
+}
+
+/* ── Print Styles ─────────────────────────────────────────── */
+@media print {
+  body > *:not(#printableCard) { display: none !important; }
+  #printableCard {
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #fff !important;
+  }
+  .printable-card-inner {
+    width: 320px;
+    padding: 28px 26px;
+    border: 2px solid #111;
+    border-radius: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #000;
+    page-break-inside: avoid;
+  }
+  .pc-header {
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .pc-tagline {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  .pc-member {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pc-drug {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .pc-price {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 14px;
+  }
+  .pc-codes-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .pc-code {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .pc-code-lbl {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .pc-code-val {
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .pc-instructions {
+    font-size: 11px;
+    color: #444;
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 9px 10px;
+    margin-bottom: 12px;
+    line-height: 1.55;
+  }
+  .pc-note {
+    font-size: 10px;
+    color: #777;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 10px;
+    text-align: center;
+    line-height: 1.5;
+  }
+}

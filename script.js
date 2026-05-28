@@ -1060,6 +1060,9 @@ function openSidebar() {
   $('sidebarOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   document.body.classList.add('menu-open');
+  const hb = $('hamburgerBtn');
+  if (hb) hb.setAttribute('aria-expanded', 'true');
+  $('sidebar').setAttribute('aria-hidden', 'false');
 }
 
 function closeSidebar() {
@@ -1067,6 +1070,9 @@ function closeSidebar() {
   $('sidebarOverlay').classList.remove('active');
   document.body.style.overflow = '';
   document.body.classList.remove('menu-open');
+  const hb = $('hamburgerBtn');
+  if (hb) hb.setAttribute('aria-expanded', 'false');
+  $('sidebar').setAttribute('aria-hidden', 'true');
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2347,9 +2353,25 @@ function handlePriceAction(btn) {
   panel.style.display = 'flex';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
+  // Make card keyboard-accessible: Tab-focusable, Enter/Space to flip
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', 'Prescription discount card — press Enter or Space to flip and see your codes');
   card._flipBound && card.removeEventListener('click', card._flipBound);
-  card._flipBound = () => card.classList.toggle('flipped');
+  card._flipBound = () => {
+    card.classList.toggle('flipped');
+    const flipped = card.classList.contains('flipped');
+    card.setAttribute('aria-label', flipped
+      ? 'Discount card back — codes visible. Press Enter or Space to flip back.'
+      : 'Discount card front — press Enter or Space to flip and see your codes.');
+    card.setAttribute('aria-pressed', String(flipped));
+  };
   card.addEventListener('click', card._flipBound);
+  card._keyFlipBound && card.removeEventListener('keydown', card._keyFlipBound);
+  card._keyFlipBound = function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card._flipBound(); }
+  };
+  card.addEventListener('keydown', card._keyFlipBound);
 
   // Open external link for GoodRx and Cost Plus
   const extLink = btn.dataset.link;
@@ -3239,3 +3261,160 @@ function hideBrowseCatalog() {
   const catalog = $('browseCatalog');
   if (catalog) catalog.style.display = 'none';
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD FLIP — EXPORT FUNCTIONS
+   Download · Print · Text to Phone
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Shared: gather current card data from the live card ─── */
+function _getCardExportData() {
+  const ins = getInsuranceRecord();
+  return {
+    drug:    ($('flipDrug')        || {}).textContent || '—',
+    price:   ($('flipPrice')       || {}).textContent || '—',
+    source:  ($('flipSourceLabel') || {}).textContent || 'Vital Rx',
+    bin:     ins.bin   || '610524',
+    pcn:     ins.pcn   || 'FPLAY',
+    group:   ins.group || 'FP2026',
+    member:  (State.vault && State.vault['vf-name'])
+               ? State.vault['vf-name'].toUpperCase()
+               : (State.user && State.user.name ? State.user.name.toUpperCase() : 'MEMBER'),
+  };
+}
+
+/* ── Download — opens a print-ready page; user can Save as PDF ─ */
+function exportCardDownload() {
+  const d = _getCardExportData();
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Vital Rx Discount Card</title>
+<style>
+  body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f4f8;font-family:Arial,Helvetica,sans-serif}
+  .card{width:340px;padding:28px 26px;border:2px solid #111;border-radius:14px;background:#fff;color:#000;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+  .hdr{font-size:22px;font-weight:900;letter-spacing:0.08em;margin-bottom:2px}
+  .sub{font-size:10px;color:#666;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #ddd}
+  .lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+  .drug{font-size:16px;font-weight:700;margin-bottom:2px}
+  .price{font-size:30px;font-weight:900;margin-bottom:16px}
+  .codes{display:flex;gap:10px;margin-bottom:14px}
+  .code{flex:1;border:1px solid #ccc;border-radius:6px;padding:8px 6px;text-align:center}
+  .code-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;color:#888;text-transform:uppercase;margin-bottom:3px}
+  .code-val{font-size:14px;font-weight:900}
+  .instr{font-size:11px;color:#444;background:#f5f5f5;border-radius:6px;padding:10px;margin-bottom:12px;line-height:1.55}
+  .note{font-size:10px;color:#777;border-top:1px solid #e0e0e0;padding-top:10px;text-align:center;line-height:1.5}
+  .print-btn{display:block;margin:20px auto 0;padding:12px 28px;background:#000;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.02em}
+  @media print{.print-btn{display:none}}
+</style></head><body>
+<div class="card">
+  <div class="hdr">VITAL RX</div>
+  <div class="sub">Free Prescription Discount Card</div>
+  <div class="lbl">Member</div>
+  <div class="drug">${d.member}</div>
+  <div class="lbl" style="margin-top:10px">Prescription</div>
+  <div class="drug">${d.drug}</div>
+  <div class="price">${d.price}</div>
+  <div class="codes">
+    <div class="code"><div class="code-lbl">BIN</div><div class="code-val">${d.bin}</div></div>
+    <div class="code"><div class="code-lbl">PCN</div><div class="code-val">${d.pcn}</div></div>
+    <div class="code"><div class="code-lbl">GROUP</div><div class="code-val">${d.group}</div></div>
+  </div>
+  <div class="instr">Present this card to your pharmacist <em>before</em> they process your prescription. Say: <strong>"I have a Vital Rx discount card."</strong></div>
+  <div class="note">This is not insurance &nbsp;·&nbsp; Free to use at 70,000+ pharmacies<br>vitalrx.com &nbsp;·&nbsp; support@vitalrx.com</div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print this card</button>
+</div>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'vital-rx-discount-card.html';
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
+  showToast('Discount card downloaded — open the file to print or save as PDF.', 'success');
+}
+
+/* ── Print — populates #printableCard and calls window.print() ─ */
+function exportCardPrint() {
+  const d = _getCardExportData();
+  const s = function(id, val){ const el = $(id); if (el) el.textContent = val; };
+  s('pcMember', d.member);
+  s('pcDrug',   d.drug);
+  s('pcPrice',  d.price);
+  s('pcBIN',    d.bin);
+  s('pcPCN',    d.pcn);
+  s('pcGroup',  d.group);
+  window.print();
+}
+
+/* ── SMS Modal ────────────────────────────────────────────── */
+function showSMSModal() {
+  const modal = $('smsModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  setTimeout(function(){
+    const inp = $('smsPhoneInput');
+    if (inp) inp.focus();
+  }, 80);
+  // Close on backdrop click
+  modal._backdropClose = function(e) {
+    if (e.target === modal) closeSMSModal();
+  };
+  modal.addEventListener('click', modal._backdropClose);
+  // Close on Escape
+  modal._keyClose = function(e) {
+    if (e.key === 'Escape') closeSMSModal();
+  };
+  document.addEventListener('keydown', modal._keyClose);
+}
+
+function closeSMSModal() {
+  const modal = $('smsModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  if (modal._backdropClose) modal.removeEventListener('click', modal._backdropClose);
+  if (modal._keyClose) document.removeEventListener('keydown', modal._keyClose);
+}
+
+function sendSMSCard() {
+  const inp   = $('smsPhoneInput');
+  const phone = inp ? inp.value.replace(/\D/g, '') : '';
+  if (!phone || phone.length < 10) {
+    showToast('Please enter a valid 10-digit phone number.', 'error');
+    if (inp) inp.focus();
+    return;
+  }
+  const d = _getCardExportData();
+  const msg = encodeURIComponent(
+    `VITAL RX DISCOUNT CARD\n` +
+    `Medication: ${d.drug}\n` +
+    `Partner Rate: ${d.price}\n` +
+    `BIN: ${d.bin}  PCN: ${d.pcn}  GROUP: ${d.group}\n` +
+    `\nShow this to your pharmacist before checkout.\n` +
+    `This is NOT insurance — free to use.\n` +
+    `vitalrx.com`
+  );
+  // sms: URI — on mobile opens native SMS app pre-filled; on desktop gracefully fails or opens default handler
+  const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+  const smsUri = `sms:+1${phone}${isMobile ? '&' : '?'}body=${msg}`;
+  window.location.href = smsUri;
+  closeSMSModal();
+  showToast('Opening your messages app…', 'info');
+}
+
+/* ── Format phone input with () and - as user types ─────── */
+(function(){
+  document.addEventListener('input', function(e){
+    if (!e.target || e.target.id !== 'smsPhoneInput') return;
+    let v = e.target.value.replace(/\D/g,'').substring(0,10);
+    if (v.length > 6)      v = '(' + v.substring(0,3) + ') ' + v.substring(3,6) + '-' + v.substring(6);
+    else if (v.length > 3) v = '(' + v.substring(0,3) + ') ' + v.substring(3);
+    e.target.value = v;
+  });
+  // Allow Enter to submit SMS form
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'smsPhoneInput') {
+      sendSMSCard();
+    }
+  });
+})();

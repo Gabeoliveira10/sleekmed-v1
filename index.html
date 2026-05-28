@@ -35,15 +35,18 @@
 </head>
 <body>
 
+  <!-- Skip to main content (keyboard/screen-reader accessibility) -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <!-- ═══ SIDEBAR — First in DOM for guaranteed z-index stacking ═══ -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation" aria-hidden="true">
     <div class="sidebar-header">
       <a href="#" class="logo-block" onclick="navigateTo('home'); closeSidebar(); return false;">
         <div class="logo-capsule"></div>
         <span class="logo-text">Vital Rx</span>
       </a>
-      <button class="sidebar-close" id="sidebarClose">✕</button>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close navigation menu">✕</button>
     </div>
     <nav class="sidebar-nav">
       <div class="sidebar-section-label">Explore</div>
@@ -65,7 +68,7 @@
       <div class="sidebar-user" id="sidebarUser" style="display:none">
         <div class="sidebar-avatar" id="sidebarAvatar">G</div>
         <div><div class="sidebar-username" id="sidebarUsername">Guest</div><div class="sidebar-email" id="sidebarEmail">—</div></div>
-        <button class="btn-signout-sm" id="sidebarSignOut">Sign Out</button>
+        <button class="btn-signout-sm" id="sidebarSignOut" aria-label="Sign out of your account">Sign Out</button>
       </div>
       <div class="sidebar-signin-row" id="sidebarSignInRow">
         <button class="btn-sidebar-signin" id="sidebarSignInBtn">
@@ -104,12 +107,12 @@
       <div class="header-actions">
         <button class="btn-ghost" id="btnSignIn">Sign In</button>
         <button class="btn-primary" id="btnJoin">Get Started</button>
-        <button class="hamburger menu-trigger" id="hamburgerBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+        <button class="hamburger menu-trigger" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
 
-  <main class="main-content">
+  <main class="main-content" id="main-content" role="main">
 
     <!-- PAGE: HOME -->
     <section class="page active" id="page-home">
@@ -721,6 +724,35 @@
                 </div>
               </div>
             </div>
+            <!-- Export / share actions -->
+            <div class="flip-export-row" id="flipExportRow">
+              <button class="flip-export-btn export-download" id="flipExportDownload" aria-label="Download discount card as PDF"
+                      onclick="exportCardDownload()">
+                <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
+                  <path d="M10 3v9M7 9l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 14v1.5A1.5 1.5 0 005.5 17h9A1.5 1.5 0 0016 15.5V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                Download
+              </button>
+              <button class="flip-export-btn export-print" id="flipExportPrint" aria-label="Print discount card"
+                      onclick="exportCardPrint()">
+                <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
+                  <rect x="4" y="7" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M7 7V4h6v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M7 12h6M7 14.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  <circle cx="15.5" cy="9.5" r="0.7" fill="currentColor"/>
+                </svg>
+                Print
+              </button>
+              <button class="flip-export-btn export-sms" id="flipExportSMS" aria-label="Text discount card to your phone"
+                      onclick="showSMSModal()">
+                <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
+                  <rect x="3" y="2" width="14" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M7 6h6M7 9h6M7 12h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Text to Phone
+              </button>
+            </div>
             <button class="btn-ghost btn-sm" id="closeFlipBtn" style="margin-top:14px">← Back to prices</button>
           </div>
 
@@ -1249,12 +1281,12 @@
   </main>
 
   <!-- AUTH MODAL -->
-  <div class="modal-overlay" id="authModalOverlay">
+  <div class="modal-overlay" id="authModalOverlay" role="dialog" aria-modal="true" aria-labelledby="authModalHeading">
     <div class="modal auth-modal" id="authModal">
-      <button class="modal-close" id="authModalClose">✕</button>
+      <button class="modal-close" id="authModalClose" aria-label="Close sign-in dialog">✕</button>
       <div class="auth-view" id="authSignInView">
         <div class="modal-logo">VITAL</div>
-        <h2>Welcome Back</h2>
+        <h2 id="authModalHeading">Welcome Back</h2>
         <p class="modal-sub">Sign in to access your Medicine Cabinet and Digital Card.</p>
         <div class="modal-field"><label>Email Address</label><input type="email" id="signInEmail" class="vault-input" placeholder="you@email.com" autocomplete="username" /></div>
         <div class="modal-field"><label>Password</label><input type="text" id="signInPass" class="vault-input masked-input" placeholder="••••••••" autocomplete="off" /></div>
@@ -1348,8 +1380,8 @@
     <div class="vault-lock-anim"><div class="vl-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="10" width="18" height="12" rx="2" stroke="#00E676" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="#00E676" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="#00E676"/></svg></div><div class="vl-text">Vault Data Encrypted &amp; Stored</div></div>
   </div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+  <!-- TOAST — aria-live so screen readers announce updates -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- FOOTER -->
   <footer class="site-footer">
@@ -1420,6 +1452,42 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
   -->
+  <!-- PRINTABLE CARD — invisible on screen; @media print reveals it -->
+  <div id="printableCard" aria-hidden="true">
+    <div class="printable-card-inner">
+      <div class="pc-header">VITAL RX</div>
+      <div class="pc-tagline">Free Prescription Discount Card</div>
+      <div class="pc-member" id="pcMember">MEMBER</div>
+      <div class="pc-drug" id="pcDrug">—</div>
+      <div class="pc-price" id="pcPrice">—</div>
+      <div class="pc-codes-row">
+        <div class="pc-code"><div class="pc-code-lbl">BIN</div><div class="pc-code-val" id="pcBIN">610524</div></div>
+        <div class="pc-code"><div class="pc-code-lbl">PCN</div><div class="pc-code-val" id="pcPCN">FPLAY</div></div>
+        <div class="pc-code"><div class="pc-code-lbl">GROUP</div><div class="pc-code-val" id="pcGroup">FP2026</div></div>
+      </div>
+      <div class="pc-instructions">
+        Present this card to your pharmacist before they process your prescription.
+        Say: <em>"I have a Vital Rx discount card."</em>
+      </div>
+      <div class="pc-note">This is not insurance · Free to use at 70,000+ pharmacies<br>Support: support@vitalrx.com · vitalrx.com</div>
+    </div>
+  </div>
+
+  <!-- SMS MODAL -->
+  <div id="smsModal" class="sms-modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="smsModalTitle">
+    <div class="sms-modal-box">
+      <p class="sms-modal-title" id="smsModalTitle">📱 Text Card to Your Phone</p>
+      <p class="sms-modal-sub">Enter your mobile number and we'll open a pre-filled text message with your discount codes.</p>
+      <div class="sms-phone-row">
+        <input class="sms-phone-input" id="smsPhoneInput" type="tel" placeholder="(555) 000-0000" inputmode="numeric"
+               aria-label="Your mobile phone number" maxlength="14" />
+        <button class="sms-send-btn" onclick="sendSMSCard()">Send →</button>
+      </div>
+      <div class="sms-disclaimer">Standard messaging rates may apply. We do not store your number.</div>
+      <span class="sms-cancel-link" onclick="closeSMSModal()" role="button" tabindex="0" aria-label="Cancel">Cancel</span>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
