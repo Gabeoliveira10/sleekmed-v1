@@ -218,11 +218,16 @@ body.menu-open .trust-bar {
   gap: 28px;
 }
 
-/* Header left group — back button + logo always anchored together */
+/* Header left group — logo container, always left-anchored */
 .header-left {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Back button as standalone flex item — never displaces the logo */
+.btn-back-nav {
   flex-shrink: 0;
 }
 
@@ -1385,6 +1390,11 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 @media (max-width: 1024px) {
   .top-nav { display: none; }
   .hamburger { display: flex; }
+  /* Logo fills remaining space so it stays left; hamburger stays right */
+  .header-left { flex: 1; }
+  .header-actions { margin-left: 0; }
+  /* Tighter gap so back button sits close to logo */
+  .header-inner { gap: 10px; }
   /* Hero: stack text over card on tablet */
   .hero-content { flex-direction: column; text-align: center; gap: 36px; padding-bottom: 40px; }
   .hero-text-block { max-width: 100%; }

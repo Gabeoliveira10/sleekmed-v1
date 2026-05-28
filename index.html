@@ -84,14 +84,15 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <!-- Left group: back button + logo always stay together -->
+      <!-- Back button: own flex item so it never nudges the logo -->
+      <button class="btn-back-nav" id="btnBackNav" aria-label="Go back" style="display:none">
+        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+          <path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="btn-back-label">Back</span>
+      </button>
+      <!-- Logo always left-anchored, never displaced by back button -->
       <div class="header-left">
-        <button class="btn-back-nav" id="btnBackNav" aria-label="Go back" style="display:none">
-          <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
-            <path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="btn-back-label">Back</span>
-        </button>
         <a href="#" class="logo-block" onclick="navigateTo('home'); return false;">
           <div class="logo-capsule"></div>
           <span class="logo-text">Vital Rx</span>
