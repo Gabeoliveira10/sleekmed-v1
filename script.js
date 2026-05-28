@@ -1267,10 +1267,12 @@ function updateAuthUI() {
 
 function updateAdminSidebarVisibility() {
   const show = !!State.adminLoggedIn;
-  const sec  = $('adminSidebarSection');
-  const link = $('adminSidebarLink');
-  if (sec)  sec.style.display  = show ? '' : 'none';
-  if (link) link.style.display = show ? '' : 'none';
+  const sec     = $('adminSidebarSection');
+  const link    = $('adminSidebarLink');
+  const navLink = $('navAdminLink');
+  if (sec)     sec.style.display     = show ? '' : 'none';
+  if (link)    link.style.display    = show ? '' : 'none';
+  if (navLink) navLink.style.display = show ? '' : 'none';
 }
 
 /* ═══════════════════════════════════════════════════════════════

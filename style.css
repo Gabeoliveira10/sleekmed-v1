@@ -265,7 +265,7 @@ body.menu-open .trust-bar {
 }
 
 /* Top Nav */
-.top-nav { display: flex; align-items: center; gap: 45px; flex: 1; }
+.top-nav { display: flex; align-items: center; gap: clamp(16px, 2.8vw, 45px); flex: 1; }
 
 .nav-link {
   padding: 6px 2px;
@@ -1388,7 +1388,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
   .calc-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .top-nav { display: none; }
   .hamburger { display: flex; }
   /* Logo fills remaining space so it stays left; hamburger stays right */
@@ -2843,6 +2843,10 @@ body { background: #F4F6F8 !important; color: #1A202C !important; }
 .nav-link.active { color: #2B6CB0 !important; }
 .logo-text { color: #1A202C !important; }
 .hamburger span { background: #4A5568 !important; }
+/* Admin nav link — subtle pill so it stands out as internal-only */
+.nav-link-admin { background: rgba(30,58,138,0.08) !important; border: 1px solid rgba(30,58,138,0.22) !important; border-radius: 20px !important; padding: 5px 14px !important; color: #1E3A8A !important; font-size: 0.95rem !important; }
+.nav-link-admin:hover { background: rgba(30,58,138,0.15) !important; color: #1E3A8A !important; }
+.nav-link-admin.active { color: #1E3A8A !important; }
 
 /* ─────────────────────────────────────────────────────────────
    BUTTONS — unified slate blue
@@ -3360,10 +3364,7 @@ p { color: #4A5568; }
    Stats color · Badge uniformity · Pillar contrast · Brain SVG
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── 1. Hamburger always visible at all viewport widths ──── */
-.hamburger { display: flex !important; }
-
-/* ── 2. Trust bar: hidden at top, styled in footer ────────── */
+/* ── 1. Trust bar: hidden at top, styled in footer ────────── */
 #trustBar { display: none !important; }
 .footer-trust-bar {
   width: 100%; background: #1A202C;
@@ -4831,12 +4832,15 @@ p { color: #4A5568; }
 }
 .flip-export-btn:active { transform: scale(0.96); }
 .flip-export-btn svg { flex-shrink: 0; opacity: 1; }
-.flip-export-btn.export-download { border-color: #059669; background: #059669; color: #fff; font-weight: 700; }
-.flip-export-btn.export-print    { border-color: #2563EB; background: #2563EB; color: #fff; font-weight: 700; }
-.flip-export-btn.export-sms      { border-color: #7C3AED; background: #7C3AED; color: #fff; font-weight: 700; }
-.flip-export-btn.export-download:hover { background: #047857; border-color: #047857; }
-.flip-export-btn.export-print:hover    { background: #1D4ED8; border-color: #1D4ED8; }
-.flip-export-btn.export-sms:hover      { background: #6D28D9; border-color: #6D28D9; }
+/* All three export buttons: uniform clear-glass, dark navy text */
+.flip-export-btn { border-color: rgba(30,58,138,0.30) !important; background: rgba(30,58,138,0.08) !important; color: #1E3A8A !important; text-shadow: none !important; }
+.flip-export-btn:hover { background: rgba(30,58,138,0.16) !important; border-color: rgba(30,58,138,0.50) !important; color: #1E3A8A !important; }
+.flip-export-btn.export-download,
+.flip-export-btn.export-print,
+.flip-export-btn.export-sms { border-color: rgba(30,58,138,0.30); background: rgba(30,58,138,0.08); color: #1E3A8A; }
+.flip-export-btn.export-download:hover,
+.flip-export-btn.export-print:hover,
+.flip-export-btn.export-sms:hover { background: rgba(30,58,138,0.16); border-color: rgba(30,58,138,0.50); }
 
 /* ── SMS Phone Modal ──────────────────────────────────────── */
 .sms-modal-overlay {
