@@ -629,6 +629,11 @@
         </div>
 
         <div class="search-results-panel" id="searchResultsPanel" style="display:none">
+          <!-- In-content back button — always visible above results -->
+          <button class="results-back-btn" id="resultsBackBtn" onclick="goBackFromResults()">
+            <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="resultsBackLabel">Browse Medications</span>
+          </button>
           <div class="results-header">
             <h2 id="resultsTitle">Results</h2>
             <div class="price-intel-notice">

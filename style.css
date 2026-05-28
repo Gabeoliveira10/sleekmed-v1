@@ -4545,3 +4545,29 @@ p { color: #4A5568; }
   .btn-back-label { display: none !important; }
   .btn-back-nav   { padding: 0 10px !important; }
 }
+
+/* ── In-results back button ──────────────────────────────────── */
+.results-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px 8px 10px;
+  margin: 0 0 18px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.80);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.01em;
+}
+.results-back-btn:hover,
+.results-back-btn:active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.26);
+  color: #ffffff;
+}
+.results-back-btn svg { flex-shrink: 0; opacity: 0.75; }

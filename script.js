@@ -485,8 +485,9 @@ const saveCabinet = () => localStorage.setItem('fp_cabinet', JSON.stringify(Stat
    _navStack  → in-app back button (PWA + all browsers)
    history    → Safari native swipe-back
    _noHist    → suppresses history writes during restoration    */
-let _navStack = [];
-let _noHist   = false; // when true, sub-view fns skip pushState
+let _navStack     = [];
+let _noHist       = false; // when true, sub-view fns skip pushState
+let _lastBrowseCat = '';   // category user drilled into before results
 
 function _hpush(state, url) {
   if (_noHist) return;
@@ -2452,9 +2453,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const drugViewOpen  = drugView && drugView.style.display !== 'none';
 
       if (catalogHidden) {
-        // Results → back to category grid
-        showBrowseCatalog();
-        showBrowseCategories();
+        // Results → back to drug list (if came from category) or categories
+        if (catalog) catalog.style.display = '';
+        if (_lastBrowseCat) {
+          showBrowseDrugs(_lastBrowseCat);
+        } else {
+          showBrowseCategories();
+        }
         _noHist = false; return;
       }
       if (drugViewOpen) {
@@ -2619,13 +2624,30 @@ function showBrowseCategories() {
 }
 
 function handleBrowseDrugClick(drugName) {
+  // Remember which category we came from so back can restore it
+  _lastBrowseCat = ($('browseDrugHeading') || {}).textContent || '';
+  const lbl = document.getElementById('resultsBackLabel');
+  if (lbl) lbl.textContent = _lastBrowseCat || 'Browse Medications';
   hideBrowseCatalog();
   triggerSearch(drugName);
   // Push so swipe-back from results returns to drug list
   _hpush({ page: 'search', sub: 'results', drug: drugName }, '#results');
 }
 
+function goBackFromResults() {
+  _noHist = true;
+  const catalog = $('browseCatalog');
+  if (catalog) catalog.style.display = '';
+  if (_lastBrowseCat) {
+    showBrowseDrugs(_lastBrowseCat);
+  } else {
+    showBrowseCategories();
+  }
+  _noHist = false;
+}
+
 function showBrowseCatalog() {
+  _lastBrowseCat = ''; // reset — fresh entry into browse
   const catalog = $('browseCatalog');
   if (catalog) catalog.style.display = '';
   // Always land back on category grid when re-opening
