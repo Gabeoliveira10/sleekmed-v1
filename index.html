@@ -269,7 +269,7 @@
         <div class="stats-container">
           <div class="stat-item">
             <span class="stat-num">70k+</span>
-            <span class="stat-label">Medications (API Launch)</span>
+            <span class="stat-label">Medications Available</span>
           </div>
           <div class="stat-item">
             <span class="stat-num">4</span>
@@ -302,9 +302,9 @@
       <!-- ① Essential Medications — first child below hero -->
       <div class="section-block medication-section">
         <div class="section-header">
-          <div class="section-eyebrow">Price Spotlight</div>
-          <h2 class="section-title">The Same Pills. Very Different Prices.</h2>
-          <p class="section-sub">These are the exact medications people overpay for every day. Click any card to see a full side-by-side breakdown across every source.</p>
+          <div class="section-eyebrow">Monthly Coupons</div>
+          <h2 class="section-title">This Month's Best Rx Deals</h2>
+          <p class="section-sub">Updated monthly. Real prices at your pharmacy — no insurance required. Click any card to compare and save.</p>
         </div>
         <div class="medication-grid">
           <div class="medication-card" data-drug="Metformin">
@@ -1135,6 +1135,70 @@
       </div>
     </section>
 
+    <!-- PAGE: ACCESSIBILITY STATEMENT -->
+    <section class="page" id="page-accessibility">
+      <div class="page-inner">
+        <div class="page-hero-small">
+          <div class="section-eyebrow">Digital Accessibility</div>
+          <h1 class="page-title">Accessibility Statement</h1>
+          <p class="page-sub">Vital Rx is committed to making our platform accessible to everyone, including people with disabilities.</p>
+        </div>
+        <div class="a11y-statement-wrap">
+          <div class="a11y-statement-card">
+            <h2>Our Commitment</h2>
+            <p>Vital Rx strives to ensure its services are accessible to people with disabilities. We believe every person has the right to live with dignity, equality, comfort, and independence — and that includes accessing healthcare pricing information freely and easily.</p>
+          </div>
+          <div class="a11y-statement-card">
+            <h2>Conformance Status</h2>
+            <p>Vital Rx aims to conform to the <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong>. These guidelines explain how to make web content more accessible to people with disabilities, including those with visual, auditory, motor, and cognitive impairments.</p>
+          </div>
+          <div class="a11y-statement-card">
+            <h2>Accessibility Features</h2>
+            <ul class="a11y-feature-list">
+              <li>Full keyboard navigation throughout the application</li>
+              <li>Screen-reader compatible — semantic HTML5 with ARIA roles and labels</li>
+              <li>Skip-to-content link for keyboard and screen-reader users</li>
+              <li>Sufficient color contrast ratios on all text and interactive elements</li>
+              <li>Visible focus indicators on all interactive elements</li>
+              <li>Reduced-motion support via <code>prefers-reduced-motion</code> media query</li>
+              <li>Descriptive <code>alt</code> text on all meaningful images</li>
+              <li>No content flashes more than three times per second</li>
+              <li>Responsive design that works across desktop, tablet, and mobile</li>
+            </ul>
+          </div>
+          <div class="a11y-statement-card">
+            <h2>Technical Specifications</h2>
+            <p>Vital Rx relies on the following technologies for conformance with WCAG 2.1:</p>
+            <ul class="a11y-feature-list">
+              <li>HTML5 with semantic landmark elements (<code>header</code>, <code>main</code>, <code>nav</code>, <code>footer</code>)</li>
+              <li>CSS3 with system-preference media queries</li>
+              <li>Vanilla JavaScript with accessible event handling and focus management</li>
+            </ul>
+            <p style="margin-top:14px">These pages are tested with modern browsers and assistive technologies including VoiceOver (macOS/iOS) and NVDA (Windows).</p>
+          </div>
+          <div class="a11y-statement-card">
+            <h2>Known Limitations</h2>
+            <p>Despite our best efforts, some limitations exist. We are actively working to resolve them:</p>
+            <ul class="a11y-feature-list">
+              <li><strong>Interactive price charts</strong> — SVG data visualizations may not be fully described for screen-reader users. Text-based alternatives are in progress.</li>
+              <li><strong>Pharmacy location map</strong> — relies on browser geolocation APIs with varying assistive technology support across platforms.</li>
+            </ul>
+          </div>
+          <div class="a11y-statement-card">
+            <h2>Feedback &amp; Contact</h2>
+            <p>We welcome feedback on the accessibility of Vital Rx. If you encounter any barriers or have suggestions, please reach out — we aim to respond within 2 business days.</p>
+            <div style="margin-top:18px">
+              <a href="mailto:ada@vitalrx.com" class="btn-primary">ada@vitalrx.com</a>
+            </div>
+          </div>
+          <div class="a11y-statement-footer">
+            <p>This statement was last updated on <strong>May 29, 2026</strong>.</p>
+            <button class="btn-ghost" onclick="navigateTo('home')" style="margin-top:16px">Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- PAGE: SUPPORT -->
     <section class="page" id="page-support">
       <div class="coming-soon-page">
@@ -1296,11 +1360,11 @@
             <div class="calc-grid">
               <div class="calc-input-group">
                 <label>Monthly Claims Volume</label>
-                <!-- Log-scale slider: pos 1→5 maps to 10→100,000 claims -->
-                <input type="range" id="claimsSlider" min="1" max="5" step="0.01" value="3" />
-                <div class="calc-slider-val"><span id="claimsVal">1,000</span> claims/mo</div>
+                <!-- Linear slider: 1,000 → 100,000 claims/mo -->
+                <input type="range" id="claimsSlider" min="1000" max="100000" step="1000" value="10000" />
+                <div class="calc-slider-val"><span id="claimsVal">10,000</span> claims/mo</div>
                 <div class="calc-slider-ticks">
-                  <span>10</span><span>100</span><span>1K</span><span>10K</span><span>100K</span>
+                  <span>1K</span><span>25K</span><span>50K</span><span>75K</span><span>100K</span>
                 </div>
               </div>
               <div class="calc-input-group"><label>Affiliate Fee per Claim</label><div class="fee-btns"><button class="fee-btn active" data-fee="2.50">$2.50</button><button class="fee-btn" data-fee="3.50">$3.50</button><button class="fee-btn" data-fee="5.00">$5.00</button></div></div>
@@ -1493,6 +1557,7 @@
         <div class="footer-col"><div class="footer-col-title">Platform</div><a href="#" data-page="search">Browse Medications</a><a href="#" data-page="cabinet">Medicine Cabinet</a><a href="#" data-page="card">Digital Card</a><a href="#" data-page="howitworks">How It Works</a></div>
         <div class="footer-col"><div class="footer-col-title">Company</div><a href="#" data-page="about">About Us</a><a href="#" data-page="providers">For Providers</a><a href="mailto:partners@vitalrx.com">Partner Inquiries</a></div>
         <div class="footer-col"><div class="footer-col-title">Legal</div><a href="#" onclick="showToast('Privacy Policy — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">Privacy Policy</a><a href="#" onclick="showToast('Terms of Service — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">Terms of Service</a><a href="#" onclick="showToast('HIPAA Notice — Coming soon. Contact legal@vitalrx.com', 'info'); return false;">HIPAA Notice</a><a href="#" onclick="showToast('Affiliate Disclosure available in Technical Disclosures below', 'info'); return false;">Affiliate Disclosure</a></div>
+        <div class="footer-col"><div class="footer-col-title">Support</div><a href="#" data-page="support">Help &amp; FAQs</a><a href="#" data-page="accessibility">Accessibility</a><a href="mailto:support@vitalrx.com">Contact Us</a></div>
       </div>
     </div>
   </footer>
@@ -1548,90 +1613,6 @@
       </div>
       <div class="sms-disclaimer">Standard messaging rates may apply. We do not store your number.</div>
       <span class="sms-cancel-link" onclick="closeSMSModal()" role="button" tabindex="0" aria-label="Cancel">Cancel</span>
-    </div>
-  </div>
-
-  <!-- ═══ ACCESSIBILITY WIDGET ═══════════════════════════════ -->
-  <div class="a11y-widget-wrap" id="a11yWrap">
-
-    <!-- Floating trigger button -->
-    <button class="a11y-trigger" id="a11yTrigger" aria-label="Open accessibility options" aria-expanded="false" aria-controls="a11yPanel">
-      <svg viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true">
-        <circle cx="12" cy="4.5" r="2" fill="currentColor"/>
-        <path d="M12 8c-3 0-5 1.5-5 1.5L8 13h8l1-3.5S15 8 12 8z" fill="currentColor"/>
-        <path d="M8 13l-2 6M16 13l2 6M10 13v4l2 2 2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
-    </button>
-
-    <!-- Panel -->
-    <div class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-label="Accessibility options" hidden>
-      <div class="a11y-panel-header">
-        <span class="a11y-panel-title">Accessibility</span>
-        <button class="a11y-panel-close" id="a11yClose" aria-label="Close accessibility options">
-          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-
-      <!-- Text Size -->
-      <div class="a11y-row">
-        <div class="a11y-row-info">
-          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><text x="3" y="17" font-size="14" font-weight="700" fill="currentColor">A</text><text x="13" y="19" font-size="10" fill="currentColor">A</text></svg>
-          <div>
-            <div class="a11y-row-label">Larger Text</div>
-            <div class="a11y-row-sub">Increase font size across the app</div>
-          </div>
-        </div>
-        <button class="a11y-toggle" id="toggleLargerText" role="switch" aria-checked="false" data-mode="larger-text">
-          <span class="a11y-toggle-thumb"></span>
-        </button>
-      </div>
-
-      <!-- High Contrast -->
-      <div class="a11y-row">
-        <div class="a11y-row-info">
-          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3v18" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 010 18z" fill="currentColor"/></svg>
-          <div>
-            <div class="a11y-row-label">High Contrast</div>
-            <div class="a11y-row-sub">Maximum contrast for low vision</div>
-          </div>
-        </div>
-        <button class="a11y-toggle" id="toggleHighContrast" role="switch" aria-checked="false" data-mode="high-contrast">
-          <span class="a11y-toggle-thumb"></span>
-        </button>
-      </div>
-
-      <!-- Dyslexia Mode -->
-      <div class="a11y-row">
-        <div class="a11y-row-info">
-          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M4 6h16M4 10h12M4 14h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <div>
-            <div class="a11y-row-label">Dyslexia Mode</div>
-            <div class="a11y-row-sub">Wider spacing, easier-to-read font</div>
-          </div>
-        </div>
-        <button class="a11y-toggle" id="toggleDyslexia" role="switch" aria-checked="false" data-mode="dyslexia">
-          <span class="a11y-toggle-thumb"></span>
-        </button>
-      </div>
-
-      <!-- Reduce Motion -->
-      <div class="a11y-row" style="border-bottom:none">
-        <div class="a11y-row-info">
-          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="5" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <div>
-            <div class="a11y-row-label">Reduce Motion</div>
-            <div class="a11y-row-sub">Disable animations and transitions</div>
-          </div>
-        </div>
-        <button class="a11y-toggle" id="toggleReduceMotion" role="switch" aria-checked="false" data-mode="reduce-motion">
-          <span class="a11y-toggle-thumb"></span>
-        </button>
-      </div>
-
-      <div class="a11y-reset-row">
-        <button class="a11y-reset-btn" id="a11yResetAll">Reset all</button>
-        <span class="a11y-wcag-note">WCAG 2.1 AA</span>
-      </div>
     </div>
   </div>
 

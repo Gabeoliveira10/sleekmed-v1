@@ -3022,9 +3022,7 @@ function doAdminLogin() {
 }
 
 function calcMRR() {
-  // Log-scale: slider pos 1→5 maps to 10→100,000 claims (powers of 10)
-  const pos    = parseFloat($('claimsSlider').value);
-  const claims = Math.round(Math.pow(10, pos));
+  const claims = parseInt($('claimsSlider').value, 10);
   const mrr    = claims * State.activeFee;
   $('claimsVal').textContent = claims.toLocaleString();
   $('calcMRR').textContent   = '$' + Math.round(mrr).toLocaleString();
@@ -3850,88 +3848,3 @@ function sendSMSCard() {
   });
 })();
 
-/* ═══════════════════════════════════════════════════════════════
-   ACCESSIBILITY WIDGET
-   Floating panel: Larger Text · High Contrast · Dyslexia · Motion
-═══════════════════════════════════════════════════════════════ */
-(function initA11yWidget() {
-  const A11Y_KEY = 'vital_a11y_prefs';
-
-  const MODES = [
-    { id: 'toggleLargerText',   cls: 'a11y-larger-text',    key: 'largerText'    },
-    { id: 'toggleHighContrast', cls: 'a11y-high-contrast',  key: 'highContrast'  },
-    { id: 'toggleDyslexia',     cls: 'a11y-dyslexia',       key: 'dyslexia'      },
-    { id: 'toggleReduceMotion', cls: 'a11y-reduce-motion',  key: 'reduceMotion'  },
-  ];
-
-  // ── Load saved prefs ────────────────────────────────────────
-  let prefs = {};
-  try { prefs = JSON.parse(localStorage.getItem(A11Y_KEY) || '{}'); } catch(_) {}
-
-  function savePrefs() {
-    try { localStorage.setItem(A11Y_KEY, JSON.stringify(prefs)); } catch(_) {}
-  }
-
-  function applyMode(mode, on) {
-    document.body.classList.toggle(mode.cls, on);
-    const btn = document.getElementById(mode.id);
-    if (btn) btn.setAttribute('aria-checked', on ? 'true' : 'false');
-    prefs[mode.key] = on;
-    savePrefs();
-  }
-
-  // ── Restore prefs on load ───────────────────────────────────
-  MODES.forEach(m => { if (prefs[m.key]) applyMode(m, true); });
-
-  // ── Panel open/close ────────────────────────────────────────
-  const trigger = document.getElementById('a11yTrigger');
-  const panel   = document.getElementById('a11yPanel');
-  const closeBtn= document.getElementById('a11yClose');
-  const resetBtn= document.getElementById('a11yResetAll');
-
-  if (!trigger || !panel) return;
-
-  function openPanel() {
-    panel.hidden = false;
-    trigger.setAttribute('aria-expanded', 'true');
-    panel.querySelector('.a11y-panel-close').focus();
-  }
-  function closePanel() {
-    panel.hidden = true;
-    trigger.setAttribute('aria-expanded', 'false');
-    trigger.focus();
-  }
-
-  trigger.addEventListener('click', () => {
-    panel.hidden ? openPanel() : closePanel();
-  });
-  closeBtn && closeBtn.addEventListener('click', closePanel);
-
-  // Close on outside click
-  document.addEventListener('click', e => {
-    if (!panel.hidden && !panel.contains(e.target) && e.target !== trigger) closePanel();
-  });
-  // Close on Escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !panel.hidden) closePanel();
-  });
-
-  // ── Toggle buttons ──────────────────────────────────────────
-  MODES.forEach(mode => {
-    const btn = document.getElementById(mode.id);
-    if (!btn) return;
-    // Restore visual state
-    if (prefs[mode.key]) btn.setAttribute('aria-checked', 'true');
-    btn.addEventListener('click', () => {
-      const isOn = btn.getAttribute('aria-checked') === 'true';
-      applyMode(mode, !isOn);
-    });
-  });
-
-  // ── Reset all ───────────────────────────────────────────────
-  resetBtn && resetBtn.addEventListener('click', () => {
-    MODES.forEach(m => applyMode(m, false));
-    prefs = {};
-    savePrefs();
-  });
-})();
