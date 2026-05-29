@@ -1239,30 +1239,50 @@ function signOut() {
 
 function updateAuthUI() {
   const loggedIn = !!State.user;
+
+  // ── Top-nav header buttons ──────────────────────────────────
   $('btnSignIn').style.display = loggedIn ? 'none' : 'inline-flex';
   $('btnJoin').textContent = loggedIn ? 'My Account' : 'Get Started';
-
-  const su = $('sidebarUser');
-  const signInRow = $('sidebarSignInRow');
-  if (loggedIn) {
-    su.style.display = 'flex';
-    if (signInRow) signInRow.style.display = 'none';
-    $('sidebarAvatar').textContent = State.user.avatar;
-    $('sidebarUsername').textContent = State.user.name;
-    $('sidebarEmail').textContent = State.user.email;
-  } else {
-    su.style.display = 'none';
-    if (signInRow) signInRow.style.display = 'block';
-  }
-  // Private sidebar links — only visible when logged in
-  const cabinetLink = $('cabinetSidebarLink');
-  const profileLink = $('profileSidebarLink');
-  const accountSection = $('accountSidebarSection');
   const navProfile = $('navMyProfile');
-  if (cabinetLink) cabinetLink.style.display = loggedIn ? '' : 'none';
-  if (profileLink) profileLink.style.display = loggedIn ? '' : 'none';
-  if (accountSection) accountSection.style.display = loggedIn ? '' : 'none';
   if (navProfile) navProfile.style.display = loggedIn ? '' : 'none';
+
+  // ── Sidebar: header greeting vs welcome ─────────────────────
+  const welcomeTitle = $('sidebarWelcomeTitle');
+  const greeting     = $('sidebarGreeting');
+  const firstName    = $('sidebarFirstName');
+  if (loggedIn && State.user.name) {
+    const first = State.user.name.split(' ')[0];
+    if (firstName) firstName.textContent = first;
+  }
+  if (welcomeTitle) welcomeTitle.style.display = loggedIn ? 'none' : '';
+  if (greeting)     greeting.style.display     = loggedIn ? '' : 'none';
+
+  // ── Sidebar: auth buttons vs user quick-links ───────────────
+  const authSection  = $('sidebarSignInRow');
+  const userQuick    = $('sidebarUserQuick');
+  if (authSection) authSection.style.display = loggedIn ? 'none' : '';
+  if (userQuick)   userQuick.style.display   = loggedIn ? '' : 'none';
+
+  // ── Sidebar: cabinet link (inside userQuick) ────────────────
+  const cabinetLink = $('cabinetSidebarLink');
+  if (cabinetLink) cabinetLink.style.display = loggedIn ? '' : 'none';
+
+  // ── Sidebar: Log out button ─────────────────────────────────
+  const logoutBtn = $('sidebarSignOut');
+  if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
+
+  // ── Legacy hidden data elements (JS compatibility) ──────────
+  const su = $('sidebarUser');
+  if (su) {
+    if (loggedIn && State.user) {
+      const av = $('sidebarAvatar');
+      const un = $('sidebarUsername');
+      const em = $('sidebarEmail');
+      if (av) av.textContent = State.user.avatar || '';
+      if (un) un.textContent = State.user.name   || '';
+      if (em) em.textContent = State.user.email  || '';
+    }
+  }
 }
 
 function updateAdminSidebarVisibility() {
@@ -2789,9 +2809,11 @@ function bindEvents() {
   $('btnSignIn').addEventListener('click', () => openAuthModal('signin'));
   $('btnJoin').addEventListener('click', () => State.user ? navigateTo('vault') : openAuthModal('register'));
 
-  // Sidebar Sign In button
+  // Sidebar auth buttons
   const sidebarSignInBtn = $('sidebarSignInBtn');
   if (sidebarSignInBtn) sidebarSignInBtn.addEventListener('click', () => { closeSidebar(); openAuthModal('signin'); });
+  const sidebarJoinBtn = $('sidebarJoinBtn');
+  if (sidebarJoinBtn) sidebarJoinBtn.addEventListener('click', () => { closeSidebar(); openAuthModal('register'); });
 
   // Auth modal
   $('authModalClose').addEventListener('click', closeAuthModal);
