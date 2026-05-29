@@ -1499,6 +1499,90 @@
     </div>
   </div>
 
+  <!-- ═══ ACCESSIBILITY WIDGET ═══════════════════════════════ -->
+  <div class="a11y-widget-wrap" id="a11yWrap">
+
+    <!-- Floating trigger button -->
+    <button class="a11y-trigger" id="a11yTrigger" aria-label="Open accessibility options" aria-expanded="false" aria-controls="a11yPanel">
+      <svg viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true">
+        <circle cx="12" cy="4.5" r="2" fill="currentColor"/>
+        <path d="M12 8c-3 0-5 1.5-5 1.5L8 13h8l1-3.5S15 8 12 8z" fill="currentColor"/>
+        <path d="M8 13l-2 6M16 13l2 6M10 13v4l2 2 2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </button>
+
+    <!-- Panel -->
+    <div class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-label="Accessibility options" hidden>
+      <div class="a11y-panel-header">
+        <span class="a11y-panel-title">Accessibility</span>
+        <button class="a11y-panel-close" id="a11yClose" aria-label="Close accessibility options">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Text Size -->
+      <div class="a11y-row">
+        <div class="a11y-row-info">
+          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><text x="3" y="17" font-size="14" font-weight="700" fill="currentColor">A</text><text x="13" y="19" font-size="10" fill="currentColor">A</text></svg>
+          <div>
+            <div class="a11y-row-label">Larger Text</div>
+            <div class="a11y-row-sub">Increase font size across the app</div>
+          </div>
+        </div>
+        <button class="a11y-toggle" id="toggleLargerText" role="switch" aria-checked="false" data-mode="larger-text">
+          <span class="a11y-toggle-thumb"></span>
+        </button>
+      </div>
+
+      <!-- High Contrast -->
+      <div class="a11y-row">
+        <div class="a11y-row-info">
+          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3v18" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 010 18z" fill="currentColor"/></svg>
+          <div>
+            <div class="a11y-row-label">High Contrast</div>
+            <div class="a11y-row-sub">Maximum contrast for low vision</div>
+          </div>
+        </div>
+        <button class="a11y-toggle" id="toggleHighContrast" role="switch" aria-checked="false" data-mode="high-contrast">
+          <span class="a11y-toggle-thumb"></span>
+        </button>
+      </div>
+
+      <!-- Dyslexia Mode -->
+      <div class="a11y-row">
+        <div class="a11y-row-info">
+          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M4 6h16M4 10h12M4 14h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <div>
+            <div class="a11y-row-label">Dyslexia Mode</div>
+            <div class="a11y-row-sub">Wider spacing, easier-to-read font</div>
+          </div>
+        </div>
+        <button class="a11y-toggle" id="toggleDyslexia" role="switch" aria-checked="false" data-mode="dyslexia">
+          <span class="a11y-toggle-thumb"></span>
+        </button>
+      </div>
+
+      <!-- Reduce Motion -->
+      <div class="a11y-row" style="border-bottom:none">
+        <div class="a11y-row-info">
+          <svg class="a11y-row-icon" viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="5" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <div>
+            <div class="a11y-row-label">Reduce Motion</div>
+            <div class="a11y-row-sub">Disable animations and transitions</div>
+          </div>
+        </div>
+        <button class="a11y-toggle" id="toggleReduceMotion" role="switch" aria-checked="false" data-mode="reduce-motion">
+          <span class="a11y-toggle-thumb"></span>
+        </button>
+      </div>
+
+      <div class="a11y-reset-row">
+        <button class="a11y-reset-btn" id="a11yResetAll">Reset all</button>
+        <span class="a11y-wcag-note">WCAG 2.1 AA</span>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

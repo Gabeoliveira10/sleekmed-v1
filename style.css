@@ -5042,3 +5042,208 @@ p { color: #4A5568; }
     line-height: 1.5;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY WIDGET
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Floating button ──────────────────────────────────────────── */
+.a11y-widget-wrap {
+  position: fixed;
+  bottom: 88px;          /* above the toast area */
+  right: 20px;
+  z-index: 1180;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.a11y-trigger {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: #2B6CB0;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(43,108,176,0.40), 0 1px 4px rgba(0,0,0,0.18);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  flex-shrink: 0;
+}
+.a11y-trigger:hover { background: #1E3A8A; transform: scale(1.07); box-shadow: 0 6px 22px rgba(30,58,138,0.45); }
+.a11y-trigger:active { transform: scale(0.96); }
+.a11y-trigger[aria-expanded="true"] { background: #1E3A8A; }
+
+/* ── Panel ──────────────────────────────────────────────────── */
+.a11y-panel {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
+  width: 300px;
+  padding: 0;
+  overflow: hidden;
+  /* Animation */
+  transform-origin: bottom right;
+  animation: a11yPanelIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.a11y-panel[hidden] { display: none !important; }
+@keyframes a11yPanelIn {
+  from { opacity: 0; transform: scale(0.88) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.a11y-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid #F1F5F9;
+}
+.a11y-panel-title {
+  font-size: 14px; font-weight: 800; letter-spacing: 0.04em;
+  text-transform: uppercase; color: #1A202C;
+}
+.a11y-panel-close {
+  background: #F1F5F9; border: none; border-radius: 8px;
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #64748B; transition: background 0.15s, color 0.15s;
+}
+.a11y-panel-close:hover { background: #E2E8F0; color: #1A202C; }
+
+/* ── Feature rows ─────────────────────────────────────────── */
+.a11y-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #F1F5F9;
+  gap: 10px;
+}
+.a11y-row-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.a11y-row-icon { color: #4A5568; flex-shrink: 0; }
+.a11y-row-label { font-size: 13.5px; font-weight: 700; color: #1A202C; line-height: 1.3; }
+.a11y-row-sub   { font-size: 11px; color: #94A3B8; margin-top: 2px; line-height: 1.3; }
+
+/* ── Toggle switch ──────────────────────────────────────── */
+.a11y-toggle {
+  width: 46px; height: 26px; border-radius: 13px;
+  border: none; cursor: pointer; flex-shrink: 0;
+  background: #E2E8F0; position: relative;
+  transition: background 0.2s;
+  padding: 0;
+}
+.a11y-toggle[aria-checked="true"] { background: #2B6CB0; }
+.a11y-toggle-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.a11y-toggle[aria-checked="true"] .a11y-toggle-thumb { transform: translateX(20px); }
+
+/* ── Reset row ──────────────────────────────────────────── */
+.a11y-reset-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px;
+  background: #F8FAFC;
+}
+.a11y-reset-btn {
+  background: none; border: 1px solid #CBD5E1; border-radius: 8px;
+  padding: 6px 14px; font-size: 12px; font-weight: 600; color: #64748B;
+  cursor: pointer; transition: border-color 0.15s, color 0.15s;
+}
+.a11y-reset-btn:hover { border-color: #94A3B8; color: #1A202C; }
+.a11y-wcag-note { font-size: 10px; color: #CBD5E1; font-weight: 600; letter-spacing: 0.06em; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY MODES — applied as body classes
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Larger Text ─────────────────────────────────────── */
+body.a11y-larger-text {
+  font-size: 18px !important;
+}
+body.a11y-larger-text p,
+body.a11y-larger-text li,
+body.a11y-larger-text span,
+body.a11y-larger-text div,
+body.a11y-larger-text label,
+body.a11y-larger-text td,
+body.a11y-larger-text th { font-size: 1.1em; }
+body.a11y-larger-text input,
+body.a11y-larger-text select,
+body.a11y-larger-text textarea,
+body.a11y-larger-text button { font-size: 1.05em !important; }
+body.a11y-larger-text .nav-link { font-size: 1.15rem !important; }
+body.a11y-larger-text .price-amount { font-size: 32px !important; }
+body.a11y-larger-text .flip-price { font-size: 52px !important; }
+body.a11y-larger-text h1 { font-size: clamp(30px, 5vw, 52px) !important; }
+body.a11y-larger-text h2 { font-size: clamp(22px, 3.5vw, 36px) !important; }
+body.a11y-larger-text .page-title { font-size: clamp(28px, 4.5vw, 48px) !important; }
+
+/* ── 2. High Contrast ───────────────────────────────────── */
+body.a11y-high-contrast,
+body.a11y-high-contrast .site-header,
+body.a11y-high-contrast .main-content,
+body.a11y-high-contrast .page,
+body.a11y-high-contrast .sidebar,
+body.a11y-high-contrast .price-card,
+body.a11y-high-contrast .card-flip-front,
+body.a11y-high-contrast .browse-drug-row,
+body.a11y-high-contrast .sidebar-footer,
+body.a11y-high-contrast .compliance-modal,
+body.a11y-high-contrast .modal,
+body.a11y-high-contrast footer { background: #000000 !important; }
+
+body.a11y-high-contrast *:not(.a11y-trigger):not(.a11y-toggle):not(.a11y-toggle-thumb):not(.a11y-panel):not(.a11y-panel *) {
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+body.a11y-high-contrast a { color: #FFFF00 !important; text-decoration: underline !important; }
+body.a11y-high-contrast button:not(.a11y-trigger):not(.a11y-toggle):not(.a11y-panel-close):not(.a11y-reset-btn) {
+  background: #FFFFFF !important; color: #000000 !important;
+  border: 2px solid #FFFFFF !important;
+}
+body.a11y-high-contrast input,
+body.a11y-high-contrast select,
+body.a11y-high-contrast textarea {
+  background: #000 !important; color: #FFF !important;
+  border: 2px solid #FFF !important;
+}
+body.a11y-high-contrast .price-amount,
+body.a11y-high-contrast .flip-price { color: #FFFF00 !important; }
+body.a11y-high-contrast img { filter: grayscale(1) contrast(1.2); }
+/* Keep widget itself normal */
+body.a11y-high-contrast .a11y-panel { background: #FFFFFF !important; }
+body.a11y-high-contrast .a11y-panel * { color: #000000 !important; border-color: #E2E8F0 !important; }
+body.a11y-high-contrast .a11y-toggle { background: #E2E8F0 !important; }
+body.a11y-high-contrast .a11y-toggle[aria-checked="true"] { background: #2B6CB0 !important; }
+body.a11y-high-contrast .a11y-toggle-thumb { background: #fff !important; }
+
+/* ── 3. Dyslexia Mode ───────────────────────────────────── */
+body.a11y-dyslexia,
+body.a11y-dyslexia * {
+  font-family: 'Arial', 'Helvetica Neue', sans-serif !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.12em !important;
+  line-height: 1.9 !important;
+}
+body.a11y-dyslexia p,
+body.a11y-dyslexia .page-sub,
+body.a11y-dyslexia li { max-width: 66ch; }
+body.a11y-dyslexia h1, body.a11y-dyslexia h2, body.a11y-dyslexia h3 {
+  letter-spacing: 0.04em !important;
+  line-height: 1.5 !important;
+}
+
+/* ── 4. Reduce Motion ───────────────────────────────────── */
+body.a11y-reduce-motion *,
+body.a11y-reduce-motion *::before,
+body.a11y-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+/* Keep widget panel animation for this mode */
+body.a11y-reduce-motion .a11y-panel { animation: none !important; }
+body.a11y-reduce-motion .a11y-toggle-thumb { transition: none !important; }
