@@ -434,10 +434,11 @@ body.menu-open .trust-bar {
   display: flex; flex-direction: column; gap: 2px;
 }
 .sidebar-footer-link {
-  display: block; padding: 9px 4px;
+  display: flex; align-items: center; padding: 9px 4px;
   font-size: 14px; color: var(--text-secondary); font-weight: 500;
   text-decoration: none; transition: color 0.15s;
 }
+.sidebar-footer-link .badge-soon { margin-left: auto; }
 .sidebar-footer-link:hover { color: var(--text-primary); opacity: 1; }
 .sidebar-logout-btn {
   width: 100%; margin-top: 14px; padding: 14px 20px;
