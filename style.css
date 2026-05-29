@@ -1328,9 +1328,55 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18p
 .top-searches-table td:first-child { color: var(--text-muted); font-family: var(--font-sans); font-size: 11px; }
 .admin-no-data-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 32px 16px; color: var(--text-muted); text-align: center; }
 .admin-no-data-state svg { opacity: 0.35; }
-.admin-no-data-label { font-size: 12px; color: var(--text-muted); line-height: 1.5; max-width: 220px; }
+.admin-no-data-label { font-size: 12px; color: var(--text-muted); line-height: 1.5; max-width: 240px; }
+.admin-no-data-sources { font-size: 11px; color: var(--text-disabled); }
+.admin-no-data-sources span { display: inline-block; padding: 2px 7px; border: 1px solid var(--border-subtle); border-radius: 20px; margin: 2px; }
 .top-searches-table td:nth-child(2) { color: var(--text-primary); font-weight: 600; }
 .top-searches-table td:nth-child(4) { color: var(--mint); font-family: var(--font-sans); }
+
+/* ── Slider tick marks ─────────────────────────────────────── */
+.calc-slider-ticks {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--text-muted);
+  margin-top: 4px; padding: 0 2px;
+}
+
+/* ── Chart label row ───────────────────────────────────────── */
+.chart-label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.chart-source-legend { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Admin section title row ───────────────────────────────── */
+.admin-section-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 10px; }
+.admin-api-status-row { margin-left: auto; }
+.api-status-live { font-size: 11px; font-weight: 700; background: rgba(46,125,50,0.10); color: #2E7D32; border: 1px solid rgba(46,125,50,0.22); padding: 3px 10px; border-radius: 20px; }
+.api-status-pending { font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-raised); border: 1px solid var(--border-subtle); padding: 3px 10px; border-radius: 20px; }
+
+/* ── Source status grid ────────────────────────────────────── */
+.admin-source-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0; }
+.admin-source-card { display: flex; align-items: center; gap: 12px; background: var(--bg-surface); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; transition: border-color 0.15s; }
+.admin-source-card.source-live { border-color: rgba(46,125,50,0.35); background: rgba(46,125,50,0.03); }
+.source-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.source-info { flex: 1; min-width: 0; }
+.source-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.source-status { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.source-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-pill); }
+.badge-live { background: rgba(46,125,50,0.12); color: #2E7D32; }
+.badge-pending { background: var(--bg-raised); color: var(--text-muted); border: 1px solid var(--border-subtle); }
+
+/* ── Claims bar chart ──────────────────────────────────────── */
+.claims-chart-svg { width: 100%; height: 100px; display: block; }
+
+/* ── Top searches live list ────────────────────────────────── */
+.top-search-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+.top-search-row:last-child { border-bottom: none; }
+.top-search-rank { font-size: 11px; font-weight: 700; color: var(--text-muted); width: 18px; text-align: right; flex-shrink: 0; }
+.top-search-bar-wrap { flex: 1; min-width: 0; }
+.top-search-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+.top-search-bar { height: 4px; background: var(--mint-dim); border-radius: 2px; transition: width 0.4s; }
+.top-search-count { font-size: 12px; color: var(--text-muted); font-family: var(--font-sans); white-space: nowrap; }
+.top-search-sources { display: flex; gap: 4px; flex-wrap: wrap; }
+.src-pip { font-size: 9px; font-weight: 700; color: #fff; padding: 2px 6px; border-radius: 20px; white-space: nowrap; }
 
 /* ═══════════════════════════════════════════════════════════════
    MODALS

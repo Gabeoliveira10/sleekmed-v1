@@ -453,35 +453,294 @@ const API_CONFIG = {
   USE_OPENFDA:   false,   // true  → supplement with OpenFDA catalog
 
   // ── Endpoint templates ─────────────────────────────────────
-  // Replace placeholders with real values when APIs are approved
   ENDPOINTS: {
-    // 70k-drug catalog (RxNorm / OpenFDA)
-    // GET /drug/ndc.json?search=brand_name:"QUERY"&limit=20
     OPENFDA_SEARCH:   'https://api.fda.gov/drug/ndc.json',
     OPENFDA_LABEL:    'https://api.fda.gov/drug/label.json',
-
-    // GoodRx (apply at developer.goodrx.com)
-    // Requires HMAC-SHA256 signed requests
     GOODRX_SEARCH:    'https://api.goodrx.com/v3/search',
     GOODRX_COMPARE:   'https://api.goodrx.com/v3/drug/info',
-
-    // Your own pricing proxy (Cloudflare Worker / Lambda)
-    // Keeps API keys server-side, adds CORS headers
     VITAL_PROXY:      'https://api.vitalrx.com/v1',
   },
 
   // ── API keys (set at deploy time, never commit real keys) ──
   KEYS: {
-    GOODRX_PUBLIC:    '',   // Your GoodRx public key
-    GOODRX_SECRET:    '',   // Your GoodRx secret (proxy only)
-    OPENFDA:          '',   // OpenFDA key (rate-limit boost)
+    GOODRX_PUBLIC:    '',
+    GOODRX_SECRET:    '',
+    OPENFDA:          '',
   },
 
-  // ── Search behavior ────────────────────────────────────────
-  SEARCH_DEBOUNCE_MS: 300,   // Debounce for live API calls
-  MAX_DROPDOWN_ITEMS:   8,   // Max suggestions in typeahead
-  MAX_CATALOG_ITEMS:   20,   // Max results from catalog fetch
+  SEARCH_DEBOUNCE_MS: 300,
+  MAX_DROPDOWN_ITEMS:   8,
+  MAX_CATALOG_ITEMS:   20,
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   PARTNER PORTAL DATA LAYER
+   ─────────────────────────────────────────────────────────────
+   Cross-references Vital Rx internal data with partner APIs.
+   To activate a source: set its enabled flag to true and supply
+   the API key in KEYS. The analytics functions below normalize
+   each source into a unified schema before rendering.
+
+   Roadmap:
+     1. VITAL_INTERNAL  → flip enabled=true when Firestore is live
+     2. SPARKRX         → flip enabled=true when SparkRx contract signed
+     3. GOODRX_PARTNER  → flip enabled=true when GoodRx partner portal approved
+═══════════════════════════════════════════════════════════════ */
+const PORTAL_CONFIG = {
+  REFRESH_MS: 5 * 60 * 1000,   // Poll every 5 min when at least one source is live
+
+  SOURCES: {
+    vital: {
+      name:    'Vital Rx',
+      color:   '#2B6CB0',
+      enabled: false,           // ← true when Firestore analytics are live
+      endpoints: {
+        claims:   'https://api.vitalrx.com/v1/analytics/claims',
+        searches: 'https://api.vitalrx.com/v1/analytics/top-searches',
+        members:  'https://api.vitalrx.com/v1/analytics/members',
+        mrr:      'https://api.vitalrx.com/v1/analytics/mrr',
+      },
+      // Headers builder — called at request time
+      headers: () => ({ 'Authorization': `Bearer ${PORTAL_CONFIG.KEYS.VITAL}` }),
+    },
+    sparkrx: {
+      name:    'SparkRx',
+      color:   '#7C3AED',
+      enabled: false,           // ← true when SparkRx API is integrated
+      endpoints: {
+        claims:   'https://api.sparkrx.com/v1/partner/claims',
+        searches: 'https://api.sparkrx.com/v1/partner/top-searches',
+      },
+      headers: () => ({ 'X-SparkRx-Key': PORTAL_CONFIG.KEYS.SPARKRX }),
+    },
+    goodrx: {
+      name:    'GoodRx',
+      color:   '#059669',
+      enabled: false,           // ← true when GoodRx Partner API is approved
+      endpoints: {
+        claims:   'https://api.goodrx.com/partner/v2/analytics/claims',
+        searches: 'https://api.goodrx.com/partner/v2/analytics/top-searches',
+      },
+      headers: () => ({
+        'Authorization': `Bearer ${PORTAL_CONFIG.KEYS.GOODRX_PARTNER}`,
+        'Content-Type':  'application/json',
+      }),
+    },
+  },
+
+  // ── API keys — populate at deploy time, never hardcode ────
+  KEYS: {
+    VITAL:          '',   // process.env.VITAL_ANALYTICS_KEY
+    SPARKRX:        '',   // process.env.SPARKRX_PARTNER_KEY
+    GOODRX_PARTNER: '',   // process.env.GOODRX_PARTNER_TOKEN
+  },
+
+  // ── Normalized data schema ────────────────────────────────
+  // All source responses are mapped to these shapes before rendering.
+  // claimsMonth: { month:'Jan 2026', vital:0, sparkrx:0, goodrx:0, total:0 }
+  // topSearch:   { rank:1, name:'Ozempic', count:0, sources:['vital'] }
+};
+
+// ── Live analytics state ───────────────────────────────────────
+const AnalyticsState = {
+  claimsGrowth: [],    // Array of claimsMonth objects (last 6 months)
+  topSearches:  [],    // Array of topSearch objects (top 10)
+  kpi:          { mrr: null, claims: null, members: null },
+  lastFetched:  null,
+  isLoading:    false,
+};
+
+// ── Fetch & normalize from a single source ────────────────────
+async function fetchSourceData(sourceKey, endpointKey) {
+  const src = PORTAL_CONFIG.SOURCES[sourceKey];
+  if (!src || !src.enabled || !src.endpoints[endpointKey]) return null;
+  try {
+    const res = await fetch(src.endpoints[endpointKey], {
+      headers: src.headers ? src.headers() : {},
+    });
+    if (!res.ok) throw new Error(`${src.name} ${endpointKey}: ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn(`[Portal] ${sourceKey}/${endpointKey} unavailable:`, e.message);
+    return null;
+  }
+}
+
+// ── Aggregate claims from all enabled sources ─────────────────
+async function fetchAllClaims() {
+  const sources = Object.keys(PORTAL_CONFIG.SOURCES);
+  const results = await Promise.all(
+    sources.map(k => fetchSourceData(k, 'claims'))
+  );
+  // Normalize: each source returns { months: [{month, count}] }
+  // Merge into unified monthly array
+  const months = {};
+  sources.forEach((key, i) => {
+    const data = results[i];
+    if (!data || !Array.isArray(data.months)) return;
+    data.months.forEach(({ month, count }) => {
+      if (!months[month]) months[month] = { month, vital: 0, sparkrx: 0, goodrx: 0, total: 0 };
+      months[month][key]   = count || 0;
+      months[month].total += count || 0;
+    });
+  });
+  return Object.values(months).sort((a, b) => new Date(a.month) - new Date(b.month));
+}
+
+// ── Aggregate top searches from all enabled sources ───────────
+async function fetchAllSearches() {
+  const sources = Object.keys(PORTAL_CONFIG.SOURCES);
+  const results = await Promise.all(
+    sources.map(k => fetchSourceData(k, 'searches'))
+  );
+  // Normalize: each source returns { searches: [{name, count}] }
+  const drugs = {};
+  sources.forEach((key, i) => {
+    const data = results[i];
+    if (!data || !Array.isArray(data.searches)) return;
+    data.searches.forEach(({ name, count }) => {
+      const n = name.toLowerCase();
+      if (!drugs[n]) drugs[n] = { name, count: 0, sources: [] };
+      drugs[n].count += count || 0;
+      drugs[n].sources.push(key);
+    });
+  });
+  return Object.values(drugs)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10)
+    .map((d, i) => ({ ...d, rank: i + 1 }));
+}
+
+// ── Refresh all analytics data ────────────────────────────────
+async function refreshAnalytics() {
+  const anyEnabled = Object.values(PORTAL_CONFIG.SOURCES).some(s => s.enabled);
+  if (!anyEnabled || AnalyticsState.isLoading) return;
+  AnalyticsState.isLoading = true;
+  try {
+    const [claims, searches] = await Promise.all([
+      fetchAllClaims(),
+      fetchAllSearches(),
+    ]);
+    AnalyticsState.claimsGrowth = claims;
+    AnalyticsState.topSearches  = searches;
+    AnalyticsState.lastFetched  = Date.now();
+  } catch(e) {
+    console.warn('[Portal] Analytics refresh error:', e);
+  } finally {
+    AnalyticsState.isLoading = false;
+  }
+  renderAdminAnalytics();
+}
+
+// ── Render analytics panels ───────────────────────────────────
+function renderAdminAnalytics() {
+  renderSourceStatus();
+  renderClaimsChart();
+  renderTopSearches();
+}
+
+function renderSourceStatus() {
+  const grid   = $('adminSourceGrid');
+  const statusRow = $('adminApiStatusRow');
+  if (!grid) return;
+
+  const sources = PORTAL_CONFIG.SOURCES;
+  const enabledCount = Object.values(sources).filter(s => s.enabled).length;
+
+  if (statusRow) {
+    statusRow.innerHTML = enabledCount > 0
+      ? `<span class="api-status-live">${enabledCount} source${enabledCount > 1 ? 's' : ''} live</span>`
+      : `<span class="api-status-pending">No sources connected yet</span>`;
+  }
+
+  grid.innerHTML = Object.entries(sources).map(([key, src]) => `
+    <div class="admin-source-card ${src.enabled ? 'source-live' : 'source-pending'}">
+      <div class="source-dot" style="background:${src.color}"></div>
+      <div class="source-info">
+        <div class="source-name">${src.name}</div>
+        <div class="source-status">${src.enabled ? 'Connected — live data' : 'Not yet connected'}</div>
+      </div>
+      <div class="source-badge ${src.enabled ? 'badge-live' : 'badge-pending'}">
+        ${src.enabled ? 'Live' : 'Pending'}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderClaimsChart() {
+  const area = $('claimsChartArea');
+  const legend = $('claimsChartLegend');
+  if (!area) return;
+
+  const data   = AnalyticsState.claimsGrowth;
+  const sources = Object.entries(PORTAL_CONFIG.SOURCES).filter(([,s]) => s.enabled);
+
+  if (!data.length || !sources.length) {
+    area.innerHTML = `
+      <div class="admin-no-data-state">
+        <svg viewBox="0 0 40 40" fill="none" width="36" height="36"><rect x="2" y="28" width="6" height="10" rx="1" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/><rect x="11" y="20" width="6" height="18" rx="1" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/><rect x="20" y="14" width="6" height="24" rx="1" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/><rect x="29" y="8" width="6" height="30" rx="1" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+        <div class="admin-no-data-label">Awaiting live data — connects automatically once a source goes live</div>
+        <div class="admin-no-data-sources">Ready to ingest: ${Object.values(PORTAL_CONFIG.SOURCES).map(s=>`<span>${s.name}</span>`).join(' · ')}</div>
+      </div>`;
+    if (legend) legend.innerHTML = '';
+    return;
+  }
+
+  // Build stacked SVG bar chart
+  const maxTotal = Math.max(...data.map(d => d.total), 1);
+  const W = 100, H = 80, barW = W / data.length - 2;
+  const bars = data.map((d, i) => {
+    const x = i * (W / data.length) + 1;
+    let yOffset = H;
+    return sources.map(([key, src]) => {
+      const val = d[key] || 0;
+      const h   = (val / maxTotal) * H;
+      yOffset  -= h;
+      return `<rect x="${x.toFixed(1)}" y="${yOffset.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" fill="${src.color}" opacity="0.85" rx="1"/>`;
+    }).join('') +
+    `<text x="${(x + barW/2).toFixed(1)}" y="${(H + 9).toFixed(1)}" text-anchor="middle" font-size="4" fill="#94A3B8">${d.month.split(' ')[0]}</text>`;
+  }).join('');
+
+  area.innerHTML = `<svg viewBox="0 -4 100 96" class="claims-chart-svg">${bars}</svg>`;
+  if (legend) legend.innerHTML = sources.map(([,s]) =>
+    `<span class="legend-dot" style="background:${s.color}"></span>${s.name}`).join(' ');
+}
+
+function renderTopSearches() {
+  const area = $('topSearchesArea');
+  const legend = $('searchesLegend');
+  if (!area) return;
+
+  const data    = AnalyticsState.topSearches;
+  const sources = Object.values(PORTAL_CONFIG.SOURCES).filter(s => s.enabled);
+
+  if (!data.length || !sources.length) {
+    area.innerHTML = `
+      <div class="admin-no-data-state">
+        <svg viewBox="0 0 40 40" fill="none" width="36" height="36"><circle cx="18" cy="18" r="11" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M27 27L36 36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="admin-no-data-label">Search analytics will appear here once a source is connected</div>
+        <div class="admin-no-data-sources">Cross-references: ${Object.values(PORTAL_CONFIG.SOURCES).map(s=>`<span>${s.name}</span>`).join(' · ')}</div>
+      </div>`;
+    if (legend) legend.innerHTML = '';
+    return;
+  }
+
+  const maxCount = Math.max(...data.map(d => d.count), 1);
+  area.innerHTML = data.map(d => `
+    <div class="top-search-row">
+      <span class="top-search-rank">${d.rank}</span>
+      <div class="top-search-bar-wrap">
+        <div class="top-search-name">${d.name}</div>
+        <div class="top-search-bar" style="width:${(d.count/maxCount*100).toFixed(0)}%"></div>
+      </div>
+      <span class="top-search-count">${d.count.toLocaleString()}</span>
+      <div class="top-search-sources">
+        ${d.sources.map(k => `<span class="src-pip" style="background:${PORTAL_CONFIG.SOURCES[k]?.color}">${PORTAL_CONFIG.SOURCES[k]?.name}</span>`).join('')}
+      </div>
+    </div>`).join('');
+  if (legend) legend.innerHTML = sources.map(s =>
+    `<span class="legend-dot" style="background:${s.color}"></span>${s.name}`).join(' ');
+}
 
 /* ═══════════════════════════════════════════════════════════════
    DATA ADAPTER LAYER
@@ -2731,6 +2990,12 @@ function initAdmin() {
   if (State.adminLoggedIn) {
     $('adminLoginGate').style.display = 'none';
     $('adminDashboard').style.display = 'block';
+    // Render analytics panels (no-data state now; live data when APIs enabled)
+    renderAdminAnalytics();
+    // Auto-refresh if any source is live
+    if (Object.values(PORTAL_CONFIG.SOURCES).some(s => s.enabled)) {
+      refreshAnalytics();
+    }
   } else {
     $('adminLoginGate').style.display = 'flex';
     $('adminDashboard').style.display = 'none';
@@ -2757,7 +3022,9 @@ function doAdminLogin() {
 }
 
 function calcMRR() {
-  const claims = parseInt($('claimsSlider').value);
+  // Log-scale: slider pos 1→5 maps to 10→100,000 claims (powers of 10)
+  const pos    = parseFloat($('claimsSlider').value);
+  const claims = Math.round(Math.pow(10, pos));
   const mrr    = claims * State.activeFee;
   $('claimsVal').textContent = claims.toLocaleString();
   $('calcMRR').textContent   = '$' + Math.round(mrr).toLocaleString();
