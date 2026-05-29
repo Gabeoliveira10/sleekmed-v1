@@ -774,8 +774,24 @@ a.logo-block { text-decoration: none; color: inherit; }
 /* ═══════════════════════════════════════════════════════════════
    SAVINGS FINDER
 ═══════════════════════════════════════════════════════════════ */
-.results-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
-.results-header h2 { font-family: var(--font-display); font-size: 28px; font-weight: 400; color: var(--text-primary); }
+.results-header { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.results-title-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.results-header h2 { font-family: var(--font-display); font-size: 28px; font-weight: 400; color: var(--text-primary); margin: 0; }
+/* Add to Cabinet button */
+.add-to-cabinet-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 10px;
+  border: 1.5px solid rgba(30,58,138,0.30);
+  background: rgba(30,58,138,0.07);
+  color: #1E3A8A; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap; font-family: var(--font-sans);
+}
+.add-to-cabinet-btn:hover { background: rgba(30,58,138,0.14); border-color: rgba(30,58,138,0.50); }
+.add-to-cabinet-btn.saved { background: rgba(46,125,50,0.10); border-color: rgba(46,125,50,0.35); color: #2E7D32; }
+/* Sidebar user row — clickable to profile */
+.sidebar-user { cursor: pointer; border-radius: 10px; transition: background 0.15s; }
+.sidebar-user:hover { background: rgba(43,108,176,0.08); }
 
 .insurance-notice { display: flex; align-items: center; gap: 8px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 12.5px; color: var(--text-secondary); max-width: 420px; }
 .insurance-badge { color: var(--gold); font-size: 14px; flex-shrink: 0; }

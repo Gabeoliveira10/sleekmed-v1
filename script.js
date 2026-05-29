@@ -1545,6 +1545,13 @@ function renderSearchResults(drug) {
   $('searchResultsPanel').style.display = 'block';
   $('searchEmptyState').style.display   = 'none';
   $('resultsTitle').textContent = `${drug.name} — Price Comparison`;
+  // Show "Add to Cabinet" button only when logged in
+  const atcBtn = $('addToCabinetBtn');
+  if (atcBtn) {
+    atcBtn.style.display = State.user ? 'inline-flex' : 'none';
+    atcBtn.classList.remove('saved');
+    atcBtn.innerHTML = '<svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Add to Cabinet';
+  }
 
   // ── Prescription detail dropdowns ──────────────────────────
   const parsed  = drug.variants.map((v, i) => ({ ...parseVariantParts(v.label), idx: i }));
@@ -2495,6 +2502,8 @@ function resetSearchPage() {
   hideCardFlip();
   State.currentDrug    = null;
   State.currentVariant = null;
+  const atcBtn = $('addToCabinetBtn');
+  if (atcBtn) atcBtn.style.display = 'none';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2609,6 +2618,42 @@ function openAddMedDrawer() {
 
 function closeAddMedDrawer() {
   $('addMedDrawer').style.display = 'none';
+}
+
+function addCurrentDrugToCabinet() {
+  if (!State.user) {
+    openAuthModal('signin');
+    return;
+  }
+  const drug    = State.currentDrug;
+  const variant = State.currentVariant;
+  if (!drug) return;
+
+  // Prevent duplicates — check by name + variant label
+  const varLabel = variant ? variant.label : (drug.variants[0] ? drug.variants[0].label : '');
+  const already  = State.cabinet.some(m => m.name === drug.name && m.variant === varLabel);
+  if (already) {
+    showToast(`${drug.name} is already in your cabinet.`, 'info');
+    return;
+  }
+
+  State.cabinet.push({
+    id:       Date.now(),
+    name:     drug.name,
+    variant:  varLabel,
+    fills:    5,
+    maxFills: 5,
+    icon:     drug.icon || 'Rx',
+  });
+  saveCabinet();
+
+  // Update button state to "Saved"
+  const btn = $('addToCabinetBtn');
+  if (btn) {
+    btn.classList.add('saved');
+    btn.innerHTML = '<svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M4 10l5 5 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Saved to Cabinet';
+  }
+  showToast(`${drug.name} added to your cabinet.`, 'success');
 }
 
 function confirmAddMed() {
