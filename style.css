@@ -3522,7 +3522,7 @@ p { color: #4A5568; }
 
 /* ── 4. Hero search at top, directly below header ─────────── */
 .hero-search-top {
-  width: 100%; padding: 28px 32px 0;
+  width: 100%; padding: 28px 24px 0;
   max-width: 1200px; margin: 0 auto; box-sizing: border-box;
   position: relative; z-index: 2;
 }
@@ -3545,7 +3545,7 @@ p { color: #4A5568; }
   max-width: 1200px !important;
   width: 100% !important;
   margin: 0 auto !important;
-  padding: 28px 32px 56px !important;
+  padding: 28px 24px 56px !important;
   box-sizing: border-box;
   text-align: left !important;
 }
@@ -5224,51 +5224,133 @@ p { color: #4A5568; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   STRUCTURAL CLEANUP — GoodRx-style header + locked stats grid
+   GLOBAL LAYOUT SYNCHRONIZATION
+   Three-zone header · Universal 1200px content rail · Stats lock
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── Header: two-zone layout (logo left, actions right) ─────── */
+/* ── 1. Header: three-zone layout ──────────────────────────── */
+/* The single horizontal rule every zone must respect */
 .header-container {
   display: flex !important;
-  justify-content: space-between !important;
   align-items: center !important;
-  width: 100% !important;
+  justify-content: space-between !important;
   max-width: 1200px !important;
-  margin: 0 auto !important;
-  padding: 0 24px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  height: 62px !important;
   box-sizing: border-box !important;
   gap: 0 !important;
-  height: 62px !important;
+  width: 100% !important;
 }
 
-/* Left zone: back-button + logo — left-anchored, never drifts */
+/* Left zone: back-button + logo — pinned to left boundary */
 .header-left {
   display: flex !important;
-  justify-content: flex-start !important;
   align-items: center !important;
   gap: 12px !important;
   flex: none !important;
   flex-shrink: 0 !important;
+  justify-content: flex-start !important;
 }
 
-/* Right zone: Sign In + hamburger — right-anchored */
+/* Center zone: inline nav links */
+.header-center {
+  flex: 1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: clamp(14px, 2vw, 32px) !important;
+  padding: 0 12px !important;
+  overflow: hidden !important;
+}
+.header-center .nav-link {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  color: var(--text-secondary) !important;
+  transition: color 0.2s !important;
+  opacity: 1 !important;
+}
+.header-center .nav-link:hover { color: var(--text-primary) !important; }
+.header-center .nav-link.active { color: var(--mint) !important; font-weight: 600 !important; }
+
+/* Right zone: Sign In + hamburger — pinned to right boundary */
 .header-right {
   display: flex !important;
-  justify-content: flex-end !important;
   align-items: center !important;
-  gap: 16px !important;
+  gap: 12px !important;
+  flex: none !important;
   flex-shrink: 0 !important;
+  justify-content: flex-end !important;
+}
+/* Hamburger always visible in right zone */
+.header-right .hamburger { display: flex !important; }
+
+/* Hide center nav on tablet/mobile — sidebar handles navigation */
+@media (max-width: 900px) { .header-center { display: none !important; } }
+@media (max-width: 600px) {
+  .header-container { padding-left: 16px !important; padding-right: 16px !important; }
+  .header-right { gap: 8px !important; }
 }
 
-/* Hamburger inside header-right is always visible */
-.header-right .hamburger {
-  display: flex !important;
+/* ── 2. Universal 1200px content rail ──────────────────────── */
+/* Every primary content block shares identical left/right boundaries.
+   Section wrappers carry only vertical padding; all horizontal spacing
+   flows from these inner containers to match the header's 24px offset. */
+
+/* Page-level containers */
+.page-inner {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box !important;
 }
 
-/* ── Stats: dead-center 3-col grid, never nested ─────────────── */
+/* Section-level inner content — strip horizontal padding from wrapper,
+   give it to the content elements so they align with the header */
+.section-block {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.medication-section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* All section content elements share the same 24px horizontal clearance */
+.section-header,
+.overpay-grid,
+.medication-grid,
+.hiw-steps,
+.testimonial-grid,
+.savings-card-feature-inner,
+.health-conditions-grid,
+.pricing-matrix-inner,
+.founder-block,
+.price-comparison-grid {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box !important;
+}
+
+/* Footer aligned to same rail */
+.footer-inner {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box !important;
+}
+
+/* ── 3. Stats: dead-center 3-col grid, never nested ─────────── */
 .stats-section {
   width: 100% !important;
-  padding: 0 20px !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   margin-top: 0 !important;
   background: transparent !important;
 }
@@ -5282,16 +5364,12 @@ p { color: #4A5568; }
   clear: both !important;
   float: none !important;
   border-radius: 12px !important;
-}
-@media (max-width: 768px) {
-  .stats-container {
-    grid-template-columns: 1fr !important;
-    margin: 24px auto !important;
-  }
+  box-sizing: border-box !important;
 }
 
-/* Responsive header adjustments */
-@media (max-width: 600px) {
-  .header-container { padding: 0 16px !important; }
-  .header-right { gap: 10px !important; }
+/* ── 4. Responsive overrides ────────────────────────────────── */
+@media (max-width: 768px) {
+  .stats-container { grid-template-columns: 1fr !important; margin: 24px auto !important; }
+  .hiw-steps { grid-template-columns: 1fr 1fr !important; }
+  .testimonial-grid { grid-template-columns: 1fr !important; }
 }

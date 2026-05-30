@@ -130,7 +130,16 @@
           <span class="logo-text">Vital Rx</span>
         </a>
       </div>
-      <!-- Right: sign-in + hamburger only — nav lives in sidebar -->
+      <!-- Center: primary navigation links -->
+      <nav class="header-center" id="topNav" aria-label="Primary navigation">
+        <a href="#" class="nav-link active" data-page="home">Home</a>
+        <a href="#" class="nav-link" data-page="search">Browse Medications</a>
+        <a href="#" class="nav-link" data-page="howitworks">How It Works</a>
+        <a href="#" class="nav-link" data-page="about">About Us</a>
+        <a href="#" class="nav-link" id="navMyProfile" data-page="vault" style="display:none">My Profile</a>
+        <a href="#" class="nav-link nav-link-admin" id="navAdminLink" data-page="admin" style="display:none">Partner Portal</a>
+      </nav>
+      <!-- Right: sign-in + hamburger -->
       <div class="header-right">
         <button class="btn-ghost" id="btnSignIn">Sign In</button>
         <!-- btnJoin kept in DOM (hidden) so JS auth-state logic stays intact -->
