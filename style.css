@@ -67,8 +67,12 @@
   --z-vaultanim:   1300;
 }
 
+/* ─── VIEWPORT LOCK — prevents scrollbar from shifting layout ─ */
+html { overflow-y: scroll !important; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
 /* ─── RESET ──────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
@@ -5224,47 +5228,51 @@ p { color: #4A5568; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   GLOBAL LAYOUT SYNCHRONIZATION
-   Three-zone header · Universal 1200px content rail · Stats lock
+   STRUCTURAL SYNCHRONIZATION
+   Exact header lock · Universal 1200px rail · Stats grid
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── 1. Header: three-zone layout ──────────────────────────── */
-/* The single horizontal rule every zone must respect */
-.header-container {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  max-width: 1200px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-left: 24px !important;
-  padding-right: 24px !important;
-  height: 62px !important;
-  box-sizing: border-box !important;
-  gap: 0 !important;
+/* ── 1. STRICT HEADER CONTAINER LOCK (exact spec) ───────────── */
+.site-header {
   width: 100% !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
 }
-
-/* Left zone: back-button + logo — pinned to left boundary */
-.header-left {
+.header-container {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 16px 24px !important;
   display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+.header-left {
+  flex: 1 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   gap: 12px !important;
-  flex: none !important;
-  flex-shrink: 0 !important;
-  justify-content: flex-start !important;
 }
-
-/* Center zone: inline nav links */
 .header-center {
-  flex: 1 !important;
+  flex: 2 !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: clamp(14px, 2vw, 32px) !important;
-  padding: 0 12px !important;
+  gap: clamp(14px, 2vw, 28px) !important;
   overflow: hidden !important;
 }
+.header-right {
+  flex: 1 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 20px !important;
+}
+
+/* Nav link styles inside center zone */
 .header-center .nav-link {
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -5276,31 +5284,18 @@ p { color: #4A5568; }
 .header-center .nav-link:hover { color: var(--text-primary) !important; }
 .header-center .nav-link.active { color: var(--mint) !important; font-weight: 600 !important; }
 
-/* Right zone: Sign In + hamburger — pinned to right boundary */
-.header-right {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  flex: none !important;
-  flex-shrink: 0 !important;
-  justify-content: flex-end !important;
-}
-/* Hamburger always visible in right zone */
+/* Hamburger always visible */
 .header-right .hamburger { display: flex !important; }
 
-/* Hide center nav on tablet/mobile — sidebar handles navigation */
+/* Collapse center nav below 900px — sidebar takes over */
 @media (max-width: 900px) { .header-center { display: none !important; } }
 @media (max-width: 600px) {
-  .header-container { padding-left: 16px !important; padding-right: 16px !important; }
-  .header-right { gap: 8px !important; }
+  .header-container { padding: 0 16px !important; }
+  .header-right { gap: 10px !important; }
 }
 
-/* ── 2. Universal 1200px content rail ──────────────────────── */
-/* Every primary content block shares identical left/right boundaries.
-   Section wrappers carry only vertical padding; all horizontal spacing
-   flows from these inner containers to match the header's 24px offset. */
-
-/* Page-level containers */
+/* ── 2. UNIVERSAL 1200px CONTENT RAIL ───────────────────────── */
+/* Page containers */
 .page-inner {
   max-width: 1200px !important;
   margin-left: auto !important;
@@ -5310,18 +5305,13 @@ p { color: #4A5568; }
   box-sizing: border-box !important;
 }
 
-/* Section-level inner content — strip horizontal padding from wrapper,
-   give it to the content elements so they align with the header */
-.section-block {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
+/* Section wrappers carry vertical padding only —
+   inner elements own the 24px horizontal clearance */
+.section-block,
 .medication-section {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-
-/* All section content elements share the same 24px horizontal clearance */
 .section-header,
 .overpay-grid,
 .medication-grid,
@@ -5331,26 +5321,17 @@ p { color: #4A5568; }
 .health-conditions-grid,
 .pricing-matrix-inner,
 .founder-block,
-.price-comparison-grid {
-  padding-left: 24px !important;
-  padding-right: 24px !important;
-  box-sizing: border-box !important;
-}
-
-/* Footer aligned to same rail */
+.price-comparison-grid,
 .footer-inner {
   padding-left: 24px !important;
   padding-right: 24px !important;
   box-sizing: border-box !important;
 }
 
-/* ── 3. Stats: dead-center 3-col grid, never nested ─────────── */
+/* ── 3. STATS: dead-center 3-col grid ──────────────────────── */
 .stats-section {
   width: 100% !important;
-  padding-left: 24px !important;
-  padding-right: 24px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 24px !important;
   margin-top: 0 !important;
   background: transparent !important;
 }
@@ -5367,7 +5348,7 @@ p { color: #4A5568; }
   box-sizing: border-box !important;
 }
 
-/* ── 4. Responsive overrides ────────────────────────────────── */
+/* ── 4. RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .stats-container { grid-template-columns: 1fr !important; margin: 24px auto !important; }
   .hiw-steps { grid-template-columns: 1fr 1fr !important; }
