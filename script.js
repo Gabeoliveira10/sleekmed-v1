@@ -1260,8 +1260,8 @@ const saveAdminState = (loggedIn) => {
    _navStack  → in-app back button (PWA + all browsers)
    history    → Safari native swipe-back
    _noHist    → suppresses history writes during restoration    */
-let _navStack     = [];
-let _noHist       = false; // when true, sub-view fns skip pushState
+let _navStack     = ['home']; // 'home' is always the base — never empty
+let _noHist       = false;   // when true, sub-view fns skip pushState
 let _lastBrowseCat = '';   // category user drilled into before results
 
 function _hpush(state, url) {
@@ -1319,9 +1319,9 @@ function navigateTo(pageId, _skipStack) {
   // ── Update our own nav stack ──────────────────────────────────
   if (!_skipStack) {
     if (pageId === 'home') {
-      _navStack = [];                                  // reset on home
+      _navStack = ['home'];                            // reset to just home — always anchored
     } else if (_navStack[_navStack.length - 1] !== pageId) {
-      _navStack.push(pageId);                          // avoid duplicate
+      _navStack.push(pageId);                          // push new page, avoid consecutive duplicates
     }
     // Also push browser history so Safari native swipe-back works
     pageId === 'home'
@@ -1329,9 +1329,9 @@ function navigateTo(pageId, _skipStack) {
       : _hpush({ page: pageId }, '#' + pageId);
   }
 
-  // ── Show/hide back button based on stack depth ────────────────
+  // ── Show back button only when there's somewhere to go back to ──
   const _bb = document.getElementById('btnBackNav');
-  if (_bb) _bb.style.display = _navStack.length > 0 ? 'flex' : 'none';
+  if (_bb) _bb.style.display = _navStack.length > 1 ? 'flex' : 'none';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1355,6 +1355,19 @@ function closeSidebar() {
   const hb = $('hamburgerBtn');
   if (hb) hb.setAttribute('aria-expanded', 'false');
   $('sidebar').setAttribute('aria-hidden', 'true');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GET YOUR CARD CTA
+   Guest  → opens register modal (sign-up flow)
+   Logged in → goes straight to the card page
+═══════════════════════════════════════════════════════════════ */
+function handleGetCardCTA() {
+  if (State.user) {
+    navigateTo('card');
+  } else {
+    openAuthModal('register');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3487,15 +3500,16 @@ document.addEventListener('DOMContentLoaded', () => {
         showBrowseCategories();
         _noHist = false; return;
       }
-      // Category grid → back to home
-      _navStack = [];
-      navigateTo('home', true);
+      // Category grid → back to wherever we came from (pop the stack)
+      if (_navStack.length > 1) _navStack.pop();
+      const prevFromSearch = _navStack[_navStack.length - 1] || 'home';
+      navigateTo(prevFromSearch, true);
       _noHist = false; return;
     }
 
-    if (_navStack.length > 0) _navStack.pop();
-    const prev = _navStack.length > 0 ? _navStack[_navStack.length - 1] : 'home';
-    if (prev === 'home') _navStack = [];
+    // Pop current page, go to whatever is now on top (home is always the base)
+    if (_navStack.length > 1) _navStack.pop();
+    const prev = _navStack[_navStack.length - 1] || 'home';
     navigateTo(prev, true);
     _noHist = false;
   }
@@ -3529,7 +3543,7 @@ document.addEventListener('DOMContentLoaded', () => {
       _noHist = false; return;
     }
 
-    if (pageId === 'home') _navStack = [];
+    if (pageId === 'home') _navStack = ['home'];
     else {
       const idx = _navStack.lastIndexOf(pageId);
       _navStack = idx >= 0 ? _navStack.slice(0, idx + 1) : [pageId];
