@@ -5232,44 +5232,63 @@ p { color: #4A5568; }
    Exact header lock · Universal 1200px rail · Stats grid
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── 1. STRICT HEADER CONTAINER LOCK (exact spec) ───────────── */
+/* ── 1. RIGID GRID HEADER — replaces all flex on header zones ── */
 .site-header {
   width: 100% !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 1000 !important;
 }
+/* Grid: left column 200px fixed | center expands | right column 200px fixed
+   This mathematically locks the center line regardless of content width. */
 .header-container {
+  display: grid !important;
+  grid-template-columns: 200px 1fr 200px !important;
+  align-items: center !important;
   width: 100% !important;
   max-width: 1200px !important;
   margin: 0 auto !important;
   padding: 16px 24px !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
   box-sizing: border-box !important;
+  /* Remove all flex properties */
+  flex: unset !important;
+  justify-content: unset !important;
 }
 .header-left {
-  flex: 1 !important;
+  justify-self: start !important;
   display: flex !important;
-  justify-content: flex-start !important;
   align-items: center !important;
   gap: 12px !important;
+  /* Wipe flex-grow */
+  flex: unset !important;
+  flex-grow: unset !important;
 }
 .header-center {
-  flex: 2 !important;
+  justify-self: center !important;
+  text-align: center !important;
   display: flex !important;
-  justify-content: center !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: clamp(14px, 2vw, 28px) !important;
+  /* Wipe flex-grow */
+  flex: unset !important;
+  flex-grow: unset !important;
   overflow: hidden !important;
 }
 .header-right {
-  flex: 1 !important;
+  justify-self: end !important;
   display: flex !important;
-  justify-content: flex-end !important;
+  gap: 16px !important;
   align-items: center !important;
-  gap: 20px !important;
+  /* Wipe flex-grow */
+  flex: unset !important;
+  flex-grow: unset !important;
+}
+/* Logo image: fixed max-width so browser never scales it differently */
+.header-left img {
+  max-width: 140px !important;
+  width: auto !important;
+  display: block !important;
 }
 
 /* Nav link styles inside center zone */
@@ -5287,10 +5306,14 @@ p { color: #4A5568; }
 /* Hamburger always visible */
 .header-right .hamburger { display: flex !important; }
 
-/* Collapse center nav below 900px — sidebar takes over */
-@media (max-width: 900px) { .header-center { display: none !important; } }
+/* Collapse center nav below 900px — sidebar takes over.
+   Grid collapses to two columns (logo | actions) when nav hidden. */
+@media (max-width: 900px) {
+  .header-center { display: none !important; }
+  .header-container { grid-template-columns: 1fr auto !important; }
+}
 @media (max-width: 600px) {
-  .header-container { padding: 0 16px !important; }
+  .header-container { padding: 8px 16px !important; }
   .header-right { gap: 10px !important; }
 }
 
