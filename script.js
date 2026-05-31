@@ -3862,3 +3862,153 @@ function sendSMSCard() {
   });
 })();
 
+/* ══════════════════════════════════════════════════════════
+   SCROLL-REVEAL — IntersectionObserver for .reveal elements
+   Runs once on load; re-triggers when pages are navigated to
+══════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  let revealObserver = null;
+  let countObserver  = null;
+  const countedEls   = new WeakSet();
+
+  function initScrollReveal() {
+    // Reveal observer
+    if (revealObserver) revealObserver.disconnect();
+    revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      revealObserver.observe(el);
+    });
+
+    // Stat counter observer
+    if (countObserver) countObserver.disconnect();
+    countObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !countedEls.has(entry.target)) {
+          countedEls.add(entry.target);
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.count-up').forEach(function(el) {
+      if (!countedEls.has(el)) countObserver.observe(el);
+    });
+  }
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix || '';
+    const dur    = 1400;
+    const start  = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / dur, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = Math.round(eased * target);
+      if (target >= 1000) {
+        el.textContent = Math.round(val / 1000) + suffix;
+      } else {
+        el.textContent = val + suffix;
+      }
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Boot on first load
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initScrollReveal, 100);
+  });
+
+  // Re-run every time a page becomes active
+  // Patch navigateTo to call initScrollReveal after navigation
+  const _origNavigateTo = window.navigateTo;
+  if (typeof _origNavigateTo === 'function') {
+    window.navigateTo = function(pageId) {
+      _origNavigateTo(pageId);
+      setTimeout(initScrollReveal, 80);
+    };
+  } else {
+    // navigateTo not yet defined; hook into DOMContentLoaded and use MutationObserver
+    const mo = new MutationObserver(function() {
+      if (typeof window.navigateTo === 'function') {
+        mo.disconnect();
+        const orig = window.navigateTo;
+        window.navigateTo = function(pageId) {
+          orig(pageId);
+          setTimeout(initScrollReveal, 80);
+        };
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
+})();
+
+/* ══════════════════════════════════════════════════════════
+   HOW IT WORKS PAGE — Interactive Tab Switcher
+══════════════════════════════════════════════════════════ */
+function hiwSelectTab(step) {
+  'use strict';
+  const tabs   = document.querySelectorAll('.hiw-tab');
+  const panels = document.querySelectorAll('.hiw-tab-panel');
+
+  tabs.forEach(function(t, i) {
+    const isActive = (i + 1) === step;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+
+  panels.forEach(function(p, i) {
+    p.classList.toggle('active', (i + 1) === step);
+  });
+
+  // Fill progress lines for completed steps
+  for (let i = 1; i <= 3; i++) {
+    const line = document.getElementById('hiwProgressLine' + i);
+    if (line) {
+      line.style.width = (step > i) ? '100%' : '0%';
+    }
+  }
+}
+
+// Auto-advance HIW tabs every 5 seconds when page is visible
+(function(){
+  let hiwTimer = null;
+  let hiwStep  = 1;
+  const HIW_TOTAL = 4;
+
+  function startHIWAuto() {
+    clearInterval(hiwTimer);
+    hiwTimer = setInterval(function() {
+      const page = document.getElementById('page-howitworks');
+      if (!page || !page.classList.contains('active')) return;
+      hiwStep = (hiwStep % HIW_TOTAL) + 1;
+      hiwSelectTab(hiwStep);
+    }, 5000);
+  }
+
+  // Reset timer when user manually clicks a tab
+  document.addEventListener('click', function(e) {
+    const tab = e.target.closest('.hiw-tab');
+    if (tab) {
+      const step = parseInt(tab.dataset.step, 10);
+      if (step) { hiwStep = step; startHIWAuto(); }
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', startHIWAuto);
+})();
+
