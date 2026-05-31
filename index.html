@@ -303,7 +303,7 @@
           <p class="section-sub">Updated monthly. Real prices at your pharmacy — no insurance required. Click any card to compare and save.</p>
         </div>
         <div class="medication-grid">
-          <div class="medication-card reveal" data-drug="Metformin">
+          <div class="medication-card" data-drug="Metformin">
             <div class="med-badge badge-generic">Most Affordable</div>
             <div class="med-img-wrap">
               <img src="IMAGES/metformin.png" alt="Metformin 500mg" class="med-product-img" />
@@ -319,7 +319,7 @@
               </div>
             </div>
           </div>
-          <div class="medication-card reveal" data-drug="Lisinopril">
+          <div class="medication-card" data-drug="Lisinopril">
             <div class="med-badge badge-generic">Generic Available</div>
             <div class="med-img-wrap">
               <img src="IMAGES/lisinopril.png" alt="Lisinopril 10mg" class="med-product-img" />
@@ -335,7 +335,7 @@
               </div>
             </div>
           </div>
-          <div class="medication-card reveal" data-drug="Ozempic">
+          <div class="medication-card" data-drug="Ozempic">
             <div class="med-badge badge-popular">Top Searched</div>
             <div class="med-img-wrap">
               <img src="IMAGES/ozempic.png" alt="Ozempic (Semaglutide)" class="med-product-img" />
@@ -350,7 +350,7 @@
               </div>
             </div>
           </div>
-          <div class="medication-card reveal" data-drug="Tirzepatide">
+          <div class="medication-card" data-drug="Tirzepatide">
             <div class="med-badge badge-fda">FDA Approved</div>
             <div class="med-img-wrap">
               <img src="IMAGES/tirzepatide.png" alt="Tirzepatide (Zepbound)" class="med-product-img" />
@@ -946,7 +946,7 @@
     <!-- PAGE: HOW IT WORKS -->
     <section class="page" id="page-howitworks">
 
-      <!-- Colorful hero banner -->
+      <!-- Hero -->
       <div class="hiw-page-hero">
         <div class="hiw-page-hero-inner">
           <div class="hiw-page-eyebrow">
@@ -965,267 +965,214 @@
         <div class="hiw-page-hero-glow" aria-hidden="true"></div>
       </div>
 
-      <!-- Interactive Step Tabs -->
-      <div class="hiw-page-steps-wrap">
-        <div class="hiw-page-steps-inner">
+      <!-- Step-by-step vertical layout -->
+      <div class="hiw-steps-wrap">
 
-          <!-- Tab nav -->
-          <div class="hiw-tab-nav" role="tablist" aria-label="How it works steps">
-            <button class="hiw-tab active" role="tab" aria-selected="true" aria-controls="hiwPanel1" data-step="1" onclick="hiwSelectTab(1)">
-              <span class="hiw-tab-num">01</span>
-              <span class="hiw-tab-label">Search</span>
-            </button>
-            <div class="hiw-tab-progress-line"><div class="hiw-tab-progress-fill" id="hiwProgressLine1"></div></div>
-            <button class="hiw-tab" role="tab" aria-selected="false" aria-controls="hiwPanel2" data-step="2" onclick="hiwSelectTab(2)">
-              <span class="hiw-tab-num">02</span>
-              <span class="hiw-tab-label">Compare</span>
-            </button>
-            <div class="hiw-tab-progress-line"><div class="hiw-tab-progress-fill" id="hiwProgressLine2"></div></div>
-            <button class="hiw-tab" role="tab" aria-selected="false" aria-controls="hiwPanel3" data-step="3" onclick="hiwSelectTab(3)">
-              <span class="hiw-tab-num">03</span>
-              <span class="hiw-tab-label">Get Card</span>
-            </button>
-            <div class="hiw-tab-progress-line"><div class="hiw-tab-progress-fill" id="hiwProgressLine3"></div></div>
-            <button class="hiw-tab" role="tab" aria-selected="false" aria-controls="hiwPanel4" data-step="4" onclick="hiwSelectTab(4)">
-              <span class="hiw-tab-num">04</span>
-              <span class="hiw-tab-label">Save</span>
-            </button>
+        <!-- Step 1 -->
+        <div class="hiw-step-row reveal">
+          <div class="hiw-step-text">
+            <div class="hiw-panel-badge hiw-badge-1">Step 01</div>
+            <h2 class="hiw-panel-title">Search Any Medication</h2>
+            <p class="hiw-panel-desc">Type the name of any drug — brand or generic. Select your exact dosage and quantity. Our engine instantly pulls live prices from every source in our network and shows them side by side.</p>
+            <ul class="hiw-panel-bullets">
+              <li><span class="hiw-bullet-dot hiw-dot-1"></span>70,000+ medications in our database</li>
+              <li><span class="hiw-bullet-dot hiw-dot-1"></span>Brand &amp; generic options available</li>
+              <li><span class="hiw-bullet-dot hiw-dot-1"></span>No account needed to search</li>
+            </ul>
+            <button class="btn-primary" onclick="navigateTo('search')">Search Now →</button>
           </div>
+          <div class="hiw-step-visual">
+            <div class="hiw-mockup">
+              <div class="hiw-mock-bar"><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div></div>
+              <div class="hiw-mock-search-box">
+                <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="9" cy="9" r="6" stroke="#94a3b8" stroke-width="1.5"/><path d="M14 14l3 3" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span>Ozempic</span>
+                <span class="hiw-mock-cursor" aria-hidden="true">|</span>
+              </div>
+              <div class="hiw-mock-chips">
+                <span class="hiw-mock-chip hiw-chip-sel">0.5mg · 4 pens</span>
+                <span class="hiw-mock-chip">1mg · 4 pens</span>
+                <span class="hiw-mock-chip">2mg · 4 pens</span>
+              </div>
+              <div class="hiw-mock-scanning">
+                <div class="hiw-scan-bar"></div>
+                <span>Scanning 3 price sources…</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <!-- Tab panels -->
-          <div class="hiw-tab-panels">
+        <div class="hiw-step-connector" aria-hidden="true"><div class="hiw-step-conn-line"></div></div>
 
-            <div class="hiw-tab-panel active" id="hiwPanel1" role="tabpanel">
-              <div class="hiw-panel-content">
-                <div class="hiw-panel-text">
-                  <div class="hiw-panel-badge hiw-badge-1">Step 01</div>
-                  <h2 class="hiw-panel-title">Search Any Medication</h2>
-                  <p class="hiw-panel-desc">Type the name of any drug — brand or generic. Select your exact dosage and quantity. Our engine instantly queries live pricing data across our entire verified network.</p>
-                  <ul class="hiw-panel-bullets">
-                    <li><span class="hiw-bullet-dot hiw-dot-1"></span>70,000+ medications in our database</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-1"></span>Brand &amp; generic options shown side-by-side</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-1"></span>No account required to search</li>
-                  </ul>
-                  <button class="btn-primary" onclick="navigateTo('search')">Search Now →</button>
+        <!-- Step 2 -->
+        <div class="hiw-step-row hiw-step-row-flip reveal">
+          <div class="hiw-step-text">
+            <div class="hiw-panel-badge hiw-badge-2">Step 02</div>
+            <h2 class="hiw-panel-title">Compare Every Price at Once</h2>
+            <p class="hiw-panel-desc">See Vital Rx, GoodRx, and Cost Plus prices side-by-side in one panel — no jumping between apps or websites. The lowest price is always highlighted. Retail cash price shown so you know exactly how much you're saving.</p>
+            <ul class="hiw-panel-bullets">
+              <li><span class="hiw-bullet-dot hiw-dot-2"></span>Vital Rx rate always shown first</li>
+              <li><span class="hiw-bullet-dot hiw-dot-2"></span>GoodRx &amp; Cost Plus always visible</li>
+              <li><span class="hiw-bullet-dot hiw-dot-2"></span>Retail price shown for comparison</li>
+            </ul>
+            <button class="btn-primary" onclick="navigateTo('search')">See Live Prices →</button>
+          </div>
+          <div class="hiw-step-visual">
+            <div class="hiw-mockup">
+              <div class="hiw-mock-bar"><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div></div>
+              <div class="hiw-compare-rows">
+                <div class="hiw-compare-row hiw-row-winner">
+                  <span class="hiw-cmp-src">Vital Rx</span>
+                  <span class="hiw-cmp-tag">Lowest</span>
+                  <span class="hiw-cmp-price">$289</span>
                 </div>
-                <div class="hiw-panel-visual">
-                  <div class="hiw-mockup hiw-mockup-search">
-                    <div class="hiw-mock-bar">
-                      <div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div>
-                    </div>
-                    <div class="hiw-mock-search-box">
-                      <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="9" cy="9" r="6" stroke="#94a3b8" stroke-width="1.5"/><path d="M14 14l3 3" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
-                      <span class="hiw-mock-typed" id="hiwTyped">Ozempic</span>
-                      <span class="hiw-mock-cursor" aria-hidden="true">|</span>
-                    </div>
-                    <div class="hiw-mock-chips">
-                      <span class="hiw-mock-chip hiw-chip-sel">0.5mg · 4 pens</span>
-                      <span class="hiw-mock-chip">1mg · 4 pens</span>
-                      <span class="hiw-mock-chip">2mg · 4 pens</span>
-                    </div>
-                    <div class="hiw-mock-scanning">
-                      <div class="hiw-scan-bar"></div>
-                      <span>Scanning 4 price sources…</span>
-                    </div>
-                  </div>
+                <div class="hiw-compare-row">
+                  <span class="hiw-cmp-src">GoodRx</span>
+                  <span class="hiw-cmp-tag hiw-tag-neutral"></span>
+                  <span class="hiw-cmp-price hiw-price-mid">$347</span>
+                </div>
+                <div class="hiw-compare-row">
+                  <span class="hiw-cmp-src">Cost Plus</span>
+                  <span class="hiw-cmp-tag hiw-tag-neutral"></span>
+                  <span class="hiw-cmp-price hiw-price-mid">$412</span>
+                </div>
+                <div class="hiw-compare-row">
+                  <span class="hiw-cmp-src">Retail</span>
+                  <span class="hiw-cmp-tag hiw-tag-high">Highest</span>
+                  <span class="hiw-cmp-price hiw-price-high">$1,200</span>
+                </div>
+              </div>
+              <div class="hiw-mock-savings-banner">You save <strong>$911</strong> with Vital Rx</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hiw-step-connector" aria-hidden="true"><div class="hiw-step-conn-line"></div></div>
+
+        <!-- Step 3 -->
+        <div class="hiw-step-row reveal">
+          <div class="hiw-step-text">
+            <div class="hiw-panel-badge hiw-badge-3">Step 03</div>
+            <h2 class="hiw-panel-title">Get Your Free Digital Card</h2>
+            <p class="hiw-panel-desc">Create a free Vital Rx account and your Digital Savings Card is generated instantly. It comes pre-loaded with your BIN, PCN, and Group discount codes. Show it on your phone at the pharmacy counter — no printing, no paperwork.</p>
+            <ul class="hiw-panel-bullets">
+              <li><span class="hiw-bullet-dot hiw-dot-3"></span>Accepted at 70,000+ pharmacies nationwide</li>
+              <li><span class="hiw-bullet-dot hiw-dot-3"></span>Show on your phone screen — no printing needed</li>
+              <li><span class="hiw-bullet-dot hiw-dot-3"></span>Save medications to your Cabinet for fast access</li>
+            </ul>
+            <button class="btn-primary" onclick="handleGetCardCTA()">Get Your Free Card →</button>
+          </div>
+          <div class="hiw-step-visual">
+            <div class="hiw-mockup">
+              <div class="hiw-mock-bar"><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div></div>
+              <div class="hiw-card-preview">
+                <div class="hiw-card-preview-header">
+                  <span class="hiw-card-brand">VITAL RX</span>
+                  <span class="hiw-card-type">Savings Card</span>
+                </div>
+                <div class="hiw-card-preview-codes">
+                  <div class="hiw-card-code"><span class="hiw-code-lbl">BIN</span><span class="hiw-code-val">610524</span></div>
+                  <div class="hiw-card-code"><span class="hiw-code-lbl">PCN</span><span class="hiw-code-val">FPLAY</span></div>
+                  <div class="hiw-card-code"><span class="hiw-code-lbl">GROUP</span><span class="hiw-code-val">FP2026</span></div>
+                </div>
+                <div class="hiw-card-preview-shine" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hiw-step-connector" aria-hidden="true"><div class="hiw-step-conn-line"></div></div>
+
+        <!-- Step 4 -->
+        <div class="hiw-step-row hiw-step-row-flip reveal">
+          <div class="hiw-step-text">
+            <div class="hiw-panel-badge hiw-badge-4">Step 04</div>
+            <h2 class="hiw-panel-title">Save at the Counter</h2>
+            <p class="hiw-panel-desc">Before the pharmacist processes your prescription, show them your Vital Rx Digital Card on your phone. Say: <em>"I have a Vital Rx discount card."</em> The discount applies in real-time at the register. No claims. No reimbursements. No waiting.</p>
+            <ul class="hiw-panel-bullets">
+              <li><span class="hiw-bullet-dot hiw-dot-4"></span>Average savings: 80% below retail</li>
+              <li><span class="hiw-bullet-dot hiw-dot-4"></span>Discount applied instantly at the register</li>
+              <li><span class="hiw-bullet-dot hiw-dot-4"></span>No insurance. No claims. No waiting.</li>
+            </ul>
+            <button class="btn-primary" onclick="navigateTo('search')">Start Saving →</button>
+          </div>
+          <div class="hiw-step-visual">
+            <div class="hiw-mockup">
+              <div class="hiw-mock-bar"><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div></div>
+              <div class="hiw-save-receipt">
+                <div class="hiw-receipt-line hiw-receipt-header">Pharmacy Receipt</div>
+                <div class="hiw-receipt-line"><span>Ozempic 0.5mg</span><span class="hiw-receipt-strike">$1,200.00</span></div>
+                <div class="hiw-receipt-line hiw-receipt-discount"><span>Vital Rx Discount</span><span class="hiw-receipt-green">−$911.00</span></div>
+                <div class="hiw-receipt-divider"></div>
+                <div class="hiw-receipt-line hiw-receipt-total"><span>You Pay</span><span class="hiw-receipt-big">$289.00</span></div>
+                <div class="hiw-save-checkmark">
+                  <svg viewBox="0 0 40 40" fill="none" width="36" height="36">
+                    <circle cx="20" cy="20" r="17" fill="#10b981" fill-opacity="0.12"/>
+                    <circle cx="20" cy="20" r="17" stroke="#10b981" stroke-width="2"/>
+                    <path d="M12 20l6 6 10-12" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Savings applied!</span>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div class="hiw-tab-panel" id="hiwPanel2" role="tabpanel">
-              <div class="hiw-panel-content">
-                <div class="hiw-panel-text">
-                  <div class="hiw-panel-badge hiw-badge-2">Step 02</div>
-                  <h2 class="hiw-panel-title">Compare All Prices at Once</h2>
-                  <p class="hiw-panel-desc">Every price source in one panel — Vital Rx Partner Rate, GoodRx, Cost Plus Drugs, and Retail Cash. No jumping between apps. No hidden fees. Pure price clarity.</p>
-                  <ul class="hiw-panel-bullets">
-                    <li><span class="hiw-bullet-dot hiw-dot-2"></span>Vital Rx Partner Rate shown first</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-2"></span>GoodRx &amp; Cost Plus rates always visible</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-2"></span>Retail cash price shown for comparison</li>
-                  </ul>
-                  <button class="btn-primary" onclick="navigateTo('search')">See Live Prices →</button>
-                </div>
-                <div class="hiw-panel-visual">
-                  <div class="hiw-mockup hiw-mockup-compare">
-                    <div class="hiw-mock-bar">
-                      <div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div>
-                    </div>
-                    <div class="hiw-compare-rows">
-                      <div class="hiw-compare-row hiw-row-winner">
-                        <span class="hiw-cmp-src">Vital Rx</span>
-                        <span class="hiw-cmp-tag">Lowest</span>
-                        <span class="hiw-cmp-price">$289</span>
-                      </div>
-                      <div class="hiw-compare-row">
-                        <span class="hiw-cmp-src">GoodRx</span>
-                        <span class="hiw-cmp-tag hiw-tag-neutral"></span>
-                        <span class="hiw-cmp-price hiw-price-mid">$347</span>
-                      </div>
-                      <div class="hiw-compare-row">
-                        <span class="hiw-cmp-src">Cost Plus</span>
-                        <span class="hiw-cmp-tag hiw-tag-neutral"></span>
-                        <span class="hiw-cmp-price hiw-price-mid">$412</span>
-                      </div>
-                      <div class="hiw-compare-row">
-                        <span class="hiw-cmp-src">Retail</span>
-                        <span class="hiw-cmp-tag hiw-tag-high">Highest</span>
-                        <span class="hiw-cmp-price hiw-price-high">$1,200</span>
-                      </div>
-                    </div>
-                    <div class="hiw-mock-savings-banner">You save <strong>$911</strong> with Vital Rx</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      </div><!-- /hiw-steps-wrap -->
 
-            <div class="hiw-tab-panel" id="hiwPanel3" role="tabpanel">
-              <div class="hiw-panel-content">
-                <div class="hiw-panel-text">
-                  <div class="hiw-panel-badge hiw-badge-3">Step 03</div>
-                  <h2 class="hiw-panel-title">Get Your Free Digital Card</h2>
-                  <p class="hiw-panel-desc">Create a free account and your Digital Savings Card is generated instantly. Pre-loaded with BIN, PCN, and Group codes. Lives on your phone — no printing, no wallet clutter.</p>
-                  <ul class="hiw-panel-bullets">
-                    <li><span class="hiw-bullet-dot hiw-dot-3"></span>Accepted at 70,000+ pharmacies nationwide</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-3"></span>Eligibility check unlocks extra manufacturer rates</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-3"></span>Show on your phone screen — no printing</li>
-                  </ul>
-                  <button class="btn-primary" onclick="handleGetCardCTA()">Get Your Card →</button>
-                </div>
-                <div class="hiw-panel-visual">
-                  <div class="hiw-mockup hiw-mockup-card">
-                    <div class="hiw-mock-bar">
-                      <div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div>
-                    </div>
-                    <div class="hiw-card-preview">
-                      <div class="hiw-card-preview-header">
-                        <span class="hiw-card-brand">VITAL RX</span>
-                        <span class="hiw-card-type">Savings Card</span>
-                      </div>
-                      <div class="hiw-card-preview-codes">
-                        <div class="hiw-card-code"><span class="hiw-code-lbl">BIN</span><span class="hiw-code-val">610524</span></div>
-                        <div class="hiw-card-code"><span class="hiw-code-lbl">PCN</span><span class="hiw-code-val">FPLAY</span></div>
-                        <div class="hiw-card-code"><span class="hiw-code-lbl">GROUP</span><span class="hiw-code-val">FP2026</span></div>
-                      </div>
-                      <div class="hiw-card-preview-shine" aria-hidden="true"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="hiw-tab-panel" id="hiwPanel4" role="tabpanel">
-              <div class="hiw-panel-content">
-                <div class="hiw-panel-text">
-                  <div class="hiw-panel-badge hiw-badge-4">Step 04</div>
-                  <h2 class="hiw-panel-title">Save at the Counter</h2>
-                  <p class="hiw-panel-desc">Show your digital card to the pharmacist before they process the prescription. The discount is applied in real-time at the point of sale. That's it — no claims, no reimbursements, no waiting.</p>
-                  <ul class="hiw-panel-bullets">
-                    <li><span class="hiw-bullet-dot hiw-dot-4"></span>Average savings: 80% below retail</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-4"></span>Discount applied instantly at point of sale</li>
-                    <li><span class="hiw-bullet-dot hiw-dot-4"></span>No claims filing. No waiting. No hassle.</li>
-                  </ul>
-                  <button class="btn-primary" onclick="navigateTo('search')">Start Saving →</button>
-                </div>
-                <div class="hiw-panel-visual">
-                  <div class="hiw-mockup hiw-mockup-save">
-                    <div class="hiw-mock-bar">
-                      <div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div><div class="hiw-mock-dot"></div>
-                    </div>
-                    <div class="hiw-save-receipt">
-                      <div class="hiw-receipt-line hiw-receipt-header">Pharmacy Receipt</div>
-                      <div class="hiw-receipt-line"><span>Ozempic 0.5mg</span><span class="hiw-receipt-strike">$1,200.00</span></div>
-                      <div class="hiw-receipt-line hiw-receipt-discount"><span>Vital Rx Discount</span><span class="hiw-receipt-green">−$911.00</span></div>
-                      <div class="hiw-receipt-divider"></div>
-                      <div class="hiw-receipt-line hiw-receipt-total"><span>You Pay</span><span class="hiw-receipt-big">$289.00</span></div>
-                      <div class="hiw-save-checkmark">
-                        <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
-                          <circle cx="20" cy="20" r="18" fill="#10b981" fill-opacity="0.15"/>
-                          <circle cx="20" cy="20" r="18" stroke="#10b981" stroke-width="2" class="hiw-check-ring"/>
-                          <path d="M12 20l6 6 10-12" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hiw-check-path"/>
-                        </svg>
-                        <span>Savings applied!</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div><!-- /hiw-tab-panels -->
-        </div><!-- /hiw-page-steps-inner -->
-      </div><!-- /hiw-page-steps-wrap -->
-
-      <!-- Sources Trust Section -->
+      <!-- Sources strip -->
       <div class="hiw-sources-section">
         <div class="hiw-sources-inner">
-          <div class="hiw-sources-title">Price data pulled from</div>
+          <div class="hiw-sources-title">Price data sourced from</div>
           <div class="hiw-sources-grid">
             <div class="hiw-source-chip hiw-source-vital">
-              <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Vital Rx Partner Rate
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Vital Rx
             </div>
             <div class="hiw-source-chip hiw-source-goodrx">
-              <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              GoodRx API
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              GoodRx
             </div>
             <div class="hiw-source-chip hiw-source-costplus">
-              <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              Cost Plus Drugs
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Cost Plus
             </div>
             <div class="hiw-source-chip hiw-source-retail">
-              <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M4 16V8l6-4 6 4v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="8" y="11" width="4" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-              Retail Cash Price
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Retail Cash
             </div>
           </div>
         </div>
       </div>
 
-      <!-- FAQ / Disclosures — interactive -->
+      <!-- FAQ -->
       <div class="hiw-faq-section">
         <div class="hiw-faq-inner">
-          <div class="hiw-faq-title reveal">Common Questions</div>
+          <div class="hiw-faq-title">Common Questions</div>
           <div class="hiw-faq-grid">
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                Do I need insurance to use Vital Rx?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>No. Vital Rx is designed for cash-pay customers. You never need insurance to see cash prices or use your digital savings card at the pharmacy.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need insurance to use Vital Rx?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>No. Vital Rx is designed for cash-pay customers. You never need insurance to see prices or use your savings card at the pharmacy.</p></div>
             </div>
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                Is Vital Rx really free?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>Yes, always. Vital Rx earns a small affiliate fee ($2.50–$5.00 per claim) from our pharmacy partner network. This is never passed to the consumer — your price is always the lowest negotiated rate.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">Is Vital Rx really free?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>Yes, always free to you. Vital Rx earns a small fee ($2.50–$5.00 per claim) from our pharmacy partner network. This is never passed to the consumer — your price is always the negotiated rate.</p></div>
             </div>
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                Can I use Vital Rx if I have Medicare or Medicaid?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>Federal law (42 U.S.C. § 1320a-7b) prohibits Medicare, Medicaid, VA, and TRICARE beneficiaries from using manufacturer savings cards when the cost is covered by a federal program. Cash prices are visible to all users without restriction.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">Can I use it with Medicare or Medicaid?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>Federal law prohibits Medicare and Medicaid beneficiaries from using manufacturer savings cards when costs are covered by a federal program. Cash prices are visible to everyone with no restriction.</p></div>
             </div>
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                How accurate are the prices?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>Prices shown are estimates based on current network data and may vary by pharmacy location. The Vital Rx Partner Rate is the negotiated price through our affiliate card — honored at point of sale at partner pharmacies. Always confirm the final price with your pharmacist before processing.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">How accurate are the prices shown?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>Prices are estimates from current network data and may vary by pharmacy location. Always confirm the final price with your pharmacist before they process your prescription.</p></div>
             </div>
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                Is my health information safe?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>All personal data is encrypted client-side before storage. Vital Rx does not sell, share, or license your personal health information to any third party. See our <a href="#" onclick="navigateTo('privacy'); return false;">Privacy Policy</a> for full details.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">Is my health information safe?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>All personal data is encrypted before storage. We never sell or share your health information. See our <a href="#" onclick="navigateTo('privacy'); return false;">Privacy Policy</a> for full details.</p></div>
             </div>
-            <div class="hiw-faq-item reveal">
-              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">
-                What pharmacies accept the Vital Rx card?
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="hiw-faq-a"><p>Your Vital Rx digital card is accepted at over 70,000 pharmacies nationwide — including CVS, Walgreens, Walmart, Kroger, Rite Aid, and most independent pharmacies. Look for the card acceptance symbol at the counter.</p></div>
+            <div class="hiw-faq-item">
+              <button class="hiw-faq-q" onclick="this.parentElement.classList.toggle('open')">Which pharmacies accept the card?<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="hiw-faq-a"><p>Over 70,000 pharmacies nationwide — CVS, Walgreens, Walmart, Kroger, Rite Aid, and most independent pharmacies. Just show your card before they process the prescription.</p></div>
             </div>
           </div>
         </div>
@@ -1233,7 +1180,7 @@
 
       <!-- Final CTA -->
       <div class="hiw-final-cta">
-        <div class="hiw-final-cta-inner reveal">
+        <div class="hiw-final-cta-inner">
           <h2 class="hiw-final-title">Ready to find your lowest price?</h2>
           <p class="hiw-final-sub">Search your medication now — no account required to see prices.</p>
           <div class="hiw-final-btns">
@@ -1257,21 +1204,21 @@
           <div class="privacy-tldr">
             <div class="privacy-tldr-title">The Short Version</div>
             <div class="privacy-tldr-grid">
-              <div class="privacy-tldr-item privacy-tldr-good">
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="8" stroke="#10b981" stroke-width="1.5"/><path d="M6.5 10l2.5 2.5 4-4" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                We encrypt your data client-side
+              <div class="privacy-tldr-item">
+                <span class="privacy-tldr-check">✓</span>
+                Your data is encrypted before storage
               </div>
-              <div class="privacy-tldr-item privacy-tldr-good">
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="8" stroke="#10b981" stroke-width="1.5"/><path d="M6.5 10l2.5 2.5 4-4" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                You can delete everything instantly
+              <div class="privacy-tldr-item">
+                <span class="privacy-tldr-check">✓</span>
+                You can delete your account anytime
               </div>
-              <div class="privacy-tldr-item privacy-tldr-bad">
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="8" stroke="#ef4444" stroke-width="1.5"/><path d="M7 13l6-6M13 13L7 7" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg>
-                We never sell your data
+              <div class="privacy-tldr-item">
+                <span class="privacy-tldr-x">✗</span>
+                We never sell your data — ever
               </div>
-              <div class="privacy-tldr-item privacy-tldr-bad">
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="8" stroke="#ef4444" stroke-width="1.5"/><path d="M7 13l6-6M13 13L7 7" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg>
-                We never share PHI with advertisers
+              <div class="privacy-tldr-item">
+                <span class="privacy-tldr-x">✗</span>
+                We never share health data with advertisers
               </div>
             </div>
           </div>
@@ -1624,7 +1571,7 @@
               </div>
             </div>
           </div>
-          <div class="vault-lifecycle"><div class="lifecycle-card"><h4>Account Actions</h4><div class="lifecycle-actions"><button class="btn-ghost" id="signOutBtn">Sign Out of Vital Rx</button><button class="btn-danger" id="purgeBtn">Permanent Data Purge</button></div></div></div>
+          <div class="vault-lifecycle"><div class="lifecycle-card danger-zone-card"><div class="danger-zone-header"><svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M10 3L2 17h16L10 3z" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="14.5" r="0.75" fill="#ef4444"/></svg><h4>Danger Zone</h4></div><p class="danger-zone-sub">Permanent actions below cannot be undone.</p><div class="lifecycle-actions"><button class="btn-ghost" id="signOutBtn">Sign Out</button><button class="btn-danger" id="purgeBtn">Delete Account</button></div></div></div>
         </div>
 
         <!-- App Download Promo -->
@@ -1854,13 +1801,13 @@
   <div class="modal-overlay" id="purgeModalOverlay">
     <div class="modal purge-modal">
       <div class="purge-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 21h20L12 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="17.5" r="0.75" fill="currentColor"/></svg></div>
-      <h2>Permanent Data Purge</h2>
-      <p>This action will <strong>permanently delete</strong> all your Vital Rx data. This cannot be undone.</p>
+      <h2>Delete Account</h2>
+      <p>Are you sure? This will <strong>permanently delete</strong> your Vital Rx account and all saved data. This cannot be undone.</p>
       <p>Type <strong>DELETE</strong> to confirm:</p>
       <input type="text" id="purgeConfirmInput" class="vault-input" placeholder="Type DELETE" />
       <div class="modal-actions">
-        <button class="btn-danger" id="confirmPurgeBtn">Purge All Data</button>
-        <button class="btn-ghost" id="cancelPurgeBtn">Cancel</button>
+        <button class="btn-danger" id="confirmPurgeBtn">Yes, Delete My Account</button>
+        <button class="btn-ghost" id="cancelPurgeBtn">No, Keep My Account</button>
       </div>
     </div>
   </div>
@@ -1961,6 +1908,74 @@
         Say: <em>"I have a Vital Rx discount card."</em>
       </div>
       <div class="pc-note">This is not insurance · Free to use at 70,000+ pharmacies<br>Support: support@vitalrx.com · vitalrx.com</div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING TUTORIAL MODAL -->
+  <div id="onboardingOverlay" class="onboarding-overlay" style="display:none" role="dialog" aria-modal="true" aria-label="Welcome tutorial">
+    <div class="onboarding-modal">
+      <div class="onboarding-progress">
+        <div class="onb-prog-dot active" data-step="1"></div>
+        <div class="onb-prog-line"></div>
+        <div class="onb-prog-dot" data-step="2"></div>
+        <div class="onb-prog-line"></div>
+        <div class="onb-prog-dot" data-step="3"></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="onb-panel active" id="onbPanel1">
+        <div class="onb-icon onb-icon-1">
+          <svg viewBox="0 0 48 48" fill="none" width="48" height="48">
+            <circle cx="22" cy="22" r="14" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M32 32L42 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="onb-step-label">Step 1 of 3</div>
+        <h2 class="onb-title">Search your medication</h2>
+        <p class="onb-desc">Type any drug name in the search bar — brand or generic. Pick your dosage and quantity and we'll pull live prices from every source at once.</p>
+        <button class="btn-primary onb-next-btn" onclick="onbGoStep(2)">Next →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="onb-panel" id="onbPanel2">
+        <div class="onb-icon onb-icon-2">
+          <svg viewBox="0 0 48 48" fill="none" width="48" height="48">
+            <rect x="6" y="8" width="36" height="26" rx="4" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M6 18h36" stroke="currentColor" stroke-width="2"/>
+            <path d="M14 29h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="33" cy="29" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 40h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="onb-step-label">Step 2 of 3</div>
+        <h2 class="onb-title">Use your free savings card</h2>
+        <p class="onb-desc">Your Vital Rx Digital Card is ready — no printing needed. Show it on your phone at the pharmacy counter before they process your prescription to get your discount applied instantly.</p>
+        <div class="onb-card-codes">
+          <div class="onb-code"><span class="onb-code-lbl">BIN</span><span class="onb-code-val">610524</span></div>
+          <div class="onb-code"><span class="onb-code-lbl">PCN</span><span class="onb-code-val">FPLAY</span></div>
+          <div class="onb-code"><span class="onb-code-lbl">GROUP</span><span class="onb-code-val">FP2026</span></div>
+        </div>
+        <button class="btn-primary onb-next-btn" onclick="onbGoStep(3)">Next →</button>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="onb-panel" id="onbPanel3">
+        <div class="onb-icon onb-icon-3">
+          <svg viewBox="0 0 48 48" fill="none" width="48" height="48">
+            <path d="M24 6L8 13v10c0 9 6.5 15 16 18 9.5-3 16-9 16-18V13L24 6z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M16 24l6 6 10-12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="onb-step-label">Step 3 of 3</div>
+        <h2 class="onb-title">Save medications to your Cabinet</h2>
+        <p class="onb-desc">Add any medication to your Medicine Cabinet so you always have quick access to its lowest price and your coupon codes — no searching again every time.</p>
+        <div class="onb-final-btns">
+          <button class="btn-primary" onclick="closeOnboarding(); navigateTo('search');">Search Medications</button>
+          <button class="btn-ghost" onclick="closeOnboarding(); navigateTo('card');">View My Card</button>
+        </div>
+      </div>
+
+      <button class="onb-skip" onclick="closeOnboarding()">Skip for now</button>
     </div>
   </div>
 

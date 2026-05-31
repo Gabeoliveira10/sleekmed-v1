@@ -1491,6 +1491,8 @@ function doRegister() {
   closeAuthModal();
   updateAuthUI();
   showToast(`Account created! Welcome, ${name.split(' ')[0]}.`);
+  // Show onboarding tutorial so new users know how to use the site
+  setTimeout(showOnboardingTutorial, 400);
 }
 
 function signOut() {
@@ -3874,7 +3876,7 @@ function sendSMSCard() {
   const countedEls   = new WeakSet();
 
   function initScrollReveal() {
-    // Reveal observer
+    // Reveal observer — wider rootMargin so cards near fold aren't missed
     if (revealObserver) revealObserver.disconnect();
     revealObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
@@ -3883,10 +3885,19 @@ function sendSMSCard() {
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px 60px 0px' });
 
     document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
       revealObserver.observe(el);
+    });
+
+    // Immediately reveal anything already inside the viewport (no scroll needed)
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add('visible');
+        revealObserver.unobserve(el);
+      }
     });
 
     // Stat counter observer
@@ -3984,31 +3995,44 @@ function hiwSelectTab(step) {
   }
 }
 
-// Auto-advance HIW tabs every 5 seconds when page is visible
-(function(){
-  let hiwTimer = null;
-  let hiwStep  = 1;
-  const HIW_TOTAL = 4;
+/* HIW tab auto-advance removed — page now uses top-to-bottom scroll layout */
 
-  function startHIWAuto() {
-    clearInterval(hiwTimer);
-    hiwTimer = setInterval(function() {
-      const page = document.getElementById('page-howitworks');
-      if (!page || !page.classList.contains('active')) return;
-      hiwStep = (hiwStep % HIW_TOTAL) + 1;
-      hiwSelectTab(hiwStep);
-    }, 5000);
-  }
+/* ══════════════════════════════════════════════════════════
+   ONBOARDING TUTORIAL MODAL
+══════════════════════════════════════════════════════════ */
+function showOnboardingTutorial() {
+  const overlay = document.getElementById('onboardingOverlay');
+  if (!overlay) return;
+  overlay.style.display = 'flex';
+  onbGoStep(1);
+}
 
-  // Reset timer when user manually clicks a tab
-  document.addEventListener('click', function(e) {
-    const tab = e.target.closest('.hiw-tab');
-    if (tab) {
-      const step = parseInt(tab.dataset.step, 10);
-      if (step) { hiwStep = step; startHIWAuto(); }
-    }
+function closeOnboarding() {
+  const overlay = document.getElementById('onboardingOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function onbGoStep(step) {
+  const panels = document.querySelectorAll('.onb-panel');
+  panels.forEach(function(p, i) {
+    p.classList.toggle('active', (i + 1) === step);
   });
+  const dots = document.querySelectorAll('.onb-prog-dot');
+  dots.forEach(function(d, i) {
+    const n = i + 1;
+    d.classList.remove('active', 'done');
+    if (n === step) d.classList.add('active');
+    if (n < step)  d.classList.add('done');
+  });
+}
 
-  document.addEventListener('DOMContentLoaded', startHIWAuto);
-})();
+// Close onboarding on overlay background click
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('onboardingOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeOnboarding();
+    });
+  }
+});
 
