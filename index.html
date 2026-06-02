@@ -1718,15 +1718,18 @@
   </main>
 
   <!-- AUTH MODAL -->
-  <div class="modal-overlay" id="authModalOverlay" role="dialog" aria-modal="true" aria-labelledby="authModalHeading">
+  <div class="modal-overlay" id="authModalOverlay" role="dialog" aria-modal="true" aria-labelledby="authModalHeading" inert>
     <div class="modal auth-modal" id="authModal">
       <button class="modal-close" id="authModalClose" aria-label="Close sign-in dialog">✕</button>
       <div class="auth-view" id="authSignInView">
         <div class="modal-logo">VITAL</div>
         <h2 id="authModalHeading">Welcome Back</h2>
         <p class="modal-sub">Sign in to access your Medicine Cabinet and Digital Card.</p>
-        <div class="modal-field"><label>Email Address</label><input type="email" id="signInEmail" class="vault-input" placeholder="you@email.com" autocomplete="username" /></div>
-        <div class="modal-field"><label>Password</label><input type="text" id="signInPass" class="vault-input masked-input" placeholder="••••••••" autocomplete="off" /></div>
+        <!-- Honeypot: browser credential scanner targets this hidden field instead of the real inputs -->
+        <input type="text" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="username" />
+        <input type="password" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="current-password" />
+        <div class="modal-field"><label>Email Address</label><input type="text" inputmode="email" id="signInEmail" class="vault-input" placeholder="you@email.com" autocomplete="off" /></div>
+        <div class="modal-field"><label>Password</label><input type="text" id="signInPass" class="vault-input masked-input" placeholder="••••••••" autocomplete="new-password" /></div>
         <div class="remember-me-row">
           <label class="remember-me-label">
             <input type="checkbox" id="rememberMeCheck" />
@@ -1766,11 +1769,11 @@
           <div class="onboard-step" data-step="3"><div class="onboard-step-num">3</div><div class="onboard-step-label">Clinical</div></div>
         </div>
         <div class="onboard-panel active" id="onboardStep1">
-          <div class="modal-field"><label>Full Legal Name</label><input type="text" id="reg-name" class="vault-input" placeholder="First Middle Last" /></div>
-          <div class="modal-field"><label>Email</label><input type="email" id="reg-email" class="vault-input" placeholder="you@email.com" autocomplete="email" /></div>
+          <div class="modal-field"><label>Full Legal Name</label><input type="text" id="reg-name" class="vault-input" placeholder="First Middle Last" autocomplete="off" /></div>
+          <div class="modal-field"><label>Email</label><input type="text" inputmode="email" id="reg-email" class="vault-input" placeholder="you@email.com" autocomplete="off" /></div>
           <div class="modal-field-row">
-            <div class="modal-field"><label>Date of Birth</label><input type="date" id="reg-dob" class="vault-input" /></div>
-            <div class="modal-field"><label>Password</label><input type="text" id="reg-pass" class="vault-input masked-input" placeholder="Min 8 chars" autocomplete="off" /></div>
+            <div class="modal-field"><label>Date of Birth</label><input type="date" id="reg-dob" class="vault-input" autocomplete="off" /></div>
+            <div class="modal-field"><label>Password</label><input type="text" id="reg-pass" class="vault-input masked-input" placeholder="Min 8 chars" autocomplete="new-password" /></div>
           </div>
           <button class="btn-primary" style="width:100%" id="onboardNext1">Continue →</button>
         </div>

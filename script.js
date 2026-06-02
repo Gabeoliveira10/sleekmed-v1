@@ -1374,12 +1374,16 @@ function handleGetCardCTA() {
    AUTH
 ═══════════════════════════════════════════════════════════════ */
 function openAuthModal(mode = 'signin') {
-  $('authModalOverlay').classList.add('open');
+  const overlay = $('authModalOverlay');
+  overlay.removeAttribute('inert');   // make inputs discoverable only while open
+  overlay.classList.add('open');
   mode === 'register' ? showRegView() : showSignInView();
 }
 
 function closeAuthModal() {
-  $('authModalOverlay').classList.remove('open');
+  const overlay = $('authModalOverlay');
+  overlay.classList.remove('open');
+  overlay.setAttribute('inert', ''); // hide inputs from browser credential scanner when closed
 }
 
 function showSignInView() {
