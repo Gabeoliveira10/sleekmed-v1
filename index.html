@@ -1880,16 +1880,11 @@
     </div>
   </div>
 
-  <!--
-    ═══════════════════════════════════════════════════════════
-    FIREBASE SDK — uncomment once your Firebase project is live
-    Replace the config values inside script.js (FIREBASE_CONFIG)
-    ═══════════════════════════════════════════════════════════
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
-  -->
+  <!-- FIREBASE SDK — project: vital-rx ✓ -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
   <!-- PRINTABLE CARD — invisible on screen; @media print reveals it -->
   <div id="printableCard" aria-hidden="true">
     <div class="printable-card-inner">
@@ -1976,6 +1971,133 @@
       </div>
 
       <button class="onb-skip" onclick="closeOnboarding()">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- CARD GATEKEEPER — 3-Question Legal Compliance Popup -->
+  <div id="cardGatekeeperOverlay" class="card-gate-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="cardGateTitle">
+    <div class="card-gate-modal">
+
+      <!-- Progress dots -->
+      <div class="card-gate-progress">
+        <div class="cg-dot active" id="cgDot1"></div>
+        <div class="cg-line" id="cgLine1"></div>
+        <div class="cg-dot" id="cgDot2"></div>
+        <div class="cg-line" id="cgLine2"></div>
+        <div class="cg-dot" id="cgDot3"></div>
+      </div>
+
+      <!-- Q1: Federal exclusion -->
+      <div class="card-gate-panel active" id="cgPanel1">
+        <div class="card-gate-icon card-gate-icon-warn">
+          <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
+            <path d="M20 5L37 35H3L20 5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M20 16v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="20" cy="29" r="1.2" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="card-gate-step-lbl">Question 1 of 3 · Federal Exclusion</div>
+        <h2 class="card-gate-title" id="cardGateTitle">Are you enrolled in a government health program?</h2>
+        <p class="card-gate-desc">Federal law (42 U.S.C. § 1320a-7b) prohibits Medicare, Medicaid, VA, and TRICARE beneficiaries from using third-party discount cards for covered prescriptions.</p>
+        <p class="card-gate-q"><strong>Do you currently receive prescription drug coverage through Medicare, Medicaid, VA, TRICARE, or any other federally-funded health program?</strong></p>
+        <div class="card-gate-btns">
+          <button class="card-gate-btn-yes" onclick="cgAnswer(1, 'yes')">Yes — I am a government beneficiary</button>
+          <button class="card-gate-btn-no" onclick="cgAnswer(1, 'no')">No — I am not a government beneficiary</button>
+        </div>
+      </div>
+
+      <!-- Q1 Hard Stop -->
+      <div class="card-gate-panel" id="cgPanel1stop">
+        <div class="card-gate-icon card-gate-icon-stop">
+          <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
+            <circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="2"/>
+            <path d="M13 13l14 14M27 13L13 27" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="card-gate-title">This card is not available to you</h2>
+        <p class="card-gate-desc">Federal law prohibits government beneficiaries from using this type of discount card. Using it could result in federal penalties for both you and the pharmacy.</p>
+        <p class="card-gate-desc"><strong>You can still see retail cash prices</strong> for any medication — just search above without using the card codes.</p>
+        <div class="card-gate-btns">
+          <button class="card-gate-btn-no" onclick="closeCardGatekeeper(); navigateTo('search')">Browse Cash Prices Instead</button>
+          <button class="card-gate-btn-ghost" onclick="closeCardGatekeeper()">Close</button>
+        </div>
+      </div>
+
+      <!-- Q2: Valid prescription -->
+      <div class="card-gate-panel" id="cgPanel2">
+        <div class="card-gate-icon card-gate-icon-rx">
+          <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
+            <rect x="8" y="4" width="24" height="32" rx="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M14 13h12M14 19h12M14 25h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M26 26l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="25" cy="27" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="card-gate-step-lbl">Question 2 of 3 · Prescription Requirement</div>
+        <h2 class="card-gate-title">Do you have a valid prescription?</h2>
+        <p class="card-gate-desc">This savings card is for use with a valid prescription from a licensed U.S. physician only. It cannot be used for over-the-counter purchases or medications without a prescription.</p>
+        <p class="card-gate-q"><strong>Do you have, or will you have, a valid prescription from a licensed physician for the medication you plan to use this card for?</strong></p>
+        <div class="card-gate-btns">
+          <button class="card-gate-btn-no" onclick="cgAnswer(2, 'yes')">Yes — I have a valid prescription</button>
+          <button class="card-gate-btn-yes" onclick="cgAnswer(2, 'no')">No — I do not have a prescription</button>
+        </div>
+      </div>
+
+      <!-- Q2 Hard Stop -->
+      <div class="card-gate-panel" id="cgPanel2stop">
+        <div class="card-gate-icon card-gate-icon-stop">
+          <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
+            <circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="2"/>
+            <path d="M13 13l14 14M27 13L13 27" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="card-gate-title">Prescription required</h2>
+        <p class="card-gate-desc">This card can only be used with a valid prescription from a licensed physician. Please visit your doctor or use our telehealth service to get a prescription first.</p>
+        <div class="card-gate-btns">
+          <button class="card-gate-btn-no" onclick="closeCardGatekeeper(); navigateTo('telehealth')">Learn About Online Care</button>
+          <button class="card-gate-btn-ghost" onclick="cgGoPanel('cgPanel2')">← Back</button>
+        </div>
+      </div>
+
+      <!-- Q3: Legal agreement + e-consent -->
+      <div class="card-gate-panel" id="cgPanel3">
+        <div class="card-gate-icon card-gate-icon-check">
+          <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
+            <path d="M20 5L35 12V20c0 9-6.5 15-15 17C11.5 35 5 29 5 20V12L20 5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M13 20l5 5 9-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-gate-step-lbl">Question 3 of 3 · Legal Agreement</div>
+        <h2 class="card-gate-title">Review &amp; agree to card terms</h2>
+        <p class="card-gate-desc">Before accessing your digital savings card, please read and acknowledge the following:</p>
+        <div class="card-gate-terms">
+          <div class="card-gate-term-item">
+            <span class="card-gate-term-num">1</span>
+            <span>This card is <strong>NOT insurance</strong>. It is a cash-pay discount program only.</span>
+          </div>
+          <div class="card-gate-term-item">
+            <span class="card-gate-term-num">2</span>
+            <span>I will <strong>not submit</strong> this discount to any insurance plan or apply costs toward my deductible or out-of-pocket maximum.</span>
+          </div>
+          <div class="card-gate-term-item">
+            <span class="card-gate-term-num">3</span>
+            <span>I understand prices are <strong>estimates</strong> and may vary. I will confirm the final price with my pharmacist before processing.</span>
+          </div>
+        </div>
+        <div class="card-gate-consent-row">
+          <input type="checkbox" id="cgConsentCheck" onchange="document.getElementById('cgRevealBtn').disabled=!this.checked">
+          <label for="cgConsentCheck">I have read and agree to all three statements above. I understand this card expires 12/31/2026.</label>
+        </div>
+        <div class="card-gate-btns">
+          <button class="card-gate-btn-reveal" id="cgRevealBtn" disabled onclick="cgRevealCard()">
+            <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><rect x="3" y="9" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V6a3 3 0 016 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Reveal My Digital Card
+          </button>
+          <button class="card-gate-btn-ghost" onclick="cgGoPanel('cgPanel2')">← Back</button>
+        </div>
+        <p class="card-gate-not-ins">NOT INSURANCE · Governmental beneficiaries excluded · Offer expires 12/31/2026</p>
+      </div>
+
     </div>
   </div>
 

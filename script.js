@@ -909,16 +909,16 @@ function normalizeGoodRxPrices(goodRxResponse, drug) {
    4. Set FIREBASE_ENABLED = true
    All auth / Firestore calls below check this flag before running.
 ═══════════════════════════════════════════════════════════════ */
-const FIREBASE_ENABLED = false;   // ← flip to true after setup
+const FIREBASE_ENABLED = true;    // ✓ Firebase project: vital-rx
 
 const FIREBASE_CONFIG = {
-  apiKey:            '',           // from Firebase console
-  authDomain:        '',
-  projectId:         '',
-  storageBucket:     '',
-  messagingSenderId: '',
-  appId:             '',
-  measurementId:     '',           // for Analytics
+  apiKey:            'AIzaSyCHISBy0EPjb1ROYfOc-NHW0ekHMjlg89s',
+  authDomain:        'vital-rx.firebaseapp.com',
+  projectId:         'vital-rx',
+  storageBucket:     'vital-rx.firebasestorage.app',
+  messagingSenderId: '212681360676',
+  appId:             '1:212681360676:web:a839272e9cb06687f25fb1',
+  measurementId:     '',
 };
 
 /** Initialize Firebase once on page load — safe no-op if disabled */
@@ -1663,6 +1663,15 @@ function saveVaultData() {
    DIGITAL CARD — pulls live from vault
 ═══════════════════════════════════════════════════════════════ */
 function renderCard() {
+  // Show compliance gatekeeper first if not yet cleared
+  if (!isCardGatekeeperCleared()) {
+    showCardGatekeeper();
+    return;
+  }
+  _renderCardContent();
+}
+
+function _renderCardContent() {
   const ins  = getInsuranceRecord();
   const name = State.vault['vf-name'] || (State.user && State.user.name) || 'MEMBER NAME';
 
@@ -3996,6 +4005,109 @@ function hiwSelectTab(step) {
 }
 
 /* HIW tab auto-advance removed — page now uses top-to-bottom scroll layout */
+
+/* ══════════════════════════════════════════════════════════
+   CARD GATEKEEPER — 3-Question Legal Compliance Popup
+   Fires before the Digital Card BIN/PCN/Group codes are shown.
+   Cleared status stored in localStorage (session-persistent).
+   Compliance event logged to Firestore compliance_audit.
+══════════════════════════════════════════════════════════ */
+const CARD_GATE_KEY = 'vrx_card_gate_cleared';   // localStorage flag
+
+function isCardGatekeeperCleared() {
+  return localStorage.getItem(CARD_GATE_KEY) === '1';
+}
+
+function showCardGatekeeper() {
+  const overlay = document.getElementById('cardGatekeeperOverlay');
+  if (!overlay) return;
+  // Reset state
+  document.getElementById('cgConsentCheck').checked = false;
+  document.getElementById('cgRevealBtn').disabled = true;
+  // Reset progress dots
+  ['cgDot1','cgDot2','cgDot3'].forEach(function(id, i) {
+    var d = document.getElementById(id);
+    if (d) { d.classList.remove('active','done','stop'); if (i === 0) d.classList.add('active'); }
+  });
+  ['cgLine1','cgLine2'].forEach(function(id) {
+    var l = document.getElementById(id);
+    if (l) l.classList.remove('filled');
+  });
+  cgGoPanel('cgPanel1');
+  overlay.style.display = 'flex';
+}
+
+function closeCardGatekeeper() {
+  var overlay = document.getElementById('cardGatekeeperOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function cgGoPanel(panelId) {
+  document.querySelectorAll('.card-gate-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  var target = document.getElementById(panelId);
+  if (target) target.classList.add('active');
+}
+
+/** cgAnswer — handle yes/no answer for a given question number */
+function cgAnswer(questionNum, answer) {
+  if (questionNum === 1) {
+    if (answer === 'yes') {
+      // Government beneficiary — hard stop
+      var dot1 = document.getElementById('cgDot1');
+      if (dot1) { dot1.classList.remove('active'); dot1.classList.add('stop'); }
+      cgGoPanel('cgPanel1stop');
+      // Log blocked attempt
+      logComplianceEvent({ type: 'card_gate_blocked', reason: 'govt_beneficiary', screen: 1 });
+    } else {
+      // Passed Q1 — advance to Q2
+      var d1 = document.getElementById('cgDot1');
+      if (d1) { d1.classList.remove('active'); d1.classList.add('done'); }
+      var l1 = document.getElementById('cgLine1');
+      if (l1) l1.classList.add('filled');
+      var d2 = document.getElementById('cgDot2');
+      if (d2) d2.classList.add('active');
+      cgGoPanel('cgPanel2');
+    }
+  } else if (questionNum === 2) {
+    if (answer === 'no') {
+      // No prescription — hard stop
+      var dot2 = document.getElementById('cgDot2');
+      if (dot2) { dot2.classList.remove('active'); dot2.classList.add('stop'); }
+      cgGoPanel('cgPanel2stop');
+      logComplianceEvent({ type: 'card_gate_blocked', reason: 'no_prescription', screen: 2 });
+    } else {
+      // Passed Q2 — advance to Q3
+      var d2b = document.getElementById('cgDot2');
+      if (d2b) { d2b.classList.remove('active'); d2b.classList.add('done'); }
+      var l2 = document.getElementById('cgLine2');
+      if (l2) l2.classList.add('filled');
+      var d3 = document.getElementById('cgDot3');
+      if (d3) d3.classList.add('active');
+      cgGoPanel('cgPanel3');
+    }
+  }
+}
+
+/** cgRevealCard — user checked consent, card can now be revealed */
+function cgRevealCard() {
+  // Mark cleared in localStorage
+  localStorage.setItem(CARD_GATE_KEY, '1');
+  // Log successful compliance pass to Firestore
+  logComplianceEvent({
+    type:      'card_gate_passed',
+    userEmail: State.user ? State.user.email : 'anonymous',
+    userName:  State.user ? State.user.name  : 'anonymous',
+    cardBIN:   '610524',
+    cardPCN:   'FPLAY',
+    cardGroup: 'FP2026',
+  });
+  closeCardGatekeeper();
+  // Now render the actual card content
+  _renderCardContent();
+  showToast('Compliance verified — your card is now active.', 'success');
+}
 
 /* ══════════════════════════════════════════════════════════
    ONBOARDING TUTORIAL MODAL
