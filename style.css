@@ -6155,6 +6155,7 @@ p { color: #4A5568; }
   border-radius: 14px;
   overflow: hidden;
   transition: border-color 0.2s;
+  cursor: pointer;
 }
 .hiw-faq-item.open { border-color: rgba(52,211,153,0.2); }
 .hiw-faq-q {
@@ -6178,12 +6179,11 @@ p { color: #4A5568; }
 .hiw-faq-item.open .hiw-faq-q svg { transform: rotate(180deg); }
 .hiw-faq-item.open .hiw-faq-q { color: #f8fafc; }
 .hiw-faq-a {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
+  max-height: 0;
+  overflow: hidden !important;
+  transition: max-height 0.3s ease;
 }
-.hiw-faq-item.open .hiw-faq-a { grid-template-rows: 1fr; }
-.hiw-faq-a > p, .hiw-faq-a > div { overflow: hidden; }
+.hiw-faq-item.open .hiw-faq-a { max-height: 300px; }
 .hiw-faq-a p {
   padding: 0 20px 18px;
   font-size: 13.5px;
@@ -6221,6 +6221,16 @@ p { color: #4A5568; }
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
+}
+.hiw-final-btns .btn-ghost {
+  color: rgba(255,255,255,0.85) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+  background: transparent !important;
+}
+.hiw-final-btns .btn-ghost:hover {
+  color: #fff !important;
+  border-color: rgba(255,255,255,0.6) !important;
+  background: rgba(255,255,255,0.08) !important;
 }
 
 /* Tab responsive */

@@ -1282,6 +1282,13 @@ function navigateTo(pageId, _skipStack) {
   $$('[data-sidebar-link]').forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
 
   closeSidebar();
+
+  // Close Technical Disclosures panel whenever navigating
+  const _discBtn = document.querySelector('.footer-disclosure-btn');
+  const _discPanel = document.querySelector('.footer-disclosure-panel');
+  if (_discBtn) _discBtn.classList.remove('open');
+  if (_discPanel) _discPanel.classList.remove('open');
+
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -2034,9 +2041,13 @@ function renderPriceCards(variant, drugName) {
     `;
   }).join('');
 
-  // Bind price action buttons
+  // Bind price action buttons — also make the whole card clickable
   $$('#priceComparisonGrid .price-action').forEach(btn => {
-    btn.addEventListener('click', () => handlePriceAction(btn));
+    btn.addEventListener('click', (e) => { e.stopPropagation(); handlePriceAction(btn); });
+    btn.closest('.price-card').addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      handlePriceAction(btn);
+    });
   });
 
   // Savings note
