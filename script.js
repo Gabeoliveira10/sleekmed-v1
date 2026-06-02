@@ -2682,15 +2682,38 @@ function handlePriceAction(btn) {
   const drug        = btn.dataset.drug;
   const variantLbl  = btn.dataset.variant;
   const retail      = parseFloat(btn.dataset.retail);
-  const theme       = SOURCE_THEMES[sourceId] || SOURCE_THEMES.fp;
+  const extLink     = btn.dataset.link;
 
-  // ── Track coupon source + show Vital Rx nudge if applicable ──
   trackCouponSource(sourceId, drug);
   maybeShowVitalRxNudge(sourceId, drug);
-  // Note: compliance gate moved to the "Reveal Pharmacy Coupon" button on the
-  // card flip back — the flip card itself always shows on click.
 
-  // Highlight selected price card
+  // ── GoodRx and Cost Plus → go STRAIGHT to their website, no panel ──
+  if (extLink && (sourceId === 'grx' || sourceId === 'cp')) {
+    window.open(extLink, '_blank', 'noopener');
+    showToast(`Opening ${sourceLabel}…`, 'info');
+    return;
+  }
+
+  // ── Vital Rx (fp) → straight to gatekeeper or straight to codes ──
+  if (sourceId === 'fp') {
+    const ins = getInsuranceRecord();
+    _CardFlipCtx = { drug, sourceId, theme: SOURCE_THEMES.fp, ins, variantLbl, price, retail };
+    if (!isCardGatekeeperCleared()) {
+      // Not cleared — launch 3-question gatekeeper immediately
+      showCardGatekeeper();
+    } else {
+      // Already cleared — show codes panel directly
+      _showFPCodePanel();
+    }
+    return;
+  }
+
+  // ── Retail / Insurance — simple info panel (no codes, no gatekeeper) ──
+  const theme = SOURCE_THEMES[sourceId] || SOURCE_THEMES.ret;
+  const ins   = getInsuranceRecord();
+  const name  = State.vault['vf-name'] || (State.user && State.user.name && State.user.name !== 'admin' ? State.user.name : null) || 'MEMBER';
+  const saved = retail - price;
+
   $$('#priceComparisonGrid .price-card').forEach(c => {
     c.classList.remove('selected-card');
     c.style.removeProperty('--card-glow');
@@ -2699,11 +2722,6 @@ function handlePriceAction(btn) {
   selectedCard.classList.add('selected-card');
   selectedCard.style.setProperty('--card-glow', theme.glowColor);
 
-  const ins   = getInsuranceRecord();
-  const name  = State.vault['vf-name'] || (State.user && State.user.name && State.user.name !== 'admin' ? State.user.name : null) || 'MEMBER';
-  const saved = retail - price;
-
-  // Style the front card dynamically
   const front = document.querySelector('.card-flip-front');
   front.style.background = theme.frontBg;
   front.style.borderColor = theme.frontBorder;
@@ -2715,84 +2733,104 @@ function handlePriceAction(btn) {
   $('flipDrug').style.color = 'rgba(255,255,255,0.8)';
   document.querySelector('.flip-hint').style.color = theme.frontHintColor;
 
-  // Store flip context so gatekeeper can reveal codes in-place after clearance
-  _CardFlipCtx = { drug, sourceId, theme, ins };
-
-  // Build dynamic back card — codes shown if already cleared; otherwise blur + reveal btn
-  const _codesRevealed = isCardGatekeeperCleared();
-  const codesHtml = theme.showCodes
-    ? (_codesRevealed
-        ? `<div class="mini-card-codes" id="miniCardCodes">
-            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
-            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
-            <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
-          </div>`
-        : `<div class="mini-card-reveal-wrap" id="miniCardCodes">
-            <div class="mini-card-codes-blurred">
-              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val mini-code-blur">●●●●●●</div></div>
-              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val mini-code-blur">●●●●●</div></div>
-              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val mini-code-blur">●●●●●●</div></div>
-            </div>
-            <button class="mini-card-reveal-btn" onclick="cgRevealFromSearch(event)">
-              <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><rect x="2" y="8" width="12" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8V5.5a3 3 0 016 0V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              Reveal Pharmacy Coupon
-            </button>
-          </div>`)
-    : `<div style="height:14px"></div>`;
-
   const back = document.querySelector('.card-flip-back');
   back.style.background = theme.backBg;
   back.style.borderColor = theme.backBorder;
-  back.style.boxShadow = `0 0 40px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.6)`;
   back.innerHTML = `
     <div class="mini-card">
-      <div class="mini-card-header">
-        ${theme.logoHtml}
-        ${theme.chipHtml}
-      </div>
+      <div class="mini-card-header">${theme.logoHtml}${theme.chipHtml}</div>
       <div class="mini-card-name" style="color:rgba(255,255,255,0.45)">${name.toUpperCase()}</div>
-      ${codesHtml}
+      <div style="height:14px"></div>
       <div class="mini-card-note" style="color:${theme.noteColor};border-top:1px solid rgba(255,255,255,0.07)">
         ${theme.note} · Save <strong style="color:${theme.codeColor}">${saved > 0 ? fmt(saved) : '—'}</strong> vs. retail
       </div>
-    </div>
-  `;
+    </div>`;
 
-  // Show panel, reset flip
   const panel = $('cardFlipPanel');
   const card  = $('cardFlipCard');
   card.classList.remove('flipped');
+  $('flipExportRow').style.display = 'none'; // export buttons only for Vital Rx after clearance
   panel.style.display = 'flex';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Make card keyboard-accessible: Tab-focusable, Enter/Space to flip
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', 'Prescription discount card — press Enter or Space to flip and see your codes');
   card._flipBound && card.removeEventListener('click', card._flipBound);
-  card._flipBound = () => {
-    card.classList.toggle('flipped');
-    const flipped = card.classList.contains('flipped');
-    card.setAttribute('aria-label', flipped
-      ? 'Discount card back — codes visible. Press Enter or Space to flip back.'
-      : 'Discount card front — press Enter or Space to flip and see your codes.');
-    card.setAttribute('aria-pressed', String(flipped));
-  };
+  card._flipBound = () => card.classList.toggle('flipped');
   card.addEventListener('click', card._flipBound);
-  card._keyFlipBound && card.removeEventListener('keydown', card._keyFlipBound);
-  card._keyFlipBound = function(e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card._flipBound(); }
-  };
-  card.addEventListener('keydown', card._keyFlipBound);
+}
 
-  // Open external link for GoodRx and Cost Plus
-  const extLink = btn.dataset.link;
-  if (extLink && (sourceId === 'grx' || sourceId === 'cp')) {
-    setTimeout(function(){ window.open(extLink, '_blank', 'noopener'); }, 400);
+/**
+ * _showFPCodePanel — called after gatekeeper passes (or immediately if already cleared).
+ * Displays the Vital Rx discount codes in the panel, no flip required,
+ * and reveals the download/print/text export buttons.
+ */
+function _showFPCodePanel() {
+  const ctx     = _CardFlipCtx;
+  const ins     = ctx.ins || getInsuranceRecord();
+  const theme   = SOURCE_THEMES.fp;
+  const name    = State.vault['vf-name'] || (State.user && State.user.name && State.user.name !== 'admin' ? State.user.name : null) || 'MEMBER';
+  const saved   = (ctx.retail || 0) - (ctx.price || 0);
+  const drug    = ctx.drug    || '—';
+  const variant = ctx.variantLbl || '';
+
+  // Highlight the Vital Rx price card
+  $$('#priceComparisonGrid .price-card').forEach(c => {
+    c.classList.remove('selected-card');
+    c.style.removeProperty('--card-glow');
+  });
+  const fpCard = document.querySelector('#priceComparisonGrid .price-card');
+  if (fpCard) {
+    fpCard.classList.add('selected-card');
+    fpCard.style.setProperty('--card-glow', theme.glowColor);
   }
 
-  if (sourceId === 'fp' && !State.user) {
-    showToast('Create a free account to save your card details.', 'success');
+  // Style front face
+  const front = document.querySelector('.card-flip-front');
+  if (front) {
+    front.style.background = theme.frontBg;
+    front.style.borderColor = theme.frontBorder;
+  }
+  $('flipSourceLabel').style.color = theme.frontLabelColor;
+  $('flipSourceLabel').textContent = 'Vital Rx';
+  $('flipPrice').style.color = theme.frontPriceColor;
+  $('flipPrice').textContent = ctx.price ? fmt(ctx.price) : '—';
+  $('flipDrug').textContent  = drug + (variant ? ' · ' + variant : '');
+  $('flipDrug').style.color  = 'rgba(255,255,255,0.8)';
+
+  // Build back face with codes visible immediately
+  const back = document.querySelector('.card-flip-back');
+  if (back) {
+    back.style.background  = theme.backBg;
+    back.style.borderColor = theme.backBorder;
+    back.style.boxShadow   = '0 0 40px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.6)';
+    back.innerHTML = `
+      <div class="mini-card">
+        <div class="mini-card-header">${theme.logoHtml}${theme.chipHtml}</div>
+        <div class="mini-card-name" style="color:rgba(255,255,255,0.45)">${name.toUpperCase()}</div>
+        <div class="mini-card-codes" id="miniCardCodes">
+          <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
+          <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
+          <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
+        </div>
+        <div class="mini-card-note" style="color:${theme.noteColor};border-top:1px solid rgba(255,255,255,0.07)">
+          Show to pharmacist · Save <strong style="color:${theme.codeColor}">${saved > 0 ? fmt(saved) : '—'}</strong> vs. retail
+        </div>
+      </div>`;
+  }
+
+  // Show panel already flipped to codes side — no extra click needed
+  const panel = $('cardFlipPanel');
+  const card  = $('cardFlipCard');
+  card.classList.add('flipped');            // codes visible immediately
+  card._flipBound && card.removeEventListener('click', card._flipBound);
+  card._flipBound = () => card.classList.toggle('flipped');
+  card.addEventListener('click', card._flipBound);
+
+  $('flipExportRow').style.display = 'flex'; // show Download / Print / Text now
+  panel.style.display = 'flex';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  if (!State.user) {
+    showToast('Create a free account to save these codes to your Cabinet.', 'success');
   }
 }
 
@@ -3749,59 +3787,99 @@ function _getCardExportData() {
   };
 }
 
-/* ── Download — opens a print-ready page; user can Save as PDF ─ */
+/* ── Download — generates a clean standalone HTML card file ─ */
 function exportCardDownload() {
+  if (!isCardGatekeeperCleared()) {
+    showToast('Complete the eligibility check first to download your card.', 'error');
+    return;
+  }
   const d = _getCardExportData();
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Vital Rx Discount Card</title>
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vital Rx Discount Card — ${d.drug}</title>
 <style>
-  body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f4f8;font-family:Arial,Helvetica,sans-serif}
-  .card{width:340px;padding:28px 26px;border:2px solid #111;border-radius:14px;background:#fff;color:#000;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
-  .hdr{font-size:22px;font-weight:900;letter-spacing:0.08em;margin-bottom:2px}
-  .sub{font-size:10px;color:#666;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #ddd}
-  .lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
-  .drug{font-size:16px;font-weight:700;margin-bottom:2px}
-  .price{font-size:30px;font-weight:900;margin-bottom:16px}
-  .codes{display:flex;gap:10px;margin-bottom:14px}
-  .code{flex:1;border:1px solid #ccc;border-radius:6px;padding:8px 6px;text-align:center}
-  .code-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;color:#888;text-transform:uppercase;margin-bottom:3px}
-  .code-val{font-size:14px;font-weight:900}
-  .instr{font-size:11px;color:#444;background:#f5f5f5;border-radius:6px;padding:10px;margin-bottom:12px;line-height:1.55}
-  .note{font-size:10px;color:#777;border-top:1px solid #e0e0e0;padding-top:10px;text-align:center;line-height:1.5}
-  .print-btn{display:block;margin:20px auto 0;padding:12px 28px;background:#000;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.02em}
-  @media print{.print-btn{display:none}}
-</style></head><body>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+       background:#f0f4f8;display:flex;align-items:flex-start;justify-content:center;
+       min-height:100vh;padding:40px 20px}
+  .card{width:100%;max-width:380px;background:#fff;border-radius:16px;
+        box-shadow:0 8px 40px rgba(0,0,0,0.15);overflow:hidden}
+  .card-header{background:linear-gradient(135deg,#1E3A8A,#1565C0);
+               padding:24px 24px 20px;color:#fff}
+  .brand{font-size:20px;font-weight:900;letter-spacing:0.08em;margin-bottom:2px}
+  .brand-sub{font-size:10px;opacity:.65;letter-spacing:.06em;text-transform:uppercase}
+  .card-body{padding:24px}
+  .row{margin-bottom:14px}
+  .lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+  .val{font-size:15px;font-weight:700;color:#111}
+  .price-val{font-size:28px;font-weight:900;color:#1565C0}
+  .codes{display:flex;gap:10px;margin:18px 0}
+  .code{flex:1;border:2px solid #e0e8ff;border-radius:10px;padding:10px 8px;text-align:center;background:#f5f8ff}
+  .code-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;color:#5a78b8;text-transform:uppercase;margin-bottom:4px}
+  .code-val{font-size:16px;font-weight:900;color:#111;font-family:monospace}
+  .instr{background:#f0f7ff;border-left:3px solid #1565C0;border-radius:0 8px 8px 0;
+         padding:12px 14px;font-size:12px;color:#334;line-height:1.6;margin-bottom:14px}
+  .disclaimer{font-size:10px;color:#999;line-height:1.5;padding-top:14px;
+              border-top:1px solid #eee;text-align:center}
+  .print-btn{display:block;width:100%;margin-top:20px;padding:14px;
+             background:#1E3A8A;color:#fff;border:none;border-radius:10px;
+             font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em}
+  @media print{.print-btn{display:none}body{background:#fff;padding:0}
+    .card{box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
 <div class="card">
-  <div class="hdr">VITAL RX</div>
-  <div class="sub">Free Prescription Discount Card</div>
-  <div class="lbl">Member</div>
-  <div class="drug">${d.member}</div>
-  <div class="lbl" style="margin-top:10px">Prescription</div>
-  <div class="drug">${d.drug}</div>
-  <div class="price">${d.price}</div>
-  <div class="codes">
-    <div class="code"><div class="code-lbl">BIN</div><div class="code-val">${d.bin}</div></div>
-    <div class="code"><div class="code-lbl">PCN</div><div class="code-val">${d.pcn}</div></div>
-    <div class="code"><div class="code-lbl">GROUP</div><div class="code-val">${d.group}</div></div>
+  <div class="card-header">
+    <div class="brand">VITAL RX</div>
+    <div class="brand-sub">Free Prescription Discount Card</div>
   </div>
-  <div class="instr">Present this card to your pharmacist <em>before</em> they process your prescription. Say: <strong>"I have a Vital Rx discount card."</strong></div>
-  <div class="note">This is not insurance &nbsp;·&nbsp; Free to use at 70,000+ pharmacies<br>vitalrx.com &nbsp;·&nbsp; support@vitalrx.com</div>
-  <button class="print-btn" onclick="window.print()">Print this card</button>
+  <div class="card-body">
+    <div class="row"><div class="lbl">Member</div><div class="val">${d.member}</div></div>
+    <div class="row"><div class="lbl">Medication</div><div class="val">${d.drug}</div></div>
+    <div class="row"><div class="lbl">Your Price</div><div class="price-val">${d.price}</div></div>
+    <div class="codes">
+      <div class="code"><div class="code-lbl">BIN</div><div class="code-val">${d.bin}</div></div>
+      <div class="code"><div class="code-lbl">PCN</div><div class="code-val">${d.pcn}</div></div>
+      <div class="code"><div class="code-lbl">GROUP</div><div class="code-val">${d.group}</div></div>
+    </div>
+    <div class="instr">
+      <strong>Show this card to your pharmacist</strong> before they process your prescription.<br>
+      Say: <em>"I have a Vital Rx discount card."</em>
+    </div>
+    <div class="disclaimer">
+      This is NOT insurance &nbsp;·&nbsp; Free to use at 70,000+ pharmacies<br>
+      Prices are estimates and may vary &nbsp;·&nbsp; Card expires 12/31/2026<br>
+      Generated ${today} &nbsp;·&nbsp; vitalrx.com
+    </div>
+    <button class="print-btn" onclick="window.print()">Save as PDF / Print</button>
+  </div>
 </div>
-</body></html>`;
+</body>
+</html>`;
 
-  const blob = new Blob([html], { type: 'text/html' });
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
-  a.download = 'vital-rx-discount-card.html';
+  a.download = `vital-rx-${(d.drug || 'card').toLowerCase().replace(/\s+/g, '-')}-discount-card.html`;
+  document.body.appendChild(a);
   a.click();
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
-  showToast('Discount card downloaded — open the file to print or save as PDF.', 'success');
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 10000);
+  showToast('Card downloaded — open the file and click "Save as PDF / Print".', 'success');
 }
 
 /* ── Print — populates #printableCard and calls window.print() ─ */
 function exportCardPrint() {
+  if (!isCardGatekeeperCleared()) {
+    showToast('Complete the eligibility check first.', 'error');
+    return;
+  }
   const d = _getCardExportData();
   const s = function(id, val){ const el = $(id); if (el) el.textContent = val; };
   s('pcMember', d.member);
@@ -3815,6 +3893,10 @@ function exportCardPrint() {
 
 /* ── SMS Modal ────────────────────────────────────────────── */
 function showSMSModal() {
+  if (!isCardGatekeeperCleared()) {
+    showToast('Complete the eligibility check first.', 'error');
+    return;
+  }
   const modal = $('smsModal');
   if (!modal) return;
   modal.style.display = 'flex';
@@ -4159,8 +4241,8 @@ function cgRevealCard() {
     drug:      _CardFlipCtx.drug || '',
   });
   closeCardGatekeeper();
-  // Reveal codes in-place in the flip card the user is already looking at
-  _cgShowCodesInFlipCard();
+  // Show codes panel directly — card already flipped, export buttons now visible
+  _showFPCodePanel();
   showToast('Codes unlocked — show this card to your pharmacist.', 'success');
 }
 

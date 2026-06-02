@@ -5654,7 +5654,7 @@ p { color: #4A5568; }
 }
 .hiw-page-sub {
   font-size: 17px;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.78);
   line-height: 1.65;
   margin-bottom: 40px;
 }
@@ -6680,11 +6680,26 @@ p { color: #4A5568; }
 /* ════════════════════════════════════════════════════════════
    SECTION 12 — PRIVACY PAGE FIXES (readable text, no Xmas)
 ════════════════════════════════════════════════════════════ */
+/* Dark backgrounds for pages with white-on-dark text system */
+#page-howitworks { background: #0a0f1e !important; }
+#page-privacy    { background: #0a0f1e !important; }
 #page-privacy .page-inner { background: #0a0f1e; }
+
+/* HIW steps section needs dark bg (inherits light page bg otherwise) */
+.hiw-steps-wrap   { background: #0a0f1e; }
+.hiw-sources-section { background: #080d1c !important; border-color: rgba(255,255,255,0.06) !important; }
+
+/* HIW step text — boost contrast for dark bg */
+.hiw-step-text p,
+.hiw-step-text .hiw-panel-desc { color: rgba(255,255,255,0.82) !important; }
+.hiw-step-text h2,
+.hiw-step-text .hiw-panel-title { color: #f1f5f9 !important; }
+.hiw-step-text li { color: rgba(255,255,255,0.78) !important; }
+.hiw-step-text .hiw-panel-badge { border: 1px solid rgba(255,255,255,0.12); }
 .privacy-section p { color: rgba(255,255,255,0.75) !important; }
 .privacy-list li   { color: rgba(255,255,255,0.75) !important; }
-.privacy-toc-list a { color: rgba(255,255,255,0.60) !important; }
-.privacy-meta    { color: rgba(255,255,255,0.45) !important; }
+.privacy-toc-list a { color: rgba(255,255,255,0.70) !important; }
+.privacy-meta    { color: rgba(255,255,255,0.55) !important; }
 .privacy-intro   { color: rgba(255,255,255,0.75) !important; }
 .privacy-tldr {
   background: rgba(255,255,255,0.04) !important;
