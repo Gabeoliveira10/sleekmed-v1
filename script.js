@@ -2369,10 +2369,40 @@ function renderComplianceScreen() {
       '</div>';
 
   } else if (ch === 'insured' && sc === 2) {
-    // Commercial insured: qualified screen
+    // Commercial insured: personal information form (NEW — collects PII for Firestore)
+    const f = ComplianceCtx.form;
     html = '<div class="compliance-header">' +
-      _stepDots(3, 2) +
-      '<div class="compliance-step-label">Section 2 of 3 · Eligibility Confirmed</div>' +
+      _stepDots(4, 2) +
+      '<div class="compliance-step-label">Section 2 of 4 · Personal Information</div>' +
+      '<div class="compliance-title">Confirm your identity</div>' +
+      '<div class="compliance-subtitle">Required to verify your eligibility for the <strong>' + drug + '</strong> savings program.</div>' +
+      '</div>' +
+      '<div class="compliance-body">' +
+      '<div class="compliance-form-row">' +
+        '<div class="compliance-form-field"><label>First Name *</label><input class="compliance-input" id="ins_first" type="text" placeholder="John" value="' + (f.first||'') + '"></div>' +
+        '<div class="compliance-form-field"><label>Last Name *</label><input class="compliance-input" id="ins_last" type="text" placeholder="Smith" value="' + (f.last||'') + '"></div>' +
+      '</div>' +
+      '<div class="compliance-form-row">' +
+        '<div class="compliance-form-field"><label>Date of Birth (MM/DD/YYYY) *</label><input class="compliance-input" id="ins_dob" type="text" placeholder="01/15/1985" value="' + (f.dob||'') + '"></div>' +
+        '<div class="compliance-form-field"><label>Mobile Phone *</label><input class="compliance-input" id="ins_phone" type="tel" placeholder="(305) 555-0100" value="' + (f.phone||'') + '"></div>' +
+      '</div>' +
+      '<div class="compliance-form-field"><label>Email Address *</label><input class="compliance-input" id="ins_email" type="email" placeholder="john@email.com" value="' + (f.email||'') + '"></div>' +
+      '<div class="compliance-consent">' +
+        '<input type="checkbox" id="insuredInfoConsent" ' + (f.consent ? 'checked' : '') + '>' +
+        '<span class="compliance-consent-text">By checking this box, you agree that VITAL may collect, use, and share your personal information for the administration of the <strong>' + drug + '</strong> Savings Program in accordance with VITAL\'s Terms of Use and Privacy Policy.</span>' +
+      '</div>' +
+      '</div>' +
+      '<div class="compliance-footer">' +
+      '<button class="compliance-btn-primary" onclick="complianceInsuredRegNext()">Continue →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=1; renderComplianceScreen()">← Back</button>' +
+      '</div>';
+
+  } else if (ch === 'insured' && sc === 3) {
+    // Commercial insured: T&C scroll gate + e-signature
+    const f = ComplianceCtx.form;
+    html = '<div class="compliance-header">' +
+      _stepDots(4, 3) +
+      '<div class="compliance-step-label">Section 3 of 4 · Eligibility Confirmed</div>' +
       '<div class="compliance-title">You may qualify for this offer!</div>' +
       '<div class="compliance-subtitle">Governmental beneficiaries excluded. Terms apply. NOT INSURANCE.</div>' +
       '</div>' +
@@ -2382,16 +2412,22 @@ function renderComplianceScreen() {
         '<div class="compliance-qualified-text">You may be eligible for a self-pay option for <strong>' + drug + '</strong>. Savings subject to monthly and annual limits. Taxes and fees may apply. Card expires and savings end on <strong>12/31/2026</strong>.</div>' +
       '</div>' +
       _getTCBox(drug) +
-      '<div class="compliance-consent">' +
-        '<input type="checkbox" id="insuredConsent" onchange="document.getElementById(\'insuredNext\').disabled=!this.checked">' +
-        '<span class="compliance-consent-text">By checking this box, you agree that VITAL may collect, use, and share your personal information for the administration of the <strong>' + drug + '</strong> Savings Program in accordance with VITAL\'s Terms of Use and Privacy Policy.</span>' +
+      '<div class="compliance-esig-box">' +
+        '<div class="compliance-esig-title">Electronic Signature — Review & Approve</div>' +
+        '<p class="compliance-esig-note">By entering your name below, you are signing electronically. You confirm you have reviewed and agree to the Terms above and attest you are eligible to participate in this program.</p>' +
+        '<div class="compliance-esig-row">' +
+          '<div><label>First Name *</label><input class="compliance-input" id="ins_sig_first" type="text" placeholder="' + (f.first||'John') + '" value="' + (f.first||'') + '"></div>' +
+          '<div><label>Last Name *</label><input class="compliance-input" id="ins_sig_last" type="text" placeholder="' + (f.last||'Smith') + '" value="' + (f.last||'') + '"></div>' +
+        '</div>' +
       '</div>' +
       '</div>' +
       '<div class="compliance-footer">' +
-      '<button id="insuredNext" class="compliance-btn-primary" disabled onclick="complianceCompleteInsured()">Get Offer →</button>' +
-      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=1; renderComplianceScreen()">← Back</button>' +
+      '<button id="insuredNext" class="compliance-btn-primary" onclick="complianceCompleteInsured()">Get Offer →</button>' +
+      '<button class="compliance-btn-secondary" onclick="ComplianceCtx.screen=2; renderComplianceScreen()">← Back</button>' +
       '<p class="compliance-not-insurance">NOT INSURANCE · Card eligibility and terms for ' + drug + ' apply · Offer expires 12/31/2026</p>' +
       '</div>';
+    // Lock the button until T&C is scrolled
+    setTimeout(function(){ _initTCScrollGate(null, 'insuredNext'); }, 40);
 
   } else if (ch === 'cash' && sc === 2) {
     // Cash: Registration form
@@ -2496,9 +2532,7 @@ function renderComplianceScreen() {
   if (modalBox) modalBox.scrollTop = 0;
 
   // ── Scroll-to-read gate: unlock controls only after TC box is fully scrolled ──
-  if (ch === 'insured' && sc === 2) {
-    _initTCScrollGate('insuredConsent', null);   // checkbox controls button via onchange
-  } else if (ch === 'cash' && sc === 3) {
+  if (ch === 'cash' && sc === 3) {
     _initTCScrollGate(null, 'cashTCNextBtn');
   } else if (ch === 'cash' && sc === 4) {
     _initTCScrollGate(null, 'hipaaSubmitBtn');
@@ -2511,9 +2545,27 @@ function complianceChoose(channel) {
   renderComplianceScreen();
 }
 
+function complianceInsuredRegNext() {
+  const g = function(id){ return (document.getElementById(id)||{value:''}).value.trim(); };
+  const first = g('ins_first'), last = g('ins_last'), dob = g('ins_dob');
+  const phone = g('ins_phone'), email = g('ins_email');
+  const consent = (document.getElementById('insuredInfoConsent')||{}).checked;
+  if (!first || !last || !dob || !phone || !email)
+    return showToast('Please fill in all required fields.', 'error');
+  if (!consent) return showToast('Please accept the consent to continue.', 'error');
+  ComplianceCtx.form = { first, last, dob, phone, email, consent };
+  ComplianceCtx.screen = 3;
+  renderComplianceScreen();
+}
+
 function complianceCompleteInsured() {
-  const cb = document.getElementById('insuredConsent');
-  if (!cb || !cb.checked) return showToast('Please accept the terms to continue.', 'error');
+  const first = (document.getElementById('ins_sig_first')||{value:''}).value.trim();
+  const last  = (document.getElementById('ins_sig_last')||{value:''}).value.trim();
+  const f = ComplianceCtx.form;
+  if (!first || !last) return showToast('Please enter your name as your electronic signature.', 'error');
+  if (first.toLowerCase() !== (f.first||'').toLowerCase() ||
+      last.toLowerCase()  !== (f.last||'').toLowerCase())
+    return showToast('Signature must match your registered name exactly.', 'error');
   _saveComplianceRecord('insured');
   const drug = ComplianceCtx.drug;
   const pendingBtn = ComplianceCtx._pendingBtn;
