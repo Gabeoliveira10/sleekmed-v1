@@ -6711,6 +6711,7 @@ p { color: #4A5568; }
 .privacy-toc-list a { color: rgba(255,255,255,0.70) !important; }
 .privacy-meta    { color: rgba(255,255,255,0.55) !important; }
 .privacy-intro   { color: rgba(255,255,255,0.75) !important; }
+#page-privacy .page-title { color: #f8fafc !important; }
 .privacy-tldr {
   background: rgba(255,255,255,0.04) !important;
   border: 1px solid rgba(255,255,255,0.09) !important;
