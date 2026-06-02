@@ -2694,17 +2694,18 @@ function handlePriceAction(btn) {
     return;
   }
 
-  // ── Vital Rx (fp) → straight to gatekeeper or straight to codes ──
+  // ── Vital Rx (fp) → full legal compliance gauntlet, then codes ──
   if (sourceId === 'fp') {
     const ins = getInsuranceRecord();
     _CardFlipCtx = { drug, sourceId, theme: SOURCE_THEMES.fp, ins, variantLbl, price, retail };
-    if (!isCardGatekeeperCleared()) {
-      // Not cleared — launch 3-question gatekeeper immediately
-      showCardGatekeeper();
-    } else {
-      // Already cleared — show codes panel directly
-      _showFPCodePanel();
+    if (!isComplianceCleared(drug)) {
+      // Not cleared — launch the full 4-screen compliance gauntlet
+      ComplianceCtx._pendingBtn = btn;
+      showComplianceGauntlet(drug);
+      return;
     }
+    // Already cleared for this drug — show codes panel directly
+    _showFPCodePanel();
     return;
   }
 
@@ -3787,9 +3788,15 @@ function _getCardExportData() {
   };
 }
 
+/* ── Shared export guard — cleared if drug-specific OR global flag set ── */
+function _isExportReady() {
+  const drug = _CardFlipCtx && _CardFlipCtx.drug;
+  return (drug && isComplianceCleared(drug)) || isCardGatekeeperCleared();
+}
+
 /* ── Download — generates a clean standalone HTML card file ─ */
 function exportCardDownload() {
-  if (!isCardGatekeeperCleared()) {
+  if (!_isExportReady()) {
     showToast('Complete the eligibility check first to download your card.', 'error');
     return;
   }
@@ -3876,7 +3883,7 @@ function exportCardDownload() {
 
 /* ── Print — populates #printableCard and calls window.print() ─ */
 function exportCardPrint() {
-  if (!isCardGatekeeperCleared()) {
+  if (!_isExportReady()) {
     showToast('Complete the eligibility check first.', 'error');
     return;
   }
@@ -3893,7 +3900,7 @@ function exportCardPrint() {
 
 /* ── SMS Modal ────────────────────────────────────────────── */
 function showSMSModal() {
-  if (!isCardGatekeeperCleared()) {
+  if (!_isExportReady()) {
     showToast('Complete the eligibility check first.', 'error');
     return;
   }
