@@ -1663,11 +1663,7 @@ function saveVaultData() {
    DIGITAL CARD — pulls live from vault
 ═══════════════════════════════════════════════════════════════ */
 function renderCard() {
-  // Show compliance gatekeeper first if not yet cleared
-  if (!isCardGatekeeperCleared()) {
-    showCardGatekeeper();
-    return;
-  }
+  // Card page always renders — gatekeeper is only on the search "Reveal" button
   _renderCardContent();
 }
 
@@ -2687,13 +2683,8 @@ function handlePriceAction(btn) {
   // ── Track coupon source + show Vital Rx nudge if applicable ──
   trackCouponSource(sourceId, drug);
   maybeShowVitalRxNudge(sourceId, drug);
-
-  // ── COMPLIANCE GATE: VITAL Direct codes are locked until eligibility is verified ──
-  if (sourceId === 'fp' && !isComplianceCleared(drug)) {
-    ComplianceCtx._pendingBtn = btn;
-    showComplianceGauntlet(drug);
-    return; // Do not reveal codes — stop here
-  }
+  // Note: compliance gate moved to the "Reveal Pharmacy Coupon" button on the
+  // card flip back — the flip card itself always shows on click.
 
   // Highlight selected price card
   $$('#priceComparisonGrid .price-card').forEach(c => {
@@ -2720,18 +2711,28 @@ function handlePriceAction(btn) {
   $('flipDrug').style.color = 'rgba(255,255,255,0.8)';
   document.querySelector('.flip-hint').style.color = theme.frontHintColor;
 
-  // Build dynamic back card — codes only shown after compliance clearance
-  const cleared = isComplianceCleared(drug);
+  // Store flip context so gatekeeper can reveal codes in-place after clearance
+  _CardFlipCtx = { drug, sourceId, theme, ins };
+
+  // Build dynamic back card — codes shown if already cleared; otherwise blur + reveal btn
+  const _codesRevealed = isCardGatekeeperCleared();
   const codesHtml = theme.showCodes
-    ? (cleared
-        ? `<div class="mini-card-codes">
+    ? (_codesRevealed
+        ? `<div class="mini-card-codes" id="miniCardCodes">
             <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.bin}</div></div>
             <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.pcn}</div></div>
             <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val" style="color:${theme.codeColor}">${ins.group || 'FP2026'}</div></div>
           </div>`
-        : `<div class="mini-card-locked">
-            <div class="mini-card-lock-icon">Locked</div>
-            <div class="mini-card-lock-text">Verify eligibility to unlock codes</div>
+        : `<div class="mini-card-reveal-wrap" id="miniCardCodes">
+            <div class="mini-card-codes-blurred">
+              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">BIN</div><div class="mini-code-val mini-code-blur">●●●●●●</div></div>
+              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">PCN</div><div class="mini-code-val mini-code-blur">●●●●●</div></div>
+              <div class="mini-code"><div class="mini-code-label" style="color:${theme.labelColor}">GROUP</div><div class="mini-code-val mini-code-blur">●●●●●●</div></div>
+            </div>
+            <button class="mini-card-reveal-btn" onclick="cgRevealFromSearch(event)">
+              <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><rect x="2" y="8" width="12" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8V5.5a3 3 0 016 0V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Reveal Pharmacy Coupon
+            </button>
           </div>`)
     : `<div style="height:14px"></div>`;
 
@@ -2831,6 +2832,8 @@ function renderCabinet() {
     return;
   }
 
+  // Logged-in cabinet: codes are always visible — no gatekeeper needed
+  const cabIns = getInsuranceRecord();
   list.innerHTML = State.cabinet.map(med => `
     <div class="med-item" data-id="${med.id}">
       <div class="med-icon">${med.icon || 'Rx'}</div>
@@ -2846,6 +2849,11 @@ function renderCabinet() {
           </button>
         </div>
         <div class="med-detail">${med.variant}</div>
+        <div class="med-cabinet-codes">
+          <div class="med-cab-code"><span class="med-cab-lbl">BIN</span><span class="med-cab-val">${cabIns.bin}</span></div>
+          <div class="med-cab-code"><span class="med-cab-lbl">PCN</span><span class="med-cab-val">${cabIns.pcn}</span></div>
+          <div class="med-cab-code"><span class="med-cab-lbl">GROUP</span><span class="med-cab-val">${cabIns.group || 'FP2026'}</span></div>
+        </div>
       </div>
       <button class="med-remove" data-id="${med.id}" title="Remove">✕</button>
     </div>
@@ -4008,11 +4016,16 @@ function hiwSelectTab(step) {
 
 /* ══════════════════════════════════════════════════════════
    CARD GATEKEEPER — 3-Question Legal Compliance Popup
-   Fires before the Digital Card BIN/PCN/Group codes are shown.
-   Cleared status stored in localStorage (session-persistent).
+   Triggered ONLY when the user clicks "Reveal Pharmacy Coupon"
+   on a search result flip card. Never on page load or routing.
+   Cleared status stored in localStorage (persistent).
    Compliance event logged to Firestore compliance_audit.
 ══════════════════════════════════════════════════════════ */
 const CARD_GATE_KEY = 'vrx_card_gate_cleared';   // localStorage flag
+
+// Context set when the flip card is built — used to reveal codes in-place
+// after the gatekeeper completes without requiring a second click.
+let _CardFlipCtx = { drug: null, sourceId: null, theme: null, ins: null };
 
 function isCardGatekeeperCleared() {
   return localStorage.getItem(CARD_GATE_KEY) === '1';
@@ -4090,23 +4103,61 @@ function cgAnswer(questionNum, answer) {
   }
 }
 
-/** cgRevealCard — user checked consent, card can now be revealed */
+/**
+ * cgRevealFromSearch — called by "Reveal Pharmacy Coupon" button on flip card back.
+ * Stops the event so the card doesn't flip away, then checks the cleared flag.
+ */
+function cgRevealFromSearch(e) {
+  e.stopPropagation();   // prevent card flip toggle
+  if (isCardGatekeeperCleared()) {
+    // Already cleared — reveal in-place immediately, no modal needed
+    _cgShowCodesInFlipCard();
+  } else {
+    // Not yet cleared — launch the 3-question gatekeeper
+    showCardGatekeeper();
+  }
+}
+
+/**
+ * _cgShowCodesInFlipCard — replaces the blur/reveal-wrap with actual codes HTML
+ * using the context stored when the flip card was last built.
+ */
+function _cgShowCodesInFlipCard() {
+  const codesEl = document.getElementById('miniCardCodes');
+  if (!codesEl) return;
+  const ctx = _CardFlipCtx;
+  if (!ctx.ins) return;
+  const t = ctx.theme;
+  codesEl.outerHTML = `<div class="mini-card-codes" id="miniCardCodes">
+    <div class="mini-code"><div class="mini-code-label" style="color:${t.labelColor}">BIN</div><div class="mini-code-val" style="color:${t.codeColor}">${ctx.ins.bin}</div></div>
+    <div class="mini-code"><div class="mini-code-label" style="color:${t.labelColor}">PCN</div><div class="mini-code-val" style="color:${t.codeColor}">${ctx.ins.pcn}</div></div>
+    <div class="mini-code"><div class="mini-code-label" style="color:${t.labelColor}">GROUP</div><div class="mini-code-val" style="color:${t.codeColor}">${ctx.ins.group || 'FP2026'}</div></div>
+  </div>`;
+}
+
+/** cgRevealCard — called when user checks consent on Q3 and clicks Reveal.
+ *  1. Persists cleared flag to localStorage.
+ *  2. Logs compliance_audit record to Firestore.
+ *  3. Closes modal.
+ *  4. Instantly reveals codes in the flip card — no second click required.
+ */
 function cgRevealCard() {
-  // Mark cleared in localStorage
+  // Persist clearance
   localStorage.setItem(CARD_GATE_KEY, '1');
-  // Log successful compliance pass to Firestore
+  // Firestore audit log
   logComplianceEvent({
     type:      'card_gate_passed',
     userEmail: State.user ? State.user.email : 'anonymous',
     userName:  State.user ? State.user.name  : 'anonymous',
-    cardBIN:   '610524',
-    cardPCN:   'FPLAY',
-    cardGroup: 'FP2026',
+    cardBIN:   _CardFlipCtx.ins ? _CardFlipCtx.ins.bin  : '610524',
+    cardPCN:   _CardFlipCtx.ins ? _CardFlipCtx.ins.pcn  : 'FPLAY',
+    cardGroup: _CardFlipCtx.ins ? (_CardFlipCtx.ins.group || 'FP2026') : 'FP2026',
+    drug:      _CardFlipCtx.drug || '',
   });
   closeCardGatekeeper();
-  // Now render the actual card content
-  _renderCardContent();
-  showToast('Compliance verified — your card is now active.', 'success');
+  // Reveal codes in-place in the flip card the user is already looking at
+  _cgShowCodesInFlipCard();
+  showToast('Codes unlocked — show this card to your pharmacist.', 'success');
 }
 
 /* ══════════════════════════════════════════════════════════
