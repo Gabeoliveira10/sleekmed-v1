@@ -1,0 +1,20 @@
+{
+  "name": "Forge — AI Health & Fitness",
+  "short_name": "Forge",
+  "description": "All-in-one health and wellness: personalized training, calorie and macro tracking, AI photo food logging, meal plans, and daily motivation.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B0F14",
+  "theme_color": "#0B0F14",
+  "orientation": "portrait-primary",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
