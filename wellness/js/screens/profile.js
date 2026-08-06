@@ -342,6 +342,14 @@ export function openDexaImport(nav) {
         <label>A/G ratio</label>
         <input class="input" id="dxAg" type="number" step="0.01" inputmode="decimal" value="${d?.agRatio ?? ''}" placeholder="1.18"/>
       </div>
+      <div class="field">
+        <label>Bone T-score</label>
+        <input class="input" id="dxT" type="number" step="0.1" inputmode="decimal" value="${d?.boneDensity?.tScore ?? ''}" placeholder="1.6"/>
+      </div>
+      <div class="field">
+        <label>Bone Z-score</label>
+        <input class="input" id="dxZ" type="number" step="0.1" inputmode="decimal" value="${d?.boneDensity?.zScore ?? ''}" placeholder="1.2"/>
+      </div>
     </div>
     <div class="field" style="margin-bottom:16px">
       <label>Scan date</label>
@@ -385,12 +393,16 @@ export function openDexaImport(nav) {
       if (!(bodyFatPct > 0 && bodyFatPct < 70)) { toast('Enter a body-fat percentage', 'err'); return; }
       if (!(fatMassLbs > 0)) fatMassLbs = Math.round((weightLbs - leanMassLbs) * 10) / 10;
 
+      const tScore = num(body.querySelector('#dxT').value);
+      const zScore = num(body.querySelector('#dxZ').value);
+
       importDexa({
         source,
         date: body.querySelector('#dxDate').value || todayKey(),
         weightLbs, bodyFatPct, leanMassLbs, fatMassLbs,
         visceralFatLbs: num(body.querySelector('#dxVisc').value),
         agRatio: num(body.querySelector('#dxAg').value),
+        boneDensity: tScore != null ? { tScore, zScore } : (d?.boneDensity || null),
         regions: d?.regions || null       // preserved on update; only the seed/JSON import sets these
       }, computeTargets);
 

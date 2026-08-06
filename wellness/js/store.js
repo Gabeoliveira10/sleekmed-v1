@@ -250,6 +250,8 @@ export function importDexa(scan, recomputeTargets) {
       fatMassLbs: scan.fatMassLbs,
       visceralFatLbs: scan.visceralFatLbs ?? null,
       agRatio: scan.agRatio ?? null,
+      boneDensity: scan.boneDensity || null,   // { tScore, zScore }
+      rmr: scan.rmr ?? null,                    // facility-reported RMR, if the scan gives one
       regions: scan.regions || null,
       importedAt: Date.now()
     };

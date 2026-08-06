@@ -226,7 +226,33 @@ function renderDexa(s, scan, currentKg, imperial) {
       </section>` : ''}
 
     ${scan.regions ? renderRegions(scan.regions, imperial) : ''}
+
+    ${scan.boneDensity ? renderBone(scan.boneDensity) : ''}
   `;
+}
+
+function renderBone(bd) {
+  // T-score vs a healthy 30-year-old: ≥ -1 normal, -1 to -2.5 osteopenia, below osteoporosis.
+  const t = bd.tScore;
+  const strong = t >= 1;
+  const normal = t >= -1;
+  const label = strong ? 'Excellent' : normal ? 'Normal' : t >= -2.5 ? 'Low — monitor' : 'Very low';
+  const badge = strong ? 'badge-accent' : normal ? 'badge-info' : 'badge-warn';
+  return `
+    <section class="card">
+      <div class="card-head"><div><div class="card-title">Bone density</div><div class="card-sub">The foundation you train on</div></div></div>
+      <div class="row-between" style="padding:8px 0">
+        <div class="grow">
+          <div class="row" style="gap:8px"><span style="font-weight:650;font-size:14px">T-score ${t}</span><span class="badge ${badge}">${label}</span></div>
+          <div class="tiny dim" style="margin-top:3px;line-height:1.5">
+            ${strong
+              ? 'Denser bones than a healthy young adult. You can load the barbell hard without worrying about your skeleton.'
+              : normal ? 'Healthy bone density.' : 'Below the healthy range — keep lifting (it builds bone) and mention this to your doctor.'}
+          </div>
+        </div>
+        ${bd.zScore != null ? `<div class="list-item-end"><div class="list-item-value">Z ${bd.zScore}</div><div class="tiny dim">vs your age</div></div>` : ''}
+      </div>
+    </section>`;
 }
 
 function renderRegions(r, imperial) {
