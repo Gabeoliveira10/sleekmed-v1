@@ -18,6 +18,28 @@ const SPLITS = {
   7: { name: 'PPL ×2 + Conditioning', days: ['push', 'pull', 'legs', 'pushB', 'pullB', 'legsB', 'conditioning'] }
 };
 
+/**
+ * Body-part-per-day splits for an aesthetic/physique goal (recomp or lose).
+ * Unlike Upper/Lower, chest gets its own dedicated session instead of sharing
+ * a day with back — the classic bodybuilding split, and the shape that makes
+ * "chest day" its own thing rather than one slot among many.
+ */
+const SPLITS_AESTHETIC = {
+  4: { name: 'Chest / Back / Legs / Shoulders', days: ['chestTri', 'backBi', 'legs', 'shoulders'] },
+  5: { name: 'Chest / Back / Legs / Shoulders / Arms', days: ['chestTri', 'backBi', 'legs', 'shoulders', 'armsCore'] }
+};
+
+/** Suggested weekday per split-day index, always starting Monday. Advisory —
+ *  the app still lets you train the next day in rotation whenever you show up. */
+const WEEKDAY_SUGGESTIONS = {
+  2: ['Monday', 'Thursday'],
+  3: ['Monday', 'Wednesday', 'Friday'],
+  4: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+  5: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  6: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  7: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+};
+
 /* A day recipe is an ordered list of slots. Each slot names the movement
    pattern (and optionally a muscle) the generator should fill. */
 const DAY_RECIPES = {
@@ -174,20 +196,77 @@ const DAY_RECIPES = {
       { pattern: 'core', role: 'accessory' },
       { pattern: 'core', role: 'accessory' }
     ]
+  },
+
+  // ── Aesthetic split: chest gets its own day, not shared with back ──
+  chestTri: {
+    label: 'Chest & Triceps',
+    slots: [
+      { pattern: 'push-h', role: 'primary' },
+      { muscle: 'upper chest', role: 'secondary' },
+      { muscle: 'chest', role: 'accessory' },
+      { muscle: 'chest', role: 'accessory' },
+      { muscle: 'triceps', role: 'accessory' },
+      { muscle: 'triceps', role: 'accessory' }
+    ]
+  },
+  backBi: {
+    label: 'Back & Biceps',
+    slots: [
+      { pattern: 'pull-v', role: 'primary' },
+      { pattern: 'pull-h', role: 'secondary' },
+      { muscle: 'lats', role: 'accessory' },
+      { muscle: 'back', role: 'accessory' },
+      { muscle: 'biceps', role: 'accessory' },
+      { muscle: 'biceps', role: 'accessory' }
+    ]
+  },
+  shoulders: {
+    label: 'Shoulders',
+    slots: [
+      { pattern: 'push-v', role: 'primary' },
+      { muscle: 'side delts', role: 'secondary' },
+      { muscle: 'side delts', role: 'accessory' },
+      { muscle: 'rear delts', role: 'accessory' },
+      { muscle: 'traps', role: 'accessory' },
+      { pattern: 'core', role: 'accessory' }
+    ]
+  },
+  armsCore: {
+    label: 'Arms & Core',
+    slots: [
+      { muscle: 'biceps', role: 'primary' },
+      { muscle: 'triceps', role: 'primary' },
+      { muscle: 'biceps', role: 'secondary' },
+      { muscle: 'triceps', role: 'secondary' },
+      { pattern: 'core', role: 'accessory' },
+      { pattern: 'core', role: 'accessory' }
+    ]
   }
 };
 
 /* ── Set / rep prescriptions ───────────────────────── */
 
+/** Physique/definition goal — moderate-high reps, shorter rest, closer to failure. */
+const isAestheticGoal = (goal) => goal === 'recomp' || goal === 'lose';
+
 function prescribe(role, goal, experience) {
   const strengthLean = goal === 'perform' || goal === 'gain';
-  const base = {
-    primary: strengthLean
-      ? { sets: 4, reps: '4-6', rest: 180, rpe: 8 }
-      : { sets: 4, reps: '6-8', rest: 150, rpe: 8 },
-    secondary: { sets: 3, reps: '8-10', rest: 120, rpe: 8 },
-    accessory: { sets: 3, reps: '10-15', rest: 75, rpe: 9 }
-  }[role];
+  const aesthetic = isAestheticGoal(goal);
+
+  const base = aesthetic
+    ? {
+        primary: { sets: 4, reps: '8-10', rest: 105, rpe: 8 },
+        secondary: { sets: 3, reps: '10-12', rest: 90, rpe: 8 },
+        accessory: { sets: 3, reps: '12-15', rest: 60, rpe: 9 }
+      }[role]
+    : {
+        primary: strengthLean
+          ? { sets: 4, reps: '4-6', rest: 180, rpe: 8 }
+          : { sets: 4, reps: '6-8', rest: 150, rpe: 8 },
+        secondary: { sets: 3, reps: '8-10', rest: 120, rpe: 8 },
+        accessory: { sets: 3, reps: '10-15', rest: 75, rpe: 9 }
+      }[role];
 
   if (experience === 'beginner') {
     return { ...base, sets: Math.max(2, base.sets - 1), reps: role === 'primary' ? '8-10' : base.reps, rpe: 7 };
@@ -196,6 +275,11 @@ function prescribe(role, goal, experience) {
     return { ...base, sets: base.sets + 1 };
   }
   return base;
+}
+
+/** A high-rep, short-rest close to the session — the "finish hard" burnout block. */
+function prescribeFinisher() {
+  return { sets: 3, reps: '15-20', rest: 45, rpe: 9 };
 }
 
 /* ── Selection ─────────────────────────────────────── */
@@ -235,9 +319,13 @@ function pickExercise(slot, { equipment, used, focus }) {
  */
 export function generateProgram(profile) {
   const freq = Math.min(7, Math.max(2, profile.daysPerWeek || 4));
-  const split = SPLITS[freq];
+  const aesthetic = isAestheticGoal(profile.goal);
+  // Aesthetic goals at 4–5 days get a dedicated body-part split (chest gets
+  // its own day); everything else keeps the Upper/Lower or PPL structure.
+  const split = (aesthetic && SPLITS_AESTHETIC[freq]) || SPLITS[freq];
   const equipment = profile.equipment?.length ? profile.equipment : ['bodyweight'];
   const focus = profile.focus || [];
+  const weekdays = WEEKDAY_SUGGESTIONS[freq] || [];
 
   // Trim volume to fit the session length: ~9 min per exercise incl. rest
   const maxExercises = Math.max(4, Math.floor((profile.sessionMinutes || 60) / 9));
@@ -263,32 +351,44 @@ export function generateProgram(profile) {
       });
     }
 
-    // Cutting/recomp goals get a short finisher on non-conditioning days
-    if ((profile.goal === 'lose' || profile.goal === 'recomp') && recipeKey !== 'conditioning' && exercises.length < maxExercises) {
+    // Aesthetic goals close every session with a high-rep finisher block —
+    // added on top of the cap above, not counted against it, since a
+    // short-rest burnout takes far less time than a full straight set.
+    if (aesthetic && recipeKey !== 'conditioning') {
+      const hasCore = exercises.some((e) => byId[e.exerciseId]?.pattern === 'core');
+      if (!hasCore) {
+        const core = EXERCISES.find((e) => e.pattern === 'core' && equipment.includes(e.equip) && !used.has(e.id));
+        if (core) {
+          used.add(core.id);
+          const fin = prescribeFinisher();
+          exercises.push({ exerciseId: core.id, name: core.name, role: 'finisher', sets: fin.sets, reps: fin.reps, restSeconds: fin.rest, rpe: fin.rpe });
+        }
+      }
       const cardio = EXERCISES.find((e) => e.pattern === 'cardio' && equipment.includes(e.equip));
       if (cardio) {
         exercises.push({
           exerciseId: cardio.id, name: cardio.name, role: 'finisher',
-          sets: 1, reps: '10-15 min', restSeconds: 0, rpe: 6
+          sets: 1, reps: '10-15 min', restSeconds: 0, rpe: 7
         });
       }
     }
 
-    return { id: recipeKey + '-' + i, key: recipeKey, name: recipe.label, exercises };
+    return { id: recipeKey + '-' + i, key: recipeKey, name: recipe.label, weekday: weekdays[i] || null, exercises };
   });
 
   return {
     name: split.name,
     split: split.name,
     daysPerWeek: freq,
+    style: aesthetic ? 'aesthetic' : 'strength',
     createdAt: Date.now(),
     source: 'built-in',
-    notes: buildNotes(profile),
+    notes: buildNotes(profile, aesthetic),
     days
   };
 }
 
-function buildNotes(profile) {
+function buildNotes(profile, aesthetic) {
   const notes = [];
   const goalNote = {
     lose: 'Training keeps the muscle you have while the deficit removes fat. Keep the loads heavy — do not turn lifting into cardio.',
@@ -298,6 +398,12 @@ function buildNotes(profile) {
     maintain: 'Consistency over intensity. Two hard sets per muscle group per week maintains almost everything.'
   }[profile.goal];
   if (goalNote) notes.push(goalNote);
+
+  if (aesthetic) {
+    notes.push('This is a body-part split built for definition, not raw strength: 8–15 reps, shorter rest, closer to failure on the last set of each exercise — the look you want comes from total volume per muscle, not the number on the bar.');
+    notes.push('Every session ends with a high-rep finisher (the last exercise, tagged "finisher") and a short conditioning piece. Push those hard — that is the block doing the most for visible definition and the fat-loss side of the deficit.');
+    notes.push('This split is not a copy of any specific trainer\'s program — I don\'t have a verified source for anyone\'s exact written plan, and I won\'t pretend to. It\'s built in the training style you described: chest-first Monday, body-part focus, high volume, finish every session hard.');
+  }
 
   notes.push('Progression: when you hit the top of the rep range on every set, add 2.5–5 kg (5–10 lb) next session.');
   notes.push(`Rest as prescribed — ${profile.experience === 'beginner' ? 'do not rush the compounds' : 'longer rest on primaries, shorter on accessories'}.`);

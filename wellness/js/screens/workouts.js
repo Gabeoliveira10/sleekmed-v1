@@ -71,8 +71,11 @@ function renderProgram(s) {
         <section class="card card-tight">
           <button class="row-between" data-toggle-day="${i}" style="width:100%;text-align:left">
             <div>
-              <div style="font-weight:650;font-size:14.5px">${esc(day.name)}</div>
-              <div class="tiny dim">${day.exercises.length} exercises</div>
+              <div class="row" style="gap:7px">
+                <span style="font-weight:650;font-size:14.5px">${esc(day.name)}</span>
+                ${day.weekday ? `<span class="badge badge-info">${esc(day.weekday)}</span>` : ''}
+              </div>
+              <div class="tiny dim">${day.exercises.length} exercises${day.exercises.some((e) => e.role === 'finisher') ? ' incl. finisher' : ''}</div>
             </div>
             <div class="row" style="gap:8px">
               <button class="btn btn-ghost btn-sm" data-start="${esc(day.id)}">Start</button>
@@ -85,9 +88,9 @@ function renderProgram(s) {
               const pb = personalBest(ex.exerciseId, s.workoutLogs);
               return `
                 <div class="row" style="padding:9px 0;border-bottom:1px solid var(--hairline);align-items:flex-start">
-                  <span class="exercise-num" style="margin-top:1px">${j + 1}</span>
+                  <span class="exercise-num" style="margin-top:1px;${ex.role === 'finisher' ? 'background:var(--warn);color:#3a2400' : ''}">${ex.role === 'finisher' ? '🔥' : j + 1}</span>
                   <div class="grow">
-                    <div style="font-weight:600;font-size:14px">${esc(ex.name)}</div>
+                    <div style="font-weight:600;font-size:14px">${esc(ex.name)}${ex.role === 'finisher' ? ' <span class="tiny" style="color:var(--warn);font-weight:700">FINISHER</span>' : ''}</div>
                     <div class="tiny dim">${ex.sets} × ${esc(ex.reps)} · rest ${ex.restSeconds}s${ex.rpe ? ` · RPE ${ex.rpe}` : ''}</div>
                     ${meta.tip ? `<div class="tiny dim" style="margin-top:3px;font-style:italic">${esc(meta.tip)}</div>` : ''}
                   </div>
