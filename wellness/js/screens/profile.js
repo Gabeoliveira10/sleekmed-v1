@@ -2,10 +2,10 @@
    profile.js — profile, targets, AI settings, data management
    ═══════════════════════════════════════════════════════ */
 
-import { get, update, resetAll, replaceAll, exportJSON, todayKey } from '../store.js';
+import { get, update, resetAll, replaceAll, exportJSON, todayKey, importDexa } from '../store.js';
 import {
   ACTIVITY, GOALS, EXPERIENCE, computeTargets, weightLabel, heightLabel,
-  kgToLb, lbToKg, cmToIn, inToCm, fmt
+  kgToLb, lbToKg, cmToIn, inToCm, fmt, usingScan
 } from '../calc.js';
 import { generateProgram } from '../program.js';
 import { esc, icon, toast, openSheet, closeSheet, confirmSheet, $ } from '../ui.js';
@@ -37,7 +37,7 @@ export function render(nav) {
         <div class="card-head">
           <div>
             <div class="card-title">Daily targets</div>
-            <div class="card-sub">${t.manual ? 'Set manually' : 'Calculated from your profile'}</div>
+            <div class="card-sub">${t.manual ? 'Set manually' : usingScan(p) ? `From your ${esc(s.dexa?.source || 'DEXA')} scan · Katch–McArdle` : 'Calculated from your profile'}</div>
           </div>
           <button class="btn btn-ghost btn-sm" data-act="edit-targets">Adjust</button>
         </div>
@@ -68,6 +68,24 @@ export function render(nav) {
         <button class="btn btn-ghost btn-block" data-act="rebuild-program" style="margin-top:14px">
           Rebuild program from these settings
         </button>
+      </section>
+
+      <!-- Body composition -->
+      <section class="card">
+        <div class="card-head">
+          <div><div class="card-title">🩻 Body composition</div><div class="card-sub">${s.dexa ? `${esc(s.dexa.source)} scan · ${s.dexa.bodyFatPct}% body fat` : 'No scan imported'}</div></div>
+          <button class="btn ${s.dexa ? 'btn-ghost' : 'btn-primary'} btn-sm" data-act="dexa">${s.dexa ? 'Update' : 'Import scan'}</button>
+        </div>
+        ${s.dexa ? `
+          <div class="grid grid-3">
+            <div style="text-align:center"><div class="stat-value" style="font-size:18px;color:var(--accent)">${s.dexa.bodyFatPct}<small>%</small></div><div class="stat-label">Body fat</div></div>
+            <div style="text-align:center"><div class="stat-value" style="font-size:18px;color:var(--protein)">${s.dexa.leanMassLbs}<small>lb</small></div><div class="stat-label">Lean</div></div>
+            <div style="text-align:center"><div class="stat-value" style="font-size:18px;color:var(--fat)">${s.dexa.fatMassLbs}<small>lb</small></div><div class="stat-label">Fat</div></div>
+          </div>
+          <p class="tiny dim" style="margin-top:12px;line-height:1.5">Your calorie target uses the Katch–McArdle equation from this lean mass — more accurate than a height-and-weight estimate. See the full breakdown and your path to abs in <strong>Progress → Body</strong>.</p>
+        ` : `
+          <p class="small muted" style="line-height:1.6">Have a DEXA or InBody result? Import it and your macros recalculate from your real lean mass, plus you unlock a fat-loss projection built for your body.</p>
+        `}
       </section>
 
       <!-- AI -->
@@ -189,6 +207,7 @@ function settingRow(label, value, key) {
 export function mount(host, nav) {
   host.querySelector('[data-act="edit-profile"]')?.addEventListener('click', () => openProfileEditor(nav));
   host.querySelector('[data-act="edit-targets"]')?.addEventListener('click', () => openTargetsEditor(nav));
+  host.querySelector('[data-act="dexa"]')?.addEventListener('click', () => openDexaImport(nav));
 
   host.querySelectorAll('[data-setting]').forEach((b) => b.addEventListener('click', () => openSetting(b.dataset.setting, nav)));
 
@@ -278,6 +297,109 @@ export function mount(host, nav) {
 }
 
 /* ── Editors ───────────────────────────────────────── */
+
+export function openDexaImport(nav) {
+  const d = get().dexa;
+  const num = (v) => (v === '' || v == null ? null : Number(v));
+
+  openSheet(d ? 'Update body composition' : 'Import a body scan', `
+    <p class="small muted" style="line-height:1.6;margin-bottom:16px">
+      Copy the numbers straight off your DEXA or InBody report. Only the first four are required —
+      they're on the summary page. Your macros recalculate the moment you save.
+    </p>
+    <div class="field" style="margin-bottom:12px">
+      <label>Scan type</label>
+      <div class="segmented" id="dxSource">
+        ${['DEXA', 'InBody', 'BodPod', 'Other'].map((t) => `<button class="${(d?.source || 'DEXA') === t ? 'active' : ''}" data-src="${t}">${t}</button>`).join('')}
+      </div>
+    </div>
+    <div class="grid grid-2" style="margin-bottom:6px">
+      <div class="field">
+        <label>Total weight</label>
+        <div class="input-group"><input class="input" id="dxWeight" type="number" step="0.1" inputmode="decimal" value="${d?.weightLbs ?? ''}" placeholder="190.6"/><div class="input-suffix">lb</div></div>
+      </div>
+      <div class="field">
+        <label>Body fat</label>
+        <div class="input-group"><input class="input" id="dxBf" type="number" step="0.1" inputmode="decimal" value="${d?.bodyFatPct ?? ''}" placeholder="29.4"/><div class="input-suffix">%</div></div>
+      </div>
+      <div class="field">
+        <label>Lean / muscle mass</label>
+        <div class="input-group"><input class="input" id="dxLean" type="number" step="0.1" inputmode="decimal" value="${d?.leanMassLbs ?? ''}" placeholder="129.6"/><div class="input-suffix">lb</div></div>
+      </div>
+      <div class="field">
+        <label>Fat mass <span class="hint">auto</span></label>
+        <div class="input-group"><input class="input" id="dxFat" type="number" step="0.1" inputmode="decimal" value="${d?.fatMassLbs ?? ''}" placeholder="54.0"/><div class="input-suffix">lb</div></div>
+      </div>
+    </div>
+
+    <div class="settings-group-title" style="margin:18px 0 8px">Optional — from the abdomen page</div>
+    <div class="grid grid-2" style="margin-bottom:16px">
+      <div class="field">
+        <label>Visceral fat</label>
+        <div class="input-group"><input class="input" id="dxVisc" type="number" step="0.01" inputmode="decimal" value="${d?.visceralFatLbs ?? ''}" placeholder="1.62"/><div class="input-suffix">lb</div></div>
+      </div>
+      <div class="field">
+        <label>A/G ratio</label>
+        <input class="input" id="dxAg" type="number" step="0.01" inputmode="decimal" value="${d?.agRatio ?? ''}" placeholder="1.18"/>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:16px">
+      <label>Scan date</label>
+      <input class="input" id="dxDate" type="date" value="${d?.date || todayKey()}" max="${todayKey()}"/>
+    </div>
+
+    <div id="dxPreview"></div>
+    <button class="btn btn-primary btn-block" id="dxSave">${d ? 'Update & recalculate macros' : 'Import & build my numbers'}</button>
+  `, (body) => {
+    let source = d?.source || 'DEXA';
+    body.querySelectorAll('#dxSource [data-src]').forEach((b) => b.addEventListener('click', () => {
+      source = b.dataset.src;
+      body.querySelectorAll('#dxSource [data-src]').forEach((x) => x.classList.toggle('active', x === b));
+    }));
+
+    // Live preview of what the scan implies before saving.
+    const preview = () => {
+      const weight = num(body.querySelector('#dxWeight').value);
+      const lean = num(body.querySelector('#dxLean').value);
+      const el = body.querySelector('#dxPreview');
+      if (weight > 0 && lean > 0 && lean < weight) {
+        const leanKg = lean * 0.453592;
+        const trial = { ...get().profile, leanMassKg: leanKg, weightKg: weight * 0.453592 };
+        const tg = computeTargets(trial);
+        el.innerHTML = `<div class="callout accent" style="margin-bottom:14px"><span class="callout-icon">🎯</span><span>New daily target: <strong>${fmt(tg.calories)} kcal</strong> · ${tg.protein}g protein · ${tg.carbs}g carbs · ${tg.fat}g fat, computed from ${lean} lb of lean mass.</span></div>`;
+      } else {
+        el.innerHTML = '';
+      }
+    };
+    body.querySelectorAll('#dxWeight, #dxLean').forEach((i) => i.addEventListener('input', preview));
+    preview();
+
+    body.querySelector('#dxSave').onclick = () => {
+      const weightLbs = num(body.querySelector('#dxWeight').value);
+      const bodyFatPct = num(body.querySelector('#dxBf').value);
+      const leanMassLbs = num(body.querySelector('#dxLean').value);
+      let fatMassLbs = num(body.querySelector('#dxFat').value);
+
+      if (!(weightLbs > 0)) { toast('Enter your total weight', 'err'); return; }
+      if (!(leanMassLbs > 0 && leanMassLbs < weightLbs)) { toast('Lean mass must be a number below your weight', 'err'); return; }
+      if (!(bodyFatPct > 0 && bodyFatPct < 70)) { toast('Enter a body-fat percentage', 'err'); return; }
+      if (!(fatMassLbs > 0)) fatMassLbs = Math.round((weightLbs - leanMassLbs) * 10) / 10;
+
+      importDexa({
+        source,
+        date: body.querySelector('#dxDate').value || todayKey(),
+        weightLbs, bodyFatPct, leanMassLbs, fatMassLbs,
+        visceralFatLbs: num(body.querySelector('#dxVisc').value),
+        agRatio: num(body.querySelector('#dxAg').value),
+        regions: d?.regions || null       // preserved on update; only the seed/JSON import sets these
+      }, computeTargets);
+
+      closeSheet();
+      toast('Scan imported — macros recalculated');
+      nav('progress');
+    };
+  });
+}
 
 function openProfileEditor(nav) {
   const p = get().profile;

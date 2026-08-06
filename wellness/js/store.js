@@ -39,10 +39,16 @@ function defaultState() {
       dietStyle: 'omnivore',
       allergies: '',
       units: 'metric',
+      // Set once a DEXA/InBody scan is imported. When present, calorie targets
+      // use the Katch–McArdle equation (real lean mass) instead of Mifflin.
+      leanMassKg: null,
+      bodyFatPct: null,
       onboarded: false,
       createdAt: null
     },
     targets: { calories: 0, protein: 0, carbs: 0, fat: 0, waterMl: 3000, steps: 8000, manual: false },
+    // Full body-composition scan (DEXA/InBody). null until imported. See calc.js.
+    dexa: null,
     program: null,
     workoutLogs: [],
     activeWorkout: null,
@@ -216,4 +222,49 @@ export function activeDays(n = 28) {
 
 export function exportJSON() {
   return JSON.stringify(state, null, 2);
+}
+
+/* ── DEXA / body-composition scan ──────────────────── */
+
+const LB = 0.453592;
+
+/**
+ * Import a body-composition scan. Writes the full breakdown to `state.dexa`,
+ * feeds lean mass + body-fat into the profile (so targets switch to the
+ * Katch–McArdle equation), logs the scan weight, and recomputes macros.
+ *
+ * @param {object} scan  measurements in the units the DEXA report uses (lbs)
+ * @param {(profile:object)=>object} recomputeTargets  calc.computeTargets, injected to avoid a circular import
+ */
+export function importDexa(scan, recomputeTargets) {
+  const weightKg = scan.weightLbs * LB;
+  const leanKg = scan.leanMassLbs * LB;
+
+  update((s) => {
+    s.dexa = {
+      date: scan.date || todayKey(),
+      source: scan.source || 'DEXA',
+      weightLbs: scan.weightLbs,
+      bodyFatPct: scan.bodyFatPct,
+      leanMassLbs: scan.leanMassLbs,
+      fatMassLbs: scan.fatMassLbs,
+      visceralFatLbs: scan.visceralFatLbs ?? null,
+      agRatio: scan.agRatio ?? null,
+      regions: scan.regions || null,
+      importedAt: Date.now()
+    };
+
+    s.profile.leanMassKg = Math.round(leanKg * 100) / 100;
+    s.profile.bodyFatPct = scan.bodyFatPct;
+    s.profile.weightKg = Math.round(weightKg * 100) / 100;
+
+    if (!s.targets.manual) Object.assign(s.targets, recomputeTargets(s.profile));
+
+    // Record the scan's weight on its date so the trend line includes it.
+    const key = scan.date || todayKey();
+    const existing = s.weights.find((w) => w.date === key);
+    if (existing) existing.kg = weightKg;
+    else s.weights.push({ date: key, kg: weightKg });
+    s.weights.sort((a, b) => a.date.localeCompare(b.date));
+  });
 }

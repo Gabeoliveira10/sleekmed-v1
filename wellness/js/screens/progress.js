@@ -3,11 +3,16 @@
    ═══════════════════════════════════════════════════════ */
 
 import { get, update, todayKey, daysAgoKey, uid } from '../store.js';
-import { weightLabel, kgToLb, lbToKg, bmi, estimateBodyFat, relativeDay, fmt } from '../calc.js';
+import {
+  weightLabel, kgToLb, lbToKg, bmi, estimateBodyFat, relativeDay, fmt,
+  ffmi, scanBasis, currentFatKg, currentBodyFat, weightAtBodyFat, pathToBodyFat,
+  bodyFatBand, visceralContext, agContext
+} from '../calc.js';
 import { personalBest, workoutVolume } from '../program.js';
 import { EXERCISES } from '../data/exercises.js';
 import { lineChart, esc, icon, toast, openSheet, closeSheet, confirmSheet, $ } from '../ui.js';
 import { openWeighIn } from './dashboard.js';
+import { openDexaImport } from './profile.js';
 
 let tab = 'body';   // body | strength | photos
 
@@ -37,11 +42,15 @@ function renderBody(s) {
   const start = s.weights.length ? s.weights[0].kg : current;
   const change = current - start;
   const bmiVal = bmi(current, s.profile.heightCm);
-  const bf = estimateBodyFat({ ...s.profile, weightKg: current });
+  const scan = s.dexa;
+  // Prefer the scan's real body fat; fall back to the BMI-based estimate.
+  const bf = scan ? currentBodyFat(scan, current) : estimateBodyFat({ ...s.profile, weightKg: current });
   const last = s.measurements[s.measurements.length - 1];
 
   return `
     <div class="stack">
+      ${scan ? renderDexa(s, scan, current, imperial) : renderDexaPrompt()}
+
       <section class="card">
         <div class="card-head">
           <div><div class="card-title">Weight trend</div><div class="card-sub">${s.weights.length} entries</div></div>
@@ -65,9 +74,9 @@ function renderBody(s) {
           <div class="stat-delta flat">${bmiLabel(bmiVal)}</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Est. body fat</div>
-          <div class="stat-value" style="font-size:19px">${bf.toFixed(0)}<small>%</small></div>
-          <div class="stat-delta flat">rough estimate</div>
+          <div class="stat-label">Body fat</div>
+          <div class="stat-value" style="font-size:19px">${bf.toFixed(1)}<small>%</small></div>
+          <div class="stat-delta ${scan ? 'up' : 'flat'}">${scan ? 'from your scan' : 'rough estimate'}</div>
         </div>
       </div>
 
@@ -94,6 +103,168 @@ function renderBody(s) {
       </div>
     </div>`;
 }
+
+/* ── DEXA body composition ─────────────────────────── */
+
+function renderDexaPrompt() {
+  return `
+    <section class="card" style="border-color:rgba(52,229,160,.22)">
+      <div class="row" style="gap:13px;align-items:flex-start">
+        <div class="ob-feature-icon" style="background:var(--accent-soft);border-color:rgba(52,229,160,.24)">🩻</div>
+        <div class="grow">
+          <div class="card-title">Add a DEXA or InBody scan</div>
+          <p class="small muted" style="line-height:1.6;margin:5px 0 12px">
+            A body-composition scan turns this app from estimates into real numbers — your macros get
+            calculated from actual lean mass, and you get a fat-loss projection specific to your body.
+          </p>
+          <button class="btn btn-primary btn-sm" data-act="dexa">Enter my scan</button>
+        </div>
+      </div>
+    </section>`;
+}
+
+function renderDexa(s, scan, currentKg, imperial) {
+  const basis = scanBasis(scan);
+  const lean = basis.leanKg;
+  const currentBf = currentBodyFat(scan, currentKg);
+  const scanBf = scan.bodyFatPct;
+  const bfDelta = currentBf - scanBf;                 // negative = leaner than scan day
+  const band = bodyFatBand(currentBf, s.profile.sex);
+  const fatMassKg = currentFatKg(scan, currentKg);
+  const ffmiVal = ffmi(basis.ffmKg, s.profile.heightCm);
+
+  const absPct = s.profile.sex === 'female' ? 20 : 12;
+  const path = pathToBodyFat(scan, currentKg);
+  const absTarget = weightAtBodyFat(scan, absPct);
+  const toAbs = currentKg - absTarget;
+
+  const unit = imperial ? 'lb' : 'kg';
+  const w = (kg) => (imperial ? kgToLb(kg) : kg);
+
+  const visc = scan.visceralFatLbs != null ? visceralContext(scan.visceralFatLbs) : null;
+  const ag = scan.agRatio != null ? agContext(scan.agRatio, s.profile.sex) : null;
+
+  return `
+    <section class="card hero-card" style="border-color:rgba(52,229,160,.2)">
+      <div class="card-head">
+        <div>
+          <div class="card-title">${icon('spark', 15)} Body composition</div>
+          <div class="card-sub">${esc(scan.source)} scan · ${relativeDay(scan.date)}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" data-act="dexa">Update</button>
+      </div>
+
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div style="text-align:center">
+          <div class="stat-value" style="font-size:27px;color:var(--accent)">${currentBf.toFixed(1)}<small style="font-size:14px">%</small></div>
+          <div class="stat-label">Body fat</div>
+          ${Math.abs(bfDelta) >= 0.2 ? `<div class="stat-delta ${bfDelta < 0 ? 'up' : 'down'}">${bfDelta < 0 ? '▼' : '▲'} ${Math.abs(bfDelta).toFixed(1)}% vs scan</div>` : `<div class="stat-delta flat">scan day</div>`}
+        </div>
+        <div style="text-align:center">
+          <div class="stat-value" style="font-size:27px;color:var(--protein)">${w(lean).toFixed(0)}<small style="font-size:14px">${unit}</small></div>
+          <div class="stat-label">Lean mass</div>
+          <div class="stat-delta flat">FFMI ${ffmiVal.toFixed(1)}</div>
+        </div>
+        <div style="text-align:center">
+          <div class="stat-value" style="font-size:27px;color:var(--fat)">${w(fatMassKg).toFixed(0)}<small style="font-size:14px">${unit}</small></div>
+          <div class="stat-label">Fat mass</div>
+          <div class="stat-delta flat">${esc(band)}</div>
+        </div>
+      </div>
+
+      ${toAbs > 0.5 ? `
+        <div class="callout accent">
+          <span class="callout-icon">🎯</span>
+          <span><strong>Path to abs.</strong> Holding your ${w(lean).toFixed(0)} ${unit} of muscle, you'd reach a
+          visible six-pack (~${s.profile.sex === 'female' ? '20' : '12'}% body fat) at about
+          <strong>${w(absTarget).toFixed(0)} ${unit}</strong> — that's ${w(toAbs).toFixed(0)} ${unit} of fat to lose.
+          Your macros below are set to do exactly that without losing the muscle.</span>
+        </div>` : `
+        <div class="callout accent"><span class="callout-icon">🔥</span><span><strong>You're there.</strong> At ${currentBf.toFixed(0)}% your abs should be visible — now it's about building more muscle underneath.</span></div>`}
+    </section>
+
+    ${path.length ? `
+      <section class="card">
+        <div class="card-head"><div><div class="card-title">Milestones to lean</div><div class="card-sub">Each holds your current muscle</div></div></div>
+        <div class="list">
+          ${path.map((m) => `
+            <div class="list-item">
+              <div class="thumb" style="font-size:15px">${m.pct <= 12 ? '🔥' : m.pct <= 15 ? '💪' : '✅'}</div>
+              <div class="list-item-main">
+                <div class="list-item-title">${m.pct}% body fat</div>
+                <div class="list-item-sub">${esc(bodyFatBand(m.pct, s.profile.sex))}</div>
+              </div>
+              <div class="list-item-end">
+                <div class="list-item-value">${w(m.weightKg).toFixed(0)} ${unit}</div>
+                <div class="tiny dim">−${w(m.fatToLoseKg).toFixed(0)} ${unit} to go</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </section>` : ''}
+
+    ${(visc || ag) ? `
+      <section class="card">
+        <div class="card-head"><div><div class="card-title">Where your fat sits</div><div class="card-sub">The part that hides the abs</div></div></div>
+        <div class="stack-sm">
+          ${visc ? `
+            <div class="row-between" style="padding:10px 0;border-bottom:1px solid var(--hairline)">
+              <div class="grow">
+                <div class="row" style="gap:8px"><span style="font-weight:650;font-size:14px">Visceral fat</span><span class="badge ${viscBadge(visc.level)}">${visc.level}</span></div>
+                <div class="tiny dim" style="margin-top:3px;line-height:1.5">${esc(visc.note)}</div>
+              </div>
+              <div class="list-item-value">${scan.visceralFatLbs} lb</div>
+            </div>` : ''}
+          ${ag ? `
+            <div class="row-between" style="padding:10px 0">
+              <div class="grow">
+                <div class="row" style="gap:8px"><span style="font-weight:650;font-size:14px">A/G ratio</span><span class="badge ${agBadge(ag.level)}">${ag.level}</span></div>
+                <div class="tiny dim" style="margin-top:3px;line-height:1.5">${esc(ag.note)}</div>
+              </div>
+              <div class="list-item-value">${scan.agRatio}</div>
+            </div>` : ''}
+        </div>
+      </section>` : ''}
+
+    ${scan.regions ? renderRegions(scan.regions, imperial) : ''}
+  `;
+}
+
+function renderRegions(r, imperial) {
+  const unit = imperial ? 'lb' : 'kg';
+  const conv = (lb) => (imperial ? lb : lb * 0.453592);
+  const rows = [
+    ['Trunk', r.trunk, '🫃'],
+    ['Arms', r.arms, '💪'],
+    ['Legs', r.legs, '🦵']
+  ].filter(([, v]) => v);
+
+  return `
+    <section class="card">
+      <div class="card-head"><div><div class="card-title">By region</div><div class="card-sub">Lean vs fat, head to toe</div></div></div>
+      <div class="stack-sm">
+        ${rows.map(([label, reg, emoji]) => {
+          const pct = reg.fatPct ?? (reg.fat / (reg.lean + reg.fat)) * 100;
+          const leanPct = 100 - pct;
+          return `
+            <div>
+              <div class="row-between" style="margin-bottom:5px">
+                <span style="font-weight:600;font-size:13.5px">${emoji} ${label}</span>
+                <span class="tiny dim">${conv(reg.lean).toFixed(0)} ${unit} lean · ${pct.toFixed(0)}% fat</span>
+              </div>
+              <div class="bar" style="height:9px">
+                <div class="bar-fill" style="width:${leanPct}%;background:var(--protein)"></div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <p class="tiny dim" style="margin-top:12px;line-height:1.5">
+        Your trunk carries the most fat by percentage — that's the belly, and it's what a deficit peels off first to reveal the abs.
+      </p>
+    </section>`;
+}
+
+const viscBadge = (l) => ({ low: 'badge-accent', moderate: 'badge-info', elevated: 'badge-warn', high: 'badge-danger' }[l] || 'badge-info');
+const agBadge = (l) => ({ ideal: 'badge-accent', ok: 'badge-info', central: 'badge-warn' }[l] || 'badge-info');
 
 function renderMeasurementDeltas(s, imperial) {
   const first = s.measurements[0];
@@ -200,6 +371,7 @@ export function mount(host, nav) {
   host.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab; nav(null); }));
   host.querySelector('[data-act="weigh"]')?.addEventListener('click', () => openWeighIn(nav));
   host.querySelector('[data-act="measure"]')?.addEventListener('click', () => openMeasurements(nav));
+  host.querySelectorAll('[data-act="dexa"]').forEach((b) => b.addEventListener('click', () => openDexaImport(nav)));
   host.querySelectorAll('[data-pr]').forEach((b) => b.addEventListener('click', () => showStrengthCurve(b.dataset.pr)));
 
   const input = $('#progressPhotoInput');
