@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <title>Forge — AI Health &amp; Fitness</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <meta name="theme-color" content="#08090B" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Forge" />
+  <meta name="description" content="All-in-one AI health and wellness: personalized workout programming, calorie and macro tracking, AI photo food logging, meal plans, and daily motivation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/screens.css" />
+</head>
+<body>
+
+  <!-- ═══════════ ONBOARDING ═══════════ -->
+  <div class="onboarding" id="onboarding" hidden>
+    <div class="onboarding-inner" id="onboardingInner"></div>
+  </div>
+
+  <!-- ═══════════ APP SHELL ═══════════ -->
+  <div class="app" id="app" hidden>
+
+    <!-- Desktop / tablet sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">F</div>
+        <div class="brand-text">
+          <span class="brand-name">Forge</span>
+          <span class="brand-sub">AI Health OS</span>
+        </div>
+      </div>
+      <nav class="nav" id="sidebarNav"></nav>
+      <div class="sidebar-foot">
+        <div class="streak-pill" id="sidebarStreak">
+          <span class="streak-flame">🔥</span>
+          <span id="sidebarStreakCount">0</span>
+          <span class="streak-label">day streak</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main" id="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="topbar-title">
+          <h1 id="screenTitle">Today</h1>
+          <p id="screenSub"></p>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="quickAddBtn" aria-label="Quick add">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="avatar-btn" id="profileBtn" aria-label="Profile"><span id="avatarInitial">?</span></button>
+        </div>
+      </header>
+
+      <div class="screen-host" id="screen"></div>
+    </main>
+
+    <!-- Mobile bottom tab bar -->
+    <nav class="tabbar" id="tabbar"></nav>
+  </div>
+
+  <!-- ═══════════ OVERLAYS ═══════════ -->
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-grab"></div>
+    <div class="sheet-head">
+      <h3 id="sheetTitle"></h3>
+      <button class="icon-btn" id="sheetClose" aria-label="Close">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+      </button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <input type="file" id="photoInput" accept="image/*" capture="environment" hidden />
+  <input type="file" id="progressPhotoInput" accept="image/*" hidden />
+  <input type="file" id="importInput" accept="application/json" hidden />
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
