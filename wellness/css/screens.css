@@ -89,7 +89,8 @@
 .quick-action {
   display: flex; flex-direction: column; align-items: center; gap: 7px;
   padding: 15px 8px; border-radius: var(--r);
-  background: var(--surface); border: 1px solid var(--hairline);
+  background: var(--surface-2); border: 1px solid var(--hairline-2);
+  box-shadow: 0 6px 16px -10px rgba(0,0,0,.6);
   font-size: 12px; font-weight: 600; color: var(--text-2);
   transition: all .16s;
 }
@@ -110,8 +111,9 @@
 /* ── Workout player ────────────────────────────────── */
 
 .exercise-card {
-  background: var(--surface); border: 1px solid var(--hairline);
+  background: var(--surface-2); border: 1px solid var(--hairline-2);
   border-radius: var(--r); overflow: hidden; margin-bottom: 12px;
+  box-shadow: 0 6px 16px -10px rgba(0,0,0,.6);
 }
 .exercise-head {
   display: flex; align-items: center; gap: 12px; padding: 14px 15px;
@@ -289,8 +291,9 @@
 /* ── Meal plan ─────────────────────────────────────── */
 
 .plan-day {
-  border: 1px solid var(--hairline); border-radius: var(--r);
-  background: var(--surface); overflow: hidden; margin-bottom: 12px;
+  border: 1px solid var(--hairline-2); border-radius: var(--r);
+  background: var(--surface-2); overflow: hidden; margin-bottom: 12px;
+  box-shadow: 0 6px 16px -10px rgba(0,0,0,.6);
 }
 .plan-day-head {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -333,7 +336,8 @@
 
 .achievement {
   display: flex; align-items: center; gap: 13px; padding: 13px;
-  border-radius: var(--r); background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--r); background: var(--surface-2); border: 1px solid var(--hairline-2);
+  box-shadow: 0 6px 16px -10px rgba(0,0,0,.6);
 }
 .achievement.locked { opacity: .42; }
 .achievement-icon {

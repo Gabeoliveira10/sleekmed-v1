@@ -3,19 +3,20 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* Surfaces */
-  --bg:            #0B0F14;
-  --bg-2:          #0F151C;
-  --surface:       #131A23;
-  --surface-2:     #18212C;
-  --surface-3:     #1F2A37;
-  --hairline:      rgba(255,255,255,.07);
-  --hairline-2:    rgba(255,255,255,.12);
+  /* Surfaces — neutral charcoal ramp, not a green-black wash. Each step is
+     deliberately far enough apart to read as its own layer at a glance. */
+  --bg:            #08090B;
+  --bg-2:          #101216;
+  --surface:       #1A1C21;
+  --surface-2:     #24262D;
+  --surface-3:     #313339;
+  --hairline:      rgba(255,255,255,.14);
+  --hairline-2:    rgba(255,255,255,.24);
 
   /* Text */
-  --text:          #EEF3F8;
-  --text-2:        #9FB0C2;
-  --text-3:        #64768A;
+  --text:          #F6F7F9;
+  --text-2:        #B7BCC4;
+  --text-3:        #83878F;
 
   /* Brand + semantic */
   --accent:        #34E5A0;   /* signature mint */
@@ -64,8 +65,8 @@ html, body {
 
 body {
   background-image:
-    radial-gradient(1100px 620px at 8% -12%, rgba(52,229,160,.10), transparent 62%),
-    radial-gradient(900px 540px at 108% 4%, rgba(90,169,255,.09), transparent 60%);
+    radial-gradient(1100px 620px at 8% -12%, rgba(52,229,160,.045), transparent 62%),
+    radial-gradient(900px 540px at 108% 4%, rgba(90,169,255,.035), transparent 60%);
   background-attachment: fixed;
 }
 
@@ -92,8 +93,8 @@ img { max-width: 100%; display: block; }
   position: fixed;
   inset: 0 auto 0 0;
   width: var(--sidebar-w);
-  background: linear-gradient(180deg, var(--bg-2), #0C1219);
-  border-right: 1px solid var(--hairline);
+  background: linear-gradient(180deg, var(--bg-2), var(--bg));
+  border-right: 1px solid var(--hairline-2);
   display: flex;
   flex-direction: column;
   padding: 22px 14px 16px;
@@ -150,10 +151,10 @@ img { max-width: 100%; display: block; }
   position: sticky; top: 0; z-index: 40;
   display: flex; align-items: center; gap: 12px;
   padding: calc(var(--safe-t) + 16px) 22px 14px;
-  background: rgba(11,15,20,.82);
+  background: rgba(8,9,11,.86);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline-2);
 }
 .topbar-title { flex: 1; min-width: 0; }
 .topbar-title h1 { font-size: 23px; }
@@ -229,7 +230,7 @@ img { max-width: 100%; display: block; }
 .row-between { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .wrap { flex-wrap: wrap; }
 .grow { flex: 1; min-width: 0; }
-.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack { display: flex; flex-direction: column; gap: 18px; }
 .stack-sm { display: flex; flex-direction: column; gap: 8px; }
 .muted { color: var(--text-2); }
 .dim { color: var(--text-3); }

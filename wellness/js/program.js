@@ -26,7 +26,12 @@ const SPLITS = {
  */
 const SPLITS_AESTHETIC = {
   4: { name: 'Chest / Back / Legs / Shoulders', days: ['chestTri', 'backBi', 'legs', 'shoulders'] },
-  5: { name: 'Chest / Back / Legs / Shoulders / Arms', days: ['chestTri', 'backBi', 'legs', 'shoulders', 'armsCore'] }
+  5: { name: 'Chest / Back / Legs / Shoulders / Arms', days: ['chestTri', 'backBi', 'legs', 'shoulders', 'armsCore'] },
+  // Mirrors an actual real-world weekly routine: chest to open the week,
+  // biceps and back kept separate, legs twice (quad-focus mid-week,
+  // posterior-focus + optional conditioning to close it), Thursday pairs
+  // cardio with a heavy triceps focus and a light touch of chest.
+  6: { name: 'Your Split — Chest, Arms, Legs & Back', days: ['chestTriLight', 'biceps', 'legs', 'cardioTriChest', 'back', 'legsB'] }
 };
 
 /** Suggested weekday per split-day index, always starting Monday. Advisory —
@@ -242,6 +247,49 @@ const DAY_RECIPES = {
       { pattern: 'core', role: 'accessory' },
       { pattern: 'core', role: 'accessory' }
     ]
+  },
+
+  // ── Your actual weekly routine ──
+  chestTriLight: {
+    label: 'Chest & Triceps',
+    slots: [
+      { pattern: 'push-h', role: 'primary' },
+      { muscle: 'upper chest', role: 'secondary' },
+      { muscle: 'chest', role: 'accessory' },
+      { muscle: 'chest', role: 'accessory' },
+      { muscle: 'triceps', role: 'accessory' }        // "a little bit of triceps"
+    ]
+  },
+  biceps: {
+    label: 'Biceps',
+    slots: [
+      { muscle: 'biceps', role: 'primary' },
+      { muscle: 'biceps', role: 'secondary' },
+      { muscle: 'biceps', role: 'accessory' },
+      { muscle: 'biceps', role: 'accessory' },
+      { muscle: 'forearms', role: 'accessory' }
+    ]
+  },
+  cardioTriChest: {
+    label: 'Cardio & Triceps',
+    slots: [
+      { pattern: 'cardio', role: 'primary' },
+      { muscle: 'triceps', role: 'primary' },          // heavy triceps focus
+      { muscle: 'triceps', role: 'secondary' },
+      { muscle: 'triceps', role: 'accessory' },
+      { muscle: 'chest', role: 'accessory' }            // "a little bit of chest"
+    ]
+  },
+  back: {
+    label: 'Back',
+    slots: [
+      { pattern: 'pull-v', role: 'primary' },
+      { pattern: 'pull-h', role: 'secondary' },
+      { muscle: 'lats', role: 'accessory' },
+      { muscle: 'back', role: 'accessory' },
+      { muscle: 'rear delts', role: 'accessory' },
+      { muscle: 'traps', role: 'accessory' }
+    ]
   }
 };
 
@@ -295,11 +343,19 @@ function pickExercise(slot, { equipment, used, focus }) {
 
   if (!pool.length) return null;
 
-  // Rank: not-yet-used first, then focus-muscle match, then compound for primaries.
+  // Rank: not-yet-used first, then muscle-target match, then compound for primaries.
   const scored = pool.map((ex) => {
     let score = 0;
     if (used.has(ex.id)) score -= 100;
-    if (focus.some((f) => ex.muscles.includes(f))) score += 12;
+    // A slot that targets a specific muscle (arm/isolation days) should favor
+    // exercises where that muscle is the true primary mover — a barbell row
+    // hits biceps too, but it's a back exercise, not a biceps one. Only fall
+    // back to the general focus-area bonus for pattern-only slots.
+    if (slot.muscle) {
+      if (ex.muscles[0] === slot.muscle) score += 20;
+    } else if (focus.some((f) => ex.muscles.includes(f))) {
+      score += 12;
+    }
     if (slot.role === 'primary' && ex.compound) score += 6;
     if (slot.role === 'accessory' && !ex.compound) score += 4;
     // Prefer free weights for primaries, machines/cables for accessories
@@ -339,7 +395,12 @@ export function generateProgram(profile) {
       const ex = pickExercise(slot, { equipment, used, focus });
       if (!ex) continue;
       used.add(ex.id);
-      const rx = prescribe(slot.role, profile.goal, profile.experience);
+      // A cardio pick (e.g. a "primary" cardio slot on a mixed day) needs a
+      // duration, not a strength rep scheme — "4 x 8-10" on a treadmill isn't
+      // meaningful.
+      const rx = ex.pattern === 'cardio'
+        ? { sets: 1, reps: '15-20 min', rest: 0, rpe: 7 }
+        : prescribe(slot.role, profile.goal, profile.experience);
       exercises.push({
         exerciseId: ex.id,
         name: ex.name,
@@ -364,17 +425,22 @@ export function generateProgram(profile) {
           exercises.push({ exerciseId: core.id, name: core.name, role: 'finisher', sets: fin.sets, reps: fin.reps, restSeconds: fin.rest, rpe: fin.rpe });
         }
       }
-      const cardio = EXERCISES.find((e) => e.pattern === 'cardio' && equipment.includes(e.equip));
-      if (cardio) {
-        exercises.push({
-          exerciseId: cardio.id, name: cardio.name, role: 'finisher',
-          sets: 1, reps: '10-15 min', restSeconds: 0, rpe: 7
-        });
+      const hasCardio = exercises.some((e) => byId[e.exerciseId]?.pattern === 'cardio');
+      if (!hasCardio) {
+        const cardio = EXERCISES.find((e) => e.pattern === 'cardio' && equipment.includes(e.equip));
+        if (cardio) {
+          exercises.push({
+            exerciseId: cardio.id, name: cardio.name, role: 'finisher',
+            sets: 1, reps: '10-15 min', restSeconds: 0, rpe: 7
+          });
+        }
       }
     }
 
     return { id: recipeKey + '-' + i, key: recipeKey, name: recipe.label, weekday: weekdays[i] || null, exercises };
   });
+
+  const customRoutine = aesthetic && split === SPLITS_AESTHETIC[6];
 
   return {
     name: split.name,
@@ -383,12 +449,12 @@ export function generateProgram(profile) {
     style: aesthetic ? 'aesthetic' : 'strength',
     createdAt: Date.now(),
     source: 'built-in',
-    notes: buildNotes(profile, aesthetic),
+    notes: buildNotes(profile, aesthetic, customRoutine),
     days
   };
 }
 
-function buildNotes(profile, aesthetic) {
+function buildNotes(profile, aesthetic, customRoutine) {
   const notes = [];
   const goalNote = {
     lose: 'Training keeps the muscle you have while the deficit removes fat. Keep the loads heavy — do not turn lifting into cardio.',
@@ -402,7 +468,12 @@ function buildNotes(profile, aesthetic) {
   if (aesthetic) {
     notes.push('This is a body-part split built for definition, not raw strength: 8–15 reps, shorter rest, closer to failure on the last set of each exercise — the look you want comes from total volume per muscle, not the number on the bar.');
     notes.push('Every session ends with a high-rep finisher (the last exercise, tagged "finisher") and a short conditioning piece. Push those hard — that is the block doing the most for visible definition and the fat-loss side of the deficit.');
-    notes.push('This split is not a copy of any specific trainer\'s program — I don\'t have a verified source for anyone\'s exact written plan, and I won\'t pretend to. It\'s built in the training style you described: chest-first Monday, body-part focus, high volume, finish every session hard.');
+    if (customRoutine) {
+      notes.push('This matches the week you actually run: chest + a little triceps Monday, biceps Tuesday, legs Wednesday, cardio with a heavy triceps focus (and a bit of chest) Thursday, back Friday, and legs or conditioning Saturday, your choice.');
+      notes.push('This split is not a copy of any specific trainer\'s program — I don\'t have a verified source for anyone\'s exact written plan, and I won\'t pretend to. It follows the structure and pacing you described, not a lifted routine.');
+    } else {
+      notes.push('This split is not a copy of any specific trainer\'s program — I don\'t have a verified source for anyone\'s exact written plan, and I won\'t pretend to. It\'s built in the training style you described: chest-first Monday, body-part focus, high volume, finish every session hard.');
+    }
   }
 
   notes.push('Progression: when you hit the top of the rep range on every set, add 2.5–5 kg (5–10 lb) next session.');
