@@ -108,9 +108,9 @@ function renderBody(s) {
 
 function renderDexaPrompt() {
   return `
-    <section class="card" style="border-color:rgba(52,229,160,.22)">
+    <section class="card" style="border-color:rgba(255,150,66,.28)">
       <div class="row" style="gap:13px;align-items:flex-start">
-        <div class="ob-feature-icon" style="background:var(--accent-soft);border-color:rgba(52,229,160,.24)">🩻</div>
+        <div class="ob-feature-icon" style="background:var(--accent-soft);border-color:rgba(255,150,66,.3)">🩻</div>
         <div class="grow">
           <div class="card-title">Add a DEXA or InBody scan</div>
           <p class="small muted" style="line-height:1.6;margin:5px 0 12px">
@@ -145,7 +145,7 @@ function renderDexa(s, scan, currentKg, imperial) {
   const ag = scan.agRatio != null ? agContext(scan.agRatio, s.profile.sex) : null;
 
   return `
-    <section class="card hero-card" style="border-color:rgba(52,229,160,.2)">
+    <section class="card hero-card" style="border-color:rgba(255,176,32,.26)">
       <div class="card-head">
         <div>
           <div class="card-title">${icon('spark', 15)} Body composition</div>

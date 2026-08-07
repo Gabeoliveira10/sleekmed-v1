@@ -3,32 +3,39 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* Surfaces — neutral charcoal ramp, not a green-black wash. Each step is
-     deliberately far enough apart to read as its own layer at a glance. */
-  --bg:            #08090B;
-  --bg-2:          #101216;
-  --surface:       #1A1C21;
-  --surface-2:     #24262D;
-  --surface-3:     #313339;
-  --hairline:      rgba(255,255,255,.14);
-  --hairline-2:    rgba(255,255,255,.24);
+  /* Surfaces — soft, warm off-white with white cards floating on top via
+     shadow, not borders. Light, airy, "actual app" feel instead of a dark
+     monochrome wash. */
+  --bg:            #EEF1EA;
+  --bg-2:          #F4F6F1;
+  --surface:       #FFFFFF;
+  --surface-2:     #F6F7F4;
+  --surface-3:     #ECEEE8;
+  --hairline:      rgba(20,23,18,.07);
+  --hairline-2:    rgba(20,23,18,.12);
 
   /* Text */
-  --text:          #F6F7F9;
-  --text-2:        #B7BCC4;
-  --text-3:        #83878F;
+  --text:          #14171A;
+  --text-2:        #666D6A;
+  --text-3:        #979E99;
 
-  /* Brand + semantic */
-  --accent:        #34E5A0;   /* signature mint */
-  --accent-2:      #17B87C;
-  --accent-soft:   rgba(52,229,160,.13);
-  --protein:       #5AA9FF;
-  --carbs:         #FFB84D;
-  --fat:           #FF7A9C;
-  --calories:      #34E5A0;
-  --danger:        #FF5C68;
-  --warn:          #FFC24D;
-  --info:          #7C9CFF;
+  /* Brand + semantic — warm amber as the signature color (not green), a
+     near-black for primary actions (the "+" button look), and a distinct
+     hue per nutrition/health category so blocks read apart at a glance. */
+  --ink:           #201400;   /* dark text/icons drawn on the amber accent */
+  --accent:        #FF9642;
+  --accent-2:      #F2751A;
+  --accent-soft:   rgba(255,150,66,.15);
+  --accent-ink:    #B85200;   /* accent-colored text — dark enough to read on white/soft-tint backgrounds */
+  --primary:       #16181C;   /* solid near-black CTA, matches the "+" pill */
+  --primary-2:     #05060A;
+  --protein:       #4C8DFF;
+  --carbs:         #FFB020;
+  --fat:           #FF5C8A;
+  --calories:      #22C55E;
+  --danger:        #EF4444;
+  --warn:          #F5A623;
+  --info:          #4C8DFF;
 
   /* Type */
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -65,15 +72,15 @@ html, body {
 
 body {
   background-image:
-    radial-gradient(1100px 620px at 8% -12%, rgba(52,229,160,.045), transparent 62%),
-    radial-gradient(900px 540px at 108% 4%, rgba(90,169,255,.035), transparent 60%);
+    radial-gradient(1100px 620px at 8% -12%, rgba(255,150,66,.10), transparent 62%),
+    radial-gradient(900px 540px at 108% 4%, rgba(76,141,255,.08), transparent 60%);
   background-attachment: fixed;
 }
 
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: none; cursor: pointer; }
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--accent-2); text-decoration: none; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
 [hidden] { display: none !important; }
@@ -81,7 +88,7 @@ img { max-width: 100%; display: block; }
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #2C3A4B; }
+::-webkit-scrollbar-thumb:hover { background: #D7DAD2; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
@@ -107,10 +114,10 @@ img { max-width: 100%; display: block; }
 .brand-mark {
   width: 38px; height: 38px; border-radius: 12px;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06120C;
+  color: var(--ink);
   display: grid; place-items: center;
   font-family: var(--font-display); font-weight: 800; font-size: 20px;
-  box-shadow: 0 6px 18px rgba(52,229,160,.28);
+  box-shadow: 0 6px 18px rgba(255,150,66,.32);
 }
 .brand-text { display: flex; flex-direction: column; }
 .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
@@ -125,14 +132,14 @@ img { max-width: 100%; display: block; }
   text-align: left; width: 100%;
 }
 .nav-item svg { width: 19px; height: 19px; flex-shrink: 0; }
-.nav-item:hover { background: rgba(255,255,255,.045); color: var(--text); }
-.nav-item.active { background: var(--accent-soft); color: var(--accent); }
-.nav-item.active svg { stroke: var(--accent); }
+.nav-item:hover { background: rgba(20,23,18,.045); color: var(--text); }
+.nav-item.active { background: var(--accent-soft); color: var(--accent-ink); }
+.nav-item.active svg { stroke: var(--accent-ink); }
 
 .sidebar-foot { padding-top: 14px; border-top: 1px solid var(--hairline); }
 .streak-pill {
   display: flex; align-items: center; gap: 7px;
-  background: rgba(255,184,77,.10); border: 1px solid rgba(255,184,77,.22);
+  background: rgba(245,166,35,.12); border: 1px solid rgba(245,166,35,.26);
   padding: 9px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;
 }
 .streak-flame { font-size: 15px; }
@@ -151,7 +158,7 @@ img { max-width: 100%; display: block; }
   position: sticky; top: 0; z-index: 40;
   display: flex; align-items: center; gap: 12px;
   padding: calc(var(--safe-t) + 16px) 22px 14px;
-  background: rgba(8,9,11,.86);
+  background: rgba(238,241,234,.82);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--hairline-2);
@@ -175,7 +182,7 @@ img { max-width: 100%; display: block; }
 .avatar-btn {
   width: 38px; height: 38px; border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06120C; font-weight: 700; font-size: 15px;
+  color: var(--ink); font-weight: 700; font-size: 15px;
   display: grid; place-items: center;
   font-family: var(--font-display);
 }
@@ -187,9 +194,10 @@ img { max-width: 100%; display: block; }
 .tabbar {
   display: none;
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 55;
-  background: rgba(13,18,25,.94);
+  background: rgba(255,255,255,.92);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--hairline);
+  box-shadow: 0 -8px 24px -12px rgba(20,23,18,.15);
   padding: 8px 6px calc(var(--safe-b) + 8px);
   justify-content: space-around;
 }
@@ -199,12 +207,12 @@ img { max-width: 100%; display: block; }
   border-radius: 12px; transition: color .16s;
 }
 .tab svg { width: 21px; height: 21px; }
-.tab.active { color: var(--accent); }
+.tab.active { color: var(--accent-ink); }
 .tab.snap-tab .tab-orb {
   width: 42px; height: 42px; margin-top: -18px; border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06120C; display: grid; place-items: center;
-  box-shadow: 0 6px 18px rgba(52,229,160,.35);
+  color: var(--ink); display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(255,150,66,.4);
   border: 3px solid var(--bg);
 }
 .tab.snap-tab .tab-orb svg { width: 20px; height: 20px; stroke-width: 2.4; }
@@ -249,4 +257,42 @@ img { max-width: 100%; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ═══════════ TACTILE FEEDBACK ═══════════
+   A tap ripple + a slight press-scale on every interactive block, driven by
+   interaction.js. iOS Safari has no navigator.vibrate, so this visual layer
+   is what actually carries the "premium, responsive" feel there. */
+
+.rip-host { position: relative; overflow: hidden; }
+.ripple {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  background: currentColor; opacity: .16;
+  transform: scale(0);
+  animation: rippleAnim .5s ease-out forwards;
+}
+@keyframes rippleAnim { to { transform: scale(1); opacity: 0; } }
+
+.card, .chip, .quick-action, .option, .stat, .list-item, .exercise-head,
+.plan-day-head, .grocery-item, .achievement, .mood-btn, .food-search-result,
+.nav-item, .tab, .thumb {
+  transition: transform .14s var(--ease), box-shadow .14s var(--ease), background .14s, border-color .14s;
+}
+.card:active, .quick-action:active, .option:active, .stat:active,
+.exercise-head:active, .plan-day-head:active, .achievement:active,
+.food-search-result:active, .grocery-item:active {
+  transform: scale(.982);
+}
+.chip:active, .mood-btn:active, .nav-item:active, .tab:active {
+  transform: scale(.94);
+}
+
+@media (hover: hover) {
+  .card:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,.02) inset, 0 16px 34px -14px rgba(0,0,0,.65); }
+  .quick-action:hover, .stat:hover, .achievement:hover { transform: translateY(-1px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple { display: none; }
+  .card:hover, .quick-action:hover, .stat:hover, .achievement:hover { transform: none; }
 }

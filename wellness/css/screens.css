@@ -8,8 +8,8 @@
   position: fixed; inset: 0; z-index: 300;
   background: var(--bg);
   background-image:
-    radial-gradient(900px 520px at 50% -10%, rgba(52,229,160,.16), transparent 62%),
-    radial-gradient(700px 460px at 100% 100%, rgba(90,169,255,.10), transparent 60%);
+    radial-gradient(900px 520px at 50% -10%, rgba(255,150,66,.18), transparent 62%),
+    radial-gradient(700px 460px at 100% 100%, rgba(76,141,255,.12), transparent 60%);
   overflow-y: auto;
   padding: calc(var(--safe-t) + 28px) 20px calc(var(--safe-b) + 32px);
 }
@@ -23,9 +23,9 @@
 .ob-logo {
   width: 72px; height: 72px; margin: 0 auto 22px; border-radius: 22px;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06120C; display: grid; place-items: center;
+  color: var(--ink); display: grid; place-items: center;
   font-family: var(--font-display); font-weight: 800; font-size: 36px;
-  box-shadow: 0 14px 40px rgba(52,229,160,.32);
+  box-shadow: 0 14px 40px rgba(255,150,66,.35);
 }
 .ob-hero h1 { font-size: 32px; margin-bottom: 10px; letter-spacing: -.035em; }
 .ob-hero p { color: var(--text-2); font-size: 15.5px; line-height: 1.6; max-width: 380px; margin: 0 auto; }
@@ -74,9 +74,9 @@
 
 .hero-card {
   background:
-    linear-gradient(150deg, rgba(52,229,160,.12), transparent 55%),
-    linear-gradient(160deg, var(--surface), var(--bg-2));
-  border: 1px solid rgba(52,229,160,.18);
+    linear-gradient(135deg, rgba(255,176,32,.16), transparent 55%),
+    var(--surface);
+  border: 1px solid rgba(255,176,32,.22);
 }
 .greeting { font-size: 13px; color: var(--text-3); font-weight: 600; }
 .greeting-name { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -.03em; margin-top: 2px; }
@@ -100,12 +100,12 @@
 .today-workout {
   display: flex; align-items: center; gap: 14px;
   padding: 15px; border-radius: var(--r);
-  background: linear-gradient(135deg, rgba(90,169,255,.11), rgba(90,169,255,.03));
-  border: 1px solid rgba(90,169,255,.22);
+  background: linear-gradient(135deg, rgba(76,141,255,.11), rgba(76,141,255,.03));
+  border: 1px solid rgba(76,141,255,.22);
 }
 .today-workout-icon {
   width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
-  background: rgba(90,169,255,.16); display: grid; place-items: center; font-size: 22px;
+  background: rgba(76,141,255,.16); display: grid; place-items: center; font-size: 22px;
 }
 
 /* ── Workout player ────────────────────────────────── */
@@ -124,7 +124,7 @@
   background: var(--surface-3); display: grid; place-items: center;
   font-size: 12.5px; font-weight: 700; color: var(--text-2);
 }
-.exercise-card.complete .exercise-num { background: var(--accent); color: #06120C; }
+.exercise-card.complete .exercise-num { background: var(--accent); color: var(--ink); }
 .exercise-name { font-weight: 650; font-size: 14.5px; }
 .exercise-meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
 .exercise-body { padding: 0 15px 14px; border-top: 1px solid var(--hairline); padding-top: 13px; }
@@ -151,22 +151,22 @@
   display: grid; place-items: center; color: var(--text-3);
   transition: all .16s;
 }
-.set-check.done { background: var(--accent); border-color: var(--accent); color: #06120C; }
+.set-check.done { background: var(--accent); border-color: var(--accent); color: var(--ink); }
 
 .rest-timer {
   position: fixed; left: 50%; transform: translateX(-50%);
   bottom: calc(var(--tabbar-h) + var(--safe-b) + 14px);
   z-index: 70;
   display: flex; align-items: center; gap: 13px;
-  background: var(--surface-3); border: 1px solid rgba(52,229,160,.32);
+  background: var(--surface); border: 1px solid rgba(255,150,66,.4);
   border-radius: 16px; padding: 12px 16px;
-  box-shadow: 0 12px 36px rgba(0,0,0,.5);
+  box-shadow: 0 12px 36px -8px rgba(20,23,18,.35);
   animation: toastIn .26s var(--ease);
 }
 @media (min-width: 901px) { .rest-timer { bottom: 26px; } }
 .rest-time {
   font-family: var(--font-display); font-size: 24px; font-weight: 800;
-  color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  color: var(--accent-ink); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
 }
 
 .pr-flag {
@@ -207,7 +207,7 @@
   border: 2px solid var(--hairline-2); background: transparent;
   transition: all .2s;
 }
-.water-cup.filled { background: rgba(90,169,255,.35); border-color: var(--protein); }
+.water-cup.filled { background: rgba(76,141,255,.35); border-color: var(--protein); }
 
 /* ── AI Snap ───────────────────────────────────────── */
 
@@ -217,10 +217,10 @@
   background: linear-gradient(160deg, var(--surface), var(--bg-2));
   transition: all .2s;
 }
-.snap-zone:hover { border-color: rgba(52,229,160,.45); background: var(--surface-2); }
+.snap-zone:hover { border-color: rgba(255,150,66,.5); background: var(--surface-2); }
 .snap-icon {
   width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 22px;
-  background: var(--accent-soft); border: 1px solid rgba(52,229,160,.24);
+  background: var(--accent-soft); border: 1px solid rgba(255,150,66,.28);
   display: grid; place-items: center; font-size: 30px;
 }
 .snap-preview {
@@ -234,7 +234,7 @@
 }
 .analysis-item:last-child { border-bottom: none; }
 .confidence-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
-.confidence-high { background: var(--accent); }
+.confidence-high { background: var(--calories); }
 .confidence-medium { background: var(--warn); }
 .confidence-low { background: var(--danger); }
 
@@ -265,8 +265,8 @@
 }
 .msg.user { align-self: flex-end; align-items: flex-end; }
 .msg.user .msg-bubble {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #06120C; border-bottom-right-radius: 6px; font-weight: 500;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff; border-bottom-right-radius: 6px; font-weight: 500;
 }
 .msg.ai { align-self: flex-start; }
 .msg.ai .msg-bubble {
@@ -304,7 +304,7 @@
 }
 .plan-meal-label {
   font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+  text-transform: uppercase; color: var(--accent-ink); margin-bottom: 4px;
 }
 .plan-meal-name { font-weight: 600; font-size: 14.5px; }
 .plan-meal-macros { font-size: 12px; color: var(--text-3); margin-top: 3px; font-variant-numeric: tabular-nums; }
@@ -318,16 +318,16 @@
   border: 1.8px solid var(--hairline-2); display: grid; place-items: center;
   color: transparent; transition: all .16s;
 }
-.grocery-item.checked .grocery-check { background: var(--accent); border-color: var(--accent); color: #06120C; }
+.grocery-item.checked .grocery-check { background: var(--accent); border-color: var(--accent); color: var(--ink); }
 .grocery-item.checked .grocery-name { text-decoration: line-through; color: var(--text-3); }
 
 /* ── Motivation ────────────────────────────────────── */
 
 .quote-card {
   background:
-    linear-gradient(145deg, rgba(255,184,77,.13), transparent 58%),
-    linear-gradient(160deg, var(--surface), var(--bg-2));
-  border: 1px solid rgba(255,184,77,.2);
+    linear-gradient(145deg, rgba(245,166,35,.15), transparent 58%),
+    var(--surface);
+  border: 1px solid rgba(245,166,35,.24);
   padding: 26px 22px;
 }
 .quote-mark { font-family: Georgia, serif; font-size: 46px; line-height: .6; color: var(--warn); opacity: .5; }
@@ -345,14 +345,14 @@
   display: grid; place-items: center; font-size: 21px;
   background: var(--surface-2);
 }
-.achievement.unlocked .achievement-icon { background: rgba(255,194,77,.15); }
+.achievement.unlocked .achievement-icon { background: rgba(245,166,35,.16); }
 
 .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
 .streak-cell {
   aspect-ratio: 1; border-radius: 8px; background: var(--surface-2);
   display: grid; place-items: center; font-size: 10px; color: var(--text-3); font-weight: 600;
 }
-.streak-cell.hit { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(52,229,160,.3); }
+.streak-cell.hit { background: var(--accent-soft); color: var(--accent-ink); border: 1px solid rgba(255,150,66,.35); }
 .streak-cell.today { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 .mood-picker { display: flex; gap: 8px; justify-content: space-between; }
@@ -390,5 +390,5 @@
   display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600;
 }
 .key-dot { width: 8px; height: 8px; border-radius: 50%; }
-.key-dot.on { background: var(--accent); box-shadow: 0 0 8px rgba(52,229,160,.6); }
+.key-dot.on { background: var(--accent); box-shadow: 0 0 8px rgba(255,150,66,.6); }
 .key-dot.off { background: var(--text-3); }

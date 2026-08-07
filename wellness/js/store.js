@@ -69,8 +69,7 @@ function defaultState() {
       proxyUrl: '',
       model: 'claude-opus-5',
       aiEnabled: true,
-      restSeconds: 90,
-      soundOn: true
+      restSeconds: 90
     }
   };
 }

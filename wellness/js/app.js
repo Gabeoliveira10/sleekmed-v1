@@ -4,6 +4,7 @@
 
 import { get, update, computeStreak, todayKey } from './store.js';
 import { $, icon, esc, toast, closeSheet, openSheet } from './ui.js';
+import { initInteractions } from './interaction.js';
 import { startOnboarding } from './screens/onboarding.js';
 
 import * as dashboard from './screens/dashboard.js';
@@ -165,6 +166,7 @@ function openQuickAdd() {
 
 function boot() {
   wireShell();
+  initInteractions();
 
   const s = get();
   if (!s.profile.onboarded) {

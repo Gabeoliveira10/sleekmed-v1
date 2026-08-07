@@ -145,11 +145,7 @@ export function render(nav) {
       <!-- App settings -->
       <section class="card">
         <div class="card-head"><div class="card-title">Preferences</div></div>
-        <label class="switch-row">
-          <div><div style="font-weight:600;font-size:14px">Rest timer sound</div><div class="tiny dim">Beep when rest is over</div></div>
-          <span class="switch"><input type="checkbox" id="soundToggle" ${s.settings.soundOn ? 'checked' : ''}/><span class="switch-track"></span></span>
-        </label>
-        <div class="field" style="margin-top:14px">
+        <div class="field">
           <label>Default rest between sets</label>
           <div class="chip-row">
             ${[60, 90, 120, 180].map((sec) => `
@@ -239,10 +235,6 @@ export function mount(host, nav) {
 
   host.querySelector('#aiToggle')?.addEventListener('change', (e) => {
     update((s) => { s.settings.aiEnabled = e.target.checked; });
-  });
-
-  host.querySelector('#soundToggle')?.addEventListener('change', (e) => {
-    update((s) => { s.settings.soundOn = e.target.checked; });
   });
 
   host.querySelectorAll('[data-rest]').forEach((b) => b.addEventListener('click', () => {

@@ -54,7 +54,7 @@ export function render(nav) {
 
       <div class="chat-composer">
         <textarea class="textarea grow" id="chatInput" rows="1" placeholder="Ask your coach anything…"></textarea>
-        <button class="icon-btn" id="chatSend" style="width:48px;height:48px;background:var(--accent);color:#06120C;border:none" aria-label="Send">
+        <button class="icon-btn" id="chatSend" style="width:48px;height:48px;background:var(--accent);color:var(--ink);border:none" aria-label="Send">
           ${icon('play', 17)}
         </button>
       </div>

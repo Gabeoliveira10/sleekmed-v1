@@ -8,6 +8,7 @@ import { findExercise, searchExercises } from '../data/exercises.js';
 import { relativeDay, weightLabel, fmt, epley1RM } from '../calc.js';
 import { esc, icon, toast, openSheet, closeSheet, confirmSheet, lineChart, debounce } from '../ui.js';
 import { aiConfigured, generateAIProgram } from '../ai.js';
+import { buzz } from '../interaction.js';
 
 let view = 'program';          // program | active | history
 let restTimer = null;
@@ -316,6 +317,7 @@ export function mount(host, nav) {
     });
 
     if (!set.done) {
+      buzz(16);
       const pb = personalBest(entry.exerciseId, st.workoutLogs);
       const w = Number(wInput?.value) || last?.weight || 0;
       if (pb && w > pb.weight) toast(`New PB on ${entry.name} — ${w}!`);
@@ -439,6 +441,7 @@ async function finishWorkout(nav) {
   update((st) => { st.workoutLogs.push(log); st.activeWorkout = null; });
   stopRest();
   view = 'program';
+  if (completed) buzz([18, 60, 18]);
 
   const vol = workoutVolume(log);
   toast(`${w.dayName} logged — ${completed} set${completed === 1 ? '' : 's'}, ${fmt(vol)} total volume`);
@@ -476,7 +479,7 @@ function startRest(seconds, nav) {
     if (t) t.textContent = format(left);
     if (left <= 0) {
       stopRest();
-      if (get().settings.soundOn) beep();
+      buzz(20);
       toast('Rest over — next set');
     }
   }, 1000);
@@ -490,20 +493,6 @@ function stopRest() {
 }
 
 const format = (s) => `${Math.floor(s / 60)}:${String(Math.max(0, s % 60)).padStart(2, '0')}`;
-
-function beep() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880;
-    gain.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-    osc.start(); osc.stop(ctx.currentTime + 0.36);
-  } catch { /* audio blocked — silent is fine */ }
-}
 
 /* ── Sheets ────────────────────────────────────────── */
 
